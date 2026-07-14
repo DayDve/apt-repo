@@ -4,7 +4,6 @@ on:
   release:
     types: [published]
   workflow_dispatch:
-  push:
 
 jobs:
   deploy:
@@ -33,8 +32,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p pool/main
-          gh release list --repo ${{ github.repository }} --json tagName --jq '.[].tagName' | while read tag; do
-            gh release download "$tag" --repo ${{ github.repository }} --dir pool/main --pattern '*.deb' 2>/dev/null || true
+          gh release list --repo $GITHUB_REPOSITORY --json tagName --jq '.[].tagName' | while read tag; do
+            gh release download "$tag" --repo $GITHUB_REPOSITORY --dir pool/main --pattern '*.deb' 2>/dev/null || true
           done
 
       - name: Generate Packages
@@ -45,33 +44,29 @@ jobs:
 
       - name: Generate Release
         run: |
-          cat > /tmp/apt-release.conf << 'EOF'
-APT::FTPArchive::Release::Origin "DayDve";
-APT::FTPArchive::Release::Label "DayDve apt repo";
-APT::FTPArchive::Release::Suite "stable";
-APT::FTPArchive::Release::Codename "stable";
-APT::FTPArchive::Release::Architectures "amd64";
-APT::FTPArchive::Release::Components "main";
-APT::FTPArchive::Release::Description "Personal apt repository";
-EOF
-          apt-ftparchive release -c /tmp/apt-release.conf dists/stable > dists/stable/Release
+          apt-ftparchive release -o APT::FTPArchive::Release::Origin="DayDve" \
+            -o APT::FTPArchive::Release::Label="DayDve apt repo" \
+            -o APT::FTPArchive::Release::Suite="stable" \
+            -o APT::FTPArchive::Release::Codename="stable" \
+            -o APT::FTPArchive::Release::Architectures="amd64" \
+            -o APT::FTPArchive::Release::Components="main" \
+            dists/stable > dists/stable/Release
 
       - name: Sign Release
         run: |
           cd dists/stable
           gpg --batch --yes --detach-sign --armor -o Release.gpg Release
           gpg --batch --yes --clearsign -o InRelease Release
-          cd ../..
 
       - name: Export public key
         run: |
           KEYID=$(gpg --list-secret-keys --with-colons | grep '^sec:' | head -1 | cut -d: -f5)
           gpg --armor --export "$KEYID" > apt-key.asc
 
-      - name: Push to gh-pages
+      - name: Push
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add -A
-          git commit -m "deploy apt repo build ${{ github.run_number }}"
+          git commit -m "deploy build $GITHUB_RUN_NUMBER"
           git push
