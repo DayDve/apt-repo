@@ -44,9 +44,16 @@ jobs:
 
       - name: Generate Release
         run: |
-          cd dists/stable
-          apt-ftparchive release . > Release
-          cd ../..
+          cat > /tmp/apt-release.conf << 'EOF'
+APT::FTPArchive::Release::Origin "DayDve";
+APT::FTPArchive::Release::Label "DayDve apt repo";
+APT::FTPArchive::Release::Suite "stable";
+APT::FTPArchive::Release::Codename "stable";
+APT::FTPArchive::Release::Architectures "amd64";
+APT::FTPArchive::Release::Components "main";
+APT::FTPArchive::Release::Description "Personal apt repository";
+EOF
+          apt-ftparchive release -c /tmp/apt-release.conf dists/stable > dists/stable/Release
 
       - name: Sign Release
         run: |
