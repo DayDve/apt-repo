@@ -16,3 +16,29 @@ Description: Btrfs deduplication daemon
  A daemon that deduplicates data on Btrfs volumes using
  reflinks and stable file handles.
 
+Package: grub-btrfs
+Version: 4.14
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 204
+Depends: inotify-tools, gawk
+Filename: pool/noble/main/grub-btrfs_4.14_noble_amd64.deb
+Size: 32436
+MD5sum: bdc16070083de229225f64aaf4c1ebdf
+SHA1: b438cfe01e40a76b3791767ec2cbc8402e92d9b5
+SHA256: a7d6d3a5d37bda727e29857a5e2b075656d4d3d19ff58bfcad9d1b4a4e0fda90
+Description: Grub btrfs snapshot boot manager.
+
+Package: keyd
+Version: 2.6.0
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 1884
+Depends: libc6, systemd
+Filename: pool/noble/main/keyd_2.6.0_noble_amd64.deb
+Size: 213218
+MD5sum: 3122c5c6642d428da5c7eb056c72f6e5
+SHA1: e5c6f70999d6a18ccbd0ee26d95cda45d447a04f
+SHA256: 6a77c2464530bbf561a523f90986b43d797621d4fc9295b0568dd210ca31ae07
+Description: A key remapping daemon for linux.
+
