@@ -51,6 +51,16 @@ apps/
     └── get_version         # stdout: version=... \n --- \n changelog
 ```
 
+### Adding a new app
+
+Open a pull request with a new directory `apps/<app>/` containing three files:
+
+- **`Dockerfile`** — multi-stage build. The final stage must be `FROM scratch` with `COPY --from=<stage> /path/to/*.deb /`. The `.deb` is produced by `dpkg-deb --root-owner-group --build . /out/<name>_<version>_amd64.deb` or simply downloaded prebuilt and passed through.
+- **`check_update`** — exit 0 if upstream has a newer version than `$1` (the current release tag suffix).
+- **`get_version`** — print `version=<value>` on line 1, then `---`, then changelog (used as release notes).
+
+On merge, CI builds the app and publishes the `.deb`.
+
 ### Build locally
 
 ```bash
