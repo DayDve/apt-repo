@@ -1,5 +1,7 @@
 FROM ghcr.io/telegramdesktop/tdesktop/centos_env:latest AS build
 
+USER root
+
 ARG APP_VERSION
 
 RUN yum install -y ccache
