@@ -63,5 +63,7 @@ jobs:
 
       - name: Build
         if: steps.check.outputs.update == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           bash apps/build.sh ${{ matrix.app }}
