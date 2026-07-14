@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+current_version="$1"
+URL=$(curl -s https://devolutions.net/remote-desktop-manager/download/ | grep -oP 'https://[^"]*Linux/[^"]*RemoteDesktopManager[^"]*amd64\.deb' | head -1)
+upstream_version=$(grep -oP '^.*\K\d{4}(\.\d){3}' <<<"${URL}")
+
+[ "$upstream_version" != "$current_version" ]

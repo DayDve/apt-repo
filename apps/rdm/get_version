@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -e
+
+current_version="$1"
+
+URL=$(curl -s https://devolutions.net/remote-desktop-manager/download/ | grep -oP 'https://[^"]*Linux/[^"]*RemoteDesktopManager[^"]*amd64\.deb' | head -1)
+VERSION=$(grep -oP '^.*\K\d{4}(\.\d){3}' <<<"${URL}")
+
+echo "version=$VERSION"
+echo "---"
+
+curl -s https://devolutions.net/remote-desktop-manager/release-notes/linux/ \
+  | awk -v ver="$VERSION" 'BEGIN{RS="<"}
+    /^article.*data-rn-version="/{if($0~"data-rn-version=\""ver"\"") f=1}
+    f && /^\/article/{exit}
+    f{v=$0; sub(/^[^>]*>/,"",v); if(v~/scrollIntoView|getElementById|x-on:|event\.|document\./) next;
+      gsub(/^[ \t\r\n]+|[ \t\r\n]+$/,"",v); if(v==""||v=="·") next;
+      if(v~/^(Features|Improvements|Fixes|Requires|New features)$/){started=1; h=v; next}
+      if(!started) next;
+      if(h){print "## " h ": " v; h=""} else print " - " v}'
