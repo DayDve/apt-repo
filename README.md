@@ -34,7 +34,7 @@ sudo apt update
 Install a package:
 
 ```bash
-sudo apt install bees
+sudo apt install <package>
 ```
 
 ## For maintainers
