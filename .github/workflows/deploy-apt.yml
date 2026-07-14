@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: gh-pages
+          ref: apt
 
       - name: Install tools
         run: |
@@ -21,9 +21,10 @@ jobs:
           sudo apt-get install -y -qq apt-utils dpkg-dev gnupg
 
       - name: Import GPG key
+        env:
+          KEY: ${{ secrets.GPG_PRIVATE_KEY }}
         run: |
-          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --import --batch
-          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --import --batch 2>/dev/null || true
+          printf '%s\n' "$KEY" | gpg --batch --import
 
       - name: Download all release assets
         env:
