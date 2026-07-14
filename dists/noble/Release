@@ -1,0 +1,23 @@
+Architectures: amd64
+Codename: noble
+Components: main
+Date: Tue, 14 Jul 2026 16:24:03 +0000
+Label: DayDve apt repo
+Origin: DayDve
+Suite: noble
+MD5Sum:
+ 0766dae3c9f83ef1708a96a3e5748363              143 Release
+ 2a4a7b8ecd1cde05d31d2825384d8d77              653 main/binary-amd64/Packages
+ 89a2d07325b122c503fbff53078d521f              471 main/binary-amd64/Packages.gz
+SHA1:
+ 0fb5886c18424ae9edacbfc836e36f03241bd8b6              143 Release
+ 6035cb6a9a19b7e82d328139100d74f81d04ccf5              653 main/binary-amd64/Packages
+ 84080c9a09bd4ed84f5019794c48a7503e3d6161              471 main/binary-amd64/Packages.gz
+SHA256:
+ 3a5a4f4b3a618afb31a00bd56bf79ba8b39f46daab7e23b9c6255549ec52117f              143 Release
+ 7b924d2db9513a0cca2cda5cc2c111826558e81a7b2589abbef20b8f9efebc9a              653 main/binary-amd64/Packages
+ 8c72471139017b0a25d9131f6494c59291ccc0e219c90777cc350ab068fa47a8              471 main/binary-amd64/Packages.gz
+SHA512:
+ fd82bcff0bd7fa7eaab0617a5048d281811285afb422069726a6ff861e99669222b8141aa9cc36c1b5f4e40467fe4a85566de2b4d8d7d74c141069031458c45a              143 Release
+ c809870ac4e4fd01b021d466653ed2f61d4a64812032a7ac4c29433511621555d0937241e339d93c71aff80a16b2c6419da2dd20d7f2f9d514d33244a1ac7a08              653 main/binary-amd64/Packages
+ 7c47c884aa5fb3901615460a01ec7bb039baab7b929645084157159c814ac7bb3aa270ddb88a63812fef61e90646c6f19957f5e41415be3045e2cafac675cc15              471 main/binary-amd64/Packages.gz
