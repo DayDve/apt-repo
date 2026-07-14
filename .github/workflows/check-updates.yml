@@ -68,4 +68,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          bash apps/build.sh ${{ matrix.app }}
+          bash apps/build.sh ${{ matrix.app }} "${{ steps.current.outputs.version }}"

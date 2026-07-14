@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 set -e
 
-app="${1:?Usage: build.sh <app>}"
+app="${1:?Usage: build.sh <app> [current_version]}"
+current_version="$2"
 dir="$(cd "$(dirname "$0")" && pwd)/$app"
 
 [ -d "$dir" ] || { echo "App $app not found"; exit 1; }
 [ -f "$dir/Dockerfile" ] || { echo "Dockerfile not found for $app"; exit 1; }
 
 if [ -f "$dir/get_version" ]; then
-  bash "$dir/get_version" > /tmp/version_info
+  bash "$dir/get_version" "$current_version" > /tmp/version_info
   version="$(sed -n '1s/^version=//p' /tmp/version_info)"
   tail -n +3 /tmp/version_info > /tmp/changelog
   [ -z "$version" ] && { echo "Failed to parse version"; exit 1; }
