@@ -27,6 +27,10 @@ jobs:
           printf '%s' "$KEY" > /tmp/gpg.key
           gpg --batch --yes --import /tmp/gpg.key
 
+      - name: Clean old apt metadata
+        run: |
+          rm -rf dists pool
+
       - name: Download all release assets
         env:
           GH_TOKEN: ${{ github.token }}
