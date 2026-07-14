@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+tmp="$(mktemp -d)"
+git clone --depth=50 https://github.com/Zygo/bees.git "$tmp" 2>/dev/null
+cd "$tmp"
+version="$(git describe --always --dirty | sed 's/^[vV]//')"
+echo "version=$version"
+echo "---"
+git log --oneline -20
+rm -rf "$tmp"

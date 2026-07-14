@@ -1,0 +1,67 @@
+name: Check updates
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      app:
+        description: App to build (leave empty for all)
+        required: false
+        type: string
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: list
+        run: |
+          if [ -n "${{ inputs.app }}" ]; then
+            echo "matrix={\"app\":[\"${{ inputs.app }}\"]}" >> "$GITHUB_OUTPUT"
+          else
+            apps=$(ls -d apps/*/ | sed 's|apps/||;s|/||' | jq -R -s -c 'split("\n") | map(select(length > 0))')
+            echo "matrix={\"app\":$apps}" >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    needs: detect
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get current version
+        id: current
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(gh release list --repo ${{ github.repository }} --json tagName --jq '.[].tagName' \
+            | grep "^${{ matrix.app }}-" | sort -V | tail -1)
+          if [ -n "$tag" ]; then
+            echo "version=$(echo "$tag" | sed "s/^${{ matrix.app }}-//")" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check update
+        id: check
+        run: |
+          if [ ! -f apps/${{ matrix.app }}/check_update ]; then
+            echo "No check_update for ${{ matrix.app }}, skipping"
+            echo "update=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if bash apps/${{ matrix.app }}/check_update "${{ steps.current.outputs.version }}"; then
+            echo "update=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "update=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build
+        if: steps.check.outputs.update == 'true'
+        run: |
+          bash apps/build.sh ${{ matrix.app }}
