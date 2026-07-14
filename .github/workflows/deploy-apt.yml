@@ -36,14 +36,10 @@ jobs:
             gh release download "$tag" --repo $GITHUB_REPOSITORY --dir "/tmp/releases/$tag" --pattern '*.deb' 2>/dev/null || true
           done
           mkdir -p pool
-          for tag_dir in /tmp/releases/*/; do
-            [ -d "$tag_dir" ] || continue
-            for distro_dir in "$tag_dir"*/; do
-              [ -d "$distro_dir" ] || continue
-              distro=$(basename "$distro_dir")
-              mkdir -p "pool/$distro/main"
-              cp "$distro_dir"*.deb "pool/$distro/main/" 2>/dev/null || true
-            done
+          find /tmp/releases -name '*.deb' | while read f; do
+            distro=$(basename "$f" .deb | rev | cut -d_ -f2 | rev)
+            mkdir -p "pool/$distro/main"
+            cp "$f" "pool/$distro/main/"
           done
 
       - name: Generate Packages

@@ -38,22 +38,15 @@ deb="$(ls /tmp/deb-out/*.deb 2>/dev/null | head -1)"
 [ -z "$deb" ] && { echo "No .deb produced"; exit 1; }
 
 if [ -n "$GITHUB_ACTIONS" ] && { [ "$GITHUB_REF" = "refs/heads/main" ] || [ "$GITHUB_REF" = "refs/heads/master" ]; }; then
-  tag="$app-$version"
-  asset_name="$distro/$(basename "$deb")"
+  deb_name="$(basename "$deb" | sed "s/_amd64/_${distro}_amd64/")"
+  mv "$deb" "/tmp/$deb_name"
 
   gh release create \
-    "$tag" \
+    "$app-$version" \
+    "/tmp/$deb_name" \
     --title "$app $version" \
     --notes-file /tmp/changelog \
     --repo "$GITHUB_REPOSITORY"
-
-  upload_url=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$tag" --jq '.upload_url' | sed 's/{?name,label}//')
-  encoded=$(printf '%s' "$asset_name" | jq -sRr @uri)
-  curl -s -X POST \
-    -H "Authorization: token $GH_TOKEN" \
-    -H "Content-Type: $(file -b --mime-type "$deb")" \
-    --data-binary @"$deb" \
-    "$upload_url?name=$encoded"
 fi
 
 echo "Done: $app $version"
