@@ -28,6 +28,9 @@ jobs:
 
   build:
     needs: detect
+    concurrency:
+      group: build-${{ matrix.app }}
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     permissions:
       contents: write
