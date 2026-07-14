@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
-tmp="$(mktemp -d)"
-git clone --filter=blob:none https://github.com/Zygo/bees.git "$tmp" 2>/dev/null
-cd "$tmp"
-version="$(git describe --always --dirty | sed -E 's/^[a-zA-Z]//')"
+tag=$(gh api repos/Zygo/bees/tags --jq '.[0].name' 2>/dev/null)
+sha=$(gh api repos/Zygo/bees/commits/HEAD --jq '.sha' 2>/dev/null)
+ahead=$(gh api "repos/Zygo/bees/compare/$tag...HEAD" --jq '.ahead_by' 2>/dev/null)
+version="$(echo "$tag" | sed -E 's/^[a-zA-Z]//')-$ahead-g$(echo "$sha" | cut -c1-7)"
+
 echo "version=$version"
 echo "---"
-git log --oneline -20
-cd / && rm -rf "$tmp"
+gh api "repos/Zygo/bees/commits?sha=HEAD&per_page=20" --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' 2>/dev/null

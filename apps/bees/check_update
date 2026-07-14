@@ -2,10 +2,9 @@
 set -e
 
 current_version="$1"
-tmp="$(mktemp -d)"
-git clone --filter=blob:none https://github.com/Zygo/bees.git "$tmp" 2>/dev/null
-cd "$tmp"
-upstream_version="$(git describe --always --dirty | sed -E 's/^[a-zA-Z]//')"
-cd / && rm -rf "$tmp"
+tag=$(gh api repos/Zygo/bees/tags --jq '.[0].name' 2>/dev/null)
+sha=$(gh api repos/Zygo/bees/commits/HEAD --jq '.sha' 2>/dev/null)
+ahead=$(gh api "repos/Zygo/bees/compare/$tag...HEAD" --jq '.ahead_by' 2>/dev/null)
+upstream_version="$(echo "$tag" | sed -E 's/^[a-zA-Z]//')-$ahead-g$(echo "$sha" | cut -c1-7)"
 
 [ "$upstream_version" != "$current_version" ]
