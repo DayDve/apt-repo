@@ -57,7 +57,8 @@ jobs:
 
       - name: Export public key
         run: |
-          gpg --armor --export daydve@smbit.pro > apt-key.asc
+          KEYID=$(gpg --list-secret-keys --with-colons | grep '^sec:' | head -1 | cut -d: -f5)
+          gpg --armor --export "$KEYID" > apt-key.asc
 
       - name: Push to gh-pages
         run: |
