@@ -38,16 +38,16 @@ deb="$(ls /tmp/deb-out/*.deb 2>/dev/null | head -1)"
 [ -z "$deb" ] && { echo "No .deb produced"; exit 1; }
 
 if [ -n "$GITHUB_ACTIONS" ] && { [ "$GITHUB_REF" = "refs/heads/main" ] || [ "$GITHUB_REF" = "refs/heads/master" ]; }; then
-  release_dir="/tmp/release-assets/$distro"
-  mkdir -p "$release_dir"
-  cp "$deb" "$release_dir/"
+  tag="$app-$version"
+  asset_name="$distro/$(basename "$deb")"
 
   gh release create \
-    "$app-$version" \
-    "$release_dir/$(basename "$deb")" \
+    "$tag" \
     --title "$app $version" \
     --notes-file /tmp/changelog \
     --repo "$GITHUB_REPOSITORY"
+
+  gh release upload "$tag" "$deb" --name "$asset_name" --repo "$GITHUB_REPOSITORY" --clobber
 fi
 
 echo "Done: $app $version"
