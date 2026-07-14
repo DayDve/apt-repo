@@ -31,30 +31,31 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p pool/main
+          mkdir -p pool/noble/main
           gh release list --repo $GITHUB_REPOSITORY --json tagName --jq '.[].tagName' | while read tag; do
-            gh release download "$tag" --repo $GITHUB_REPOSITORY --dir pool/main --pattern '*.deb' 2>/dev/null || true
+            gh release download "$tag" --repo $GITHUB_REPOSITORY --dir pool/noble/main --pattern '*.deb' 2>/dev/null || true
           done
 
       - name: Generate Packages
         run: |
-          mkdir -p dists/stable/main/binary-amd64
-          dpkg-scanpackages --multiversion pool/main > dists/stable/main/binary-amd64/Packages
-          gzip -9kf dists/stable/main/binary-amd64/Packages
+          mkdir -p dists/noble/main/binary-amd64
+          dpkg-scanpackages --multiversion pool/noble/main > dists/noble/main/binary-amd64/Packages
+          gzip -9kf dists/noble/main/binary-amd64/Packages
 
       - name: Generate Release
         run: |
-          apt-ftparchive release -o APT::FTPArchive::Release::Origin="DayDve" \
+          apt-ftparchive release \
+            -o APT::FTPArchive::Release::Origin="DayDve" \
             -o APT::FTPArchive::Release::Label="DayDve apt repo" \
-            -o APT::FTPArchive::Release::Suite="stable" \
-            -o APT::FTPArchive::Release::Codename="stable" \
+            -o APT::FTPArchive::Release::Suite="noble" \
+            -o APT::FTPArchive::Release::Codename="noble" \
             -o APT::FTPArchive::Release::Architectures="amd64" \
             -o APT::FTPArchive::Release::Components="main" \
-            dists/stable > dists/stable/Release
+            dists/noble > dists/noble/Release
 
       - name: Sign Release
         run: |
-          cd dists/stable
+          cd dists/noble
           gpg --batch --yes --detach-sign --armor -o Release.gpg Release
           gpg --batch --yes --clearsign -o InRelease Release
 
