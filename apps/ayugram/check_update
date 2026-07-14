@@ -2,7 +2,7 @@
 set -e
 
 current_version="$1"
-tag=$(gh api repos/AyuGram/AyuGramDesktop/releases --jq '.[0].tag_name' 2>/dev/null || echo "unknown")
-upstream_version="${tag#v}"
+head_sha=$(gh api repos/AyuGram/AyuGramDesktop/commits/dev --jq '.sha' 2>/dev/null || echo "unknown")
+current_sha=$(echo "$current_version" | sed 's/.*-g//')
 
-[ "$upstream_version" != "$current_version" ]
+[ -z "$current_version" ] || [ "$current_sha" != "$head_sha" ]

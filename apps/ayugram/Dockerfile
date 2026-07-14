@@ -6,7 +6,7 @@ RUN yum install -y ccache
 
 WORKDIR /build
 
-RUN git clone --depth 1 --branch "v${APP_VERSION}" \
+RUN git clone --depth 1 --branch dev \
     https://github.com/AyuGram/AyuGramDesktop.git src \
  && cd src \
  && git submodule update --init --recursive --depth 1
