@@ -1,0 +1,36 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Date: Tue, 14 Jul 2026 16:02:52 +0000
+MD5Sum:
+ fc243c91fd138f45035ad96632ca70d7               38 Release
+ f8c26a8144c95ed18837eaa3609fbd85              647 main/binary-amd64/Packages
+ b763f300610c91c639209ac2a73a8652              467 main/binary-amd64/Packages.gz
+SHA1:
+ bd3abf207b729e6b9ecc8e7db8994afd676a4c22               38 Release
+ 0a5da2fab949d9fca1bd48102aa9d90b5f806e10              647 main/binary-amd64/Packages
+ 5911902c7c2ae3cbf03a5f0243eaf1d2216e7f40              467 main/binary-amd64/Packages.gz
+SHA256:
+ 8f308114868e98783779352d8e58c7e3076ccf26aba1b228f8e45bcecbf988b5               38 Release
+ aab185a1f69803a5080a2fb083f42930e9d0d9a158d37cd44cfbbc32efc244a1              647 main/binary-amd64/Packages
+ 2e2e226cafc7f2a89f8ffdefd8f9d60b1cc9e05864fe5cbf5356493a235d8dd0              467 main/binary-amd64/Packages.gz
+SHA512:
+ 3b38a60288755311c0a159fa68b66f9490396cf2008f101ad4008c0b5200e07db21f26ce4f255a238cb18092fa35f6a9ec5b1d5dad08a1923c61b507ea88193a               38 Release
+ 2494c96ee12487b8e56209950ae59ca5d533d6b03b3f42e16a4466a0c4a7d2a3aa26da31d80128ae84bc94f957f7eab1c26002acec3763b9e3e31259e0e9cb02              647 main/binary-amd64/Packages
+ 70968e33fa0da50ac110a0f28468575f3b7f6e239c4f8118196a1e4ff5afd6d105a1df5dd29b59a0630f2dd0fe53db42a16fd79efd7a00029b3ed6799093591f              467 main/binary-amd64/Packages.gz
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmpWXawACgkQorBTLKwl
+HCckoQ/+MOHMgv2/4LD3PQR4s/RdI356uDQ4ouEzv8L2WfkheoTYmF2Cd2kwQKuN
+a0iHnF9QYzv7VepY+OYVbeXaXO+8R4v87Css60R0QyPYXulPzTDXgCFHdZKWAwRA
+K+IjpHfs/t1t4Nb6BxuwW8Zqic0jveLEE/25OB1zeTKSm2NwNSityiOvBadjxzLQ
+EE/0IK1qGNb+9mKU7WSDwowD0WyuCeXtQbAogoAwB8D+QGEgXgM7slerXAQaecYA
+ZHupxbWFkM2ParCwNcZJMwK+hrqnAeNFZi4gJcrtJrUkyVVdVwI+DL85HGirHiPq
+AU3VxMNRH4XsJ8Y1md6J1wxuA8Qg4kVsXq9UOvLtLqhsFWFYOAw3hLqLfCrCHNGb
+YWx2EZP1xDCWOOHLuaZBV0qGuAAIVEqIl0BGI9Mp/wYJFxuBBHjZeopajl5GnkIm
+oGhmXnPvko1gS5dzIPQbLhTXN+N/HHztaF/xGj2GmabibXF8ZC5sZlD2CETzGlYY
+UC2w0DadQa/pQnp28tFicnF9+hbMD/xYVndPUNPPOzJXgBPrRGRSpCPUWPV3Kbvb
+fPVDMymNXw8iuBBTaIxGviKTuWatk//c/rtneXonlkdlWjAsbrQQNAWnI7QCflQg
+UpUpk0r9uyyRzCdIoPRShfcloAs1Wc/y9fo3/foRd9lQI2n26j0=
+=OMl+
+-----END PGP SIGNATURE-----
