@@ -51,6 +51,8 @@ jobs:
 
       - name: Check update
         id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           if [ ! -f apps/${{ matrix.app }}/check_update ]; then
             echo "No check_update for ${{ matrix.app }}, skipping"
