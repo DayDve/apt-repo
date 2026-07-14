@@ -16,7 +16,7 @@ jobs:
     outputs:
       matrix: ${{ steps.list.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - id: list
         run: |
           if [ -n "${{ inputs.app }}" ]; then
@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Get current version
         id: current
@@ -71,3 +71,31 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           bash apps/build.sh ${{ matrix.app }} "${{ steps.current.outputs.version }}"
+
+  deploy:
+    needs: build
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check if any build happened
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          built=$(gh run view ${{ github.run_id }} --repo ${{ github.repository }} --json jobs --jq '
+            [.jobs[] | select(.name | startswith("build (")) | .steps[] | select(.name == "Build" and .conclusion == "success")] | length
+          ')
+          if [ "$built" -gt 0 ]; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Trigger apt repo deploy
+        if: steps.check.outputs.deploy == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run deploy-apt.yml --repo ${{ github.repository }}

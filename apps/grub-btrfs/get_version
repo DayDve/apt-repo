@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -e
+
+current_version="$1"
+
+tag=$(gh api repos/Antynea/grub-btrfs/tags --jq '.[0].name' 2>/dev/null || echo "unknown")
+sha=$(gh api repos/Antynea/grub-btrfs/commits/HEAD --jq '.sha' 2>/dev/null || echo "")
+ahead=$(gh api "repos/Antynea/grub-btrfs/compare/$tag...HEAD" --jq '.ahead_by' 2>/dev/null || echo "0")
+version="$(echo "$tag" | sed -E 's/^[a-zA-Z]//')-$ahead-g$(echo "$sha" | cut -c1-7)"
+
+echo "version=$version"
+echo "---"
+
+if [ -z "$current_version" ]; then
+  gh api repos/Antynea/grub-btrfs/releases --jq '.[0].body // empty' 2>/dev/null
+  exit 0
+fi
+
+current_tag_base="v$(echo "$current_version" | sed -E 's/-[0-9]+-g[0-9a-f]+$//')"
+if [ "$current_tag_base" != "$tag" ]; then
+  gh api repos/Antynea/grub-btrfs/releases --jq '.[0].body // empty' 2>/dev/null
+  exit 0
+fi
+
+old_sha=$(echo "$current_version" | sed 's/.*-g//')
+gh api "repos/Antynea/grub-btrfs/compare/$old_sha...HEAD" --jq '.commits[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' 2>/dev/null

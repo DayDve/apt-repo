@@ -44,6 +44,7 @@ if [ -n "$GITHUB_ACTIONS" ] && { [ "$GITHUB_REF" = "refs/heads/main" ] || [ "$GI
   gh release create \
     "$app-$version" \
     "/tmp/$deb_name" \
+    --draft \
     --title "$app $version" \
     --notes-file /tmp/changelog \
     --repo "$GITHUB_REPOSITORY"
