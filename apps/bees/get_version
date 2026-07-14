@@ -3,26 +3,33 @@ set -e
 
 current_version="$1"
 
-tag=$(gh api repos/Zygo/bees/tags --jq '.[0].name' 2>/dev/null)
-sha=$(gh api repos/Zygo/bees/commits/HEAD --jq '.sha' 2>/dev/null)
-ahead=$(gh api "repos/Zygo/bees/compare/$tag...HEAD" --jq '.ahead_by' 2>/dev/null)
+tag=$(gh api repos/Zygo/bees/tags --jq '.[0].name' 2>/dev/null || echo "unknown")
+sha=$(gh api repos/Zygo/bees/commits/HEAD --jq '.sha' 2>/dev/null || echo "")
+ahead=$(gh api "repos/Zygo/bees/compare/$tag...HEAD" --jq '.ahead_by' 2>/dev/null || echo "0")
 version="$(echo "$tag" | sed -E 's/^[a-zA-Z]//')-$ahead-g$(echo "$sha" | cut -c1-7)"
 
 echo "version=$version"
 echo "---"
 
+tag_message() {
+  ref=$(gh api "repos/Zygo/bees/git/refs/tags/$tag" --jq '.object' 2>/dev/null) || return 1
+  type=$(echo "$ref" | jq -r '.type')
+  [ "$type" = "tag" ] || return 1
+  sha=$(echo "$ref" | jq -r '.sha')
+  gh api "repos/Zygo/bees/git/tags/$sha" --jq '.message' 2>/dev/null || return 1
+}
+
 if [ -z "$current_version" ]; then
-  gh api repos/Zygo/bees/commits?per_page=10 --jq '.[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' 2>/dev/null
+  msg=$(tag_message) && echo "$msg" && exit 0
+  gh api "repos/Zygo/bees/compare/$tag...HEAD" --jq '.commits[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' 2>/dev/null
   exit 0
 fi
 
 current_tag_base="v$(echo "$current_version" | sed -E 's/-[0-9]+-g[0-9a-f]+$//')"
 
-if [ "$current_tag_base" = "$tag" ]; then
-  old_sha=$(echo "$current_version" | sed 's/.*-g//')
-  gh api "repos/Zygo/bees/compare/$old_sha...HEAD" --jq '.commits[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' 2>/dev/null
-else
-  gh release view --repo Zygo/bees "$tag" --json body --jq '.body' 2>/dev/null ||
-  gh api repos/Zygo/bees/releases --jq '.[] | select(.tag_name=="'"$tag"'") | .body' 2>/dev/null ||
-  echo "Release $tag"
+if [ "$current_tag_base" != "$tag" ]; then
+  msg=$(tag_message) && { echo "$msg"; exit 0; }
 fi
+
+old_sha=$(echo "$current_version" | sed 's/.*-g//')
+gh api "repos/Zygo/bees/compare/$old_sha...HEAD" --jq '.commits[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' 2>/dev/null
