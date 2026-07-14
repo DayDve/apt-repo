@@ -7,4 +7,5 @@ sha=$(gh api repos/Zygo/bees/commits/HEAD --jq '.sha' 2>/dev/null || echo "")
 ahead=$(gh api "repos/Zygo/bees/compare/$tag...HEAD" --jq '.ahead_by' 2>/dev/null || echo "0")
 upstream_version="$(echo "$tag" | sed -E 's/^[a-zA-Z]//')-$ahead-g$(echo "$sha" | cut -c1-7)"
 
+echo "check: current=$current_version upstream=$upstream_version" >&2
 [ "$upstream_version" != "$current_version" ]
