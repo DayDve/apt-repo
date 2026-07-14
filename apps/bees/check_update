@@ -3,12 +3,9 @@ set -e
 
 current_version="$1"
 tmp="$(mktemp -d)"
+git clone --filter=blob:none https://github.com/Zygo/bees.git "$tmp" 2>/dev/null
 cd "$tmp"
-git init -q
-git remote add origin https://github.com/Zygo/bees.git
-git fetch --depth=200 --tags -q origin 2>/dev/null
-git checkout -q FETCH_HEAD
-upstream_version="$(git describe --always --dirty | sed 's/^[vV]//')"
+upstream_version="$(git describe --always --dirty | sed -E 's/^[a-zA-Z]//')"
 cd / && rm -rf "$tmp"
 
 [ "$upstream_version" != "$current_version" ]
