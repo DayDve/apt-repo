@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-app="${1:?Usage: build.sh <app> [current_version]}"
+app="${1:?Usage: build.sh <app> [current_version] [distro]}"
 current_version="$2"
+distro="${3:-noble}"
 dir="$(cd "$(dirname "$0")" && pwd)/$app"
 
 [ -d "$dir" ] || { echo "App $app not found"; exit 1; }
@@ -37,9 +38,13 @@ deb="$(ls /tmp/deb-out/*.deb 2>/dev/null | head -1)"
 [ -z "$deb" ] && { echo "No .deb produced"; exit 1; }
 
 if [ -n "$GITHUB_ACTIONS" ] && { [ "$GITHUB_REF" = "refs/heads/main" ] || [ "$GITHUB_REF" = "refs/heads/master" ]; }; then
+  release_dir="/tmp/release-assets/$distro"
+  mkdir -p "$release_dir"
+  cp "$deb" "$release_dir/"
+
   gh release create \
     "$app-$version" \
-    "$deb" \
+    "$release_dir/$(basename "$deb")" \
     --title "$app $version" \
     --notes-file /tmp/changelog \
     --repo "$GITHUB_REPOSITORY"

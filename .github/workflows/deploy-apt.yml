@@ -31,33 +31,57 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p pool/noble/main
+          mkdir -p /tmp/releases
           gh release list --repo $GITHUB_REPOSITORY --json tagName --jq '.[].tagName' | while read tag; do
-            gh release download "$tag" --repo $GITHUB_REPOSITORY --dir pool/noble/main --pattern '*.deb' 2>/dev/null || true
+            gh release download "$tag" --repo $GITHUB_REPOSITORY --dir "/tmp/releases/$tag" --pattern '*.deb' 2>/dev/null || true
+          done
+          mkdir -p pool
+          for tag_dir in /tmp/releases/*/; do
+            [ -d "$tag_dir" ] || continue
+            for distro_dir in "$tag_dir"*/; do
+              [ -d "$distro_dir" ] || continue
+              distro=$(basename "$distro_dir")
+              mkdir -p "pool/$distro/main"
+              cp "$distro_dir"*.deb "pool/$distro/main/" 2>/dev/null || true
+            done
           done
 
       - name: Generate Packages
         run: |
-          mkdir -p dists/noble/main/binary-amd64
-          dpkg-scanpackages --multiversion pool/noble/main > dists/noble/main/binary-amd64/Packages
-          gzip -9kf dists/noble/main/binary-amd64/Packages
+          for distro in pool/*/; do
+            [ -d "$distro" ] || continue
+            distro=$(basename "$distro")
+            [ -z "$(ls "pool/$distro/main/"*.deb 2>/dev/null)" ] && continue
+            mkdir -p "dists/$distro/main/binary-amd64"
+            dpkg-scanpackages --multiversion "pool/$distro/main" > "dists/$distro/main/binary-amd64/Packages"
+            gzip -9kf "dists/$distro/main/binary-amd64/Packages"
+          done
 
       - name: Generate Release
         run: |
-          apt-ftparchive release \
-            -o APT::FTPArchive::Release::Origin="DayDve" \
-            -o APT::FTPArchive::Release::Label="DayDve apt repo" \
-            -o APT::FTPArchive::Release::Suite="noble" \
-            -o APT::FTPArchive::Release::Codename="noble" \
-            -o APT::FTPArchive::Release::Architectures="amd64" \
-            -o APT::FTPArchive::Release::Components="main" \
-            dists/noble > dists/noble/Release
+          for distro in dists/*/; do
+            [ -d "$distro" ] || continue
+            distro=$(basename "$distro")
+            apt-ftparchive release \
+              -o APT::FTPArchive::Release::Origin="DayDve" \
+              -o APT::FTPArchive::Release::Label="DayDve apt repo" \
+              -o "APT::FTPArchive::Release::Suite=$distro" \
+              -o "APT::FTPArchive::Release::Codename=$distro" \
+              -o "APT::FTPArchive::Release::Architectures=amd64" \
+              -o "APT::FTPArchive::Release::Components=main" \
+              "dists/$distro" > "dists/$distro/Release"
+          done
 
       - name: Sign Release
         run: |
-          cd dists/noble
-          gpg --batch --yes --detach-sign --armor -o Release.gpg Release
-          gpg --batch --yes --clearsign -o InRelease Release
+          for distro in dists/*/; do
+            [ -d "$distro" ] || continue
+            distro=$(basename "$distro")
+            pushd "dists/$distro"
+            gpg --batch --yes --detach-sign --armor -o Release.gpg Release
+            gpg --batch --yes --clearsign -o InRelease Release
+            popd
+          done
 
       - name: Export public key
         run: |
