@@ -48,11 +48,12 @@ if [ -n "$GITHUB_ACTIONS" ] && { [ "$GITHUB_REF" = "refs/heads/main" ] || [ "$GI
     --repo "$GITHUB_REPOSITORY"
 
   upload_url=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$tag" --jq '.upload_url' | sed 's/{?name,label}//')
+  encoded=$(printf '%s' "$asset_name" | jq -sRr @uri)
   curl -s -X POST \
     -H "Authorization: token $GH_TOKEN" \
     -H "Content-Type: $(file -b --mime-type "$deb")" \
     --data-binary @"$deb" \
-    "$upload_url?name=$asset_name"
+    "$upload_url?name=$encoded"
 fi
 
 echo "Done: $app $version"
