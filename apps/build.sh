@@ -27,6 +27,8 @@ DEBEMAIL="${DEBEMAIL:-$GITHUB_REPOSITORY_OWNER@users.noreply.github.com}"
 
 docker buildx build \
   --output type=local,dest=/tmp/deb-out \
+  --cache-from type=gha \
+  --cache-to type=gha,mode=max \
   --build-arg "DEBFULLNAME=$DEBFULLNAME" \
   --build-arg "DEBEMAIL=$DEBEMAIL" \
   -f "$dir/Dockerfile" "$dir"
