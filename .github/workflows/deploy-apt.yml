@@ -55,6 +55,10 @@ jobs:
           gpg --batch --yes --clearsign -o InRelease Release
           cd ../..
 
+      - name: Export public key
+        run: |
+          gpg --armor --export daydve@smbit.pro > apt-key.asc
+
       - name: Push to gh-pages
         run: |
           git config user.name "github-actions"
