@@ -3,7 +3,6 @@
 [![Check updates](https://github.com/DayDve/apt-repo/actions/workflows/check-updates.yml/badge.svg)](https://github.com/DayDve/apt-repo/actions/workflows/check-updates.yml)
 [![Deploy apt](https://github.com/DayDve/apt-repo/actions/workflows/deploy-apt.yml/badge.svg)](https://github.com/DayDve/apt-repo/actions/workflows/deploy-apt.yml)
 [![GitHub last commit](https://img.shields.io/github/last-commit/DayDve/apt-repo)](https://github.com/DayDve/apt-repo)
-[![GitHub release](https://img.shields.io/github/v/release/DayDve/apt-repo?include_prereleases&label=latest)](https://github.com/DayDve/apt-repo/releases)
 
 Personal APT repository for software that isn't in standard Ubuntu/Debian repos — either too niche, too new, or requires special build machinery. Every package is rebuilt from source (or repackaged) by CI on every upstream update and published as a `.deb`.
 
