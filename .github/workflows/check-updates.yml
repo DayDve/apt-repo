@@ -29,6 +29,8 @@ jobs:
   build:
     needs: detect
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     strategy:
       matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
     steps:
