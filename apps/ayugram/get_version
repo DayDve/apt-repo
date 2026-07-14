@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+
+current_version="$1"
+
+release=$(gh api repos/AyuGram/AyuGramDesktop/releases --jq '.[0]')
+tag=$(echo "$release" | jq -r '.tag_name')
+version="${tag#v}"
+body=$(echo "$release" | jq -r '.body')
+
+echo "version=$version"
+echo "---"
+echo "$body"

@@ -32,6 +32,7 @@ docker buildx build \
   --cache-to type=gha,mode=max \
   --build-arg "DEBFULLNAME=$DEBFULLNAME" \
   --build-arg "DEBEMAIL=$DEBEMAIL" \
+  --build-arg "APP_VERSION=$version" \
   -f "$dir/Dockerfile" "$dir"
 
 deb="$(ls /tmp/deb-out/*.deb 2>/dev/null | head -1)"
