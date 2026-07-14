@@ -44,6 +44,25 @@ jobs:
             cp "$f" "pool/$distro/main/"
           done
 
+      - name: Keep last 3 versions per package
+        run: |
+          for distro in pool/*/; do
+            [ -d "$distro" ] || continue
+            distro=$(basename "$distro")
+            for pkg in $(ls "pool/$distro/main/"*.deb 2>/dev/null | sed 's/.*\///; s/_.*//' | sort -u); do
+              list=$(ls "pool/$distro/main/${pkg}"_*.deb 2>/dev/null)
+              sorted=$(echo "$list" | while read f; do
+                ver=$(basename "$f" .deb | awk -F_ '{print $2}')
+                echo "$ver $f"
+              done | sort -V | awk '{print $2}')
+              count=$(echo "$sorted" | wc -l)
+              [ "$count" -le 3 ] && continue
+              echo "$sorted" | head -n $((count - 3)) | while read old; do
+                rm -v "$old"
+              done
+            done
+          done
+
       - name: Generate Packages
         run: |
           for distro in pool/*/; do
