@@ -47,7 +47,12 @@ if [ -n "$GITHUB_ACTIONS" ] && { [ "$GITHUB_REF" = "refs/heads/main" ] || [ "$GI
     --notes-file /tmp/changelog \
     --repo "$GITHUB_REPOSITORY"
 
-  gh release upload "$tag" "$deb" --name "$asset_name" --repo "$GITHUB_REPOSITORY" --clobber
+  upload_url=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$tag" --jq '.upload_url' | sed 's/{?name,label}//')
+  curl -s -X POST \
+    -H "Authorization: token $GH_TOKEN" \
+    -H "Content-Type: $(file -b --mime-type "$deb")" \
+    --data-binary @"$deb" \
+    "$upload_url?name=$asset_name"
 fi
 
 echo "Done: $app $version"
