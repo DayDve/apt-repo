@@ -155,6 +155,7 @@ td a:hover{text-decoration:underline}
 /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/
                  by DayDve|_|        </pre>
 <p class="center">Personal APT repository with software unavailable or outdated in standard repos<span class="sr-only">${pkgNames}.</span></p>
+<p class="center" style="color:#8b949e;font-size:.85rem">Built for personal use</p>
 
 <h2>Setup</h2>
 <div class="code-header"><button class="copy-btn" onclick="copy(this)">Copy</button></div>
