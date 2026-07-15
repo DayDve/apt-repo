@@ -84,30 +84,26 @@ jobs:
           done < /tmp/tag-map
           echo '}' >> "$GITHUB_WORKSPACE/pool-map.json"
 
-      - name: Get source URLs from package files
+      - name: Get package info from master
         run: |
           git fetch origin master
           for app in $(git ls-tree --name-only origin/master:apps/ | grep -v '^template$'); do
-            url=$(git show "origin/master:apps/$app/package" | awk -F'"' '/^SOURCE_URL=/{print $2}')
-            [ -n "$url" ] && echo "$app|$url"
-          done > /tmp/source-urls
+            pkg_file="origin/master:apps/$app/package"
+            url=$(git show "$pkg_file" | awk -F'"' '/^SOURCE_URL=/{print $2}')
+            desc=$(git show "$pkg_file" | awk -F'"' '/^DESCRIPTION=/{print $2}')
+            [ -n "$url" ] && echo "$app|$url|$desc"
+          done > /tmp/pkg-info
 
       - name: Generate packages.json
         run: |
           echo -n '[' > "$GITHUB_WORKSPACE/packages.json"
           first=true
           while IFS='|' read -r distro deb_name tag; do
-            usc=$(echo "$deb_name" | tr -cd '_' | wc -c)
-            if [ "$usc" -ge 1 ]; then
-              app=$(echo "$deb_name" | cut -d_ -f1)
-            else
-              app=$(echo "$deb_name" | sed 's/\.deb$//')
-            fi
-            desc=$(dpkg-deb -f "/tmp/pool/$distro/main/$deb_name" Description 2>/dev/null | head -1 || echo "")
-            source_url=$(awk -F'|' -v a="$app" '$1==a{print $2}' /tmp/source-urls)
-            if [ -z "$source_url" ]; then
-              tag_app=$(echo "$tag" | sed -E 's/-[0-9].*//')
-              source_url=$(awk -F'|' -v a="$tag_app" '$1==a{print $2}' /tmp/source-urls)
+            app=$(echo "$tag" | sed -E 's/-[0-9].*//')
+            source_url=$(awk -F'|' -v a="$app" '$1==a{print $2}' /tmp/pkg-info)
+            desc=$(awk -F'|' -v a="$app" '$1==a{print $3}' /tmp/pkg-info)
+            if [ -z "$desc" ]; then
+              desc=$(dpkg-deb -f "/tmp/pool/$distro/main/$deb_name" Description 2>/dev/null | head -1 || echo "")
             fi
             $first || echo -n ',' >> "$GITHUB_WORKSPACE/packages.json"
             first=false
