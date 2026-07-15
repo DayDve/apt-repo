@@ -136,7 +136,7 @@ async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css" crossorigin="anonymous">
 <style>
 *{box-sizing:border-box}
-body{font-family:'Courier New',Courier,monospace;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6;color:#e6edf3;background:#0d1117}
+body{font-family:'Courier New',Courier,monospace;max-width:1000px;margin:0 auto;padding:2rem;line-height:1.6;color:#e6edf3;background:#0d1117}
 a{color:#58a6ff}
 pre{background:#161b22;padding:1rem;overflow-x:auto;font-size:.85rem;margin:0;border:0!important}
 pre code{background:0 0;padding:0;border:0!important}
