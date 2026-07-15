@@ -13,12 +13,7 @@
 # You own these functions completely. Fetch version/changelog
 # from wherever you want — GitHub API, web scraping, RSS, etc.
 #
-# Generic helpers provided by build.sh:
-#   web_get <url>          — curl -fsSL wrapper, outputs body
-#   web_get_headers <url>  — curl -fsSLI wrapper, outputs headers
-#   web_grep <url> <regex> — fetch + grep -oP, returns first match
-#
-# GitHub-specific helpers (require gh CLI + GH_TOKEN):
+# GitHub helpers (require gh CLI + GH_TOKEN):
 #   gh_tag_ahead <owner/repo>
 #     Sets: LATEST_TAG, HEAD_SHA, AHEAD_COUNT
 #   gh_latest_release <owner/repo>
@@ -77,17 +72,17 @@ SOURCE_URL="https://example.com/OWNER/REPO"
 # --- Example C: web scraping (rdm) ---
 # check_update() {
 #   local current="${1:-}" url version
-#   url=$(web_get https://example.com/download/ | grep -oP 'pattern' | head -1)
+#   url=$(curl -s https://example.com/download/ | grep -oP 'pattern' | head -1)
 #   version=$(grep -oP '\d[\d.]*' <<<"$url")
 #   [ "$version" != "$current" ]
 # }
 # get_version() {
 #   local current="${1:-}" url version
-#   url=$(web_get https://example.com/download/ | grep -oP 'pattern' | head -1)
+#   url=$(curl -s https://example.com/download/ | grep -oP 'pattern' | head -1)
 #   version=$(grep -oP '\d[\d.]*' <<<"$url")
 #   echo "version=$version"
 #   echo "source=$SOURCE_URL"
 #   echo "---"
-#   web_get https://example.com/changelog \
+#   curl -s https://example.com/changelog \
 #     | sed -n "/$version/,/^[0-9]/p"
 # }

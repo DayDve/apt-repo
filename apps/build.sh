@@ -59,27 +59,6 @@ gh_release_body_by_tag() {
   gh api "repos/$repo/releases" --jq ".[] | select(.tag_name == \"$tag\") | .body // empty" 2>/dev/null || true
 }
 
-# web_get: Fetch a URL with common options
-# Usage: web_get <url>
-# Outputs response body to stdout
-web_get() {
-  curl -fsSL "$1" 2>/dev/null || return 1
-}
-
-# web_get_headers: Fetch only HTTP headers
-# Usage: web_get_headers <url>
-# Outputs headers to stdout
-web_get_headers() {
-  curl -fsSLI "$1" 2>/dev/null || return 1
-}
-
-# web_grep: Fetch a URL and extract first match by regex
-# Usage: web_grep <url> <regex>
-# Outputs the first matching line
-web_grep() {
-  curl -fsSL "$1" 2>/dev/null | grep -oP "$2" | head -1 || return 1
-}
-
 # ============================================================
 # Main logic (skipped when sourced — e.g. from check-updates.yml)
 # ============================================================
