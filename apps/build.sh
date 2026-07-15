@@ -119,10 +119,12 @@ if [ -n "$GITHUB_ACTIONS" ] && { [ "$GITHUB_REF" = "refs/heads/main" ] || [ "$GI
     "$app-$version" \
     "/tmp/$deb_name" \
     "/tmp/meta-$app.json" \
-    --draft \
     --title "$app $version" \
     --notes-file /tmp/changelog \
     --repo "$GITHUB_REPOSITORY"
+
+  gh release delete-asset "$app-$version" "$app-$version.tar.gz" --repo "$GITHUB_REPOSITORY" --yes 2>/dev/null || true
+  gh release delete-asset "$app-$version" "$app-$version.zip" --repo "$GITHUB_REPOSITORY" --yes 2>/dev/null || true
 fi
 
 echo "Done: $app $version"
