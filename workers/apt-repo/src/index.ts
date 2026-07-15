@@ -86,10 +86,10 @@ function serveText(): Response {
     '#                                                                             #',
     '#                   Personal APT repository for software                      #',
     '#                        unavailable or outdated in                           #',
-    '#                       standard Ubuntu/Debian repos                          #',
+'# standard Ubuntu/Debian repos                          #',
     '#                                                                             #',
-    '# Just add the repository to your APT sources:                                #',
     '###############################################################################',
+    '# Just add the repository to your APT sources:                                #',
     '',
     'sudo curl -fsSL https://apt.smbit.pro/apt-key.asc \\',
     '  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\',
@@ -164,7 +164,7 @@ td a:hover{text-decoration:underline}
 #                                                                             #
 #                   Personal APT repository for software                      #
 #                        unavailable or outdated in                           #
-# standard Ubuntu/Debian repos                          #
+#                       standard Ubuntu/Debian repos                          #
 #                                                                             #
 ############################################################################### 
 </div></div>
