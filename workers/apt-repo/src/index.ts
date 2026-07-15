@@ -89,7 +89,7 @@ function serveText(): Response {
     'sudo curl -fsSL https://apt.smbit.pro/apt-key.asc \\',
     '  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\',
     'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\',
-    '  https://apt.smbit.pro $(lsb_release -cs) main" \\',
+    '  https://apt.smbit.pro noble main" \\',
     '  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\',
     'sudo apt update',
     '',
@@ -151,9 +151,13 @@ td a:hover{text-decoration:underline}
 <pre><code class="language-bash">sudo curl -fsSL ${url.origin}/apt-key.asc \\
   -o /etc/apt/keyrings/daydve-apt-repo.asc && \\
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\
-  ${url.origin} \$(lsb_release -cs) main" \\
+  ${url.origin} noble main" \\
   | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\
 sudo apt update</code></pre>
+
+<h2>Quick install</h2>
+<div class="code-header"><button class="copy-btn" onclick="copy(this)">Copy</button></div>
+<pre><code class="language-bash">curl -sL ${url.origin} | sudo bash</code></pre>
 
 <h2>Available packages</h2>
 <table>
