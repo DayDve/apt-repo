@@ -88,7 +88,6 @@ function serveText(): Response {
     '#                        unavailable or outdated in                           #',
     '#                       standard Ubuntu/Debian repos                          #',
     '#                                                                             #',
-    '###############################################################################',
     '# Just add the repository to your APT sources:                                #',
     '###############################################################################',
     '',
@@ -120,51 +119,42 @@ async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
     rows = '<tr><td colspan="2">Failed to load package list</td></tr>';
   }
 
+  const pkgNames = pkgs ? pkgs.map(p => p.name).join(', ') : 'ayugram, bees, grub-btrfs, keyd, rclone, rdm, wps-office';
+
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DayDve APT Repository</title>
-<meta name="description" content="Personal APT repository for Ubuntu with packages unavailable in standard repos.">
+<title>DayDve APT Repository — ${pkgNames}</title>
+<meta name="description" content="Personal APT repository for Ubuntu with packages unavailable in standard repos: ${pkgNames}. Install via apt.smbit.pro.">
+<meta name="keywords" content="APT, repository, Ubuntu, noble, ${pkgNames}">
+<meta property="og:title" content="DayDve APT Repository">
+<meta property="og:description" content="Personal APT repository for Ubuntu with: ${pkgNames}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="${url.origin}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css" crossorigin="anonymous">
 <style>
 *{box-sizing:border-box}
-body{
-  font-family:'Courier New',Courier,monospace;
-  max-width:820px;
-  margin:0 auto;
-  padding:2rem 1.2rem;
-  line-height:1.6;
-  color:#c9d1d9;
-  background:#0d1117;
-  font-size:14px;
-}
-a{color:#58a6ff;text-decoration:none}
-a:hover{text-decoration:underline}
-pre{margin:0;border-radius:6px;overflow-x:auto}
-table{width:100%;border-collapse:collapse;margin-top:.5rem}
-th{text-align:left;color:#8b949e;font-weight:400;font-size:12px;text-transform:uppercase;padding:.3rem 0;border-bottom:1px solid #21262d}
-td{padding:.5rem 0;border-bottom:1px solid #161b22}
-td:first-child{white-space:nowrap;width:220px}
-.code-wrap{position:relative;margin-bottom:1rem}
-.code-wrap:hover .copy-btn{opacity:1}
-.copy-btn{
-  position:absolute;top:4px;right:8px;
-  background:#21262d;border:1px solid #30363d;
-  color:#8b949e;cursor:pointer;
-  font-family:'Courier New',monospace;font-size:11px;
-  border-radius:4px;padding:2px 8px;opacity:0;transition:opacity .15s
-}
-.copy-btn:hover{color:#c9d1d9;border-color:#484f58}
-.copy-btn.done{color:#3fb950;border-color:#3fb950}
-.banner{color:#484f58;white-space:pre;line-height:1.15;margin-bottom:1.5rem;font-size:12px}
-h2{color:#e6edf3;font-size:15px;font-weight:400;margin:2rem 0 .5rem}
-.footer{text-align:center;color:#484f58;margin-top:2rem;font-size:12px}
+body{font-family:'Courier New',Courier,monospace;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6;color:#e6edf3;background:#0d1117}
+a{color:#58a6ff}
+pre{background:#161b22;padding:1rem;overflow-x:auto;font-size:.85rem;margin:0;border:0!important}
+pre code{background:0 0;padding:0;border:0!important}
+table{border-collapse:collapse;width:100%}
+th,td{text-align:left;padding:.5rem;border-bottom:1px solid #333}
+td a{text-decoration:none;color:#58a6ff}
+td a:hover{text-decoration:underline}
+.code-wrap{position:relative}
+.copy-btn{position:absolute;top:4px;right:4px;background:none;border:none;cursor:pointer;color:#555;padding:4px;line-height:0}
+.copy-btn:hover{color:#8b949e}
+.copy-btn.copied svg{stroke:#3fb950}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.center{text-align:center}
 </style>
 </head>
 <body>
-<div class="banner">
+<h1 class="sr-only">DayDve APT Repository — ${pkgNames}</h1>
+<div class="center"><div style="white-space:pre;line-height:1.2">
 ###############################################################################
 #                     _   ___ _____   ___                                     #
 #                    /_\\ | _ \\_   _| | _ \\___ _ __  ___                       #
@@ -175,10 +165,10 @@ h2{color:#e6edf3;font-size:15px;font-weight:400;margin:2rem 0 .5rem}
 #                   Personal APT repository for software                      #
 #                        unavailable or outdated in                           #
 #                       standard Ubuntu/Debian repos                          #
-###############################################################################
+#                                                                             #
 # Just add the repository to your APT sources:                                #
 ############################################################################### 
-</div>
+</div></div>
 
 <h2>Setup</h2>
 <div class="code-wrap">
@@ -188,36 +178,43 @@ echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\
   ${url.origin} noble main" \\
   | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\
 sudo apt update</code></pre>
-<button class="copy-btn" onclick="copy(this)">copy</button>
+<button class="copy-btn" onclick="copy(this)" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
 </div>
 
 <h2>Quick install</h2>
 <div class="code-wrap">
 <pre><code class="language-bash">curl -sL ${url.origin} | bash</code></pre>
-<button class="copy-btn" onclick="copy(this)">copy</button>
+<button class="copy-btn" onclick="copy(this)" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
 </div>
 
-<h2>Packages</h2>
+<h2>Available packages</h2>
 <table>
-<tr><th>Name</th><th>Description</th></tr>
+<tr><th>Package</th><th>Description</th></tr>
 ${rows}
 </table>
 
-<div class="footer">
-  <a href="https://github.com/${REPO}"><img src="https://img.shields.io/badge/GitHub-${REPO.replace('/', '%2F')}-181717?logo=github" alt="GitHub"></a>
-  <br>Built for personal use.</div>
+<p class="center"><a href="https://github.com/${REPO}"><img src="https://img.shields.io/badge/GitHub-DayDve%2Fapt--repo-181717?logo=github" alt="GitHub Repository"></a></p>
+<p class="center" style="color:#8b949e;font-size:.85rem">Built for personal use</p>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" crossorigin="anonymous"></script>
-<script>
-hljs.highlightAll();
-function copy(btn){
-  let t=btn.parentElement.querySelector('pre').textContent;
-  navigator.clipboard.writeText(t).then(()=>{
-    btn.textContent='done';btn.classList.add('done');
-    setTimeout(()=>{btn.textContent='copy';btn.classList.remove('done')},1500);
-  }).catch(()=>{});
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "DayDve APT Repository",
+  "description": "Personal APT repository for Ubuntu Noble with: ${pkgNames}",
+  "url": "${url.origin}",
+  "about": {
+    "@type": "SoftwareSourceCode",
+    "programmingLanguage": "deb",
+    "operatingSystem": "Linux",
+    "softwareVersion": "noble"
+  }
 }
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" crossorigin="anonymous"></script>
+<script>hljs.highlightAll();
+function copy(b){let c=b.parentElement.querySelector('code');navigator.clipboard.writeText(c.textContent).then(()=>{b.classList.add('copied');setTimeout(()=>{b.classList.remove('copied')},2000)}).catch(()=>{})}</script>
 </body>
 </html>`;
   return new Response(html, {
