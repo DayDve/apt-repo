@@ -94,21 +94,22 @@ async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>DayDve APT Repository</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css" crossorigin="anonymous">
 <style>
 *{box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6;color:#1f2328}
-h1{border-bottom:1px solid #d0d7de;padding-bottom:.5rem}
-pre{background:#f6f8fa;padding:1rem;border-radius:6px;overflow-x:auto;position:relative;border:1px solid #d0d7de;font-size:.85rem;margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6;color:#e6edf3;background:#0d1117}
+h1{border-bottom:1px solid #30363d;padding-bottom:.5rem}
+a{color:#58a6ff}
+pre{background:#161b22;padding:1rem;border-radius:6px;overflow-x:auto;position:relative;border:1px solid #30363d;font-size:.85rem;margin:0}
 pre code{background:0 0;padding:0;border-radius:0}
 table{border-collapse:collapse;width:100%}
-th,td{text-align:left;padding:.5rem;border-bottom:1px solid #d0d7de}
-td a{text-decoration:none;color:#0969da}
+th,td{text-align:left;padding:.5rem;border-bottom:1px solid #30363d}
+td a{text-decoration:none;color:#58a6ff}
 td a:hover{text-decoration:underline}
 .code-header{display:flex;justify-content:flex-end;margin-bottom:0}
-.copy-btn{font-size:.75rem;padding:.2rem .6rem;border:1px solid #d0d7de;border-radius:4px;background:#f6f8fa;cursor:pointer;color:#656d76;font-family:inherit}
-.copy-btn:hover{background:#eaeef2}
-.copy-btn.copied{color:#1a7f37;border-color:#1a7f37}
+.copy-btn{font-size:.75rem;padding:.2rem .6rem;border:1px solid #30363d;border-radius:4px;background:#21262d;cursor:pointer;color:#8b949e;font-family:inherit}
+.copy-btn:hover{background:#30363d}
+.copy-btn.copied{color:#3fb950;border-color:#3fb950}
 </style>
 </head>
 <body>
@@ -117,11 +118,11 @@ td a:hover{text-decoration:underline}
 
 <h2>Setup</h2>
 <div class="code-header"><button class="copy-btn" onclick="copy(this)">Copy</button></div>
-<pre><code class="language-bash">sudo curl -fsSL ${url.origin}/apt-key.asc \
-  -o /etc/apt/keyrings/daydve-apt-repo.asc && \
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \
-  ${url.origin} \$(lsb_release -cs) main" \
-  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \
+<pre><code class="language-bash">sudo curl -fsSL ${url.origin}/apt-key.asc \\
+  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\
+  ${url.origin} \$(lsb_release -cs) main" \\
+  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\
 sudo apt update</code></pre>
 
 <h2>Available packages</h2>
