@@ -1,36 +1,36 @@
 [{
   "name": "ayugram",
-  "description": "AyuGram Desktop",
+  "description": "Telegram client with enhanced features",
   "source": "https://github.com/AyuGram/AyuGramDesktop"
 }
 ,{
   "name": "bees",
-  "description": "Btrfs deduplication daemon",
+  "description": "btrfs deduplication daemon",
   "source": "https://github.com/Zygo/bees"
 }
 ,{
   "name": "grub-btrfs",
-  "description": "Grub btrfs snapshot boot manager.",
+  "description": "GRUB menu entries for btrfs snapshots",
   "source": "https://github.com/Antynea/grub-btrfs"
 }
 ,{
   "name": "keyd",
-  "description": "A key remapping daemon for linux.",
+  "description": "Key remapping daemon",
   "source": "https://github.com/rvaiya/keyd"
 }
 ,{
   "name": "rclone",
-  "description": "Rclone - \"rsync for cloud storage\"",
+  "description": "rsync for cloud storage",
   "source": "https://github.com/rclone/rclone"
 }
 ,{
-  "name": "rdm",
-  "description": "Centralize, Manage and Secure Remote Connections",
+  "name": "remotedesktopmanager",
+  "description": "One application for every remote connection you'll ever open",
   "source": "https://devolutions.net/remote-desktop-manager/"
 }
 ,{
   "name": "wps-office",
-  "description": "WPS Office, is an office productivity suite.",
+  "description": "WPS Office repack with patches",
   "source": "https://github.com/Rongronggg9/wps-office-repack"
 }
 ]
