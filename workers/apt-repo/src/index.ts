@@ -153,7 +153,7 @@ td a:hover{text-decoration:underline}
 | |) / _\` | || | |) \\ V / -_)  / _ \\|  _/ | |   |   / -_) '_ \\/ _ \\
 |___/\\__,_|\\_, |___/ \\_/\\___| /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/
            |__/                                         |_|        </pre>
-<p>Personal APT repository for Ubuntu Noble with software unavailable or outdated in standard repos.</p>
+<p>Personal APT repository for Ubuntu Noble with software unavailable or outdated in standard repos<span class="sr-only">: ${pkgNames}.</span></p>
 
 <h2>Setup</h2>
 <div class="code-header"><button class="copy-btn" onclick="copy(this)">Copy</button></div>
