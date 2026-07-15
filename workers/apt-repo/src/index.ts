@@ -136,8 +136,8 @@ async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
 *{box-sizing:border-box}
 body{font-family:'Courier New',Courier,monospace;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6;color:#e6edf3;background:#0d1117}
 a{color:#58a6ff}
-pre{background:#161b22;padding:1rem;overflow-x:auto;font-size:.85rem;margin:0}
-pre code{background:0 0;padding:0}
+pre{background:#161b22;padding:1rem;overflow-x:auto;font-size:.85rem;margin:0;border:0}
+pre code{background:0 0;padding:0;border:0}
 table{border-collapse:collapse;width:100%}
 th,td{text-align:left;padding:.5rem;border-bottom:1px solid #333}
 td a{text-decoration:none;color:#58a6ff}
