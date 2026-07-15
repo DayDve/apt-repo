@@ -131,29 +131,26 @@ async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
 <meta property="og:description" content="Personal APT repository for Ubuntu with: ${pkgNames}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${url.origin}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css" crossorigin="anonymous">
 <style>
 *{box-sizing:border-box}
 body{font-family:'Courier New',Courier,monospace;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6;color:#e6edf3;background:#0d1117}
 a{color:#58a6ff}
-pre{background:#161b22;padding:1rem;border-radius:6px;overflow-x:auto;position:relative;border:1px solid #30363d;font-size:.85rem;margin:0}
-pre code{background:0 0;padding:0;border-radius:0}
-pre.banner{text-align:center;background:none;border:none;padding:0;display:inline-block;font-size:.8rem;line-height:1.2}
+pre{background:#161b22;padding:1rem;overflow-x:auto;border:1px solid #333;font-size:.85rem;margin:0}
 table{border-collapse:collapse;width:100%}
-th,td{text-align:left;padding:.5rem;border-bottom:1px solid #30363d}
+th,td{text-align:left;padding:.5rem;border-bottom:1px solid #333}
 td a{text-decoration:none;color:#58a6ff}
 td a:hover{text-decoration:underline}
-.code-header{display:flex;justify-content:flex-end;margin-bottom:0}
-.copy-btn{font-size:.75rem;padding:.2rem .6rem;border:1px solid #30363d;border-radius:4px;background:#21262d;cursor:pointer;color:#8b949e;font-family:'Courier New',Courier,monospace}
-.copy-btn:hover{background:#30363d}
-.copy-btn.copied{color:#3fb950;border-color:#3fb950}
+.code-wrap{position:relative}
+.copy-btn{position:absolute;top:4px;right:4px;background:none;border:none;cursor:pointer;color:#555;padding:4px;line-height:0}
+.copy-btn:hover{color:#8b949e}
+.copy-btn.copied svg{stroke:#3fb950}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 .center{text-align:center}
 </style>
 </head>
 <body>
 <h1 class="sr-only">DayDve APT Repository — ${pkgNames}</h1>
-<div class="center"><pre class="banner">
+<div class="center"><div class="banner" style="white-space:pre">
 ###############################################################################
 #                     _   ___ _____   ___                                     #
 #                    /_\\ | _ \\_   _| | _ \\___ _ __  ___                       #
@@ -167,22 +164,24 @@ td a:hover{text-decoration:underline}
 #                                                                             #
 # Just add the repository to your APT sources:                                #
 ############################################################################### 
-</pre></div>
-<p class="center">Personal APT repository with software unavailable or outdated in standard repos<span class="sr-only">${pkgNames}.</span></p>
-
+</div></div>
 
 <h2>Setup</h2>
-<div class="code-header"><button class="copy-btn" onclick="copy(this)">Copy</button></div>
-<pre><code class="language-bash">sudo curl -fsSL ${url.origin}/apt-key.asc \\
+<div class="code-wrap">
+<pre><code>sudo curl -fsSL ${url.origin}/apt-key.asc \\
   -o /etc/apt/keyrings/daydve-apt-repo.asc && \\
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\
   ${url.origin} noble main" \\
   | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\
 sudo apt update</code></pre>
+<button class="copy-btn" onclick="copy(this)" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+</div>
 
 <h2>Quick install</h2>
-<div class="code-header"><button class="copy-btn" onclick="copy(this)">Copy</button></div>
-<pre><code class="language-bash">curl -sL ${url.origin} | bash</code></pre>
+<div class="code-wrap">
+<pre><code>curl -sL ${url.origin} | bash</code></pre>
+<button class="copy-btn" onclick="copy(this)" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+</div>
 
 <h2>Available packages</h2>
 <table>
@@ -209,9 +208,7 @@ ${rows}
 }
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" crossorigin="anonymous"></script>
-<script>hljs.highlightAll();
-function copy(b){let c=b.parentElement.nextElementSibling;navigator.clipboard.writeText(c.textContent).then(()=>{b.textContent="Copied!";b.classList.add("copied");setTimeout(()=>{b.textContent="Copy";b.classList.remove("copied")},2000)}).catch(()=>{})}</script>
+<script>function copy(b){let c=b.parentElement.querySelector('code');navigator.clipboard.writeText(c.textContent).then(()=>{b.classList.add('copied');setTimeout(()=>{b.classList.remove('copied')},2000)}).catch(()=>{})}</script>
 </body>
 </html>`;
   return new Response(html, {
