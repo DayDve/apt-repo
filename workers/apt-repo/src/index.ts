@@ -86,7 +86,7 @@ function serveText(): Response {
     '#                                                                             #',
     '#                   Personal APT repository for software                      #',
     '#                        unavailable or outdated in                           #',
-'# standard Ubuntu/Debian repos                          #',
+'#                       standard Ubuntu/Debian repos                          #',
     '#                                                                             #',
     '###############################################################################',
     '# Just add the repository to your APT sources:                                #',
