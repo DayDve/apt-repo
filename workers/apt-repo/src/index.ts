@@ -1,8 +1,15 @@
 interface Env {}
 
+interface Package {
+  name: string;
+  description: string;
+  source: string;
+}
+
 const REPO = 'DayDve/apt-repo';
 const PAGES = `https://daydve.github.io/apt-repo`;
 const POOL_MAP = `https://raw.githubusercontent.com/${REPO}/apt/pool-map.json`;
+const PACKAGES_JSON = `https://raw.githubusercontent.com/${REPO}/apt/packages.json`;
 
 export default {
   async fetch(request: Request, _env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -12,7 +19,7 @@ export default {
     const isBrowser = /mozilla|chrome|safari|firefox|edge|curl|wget/.test(ua);
 
     if (path === '/' || path === '') {
-      return isBrowser ? servePage(path, url) : proxy(`${PAGES}/dists/noble/Release`);
+      return isBrowser ? servePage(url, ctx) : proxy(`${PAGES}/dists/noble/Release`);
     }
 
     if (path === '/apt-key.asc') {
@@ -27,7 +34,7 @@ export default {
       return redirectPool(path, ctx);
     }
 
-    return isBrowser ? servePage(path, url) : new Response('Not found', { status: 404 });
+    return isBrowser ? servePage(url, ctx) : new Response('Not found', { status: 404 });
   },
 };
 
@@ -43,38 +50,44 @@ async function proxy(url: string): Promise<Response> {
   });
 }
 
+async function fetchJSON(url: string, cacheKey: string, ctx: ExecutionContext): Promise<any> {
+  const cache = caches.default;
+  const req = new Request(cacheKey);
+  const cached = await cache.match(req);
+  if (cached) return cached.json();
+
+  const resp = await fetch(url);
+  if (!resp.ok) return null;
+  const data = await resp.json();
+  ctx.waitUntil(cache.put(req, new Response(JSON.stringify(data))));
+  return data;
+}
+
 async function redirectPool(path: string, ctx: ExecutionContext): Promise<Response> {
   const filename = path.split('/').pop()!;
-  const cacheKey = new Request('https://_cache/pool-map');
-  const cache = caches.default;
-
-  let resp = await cache.match(cacheKey);
-  let map: Record<string, string>;
-
-  if (resp) {
-    map = await resp.json();
-  } else {
-    const mapResp = await fetch(POOL_MAP);
-    if (!mapResp.ok) {
-      return new Response('Pool map not available', { status: 502 });
-    }
-    map = await mapResp.json() as Record<string, string>;
-    ctx.waitUntil(cache.put(cacheKey, new Response(JSON.stringify(map))));
-  }
-
-  const tag = map[filename];
-  if (!tag) {
-    return new Response('Not found', { status: 404 });
-  }
-
+  const map = await fetchJSON(POOL_MAP, 'https://_cache/pool-map', ctx) as Record<string, string> | null;
+  if (!map || !map[filename]) return new Response('Not found', { status: 404 });
   return Response.redirect(
-    `https://github.com/${REPO}/releases/download/${tag}/${filename}`,
+    `https://github.com/${REPO}/releases/download/${map[filename]}/${filename}`,
     302,
   );
 }
 
-function servePage(_path: string, url: URL): Response {
-  const origin = url.origin;
+async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
+  const pkgs = await fetchJSON(PACKAGES_JSON, 'https://_cache/packages', ctx) as Package[] | null;
+
+  let rows = '';
+  if (pkgs) {
+    rows = pkgs.map(p => {
+      const name = p.source
+        ? `<a href="${p.source}" target="_blank" rel="noopener">${p.name}</a>`
+        : p.name;
+      return `<tr><td>${name}</td><td>${p.description}</td></tr>`;
+    }).join('\n');
+  } else {
+    rows = '<tr><td colspan="2">Failed to load package list</td></tr>';
+  }
+
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -88,6 +101,8 @@ code{background:#f5f5f5;padding:.2rem .4rem;border-radius:3px;font-size:.9em}
 pre{background:#f5f5f5;padding:1rem;border-radius:5px;overflow-x:auto}
 table{border-collapse:collapse;width:100%}
 th,td{text-align:left;padding:.5rem;border-bottom:1px solid #eee}
+td a{text-decoration:none}
+td a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -95,21 +110,15 @@ th,td{text-align:left;padding:.5rem;border-bottom:1px solid #eee}
 <p>Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos.</p>
 
 <h2>Install</h2>
-<pre>sudo curl -fsSL ${origin}/apt-key.asc -o /etc/apt/keyrings/daydve-apt-repo.asc
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] ${origin} $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list
+<pre>sudo curl -fsSL ${url.origin}/apt-key.asc -o /etc/apt/keyrings/daydve-apt-repo.asc
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] ${url.origin} $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list
 sudo apt update
 sudo apt install &lt;package&gt;</pre>
 
 <h2>Available packages</h2>
 <table>
 <tr><th>Package</th><th>Description</th></tr>
-<tr><td>ayugram</td><td>Telegram client with enhanced features</td></tr>
-<tr><td>bees</td><td>btrfs deduplication daemon</td></tr>
-<tr><td>grub-btrfs</td><td>GRUB menu entries for btrfs snapshots</td></tr>
-<tr><td>keyd</td><td>Key remapping daemon</td></tr>
-<tr><td>rclone</td><td>rsync for cloud storage</td></tr>
-<tr><td>rdm</td><td>Remote Desktop Manager</td></tr>
-<tr><td>wps-office</td><td>WPS Office repack</td></tr>
+${rows}
 </table>
 
 <p><a href="https://github.com/${REPO}">GitHub Repository</a></p>
