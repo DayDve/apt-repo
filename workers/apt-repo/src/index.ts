@@ -114,17 +114,24 @@ async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
     rows = '<tr><td colspan="2">Failed to load package list</td></tr>';
   }
 
+  const pkgNames = pkgs ? pkgs.map(p => p.name).join(', ') : 'ayugram, bees, grub-btrfs, keyd, rclone, rdm, wps-office';
+
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DayDve APT Repository</title>
+<title>DayDve APT Repository — ${pkgNames}</title>
+<meta name="description" content="Personal APT repository for Ubuntu with packages unavailable in standard repos: ${pkgNames}. Install via apt.smbit.pro.">
+<meta name="keywords" content="APT, repository, Ubuntu, noble, ${pkgNames}">
+<meta property="og:title" content="DayDve APT Repository">
+<meta property="og:description" content="Personal APT repository for Ubuntu with: ${pkgNames}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="${url.origin}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css" crossorigin="anonymous">
 <style>
 *{box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6;color:#e6edf3;background:#0d1117}
-h1{border-bottom:1px solid #30363d;padding-bottom:.5rem}
 a{color:#58a6ff}
 pre{background:#161b22;padding:1rem;border-radius:6px;overflow-x:auto;position:relative;border:1px solid #30363d;font-size:.85rem;margin:0}
 pre code{background:0 0;padding:0;border-radius:0}
@@ -136,15 +143,17 @@ td a:hover{text-decoration:underline}
 .copy-btn{font-size:.75rem;padding:.2rem .6rem;border:1px solid #30363d;border-radius:4px;background:#21262d;cursor:pointer;color:#8b949e;font-family:inherit}
 .copy-btn:hover{background:#30363d}
 .copy-btn.copied{color:#3fb950;border-color:#3fb950}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 </style>
 </head>
 <body>
-<pre style="background:0 0;border:0;padding:0;font-size:.8rem;line-height:1.2"> ___            ___              _   ___ _____   ___               
+<h1 class="sr-only">DayDve APT Repository — ${pkgNames}</h1>
+<pre aria-hidden="true" style="background:0 0;border:0;padding:0;font-size:.8rem;line-height:1.2"> ___            ___              _   ___ _____   ___               
 |   \\ __ _ _  _|   \\__ _____    /_\\ | _ \\_   _| | _ \\___ _ __  ___ 
 | |) / _\` | || | |) \\ V / -_)  / _ \\|  _/ | |   |   / -_) '_ \\/ _ \\
 |___/\\__,_|\\_, |___/ \\_/\\___| /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/
            |__/                                         |_|        </pre>
-<p>Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos.</p>
+<p>Personal APT repository for Ubuntu Noble with software unavailable or outdated in standard repos: ${pkgNames}.</p>
 
 <h2>Setup</h2>
 <div class="code-header"><button class="copy-btn" onclick="copy(this)">Copy</button></div>
@@ -166,6 +175,22 @@ ${rows}
 </table>
 
 <p><a href="https://github.com/${REPO}">GitHub Repository</a></p>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "DayDve APT Repository",
+  "description": "Personal APT repository for Ubuntu Noble with: ${pkgNames}",
+  "url": "${url.origin}",
+  "about": {
+    "@type": "SoftwareSourceCode",
+    "programmingLanguage": "deb",
+    "operatingSystem": "Linux",
+    "softwareVersion": "noble"
+  }
+}
+</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" crossorigin="anonymous"></script>
 <script>hljs.highlightAll();
