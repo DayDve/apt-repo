@@ -1,4 +1,5 @@
 SOURCE_URL="https://devolutions.net/remote-desktop-manager/"
+DESCRIPTION="One application for every remote connection you'll ever open"
 
 check_update() {
   local current="${1:-}"
@@ -15,10 +16,6 @@ get_version() {
   url=$(curl -s https://devolutions.net/remote-desktop-manager/download/ \
     | grep -oP 'https://[^"]*Linux/[^"]*RemoteDesktopManager[^"]*amd64\.deb' | head -1)
   version=$(grep -oP '^.*\K\d{4}(\.\d){3}' <<<"${url}")
-
-  echo "version=$version"
-  echo "source=$SOURCE_URL"
-  echo "---"
 
   curl -s https://devolutions.net/remote-desktop-manager/release-notes/linux/ \
     | awk -v ver="$version" 'BEGIN{RS="<"}

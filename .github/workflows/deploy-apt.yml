@@ -32,7 +32,6 @@ jobs:
           mkdir -p /tmp/by-tag
           gh release list --repo $GITHUB_REPOSITORY --json tagName --jq '.[].tagName' | while read tag; do
             gh release download "$tag" --repo $GITHUB_REPOSITORY --dir "/tmp/by-tag/$tag" --pattern '*.deb' 2>/dev/null || true
-            gh release download "$tag" --repo $GITHUB_REPOSITORY --dir "/tmp/by-tag/$tag" --pattern 'meta-*.json' 2>/dev/null || true
           done
 
       - name: Generate Packages
@@ -85,6 +84,14 @@ jobs:
           done < /tmp/tag-map
           echo '}' >> "$GITHUB_WORKSPACE/pool-map.json"
 
+      - name: Get source URLs from package files
+        run: |
+          git fetch origin master
+          for app in $(git ls-tree --name-only origin/master:apps/ | grep -v '^template$'); do
+            url=$(git show "origin/master:apps/$app/package" | awk -F'"' '/^SOURCE_URL=/{print $2}')
+            [ -n "$url" ] && echo "$app|$url"
+          done > /tmp/source-urls
+
       - name: Generate packages.json
         run: |
           echo -n '[' > "$GITHUB_WORKSPACE/packages.json"
@@ -97,7 +104,7 @@ jobs:
               app=$(echo "$deb_name" | sed 's/\.deb$//')
             fi
             desc=$(dpkg-deb -f "/tmp/pool/$distro/main/$deb_name" Description 2>/dev/null | head -1 || echo "")
-            source_url=$(jq -r '.source // empty' "/tmp/by-tag/$tag/meta-$app.json" 2>/dev/null || echo "")
+            source_url=$(awk -F'|' -v a="$app" '$1==a{print $2}' /tmp/source-urls)
             $first || echo -n ',' >> "$GITHUB_WORKSPACE/packages.json"
             first=false
             jq -n --arg name "$app" --arg desc "$desc" --arg source "$source_url" '{name:$name,description:$desc,source:$source}' >> "$GITHUB_WORKSPACE/packages.json"
@@ -143,3 +150,15 @@ jobs:
           git add -A
           git commit -m "deploy build $GITHUB_RUN_NUMBER"
           git push
+
+      - name: Update README on master
+        run: |
+          cp "$GITHUB_WORKSPACE/packages.json" /tmp/packages.json
+          git fetch origin master
+          git checkout master
+          python3 scripts/gen_readme.py
+          git add README.md
+          git diff --cached --quiet || (
+            git -c user.name='github-actions' -c user.email='github-actions@github.com' commit -m "auto-update README from packages metadata"
+            git push
+          )

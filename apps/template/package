@@ -2,13 +2,14 @@
 # Package script for <app-name>
 # ============================================================
 # Contract (required by build.sh):
-#   SOURCE_URL      — upstream URL (used in packages.json for the link)
+#   SOURCE_URL      — upstream URL
+#   DESCRIPTION     — human-readable package description
 #   check_update()  — exit 0 if update available, 1 if up-to-date
-#   get_version()   — stdout:
-#                       version=<string>
-#                       source=<url>
-#                       ---
-#                       <changelog text>
+#   get_version()   — sets $version, outputs changelog to stdout
+#
+# build.sh sources this file, then calls get_version() which
+# must set the global $version variable and print the changelog.
+# build.sh calls pull_package_info to format the metadata header.
 #
 # You own these functions completely. Fetch version/changelog
 # from wherever you want — GitHub API, web scraping, RSS, etc.
@@ -27,35 +28,30 @@
 # ============================================================
 
 SOURCE_URL="https://example.com/OWNER/REPO"
+DESCRIPTION="My awesome app"
 
 # --- Example A: GitHub release-based (rclone, wps-office) ---
 # check_update() {
 #   gh_latest_release OWNER/REPO
-#   local version="${LATEST_TAG#v}"
+#   version="${LATEST_TAG#v}"
 #   [ "$version" != "${1:-}" ]
 # }
 # get_version() {
 #   gh_latest_release OWNER/REPO
-#   local version="${LATEST_TAG#v}"
-#   echo "version=$version"
-#   echo "source=$SOURCE_URL"
-#   echo "---"
+#   version="${LATEST_TAG#v}"
 #   echo "$RELEASE_BODY"
 # }
-
+#
 # --- Example B: GitHub tag + commits-ahead (bees, keyd, grub-btrfs) ---
 # check_update() {
 #   gh_tag_ahead OWNER/REPO
-#   local version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
+#   version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
 #   [ "$version" != "${1:-}" ]
 # }
 # get_version() {
 #   local current="${1:-}"
 #   gh_tag_ahead OWNER/REPO
-#   local version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
-#   echo "version=$version"
-#   echo "source=$SOURCE_URL"
-#   echo "---"
+#   version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
 #   if [ -z "$current" ]; then
 #     gh_release_body OWNER/REPO
 #     return
@@ -68,8 +64,8 @@ SOURCE_URL="https://example.com/OWNER/REPO"
 #   local old_sha; old_sha=$(echo "$current" | sed 's/.*-g//')
 #   gh_commits_between OWNER/REPO "$old_sha" HEAD
 # }
-
-# --- Example C: web scraping (rdm) ---
+#
+# --- Example C: web scraping (remotedesktopmanager) ---
 # check_update() {
 #   local current="${1:-}" url version
 #   url=$(curl -s https://example.com/download/ | grep -oP 'pattern' | head -1)
@@ -77,12 +73,8 @@ SOURCE_URL="https://example.com/OWNER/REPO"
 #   [ "$version" != "$current" ]
 # }
 # get_version() {
-#   local current="${1:-}" url version
+#   local current="${1:-}" url
 #   url=$(curl -s https://example.com/download/ | grep -oP 'pattern' | head -1)
 #   version=$(grep -oP '\d[\d.]*' <<<"$url")
-#   echo "version=$version"
-#   echo "source=$SOURCE_URL"
-#   echo "---"
-#   curl -s https://example.com/changelog \
-#     | sed -n "/$version/,/^[0-9]/p"
+#   curl -s https://example.com/changelog | sed -n "/$version/,/^[0-9]/p"
 # }

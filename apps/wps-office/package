@@ -1,19 +1,16 @@
 SOURCE_URL="https://github.com/Rongronggg9/wps-office-repack"
+DESCRIPTION="WPS Office repack with patches"
 
 check_update() {
   gh_latest_release Rongronggg9/wps-office-repack
-  local version="${LATEST_TAG#v}.repack"
+  version="${LATEST_TAG#v}.repack"
   [ "$version" != "${1:-}" ]
 }
 
 get_version() {
   local current="${1:-}"
   gh_latest_release Rongronggg9/wps-office-repack
-  local version="${LATEST_TAG#v}.repack"
-
-  echo "version=$version"
-  echo "source=$SOURCE_URL"
-  echo "---"
+  version="${LATEST_TAG#v}.repack"
 
   python3 -c "
 import sys, json, urllib.request, urllib.parse, re, html

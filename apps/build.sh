@@ -59,6 +59,15 @@ gh_release_body_by_tag() {
   gh api "repos/$repo/releases" --jq ".[] | select(.tag_name == \"$tag\") | .body // empty" 2>/dev/null || true
 }
 
+# pull_package_info: outputs package metadata header consumed by build.sh.
+# Expects $version, $SOURCE_URL, $DESCRIPTION from the package script.
+pull_package_info() {
+  echo "version=$version"
+  echo "source=$SOURCE_URL"
+  echo "description=$DESCRIPTION"
+  echo "---"
+}
+
 # ============================================================
 # Main logic (skipped when sourced — e.g. from check-updates.yml)
 # ============================================================
@@ -81,12 +90,12 @@ if ! declare -f get_version > /dev/null; then
   echo "get_version not defined in $dir/package"; exit 1
 fi
 
-get_version "$current_version" > /tmp/version_info
-version="$(sed -n '1s/^version=//p' /tmp/version_info)"
-SOURCE_URL="$(sed -n '2s/^source=//p' /tmp/version_info)"
-tail -n +4 /tmp/version_info > /tmp/changelog 2>/dev/null || true
+get_version "$current_version" > /tmp/changelog
 [ -z "$version" ] && { echo "Failed to parse version"; exit 1; }
 [ -z "$SOURCE_URL" ] && { echo "Failed to parse source URL"; exit 1; }
+
+pull_package_info > /tmp/version_info
+cat /tmp/changelog >> /tmp/version_info
 
 if [ -n "$GITHUB_ACTIONS" ]; then
   owner_info="$(gh api users/"$GITHUB_REPOSITORY_OWNER")"
@@ -112,13 +121,9 @@ if [ -n "$GITHUB_ACTIONS" ] && { [ "$GITHUB_REF" = "refs/heads/main" ] || [ "$GI
   deb_name="$(basename "$deb" | sed "s/_amd64/_${distro}_amd64/")"
   mv "$deb" "/tmp/$deb_name"
 
-  jq -n --arg source "$SOURCE_URL" --arg app "$app" --arg version "$version" \
-    '{app:$app,version:$version,source:$source}' > "/tmp/meta-$app.json"
-
   gh release create \
     "$app-$version" \
     "/tmp/$deb_name" \
-    "/tmp/meta-$app.json" \
     --title "$app $version" \
     --notes-file /tmp/changelog \
     --repo "$GITHUB_REPOSITORY"

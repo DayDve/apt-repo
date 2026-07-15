@@ -1,4 +1,5 @@
 SOURCE_URL="https://github.com/AyuGram/AyuGramDesktop"
+DESCRIPTION="Telegram client with enhanced features"
 
 check_update() {
   local current="${1:-}"
@@ -21,7 +22,7 @@ check_update() {
     ahead="0"
   fi
 
-  local version="${tag#v}-${ahead}-g${dev_sha:0:7}"
+  version="${tag#v}-${ahead}-g${dev_sha:0:7}"
   [ "$version" != "$current" ]
 }
 
@@ -46,11 +47,7 @@ get_version() {
     ahead="0"
   fi
 
-  local version="${tag#v}-${ahead}-g${dev_sha:0:7}"
-
-  echo "version=$version"
-  echo "source=$SOURCE_URL"
-  echo "---"
+  version="${tag#v}-${ahead}-g${dev_sha:0:7}"
 
   gh_release_body AyuGram/AyuGramDesktop
 

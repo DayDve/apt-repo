@@ -1,19 +1,16 @@
 SOURCE_URL="https://github.com/rvaiya/keyd"
+DESCRIPTION="Key remapping daemon"
 
 check_update() {
   gh_tag_ahead rvaiya/keyd
-  local version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
+  version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
   [ "$version" != "${1:-}" ]
 }
 
 get_version() {
   local current="${1:-}"
   gh_tag_ahead rvaiya/keyd
-  local version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
-
-  echo "version=$version"
-  echo "source=$SOURCE_URL"
-  echo "---"
+  version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
 
   if [ -z "$current" ]; then
     gh_release_body rvaiya/keyd
