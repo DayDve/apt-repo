@@ -10,6 +10,7 @@ const REPO = 'DayDve/apt-repo';
 const PAGES = `https://daydve.github.io/apt-repo`;
 const POOL_MAP = `https://raw.githubusercontent.com/${REPO}/apt/pool-map.json`;
 const PACKAGES_JSON = `https://raw.githubusercontent.com/${REPO}/apt/packages.json`;
+const CACHE_BUST = 'v2';
 
 export default {
   async fetch(request: Request, _env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -54,18 +55,19 @@ async function fetchJSON(url: string, cacheKey: string, ctx: ExecutionContext): 
   const cache = caches.default;
   const req = new Request(cacheKey);
   const cached = await cache.match(req);
+  const headers = {'cache-control': 'public, max-age=0, must-revalidate'};
   if (cached) return cached.json();
 
   const resp = await fetch(url);
   if (!resp.ok) return null;
   const data = await resp.json();
-  ctx.waitUntil(cache.put(req, new Response(JSON.stringify(data))));
+  ctx.waitUntil(cache.put(req, new Response(JSON.stringify(data), {headers})));
   return data;
 }
 
 async function redirectPool(path: string, ctx: ExecutionContext): Promise<Response> {
   const filename = path.split('/').pop()!;
-  const map = await fetchJSON(POOL_MAP, 'https://_cache/pool-map', ctx) as Record<string, string> | null;
+  const map = await fetchJSON(POOL_MAP, 'https://_cache/pool-map-' + CACHE_BUST, ctx) as Record<string, string> | null;
   if (!map || !map[filename]) return new Response('Not found', { status: 404 });
   return Response.redirect(
     `https://github.com/${REPO}/releases/download/${map[filename]}/${filename}`,
@@ -103,7 +105,7 @@ function serveText(): Response {
 }
 
 async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
-  const pkgs = await fetchJSON(PACKAGES_JSON, 'https://_cache/packages', ctx) as Package[] | null;
+  const pkgs = await fetchJSON(PACKAGES_JSON, 'https://_cache/packages-' + CACHE_BUST, ctx) as Package[] | null;
 
   let rows = '';
   if (pkgs) {
