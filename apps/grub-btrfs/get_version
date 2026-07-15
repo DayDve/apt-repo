@@ -9,6 +9,7 @@ ahead=$(gh api "repos/Antynea/grub-btrfs/compare/$tag...HEAD" --jq '.ahead_by' 2
 version="$(echo "$tag" | sed -E 's/^[a-zA-Z]//')-$ahead-g$(echo "$sha" | cut -c1-7)"
 
 echo "version=$version"
+echo "source=https://github.com/Antynea/grub-btrfs"
 echo "---"
 
 if [ -z "$current_version" ]; then

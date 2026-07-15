@@ -12,8 +12,10 @@ dir="$(cd "$(dirname "$0")" && pwd)/$app"
 if [ -f "$dir/get_version" ]; then
   bash "$dir/get_version" "$current_version" > /tmp/version_info
   version="$(sed -n '1s/^version=//p' /tmp/version_info)"
-  tail -n +3 /tmp/version_info > /tmp/changelog
+  source_url="$(sed -n '2s/^source=//p' /tmp/version_info)"
+  tail -n +4 /tmp/version_info > /tmp/changelog 2>/dev/null || true
   [ -z "$version" ] && { echo "Failed to parse version"; exit 1; }
+  [ -z "$source_url" ] && { echo "Failed to parse source URL"; exit 1; }
 else
   echo "No get_version for $app"; exit 1
 fi
@@ -42,9 +44,13 @@ if [ -n "$GITHUB_ACTIONS" ] && { [ "$GITHUB_REF" = "refs/heads/main" ] || [ "$GI
   deb_name="$(basename "$deb" | sed "s/_amd64/_${distro}_amd64/")"
   mv "$deb" "/tmp/$deb_name"
 
+  jq -n --arg source "$source_url" --arg app "$app" --arg version "$version" \
+    '{app:$app,version:$version,source:$source}' > "/tmp/meta-$app.json"
+
   gh release create \
     "$app-$version" \
     "/tmp/$deb_name" \
+    "/tmp/meta-$app.json" \
     --draft \
     --title "$app $version" \
     --notes-file /tmp/changelog \

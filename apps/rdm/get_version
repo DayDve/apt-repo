@@ -7,6 +7,7 @@ URL=$(curl -s https://devolutions.net/remote-desktop-manager/download/ | grep -o
 VERSION=$(grep -oP '^.*\K\d{4}(\.\d){3}' <<<"${URL}")
 
 echo "version=$VERSION"
+echo "source=https://devolutions.net/remote-desktop-manager/"
 echo "---"
 
 curl -s https://devolutions.net/remote-desktop-manager/release-notes/linux/ \

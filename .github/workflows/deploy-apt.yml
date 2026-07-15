@@ -32,6 +32,7 @@ jobs:
           mkdir -p /tmp/by-tag
           gh release list --repo $GITHUB_REPOSITORY --json tagName --jq '.[].tagName' | while read tag; do
             gh release download "$tag" --repo $GITHUB_REPOSITORY --dir "/tmp/by-tag/$tag" --pattern '*.deb' 2>/dev/null || true
+            gh release download "$tag" --repo $GITHUB_REPOSITORY --dir "/tmp/by-tag/$tag" --pattern 'meta-*.json' 2>/dev/null || true
           done
 
       - name: Generate Packages
@@ -85,8 +86,6 @@ jobs:
           echo '}' >> "$GITHUB_WORKSPACE/pool-map.json"
 
       - name: Generate packages.json
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           echo -n '[' > "$GITHUB_WORKSPACE/packages.json"
           first=true
@@ -98,7 +97,7 @@ jobs:
               app=$(echo "$deb_name" | sed 's/\.deb$//')
             fi
             desc=$(dpkg-deb -f "/tmp/pool/$distro/main/$deb_name" Description 2>/dev/null | head -1 || echo "")
-            source_url=$(gh api "repos/$GITHUB_REPOSITORY/contents/apps/$app/source?ref=master" --jq '.content' 2>/dev/null | base64 -d | tr -d '\n' || echo "")
+            source_url=$(jq -r '.source // empty' "/tmp/by-tag/$tag/meta-$app.json" 2>/dev/null || echo "")
             $first || echo -n ',' >> "$GITHUB_WORKSPACE/packages.json"
             first=false
             jq -n --arg name "$app" --arg desc "$desc" --arg source "$source_url" '{name:$name,description:$desc,source:$source}' >> "$GITHUB_WORKSPACE/packages.json"

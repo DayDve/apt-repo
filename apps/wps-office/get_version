@@ -7,6 +7,7 @@ tag=$(echo "$release" | jq -r '.tag_name')
 version="${tag#v}.repack"
 
 echo "version=$version"
+echo "source=https://github.com/Rongronggg9/wps-office-repack"
 echo "---"
 
 body=$(echo "$release" | jq -r '.body')

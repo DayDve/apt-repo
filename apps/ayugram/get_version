@@ -23,6 +23,7 @@ fi
 version="${tag#v}-${ahead}-g$(echo "$head_sha" | cut -c1-7)"
 
 echo "version=$version"
+echo "source=https://github.com/AyuGram/AyuGramDesktop"
 echo "---"
 
 gh api repos/AyuGram/AyuGramDesktop/releases --jq '.[0].body' 2>/dev/null || true

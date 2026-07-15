@@ -9,6 +9,7 @@ ahead=$(gh api "repos/Zygo/bees/compare/$tag...HEAD" --jq '.ahead_by' 2>/dev/nul
 version="$(echo "$tag" | sed -E 's/^[a-zA-Z]//')-$ahead-g$(echo "$sha" | cut -c1-7)"
 
 echo "version=$version"
+echo "source=https://github.com/Zygo/bees"
 echo "---"
 
 tag_message() {
