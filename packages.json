@@ -29,6 +29,11 @@
   "source": "https://devolutions.net/remote-desktop-manager/"
 }
 ,{
+  "name": "wlvncc",
+  "description": "Wayland native VNC client",
+  "source": "https://github.com/any1/wlvncc"
+}
+,{
   "name": "wps-office",
   "description": "WPS Office repack with patches",
   "source": "https://github.com/Rongronggg9/wps-office-repack"
