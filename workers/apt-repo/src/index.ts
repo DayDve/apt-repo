@@ -113,7 +113,11 @@ td a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
-<h1>DayDve APT Repository</h1>
+<pre style="background:0 0;border:0;padding:0;font-size:.8rem;line-height:1.2"> ___            ___              _   ___ _____   ___               
+|   \\ __ _ _  _|   \\__ _____    /_\\ | _ \\_   _| | _ \\___ _ __  ___ 
+| |) / _\` | || | |) \\ V / -_)  / _ \\|  _/ | |   |   / -_) '_ \\/ _ \\
+|___/\\__,_|\\_, |___/ \\_/\\___| /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/
+           |__/                                         |_|        </pre>
 <p>Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos.</p>
 
 <h2>Setup</h2>
