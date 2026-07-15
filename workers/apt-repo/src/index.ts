@@ -131,11 +131,13 @@ async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
 <meta property="og:description" content="Personal APT repository for Ubuntu with: ${pkgNames}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${url.origin}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css" crossorigin="anonymous">
 <style>
 *{box-sizing:border-box}
 body{font-family:'Courier New',Courier,monospace;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6;color:#e6edf3;background:#0d1117}
 a{color:#58a6ff}
 pre{background:#161b22;padding:1rem;overflow-x:auto;border:1px solid #333;font-size:.85rem;margin:0}
+pre code{background:0 0;padding:0}
 table{border-collapse:collapse;width:100%}
 th,td{text-align:left;padding:.5rem;border-bottom:1px solid #333}
 td a{text-decoration:none;color:#58a6ff}
@@ -150,7 +152,7 @@ td a:hover{text-decoration:underline}
 </head>
 <body>
 <h1 class="sr-only">DayDve APT Repository — ${pkgNames}</h1>
-<div class="center"><div class="banner" style="white-space:pre">
+<div class="center"><div style="white-space:pre;line-height:1.2">
 ###############################################################################
 #                     _   ___ _____   ___                                     #
 #                    /_\\ | _ \\_   _| | _ \\___ _ __  ___                       #
@@ -168,7 +170,7 @@ td a:hover{text-decoration:underline}
 
 <h2>Setup</h2>
 <div class="code-wrap">
-<pre><code>sudo curl -fsSL ${url.origin}/apt-key.asc \\
+<pre><code class="language-bash">sudo curl -fsSL ${url.origin}/apt-key.asc \\
   -o /etc/apt/keyrings/daydve-apt-repo.asc && \\
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\
   ${url.origin} noble main" \\
@@ -179,7 +181,7 @@ sudo apt update</code></pre>
 
 <h2>Quick install</h2>
 <div class="code-wrap">
-<pre><code>curl -sL ${url.origin} | bash</code></pre>
+<pre><code class="language-bash">curl -sL ${url.origin} | bash</code></pre>
 <button class="copy-btn" onclick="copy(this)" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
 </div>
 
@@ -208,7 +210,9 @@ ${rows}
 }
 </script>
 
-<script>function copy(b){let c=b.parentElement.querySelector('code');navigator.clipboard.writeText(c.textContent).then(()=>{b.classList.add('copied');setTimeout(()=>{b.classList.remove('copied')},2000)}).catch(()=>{})}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" crossorigin="anonymous"></script>
+<script>hljs.highlightAll();
+function copy(b){let c=b.parentElement.querySelector('code');navigator.clipboard.writeText(c.textContent).then(()=>{b.classList.add('copied');setTimeout(()=>{b.classList.remove('copied')},2000)}).catch(()=>{})}</script>
 </body>
 </html>`;
   return new Response(html, {
