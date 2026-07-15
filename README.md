@@ -2,7 +2,7 @@
 
 ![Apps](https://img.shields.io/badge/apps-7-blue)
 
-Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos. Packages are delivered as-is from upstream developers or repackagers — no guarantees on functionality or fitness for purpose.
+Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos. Packages are delivered as-is from upstream developers or repackagers - no guarantees on functionality or fitness for purpose.
 
 ## Available packages
 
