@@ -16,10 +16,10 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
     const ua = (request.headers.get('User-Agent') || '').toLowerCase();
-    const isBrowser = /mozilla|chrome|safari|firefox|edge|curl|wget/.test(ua);
+    const isBrowser = /mozilla|chrome|safari|firefox|edge/.test(ua);
 
     if (path === '/' || path === '') {
-      return isBrowser ? servePage(url, ctx) : proxy(`${PAGES}/dists/noble/Release`);
+      return isBrowser ? servePage(url, ctx) : serveText();
     }
 
     if (path === '/apt-key.asc') {
@@ -71,6 +71,32 @@ async function redirectPool(path: string, ctx: ExecutionContext): Promise<Respon
     `https://github.com/${REPO}/releases/download/${map[filename]}/${filename}`,
     302,
   );
+}
+
+function serveText(): Response {
+  const text = [
+    '#  ___            ___              _   ___ _____   ___',
+    '# |   \\ __ _ _  _|   \\__ _____    /_\\ | _ \\_   _| | _ \\___ _ __  ___',
+    '# | |) / _` | || | |) \\ V / -_)  / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\',
+    '# |___/\\__,_|\\_, |___/ \\_/\\___| /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/',
+    '#            |__/                                         |_|',
+    '#',
+    '# Personal APT repository for software unavailable or outdated in',
+    '# standard Ubuntu/Debian repos.',
+    '#',
+    '# To add to your apt sources list:',
+    '#',
+    'sudo curl -fsSL https://apt.smbit.pro/apt-key.asc \\',
+    '  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\',
+    'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\',
+    '  https://apt.smbit.pro $(lsb_release -cs) main" \\',
+    '  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\',
+    'sudo apt update',
+    '',
+  ].join('\n');
+  return new Response(text, {
+    headers: { 'content-type': 'text/plain; charset=utf-8' },
+  });
 }
 
 async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
