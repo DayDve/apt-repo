@@ -26,7 +26,7 @@
 ,{
   "name": "rdm",
   "description": "Centralize, Manage and Secure Remote Connections",
-  "source": ""
+  "source": "https://devolutions.net/remote-desktop-manager/"
 }
 ,{
   "name": "wps-office",

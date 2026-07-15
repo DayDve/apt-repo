@@ -1,23 +1,23 @@
 Architectures: amd64
 Codename: noble
 Components: main
-Date: Wed, 15 Jul 2026 16:09:20 +0000
+Date: Wed, 15 Jul 2026 16:13:15 +0000
 Label: DayDve apt repo
 Origin: DayDve
 Suite: noble
 MD5Sum:
- b540f0da0f4f9c98eaa2888ad58fe207              143 Release
+ 20eb7eb7f787e370ebfe76896268f152              143 Release
  ba1a3ff8b3211f375a86af2e6473e97d             5127 main/binary-amd64/Packages
- f9b9808ce27bf1c4a8109b155aa62f87             2507 main/binary-amd64/Packages.gz
+ 91ff8241f99d828d55d2e3255dfb84f5             2507 main/binary-amd64/Packages.gz
 SHA1:
- d347457e87ac09c9856398b0b567bfd8ba43a650              143 Release
+ cb35249e194fe6e71c69f86767873110efaf064b              143 Release
  da5ed0790847857b872fa4f6e78d17035e293a02             5127 main/binary-amd64/Packages
- 7620f8a36fcfcb2cc680721b9345e3211740c40f             2507 main/binary-amd64/Packages.gz
+ c9a013b4a57ea6362a43a83f4cd77429ab95b180             2507 main/binary-amd64/Packages.gz
 SHA256:
- 7a284277905e90ae04d555be061d02094100125b50f4c6bb6e5a801d479326fe              143 Release
+ 442b8b00b52a0af0f8a2df2146d6075e7b9eed7adc790520e36c386fa207a97d              143 Release
  6c9293a42da0a7525fad57c5804444620a84bcb744592ea02bbae9b7b82e6b9e             5127 main/binary-amd64/Packages
- efa8d0aeaf3c13ea8f0f75652bb5236b73e337dd698d45201407a517a2af0ebb             2507 main/binary-amd64/Packages.gz
+ 2e134b877b5a5bca6ebdee07732d791075e5a10d322458d849cd7a0bd6527e58             2507 main/binary-amd64/Packages.gz
 SHA512:
- 757232de2854efeee16c3429920572ecb807b8d7563f0b67c48e0be01fce6b9668df77f964aed807005ba4f3d7085dc832e3312e46499bacc1ff6035305bdba8              143 Release
+ d156301812cb4a02ef94aa557ed2eb156cf47906a0522a623b115c00b43a5399c328338a9d67996e32e581a38e7be3235e87060f50c40689fe381663fd0588ea              143 Release
  dec71ca6e66385990fcf76b9fa09864ecab1857a54f57d7fdfa7c4097a2cae4f43284bbb82fb165a9120110e27d84d6da4cb1442b1486f31ecbce71c75598ff3             5127 main/binary-amd64/Packages
- f2f30f7ced680bb4be9df5859bcabf49682610c8994ce3c2d82156f671f37b562012eeae09eb6e1c1bde802bd97313d348399eaf3cf40fc721636a0f7e3d105d             2507 main/binary-amd64/Packages.gz
+ 9fadce992f940c8fcee05a6186efe28952b145b1f508de9db79892984df1cd564a84d44f6cc42a99952bf194a08c821432b400a7081101072b4af144fc67a7eb             2507 main/binary-amd64/Packages.gz
