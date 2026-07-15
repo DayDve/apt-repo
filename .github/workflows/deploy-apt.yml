@@ -105,6 +105,10 @@ jobs:
             fi
             desc=$(dpkg-deb -f "/tmp/pool/$distro/main/$deb_name" Description 2>/dev/null | head -1 || echo "")
             source_url=$(awk -F'|' -v a="$app" '$1==a{print $2}' /tmp/source-urls)
+            if [ -z "$source_url" ]; then
+              tag_app=$(echo "$tag" | sed -E 's/-[0-9].*//')
+              source_url=$(awk -F'|' -v a="$tag_app" '$1==a{print $2}' /tmp/source-urls)
+            fi
             $first || echo -n ',' >> "$GITHUB_WORKSPACE/packages.json"
             first=false
             jq -n --arg name "$app" --arg desc "$desc" --arg source "$source_url" '{name:$name,description:$desc,source:$source}' >> "$GITHUB_WORKSPACE/packages.json"
