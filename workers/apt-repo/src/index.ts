@@ -75,11 +75,11 @@ async function redirectPool(path: string, ctx: ExecutionContext): Promise<Respon
 
 function serveText(): Response {
   const text = [
-    '#  ___            ___              _   ___ _____   ___',
-    '# |   \\ __ _ _  _|   \\__ _____    /_\\ | _ \\_   _| | _ \\___ _ __  ___',
-    '# | |) / _` | || | |) \\ V / -_)  / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\',
-    '# |___/\\__,_|\\_, |___/ \\_/\\___| /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/',
-    '#            |__/                                         |_|',
+    '# _   ___ _____   ___',
+    '#   /_\\ | _ \\_   _| | _ \\___ _ __  ___',
+    '#  / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\',
+    '# /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/',
+    '#                  by DayDve|_|',
     '#',
     '# Personal APT repository for software unavailable or outdated in',
     '# standard Ubuntu/Debian repos.',
@@ -149,13 +149,13 @@ td a:hover{text-decoration:underline}
 </head>
 <body>
 <h1 class="sr-only">DayDve APT Repository — ${pkgNames}</h1>
-<pre aria-hidden="true" class="center" style="background:0 0;border:0;padding:0;font-size:.8rem;line-height:1.2">_   ___ _____   ___  
+<div class="center"><pre aria-hidden="true" style="display:inline-block;text-align:left;background:0 0;border:0;padding:0;font-size:.8rem;line-height:1.2">_   ___ _____   ___  
   /_\\ | _ \\_   _| | _ \\___ _ __  ___ 
  / _ \\|  _/ | |   |   / -_) '_ \\/ _ \\
 /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/
-                 by DayDve|_|        </pre>
+                 by DayDve|_|        </pre></div>
 <p class="center">Personal APT repository with software unavailable or outdated in standard repos<span class="sr-only">${pkgNames}.</span></p>
-<p class="center" style="color:#8b949e;font-size:.85rem">Built for personal use</p>
+
 
 <h2>Setup</h2>
 <div class="code-header"><button class="copy-btn" onclick="copy(this)">Copy</button></div>
@@ -177,6 +177,7 @@ ${rows}
 </table>
 
 <p class="center"><a href="https://github.com/${REPO}"><img src="https://img.shields.io/badge/GitHub-DayDve%2Fapt--repo-181717?logo=github" alt="GitHub Repository"></a></p>
+<p class="center" style="color:#8b949e;font-size:.85rem">Built for personal use</p>
 
 <script type="application/ld+json">
 {
