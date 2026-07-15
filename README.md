@@ -6,15 +6,15 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 
 ## Available packages
 
-| App | Description | Source |
-|---|---|---|
-| **ayugram** | Telegram client with enhanced features | [AyuGram/AyuGramDesktop](https://github.com/AyuGram/AyuGramDesktop) |
-| **bees** | btrfs deduplication daemon | [Zygo/bees](https://github.com/Zygo/bees) |
-| **grub-btrfs** | GRUB menu entries for btrfs snapshots | [Antynea/grub-btrfs](https://github.com/Antynea/grub-btrfs) |
-| **keyd** | Key remapping daemon | [rvaiya/keyd](https://github.com/rvaiya/keyd) |
-| **rclone** | rsync for cloud storage | [rclone/rclone](https://github.com/rclone/rclone) |
-| **rdm** | Remote Desktop Manager | [Devolutions](https://devolutions.net/remote-desktop-manager/) |
-| **wps-office** | WPS Office repack with patches | [Rongronggg9/wps-office-repack](https://github.com/Rongronggg9/wps-office-repack) |
+| App | Description |
+|---|---|
+| [ayugram](https://github.com/AyuGram/AyuGramDesktop) | Telegram client with enhanced features |
+| [bees](https://github.com/Zygo/bees) | btrfs deduplication daemon |
+| [grub-btrfs](https://github.com/Antynea/grub-btrfs) | GRUB menu entries for btrfs snapshots |
+| [keyd](https://github.com/rvaiya/keyd) | Key remapping daemon |
+| [rclone](https://github.com/rclone/rclone) | rsync for cloud storage |
+| [rdm](https://devolutions.net/remote-desktop-manager/) | Remote Desktop Manager |
+| [wps-office](https://github.com/Rongronggg9/wps-office-repack) | WPS Office repack with patches |
 
 ## Install
 
