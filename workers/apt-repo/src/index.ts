@@ -1,4 +1,4 @@
-interface Env {}
+interface Env { }
 
 interface Package {
   name: string;
@@ -55,13 +55,13 @@ async function fetchJSON(url: string, cacheKey: string, ctx: ExecutionContext): 
   const cache = caches.default;
   const req = new Request(cacheKey);
   const cached = await cache.match(req);
-  const headers = {'cache-control': 'public, max-age=0, must-revalidate'};
+  const headers = { 'cache-control': 'public, max-age=0, must-revalidate' };
   if (cached) return cached.json();
 
   const resp = await fetch(url);
   if (!resp.ok) return null;
   const data = await resp.json();
-  ctx.waitUntil(cache.put(req, new Response(JSON.stringify(data), {headers})));
+  ctx.waitUntil(cache.put(req, new Response(JSON.stringify(data), { headers })));
   return data;
 }
 
@@ -86,7 +86,7 @@ function serveText(): Response {
     '#                                                                             #',
     '#                   Personal APT repository for software                      #',
     '#                        unavailable or outdated in                           #',
-'#                       standard Ubuntu/Debian repos                          #',
+    '#                       standard Ubuntu/Debian repos                          #',
     '#                                                                             #',
     '###############################################################################',
     '# Just add the repository to your APT sources:                                #',
@@ -139,7 +139,7 @@ async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
 body{font-family:'Courier New',Courier,monospace;max-width:1000px;margin:0 auto;padding:2rem;line-height:1.6;color:#e6edf3;background:#0d1117}
 a{color:#58a6ff}
 pre{background:#161b22;padding:1rem;overflow-x:auto;font-size:.85rem;margin:0;border:0!important}
-pre code{background:0 0;padding:0;border:0!important}
+pre code{background:transparent!important;padding:0!important}
 table{border-collapse:collapse;width:100%}
 th,td{text-align:left;padding:.5rem;border-bottom:1px solid #333}
 td a{text-decoration:none;color:#58a6ff}
@@ -166,7 +166,7 @@ td a:hover{text-decoration:underline}
 #                        unavailable or outdated in                           #
 #                       standard Ubuntu/Debian repos                          #
 #                                                                             #
-############################################################################### 
+###############################################################################
 </div></div>
 
 <h2>How to add repo</h2>
