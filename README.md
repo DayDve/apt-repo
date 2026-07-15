@@ -1,6 +1,6 @@
 # apt-repo
 
-![Apps](https://img.shields.io/badge/apps-7-blue)
+![Apps](https://img.shields.io/badge/apps-8-blue)
 
 Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos. Packages are delivered as-is from upstream developers or repackagers - no guarantees on functionality or fitness for purpose.
 
@@ -14,6 +14,7 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 | [keyd](https://github.com/rvaiya/keyd) | Key remapping daemon |
 | [rclone](https://github.com/rclone/rclone) | rsync for cloud storage |
 | [remotedesktopmanager](https://devolutions.net/remote-desktop-manager/) | One application for every remote connection you'll ever open |
+| [wlvncc](https://github.com/any1/wlvncc) | Wayland native VNC client |
 | [wps-office](https://github.com/Rongronggg9/wps-office-repack) | WPS Office repack with patches |
 
 ## Install
