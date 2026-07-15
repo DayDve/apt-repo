@@ -22,7 +22,7 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 sudo curl -fsSL https://apt.smbit.pro/apt-key.asc \
   -o /etc/apt/keyrings/daydve-apt-repo.asc && \
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \
-  https://apt.smbit.pro $(lsb_release -cs) main" \
+  https://apt.smbit.pro noble main" \
   | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \
 sudo apt update
 ```
