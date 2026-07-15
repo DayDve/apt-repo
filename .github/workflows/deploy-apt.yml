@@ -36,13 +36,14 @@ jobs:
 
       - name: Generate Packages
         run: |
+          > /tmp/tag-map
+          > /tmp/pool-map-entries
           for tag_dir in /tmp/by-tag/*/; do
             [ -d "$tag_dir" ] || continue
             tag=$(basename "$tag_dir")
             for deb in "$tag_dir"*.deb; do
               [ -f "$deb" ] || continue
               name=$(basename "$deb")
-              # extract distro from filename pattern '*_*_distro_*.deb', default 'noble'
               usc=$(echo "$name" | tr -cd '_' | wc -c)
               if [ "$usc" -ge 2 ]; then
                 distro=$(echo "$name" | rev | cut -d_ -f2 | rev)
@@ -63,21 +64,25 @@ jobs:
             cd "/tmp/pool/$distro"
             dpkg-scanpackages --multiversion main > Packages
 
-            grep "^Filename:" Packages | cut -d' ' -f2- | while read -r fpath; do
-              debname=$(basename "$fpath")
-              entry=$(grep "|$debname|" /tmp/tag-map | head -1)
-              [ -z "$entry" ] && continue
-              tag=$(echo "$entry" | cut -d'|' -f3)
-              url="https://github.com/$GITHUB_REPOSITORY/releases/download/$tag/$debname"
-              esc=$(echo "$fpath" | sed 's/[][\.|*^$+?(){}/\\&]/\\&/g')
-              sed -i "s|^Filename:[[:space:]]*$esc\$|Filename: $url|" Packages
-            done
+            # rewrite Filename to full relative path from repo root
+            sed -i "s|^Filename: main/|Filename: pool/$distro/main/|" Packages
 
             mkdir -p "$GITHUB_WORKSPACE/dists/$distro/main/binary-amd64"
             cp Packages "$GITHUB_WORKSPACE/dists/$distro/main/binary-amd64/Packages"
             gzip -9kf "$GITHUB_WORKSPACE/dists/$distro/main/binary-amd64/Packages"
             cd "$GITHUB_WORKSPACE"
           done
+
+      - name: Generate pool map
+        run: |
+          echo -n '{' > "$GITHUB_WORKSPACE/pool-map.json"
+          first=true
+          while IFS='|' read -r _distro deb_name tag; do
+            $first || echo -n ',' >> "$GITHUB_WORKSPACE/pool-map.json"
+            first=false
+            printf '"%s":"%s"' "$deb_name" "$tag" >> "$GITHUB_WORKSPACE/pool-map.json"
+          done < /tmp/tag-map
+          echo '}' >> "$GITHUB_WORKSPACE/pool-map.json"
 
       - name: Generate Release
         run: |
