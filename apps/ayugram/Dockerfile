@@ -103,7 +103,7 @@ RUN printf '[D-BUS Service]\n\
 Name=com.ayugram.desktop\n\
 Exec=/usr/bin/aygram-desktop\n' > usr/share/dbus-1/services/com.ayugram.service
 
-RUN dpkg-deb --root-owner-group --build . /out/ayugram_${APP_VERSION}_amd64.deb
+RUN mkdir -p /out && dpkg-deb --root-owner-group --build . /out/ayugram_${APP_VERSION}_amd64.deb
 
 FROM scratch
 COPY --from=package /out/*.deb /
