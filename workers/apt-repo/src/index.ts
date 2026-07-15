@@ -10,7 +10,7 @@ const REPO = 'DayDve/apt-repo';
 const PAGES = `https://daydve.github.io/apt-repo`;
 const POOL_MAP = `https://raw.githubusercontent.com/${REPO}/apt/pool-map.json`;
 const PACKAGES_JSON = `https://raw.githubusercontent.com/${REPO}/apt/packages.json`;
-const CACHE_BUST = 'v2';
+const CACHE_BUST = 'v3';
 
 export default {
   async fetch(request: Request, _env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -111,51 +111,64 @@ async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
   if (pkgs) {
     rows = pkgs.map(p => {
       const name = p.source
-        ? `<a href="${p.source}" target="_blank" rel="noopener">${p.name}</a>`
+        ? `<a href="${p.source}" rel="noopener">${p.name}</a>`
         : p.name;
-      return `<tr><td>${name}</td><td>${p.description}</td></tr>`;
+      return `<div class="pkg"><span class="pkg-name">${name}</span> <span class="pkg-desc">${p.description}</span></div>`;
     }).join('\n');
   } else {
-    rows = '<tr><td colspan="2">Failed to load package list</td></tr>';
+    rows = '<div class="pkg">error: could not fetch package list</div>';
   }
 
-  const pkgNames = pkgs ? pkgs.map(p => p.name).join(', ') : 'ayugram, bees, grub-btrfs, keyd, rclone, rdm, wps-office';
+  const setupCmd = `sudo curl -fsSL ${url.origin}/apt-key.asc \\
+  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\
+  ${url.origin} noble main" \\
+  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\
+sudo apt update`;
 
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DayDve APT Repository — ${pkgNames}</title>
-<meta name="description" content="Personal APT repository for Ubuntu with packages unavailable in standard repos: ${pkgNames}. Install via apt.smbit.pro.">
-<meta name="keywords" content="APT, repository, Ubuntu, noble, ${pkgNames}">
-<meta property="og:title" content="DayDve APT Repository">
-<meta property="og:description" content="Personal APT repository for Ubuntu with: ${pkgNames}">
-<meta property="og:type" content="website">
-<meta property="og:url" content="${url.origin}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css" crossorigin="anonymous">
+<title>apt.smbit.pro</title>
 <style>
-*{box-sizing:border-box}
-body{font-family:'Courier New',Courier,monospace;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6;color:#e6edf3;background:#0d1117}
-a{color:#58a6ff}
-pre{background:#161b22;padding:1rem;overflow-x:auto;font-size:.85rem;margin:0;border:0!important}
-pre code{background:0 0;padding:0;border:0!important}
-table{border-collapse:collapse;width:100%}
-th,td{text-align:left;padding:.5rem;border-bottom:1px solid #333}
-td a{text-decoration:none;color:#58a6ff}
-td a:hover{text-decoration:underline}
-.code-wrap{position:relative}
-.copy-btn{position:absolute;top:4px;right:4px;background:none;border:none;cursor:pointer;color:#555;padding:4px;line-height:0}
-.copy-btn:hover{color:#8b949e}
-.copy-btn.copied svg{stroke:#3fb950}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-.center{text-align:center}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#0c0c0c;
+  color:#b0b0b0;
+  font-family:'Courier New',Courier,monospace;
+  font-size:14px;
+  line-height:1.6;
+  max-width:820px;
+  margin:0 auto;
+  padding:2rem 1.5rem;
+}
+a{color:#7c7;text-decoration:none}
+a:hover{text-decoration:underline}
+.banner{color:#555;white-space:pre;line-height:1.15;margin-bottom:2rem;font-size:13px}
+h2{color:#ccc;font-size:16px;font-weight:400;margin:2rem 0 .8rem}
+h2::before{content:'$ ';color:#444}
+.cmd{background:#141414;padding:1rem;position:relative;margin-bottom:1rem}
+.cmd:hover .copy{opacity:1}
+.cmd pre{white-space:pre-wrap;word-break:break-all}
+.copy{
+  position:absolute;top:4px;right:8px;
+  background:none;border:1px solid #333;
+  color:#555;cursor:pointer;
+  font-family:'Courier New',monospace;font-size:11px;
+  padding:2px 6px;opacity:0;transition:opacity .15s
+}
+.copy:hover{color:#aaa;border-color:#555}
+.copy.done{color:#7c7;border-color:#7c7}
+.pkg{display:flex;padding:.4rem 0;border-bottom:1px solid #1a1a1a}
+.pkg-name{flex:0 0 160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pkg-desc{color:#777;flex:1}
+.footer{text-align:center;color:#444;margin-top:2.5rem;font-size:12px}
 </style>
 </head>
 <body>
-<h1 class="sr-only">DayDve APT Repository — ${pkgNames}</h1>
-<div class="center"><div style="white-space:pre;line-height:1.2">
-###############################################################################
+<pre class="banner">###############################################################################
 #                     _   ___ _____   ___                                     #
 #                    /_\\ | _ \\_   _| | _ \\___ _ __  ___                       #
 #                   / _ \\|  _/ | |   |   / -_) '_ \\/ _ \\                      #
@@ -165,56 +178,28 @@ td a:hover{text-decoration:underline}
 #                   Personal APT repository for software                      #
 #                        unavailable or outdated in                           #
 #                       standard Ubuntu/Debian repos                          #
-#                                                                             #
-# Just add the repository to your APT sources:                                #
-############################################################################### 
-</div></div>
+###############################################################################</pre>
 
-<h2>Setup</h2>
-<div class="code-wrap">
-<pre><code class="language-bash">sudo curl -fsSL ${url.origin}/apt-key.asc \\
-  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\
-  ${url.origin} noble main" \\
-  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\
-sudo apt update</code></pre>
-<button class="copy-btn" onclick="copy(this)" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+<h2>add repo</h2>
+<div class="cmd">
+<pre>${setupCmd}</pre>
+<button class="copy" onclick="copy(this)">copy</button>
 </div>
 
-<h2>Quick install</h2>
-<div class="code-wrap">
-<pre><code class="language-bash">curl -sL ${url.origin} | bash</code></pre>
-<button class="copy-btn" onclick="copy(this)" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+<h2>quick install</h2>
+<div class="cmd">
+<pre>curl -sL ${url.origin} | bash</pre>
+<button class="copy" onclick="copy(this)">copy</button>
 </div>
 
-<h2>Available packages</h2>
-<table>
-<tr><th>Package</th><th>Description</th></tr>
+<h2>packages</h2>
 ${rows}
-</table>
 
-<p class="center"><a href="https://github.com/${REPO}"><img src="https://img.shields.io/badge/GitHub-DayDve%2Fapt--repo-181717?logo=github" alt="GitHub Repository"></a></p>
-<p class="center" style="color:#8b949e;font-size:.85rem">Built for personal use</p>
+<div class="footer">[ <a href="https://github.com/${REPO}">github.com/${REPO}</a> ]</div>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "DayDve APT Repository",
-  "description": "Personal APT repository for Ubuntu Noble with: ${pkgNames}",
-  "url": "${url.origin}",
-  "about": {
-    "@type": "SoftwareSourceCode",
-    "programmingLanguage": "deb",
-    "operatingSystem": "Linux",
-    "softwareVersion": "noble"
-  }
-}
+<script>
+function copy(btn){let t=btn.parentElement.querySelector('pre').textContent;navigator.clipboard.writeText(t).then(()=>{btn.textContent='done';btn.classList.add('done');setTimeout(()=>{btn.textContent='copy';btn.classList.remove('done')},1500)}).catch(()=>{})}
 </script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" crossorigin="anonymous"></script>
-<script>hljs.highlightAll();
-function copy(b){let c=b.parentElement.querySelector('code');navigator.clipboard.writeText(c.textContent).then(()=>{b.classList.add('copied');setTimeout(()=>{b.classList.remove('copied')},2000)}).catch(()=>{})}</script>
 </body>
 </html>`;
   return new Response(html, {
