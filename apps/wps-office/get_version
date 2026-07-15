@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+set -e
+
+current_version="$1"
+release=$(gh api repos/Rongronggg9/wps-office-repack/releases/latest 2>/dev/null)
+tag=$(echo "$release" | jq -r '.tag_name')
+version="${tag#v}.repack"
+
+echo "version=$version"
+echo "---"
+
+body=$(echo "$release" | jq -r '.body')
+
+python3 -c "
+import sys, json, urllib.request, urllib.parse, re, html
+from html.parser import HTMLParser
+
+body = sys.stdin.read()
+
+# extract CHN Changelog section
+start = body.find('<summary><h1>CHN Changelog</h1></summary>')
+if start < 0:
+    sys.exit(0)
+start = body.find('</details>', start)
+end = body.find('<details><summary><h1>INT Changelog</h1></summary>')
+if end < 0 or end <= start:
+    end = len(body)
+section = body[start + 11:end]
+
+# strip HTML
+class MLStripper(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.text = []
+    def handle_data(self, d):
+        self.text.append(d)
+    def get_text(self):
+        return ''.join(self.text)
+
+s = MLStripper()
+s.feed(section)
+text = html.unescape(s.get_text())
+
+# clean lines
+lines = [l.strip() for l in text.split('\n') if l.strip()]
+
+# translate function
+def translate(text):
+    try:
+        params = urllib.parse.urlencode({'client': 'gtx', 'sl': 'zh-CN', 'tl': 'en', 'dt': 't', 'q': text}, encoding='utf-8')
+        req = urllib.request.Request(
+            f'https://translate.googleapis.com/translate_a/single?{params}',
+            headers={'User-Agent': 'Mozilla/5.0'}
+        )
+        resp = urllib.request.urlopen(req, timeout=5)
+        data = json.loads(resp.read().decode())
+        parts = [p[0] for p in data[0]]
+        return ''.join(parts)
+    except Exception:
+        return None
+
+for line in lines:
+    # check if contains chinese chars
+    if re.search(r'[\u4e00-\u9fff]', line):
+        t = translate(line)
+        if t:
+            print(t)
+            continue
+    print(line)
+" <<< "$body" 2>/dev/null || echo "(CHN Changelog extraction failed)"
