@@ -94,26 +94,35 @@ async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>DayDve APT Repository</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css" crossorigin="anonymous">
 <style>
-body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6}
-h1{border-bottom:1px solid #eee;padding-bottom:.5rem}
-code{background:#f5f5f5;padding:.2rem .4rem;border-radius:3px;font-size:.9em}
-pre{background:#f5f5f5;padding:1rem;border-radius:5px;overflow-x:auto}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6;color:#1f2328}
+h1{border-bottom:1px solid #d0d7de;padding-bottom:.5rem}
+pre{background:#f6f8fa;padding:1rem;border-radius:6px;overflow-x:auto;position:relative;border:1px solid #d0d7de;font-size:.85rem;margin:0}
+pre code{background:0 0;padding:0;border-radius:0}
 table{border-collapse:collapse;width:100%}
-th,td{text-align:left;padding:.5rem;border-bottom:1px solid #eee}
-td a{text-decoration:none}
+th,td{text-align:left;padding:.5rem;border-bottom:1px solid #d0d7de}
+td a{text-decoration:none;color:#0969da}
 td a:hover{text-decoration:underline}
+.code-header{display:flex;justify-content:flex-end;margin-bottom:0}
+.copy-btn{font-size:.75rem;padding:.2rem .6rem;border:1px solid #d0d7de;border-radius:4px;background:#f6f8fa;cursor:pointer;color:#656d76;font-family:inherit}
+.copy-btn:hover{background:#eaeef2}
+.copy-btn.copied{color:#1a7f37;border-color:#1a7f37}
 </style>
 </head>
 <body>
 <h1>DayDve APT Repository</h1>
 <p>Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos.</p>
 
-<h2>Install</h2>
-<pre>sudo curl -fsSL ${url.origin}/apt-key.asc -o /etc/apt/keyrings/daydve-apt-repo.asc
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] ${url.origin} $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list
-sudo apt update
-sudo apt install &lt;package&gt;</pre>
+<h2>Setup</h2>
+<div class="code-header"><button class="copy-btn" onclick="copy(this)">Copy</button></div>
+<pre><code class="language-bash">sudo curl -fsSL ${url.origin}/apt-key.asc \
+  -o /etc/apt/keyrings/daydve-apt-repo.asc && \
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \
+  ${url.origin} \$(lsb_release -cs) main" \
+  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \
+sudo apt update</code></pre>
 
 <h2>Available packages</h2>
 <table>
@@ -122,6 +131,10 @@ ${rows}
 </table>
 
 <p><a href="https://github.com/${REPO}">GitHub Repository</a></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" crossorigin="anonymous"></script>
+<script>hljs.highlightAll();
+function copy(b){let c=b.parentElement.nextElementSibling;navigator.clipboard.writeText(c.textContent).then(()=>{b.textContent="Copied!";b.classList.add("copied");setTimeout(()=>{b.textContent="Copy";b.classList.remove("copied")},2000)}).catch(()=>{})}</script>
 </body>
 </html>`;
   return new Response(html, {
