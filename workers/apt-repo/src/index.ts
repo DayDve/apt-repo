@@ -144,16 +144,17 @@ td a:hover{text-decoration:underline}
 .copy-btn:hover{background:#30363d}
 .copy-btn.copied{color:#3fb950;border-color:#3fb950}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.center{text-align:center}
 </style>
 </head>
 <body>
 <h1 class="sr-only">DayDve APT Repository — ${pkgNames}</h1>
-<pre aria-hidden="true" style="background:0 0;border:0;padding:0;font-size:.8rem;line-height:1.2"> ___            ___              _   ___ _____   ___               
+<pre aria-hidden="true" class="center" style="background:0 0;border:0;padding:0;font-size:.8rem;line-height:1.2"> ___            ___              _   ___ _____   ___               
 |   \\ __ _ _  _|   \\__ _____    /_\\ | _ \\_   _| | _ \\___ _ __  ___ 
 | |) / _\` | || | |) \\ V / -_)  / _ \\|  _/ | |   |   / -_) '_ \\/ _ \\
 |___/\\__,_|\\_, |___/ \\_/\\___| /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/
            |__/                                         |_|        </pre>
-<p>Personal APT repository for Ubuntu Noble with software unavailable or outdated in standard repos<span class="sr-only">: ${pkgNames}.</span></p>
+<p>Personal APT repository for Ubuntu Noble with software unavailable or outdated in standard repos<span class="sr-only">${pkgNames}.</span></p>
 
 <h2>Setup</h2>
 <div class="code-header"><button class="copy-btn" onclick="copy(this)">Copy</button></div>
@@ -174,7 +175,7 @@ sudo apt update</code></pre>
 ${rows}
 </table>
 
-<p><a href="https://github.com/${REPO}"><img src="https://img.shields.io/badge/GitHub-DayDve%2Fapt--repo-181717?logo=github" alt="GitHub Repository"></a></p>
+<p class="center"><a href="https://github.com/${REPO}"><img src="https://img.shields.io/badge/GitHub-DayDve%2Fapt--repo-181717?logo=github" alt="GitHub Repository"></a></p>
 
 <script type="application/ld+json">
 {
