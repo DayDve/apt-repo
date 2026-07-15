@@ -18,20 +18,30 @@ from html.parser import HTMLParser
 body = sys.stdin.read()
 
 # extract CHN Changelog section
-start = body.find('<summary><h1>CHN Changelog</h1></summary>')
+start_marker = '<summary><h1>CHN Changelog</h1></summary>'
+start = body.find(start_marker)
 if start < 0:
     sys.exit(0)
-start = body.find('</details>', start)
-end = body.find('<details><summary><h1>INT Changelog</h1></summary>')
-if end < 0 or end <= start:
+start += len(start_marker)
+end = body.find('</details>', start)
+if end < 0:
     end = len(body)
-section = body[start + 11:end]
+section = body[start:end]
 
 # strip HTML
 class MLStripper(HTMLParser):
     def __init__(self):
         super().__init__()
         self.text = []
+        self.in_li = False
+    def handle_starttag(self, tag, attrs):
+        if tag in ('li', 'br', 'h2', 'h3', 'p'):
+            self.text.append('\n')
+        if tag == 'li':
+            self.in_li = True
+    def handle_endtag(self, tag):
+        if tag == 'li':
+            self.in_li = False
     def handle_data(self, d):
         self.text.append(d)
     def get_text(self):
