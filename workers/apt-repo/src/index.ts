@@ -174,7 +174,7 @@ sudo apt update</code></pre>
 ${rows}
 </table>
 
-<p><a href="https://github.com/${REPO}">GitHub Repository</a></p>
+<p><a href="https://github.com/${REPO}"><img src="https://img.shields.io/badge/GitHub-DayDve%2Fapt--repo-181717?logo=github" alt="GitHub Repository"></a></p>
 
 <script type="application/ld+json">
 {
