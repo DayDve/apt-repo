@@ -149,11 +149,11 @@ td a:hover{text-decoration:underline}
 </head>
 <body>
 <h1 class="sr-only">DayDve APT Repository — ${pkgNames}</h1>
-<pre aria-hidden="true" class="center" style="background:0 0;border:0;padding:0;font-size:.8rem;line-height:1.2"> ___            ___              _   ___ _____   ___               
-|   \\ __ _ _  _|   \\__ _____    /_\\ | _ \\_   _| | _ \\___ _ __  ___ 
-| |) / _\` | || | |) \\ V / -_)  / _ \\|  _/ | |   |   / -_) '_ \\/ _ \\
-|___/\\__,_|\\_, |___/ \\_/\\___| /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/
-           |__/                                         |_|        </pre>
+<pre aria-hidden="true" class="center" style="background:0 0;border:0;padding:0;font-size:.8rem;line-height:1.2">_   ___ _____   ___  
+  /_\\ | _ \\_   _| | _ \\___ _ __  ___ 
+ / _ \\|  _/ | |   |   / -_) '_ \\/ _ \\
+/_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/
+                 by DayDve|_|        </pre>
 <p class="center">Personal APT repository with software unavailable or outdated in standard repos<span class="sr-only">${pkgNames}.</span></p>
 
 <h2>Setup</h2>
