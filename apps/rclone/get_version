@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+
+current_version="$1"
+release=$(gh api repos/rclone/rclone/releases/latest 2>/dev/null)
+tag=$(echo "$release" | jq -r '.tag_name')
+version="${tag#v}"
+
+echo "version=$version"
+echo "---"
+
+echo "$release" | jq -r '.body' 2>/dev/null || true
