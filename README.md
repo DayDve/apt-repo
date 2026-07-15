@@ -8,13 +8,13 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 
 | App | Description |
 |---|---|
-| [ayugram](https://github.com/AyuGram/AyuGramDesktop) | AyuGram Desktop |
-| [bees](https://github.com/Zygo/bees) | Btrfs deduplication daemon |
-| [grub-btrfs](https://github.com/Antynea/grub-btrfs) | Grub btrfs snapshot boot manager. |
-| [keyd](https://github.com/rvaiya/keyd) | A key remapping daemon for linux. |
-| [rclone](https://github.com/rclone/rclone) | Rclone - "rsync for cloud storage" |
-| [rdm](https://devolutions.net/remote-desktop-manager/) | Centralize, Manage and Secure Remote Connections |
-| [wps-office](https://github.com/Rongronggg9/wps-office-repack) | WPS Office, is an office productivity suite. |
+| [ayugram](https://github.com/AyuGram/AyuGramDesktop) | Telegram client with enhanced features |
+| [bees](https://github.com/Zygo/bees) | btrfs deduplication daemon |
+| [grub-btrfs](https://github.com/Antynea/grub-btrfs) | GRUB menu entries for btrfs snapshots |
+| [keyd](https://github.com/rvaiya/keyd) | Key remapping daemon |
+| [rclone](https://github.com/rclone/rclone) | rsync for cloud storage |
+| [remotedesktopmanager](https://devolutions.net/remote-desktop-manager/) | One application for every remote connection you'll ever open |
+| [wps-office](https://github.com/Rongronggg9/wps-office-repack) | WPS Office repack with patches |
 
 ## Install
 
