@@ -1,36 +1,36 @@
 [{
   "name": "ayugram",
-  "description": "AyuGram Desktop",
-  "source": "https://github.com/AyuGram/AyuGramDesktop"
+  "description": "",
+  "source": ""
 }
 ,{
   "name": "bees",
-  "description": "Btrfs deduplication daemon",
-  "source": "https://github.com/Zygo/bees"
+  "description": "",
+  "source": ""
 }
 ,{
   "name": "grub-btrfs",
-  "description": "Grub btrfs snapshot boot manager.",
-  "source": "https://github.com/Antynea/grub-btrfs"
+  "description": "",
+  "source": ""
 }
 ,{
   "name": "keyd",
-  "description": "A key remapping daemon for linux.",
-  "source": "https://github.com/rvaiya/keyd"
+  "description": "",
+  "source": ""
 }
 ,{
   "name": "rclone",
-  "description": "Rclone - \"rsync for cloud storage\"",
-  "source": "https://github.com/rclone/rclone"
+  "description": "",
+  "source": ""
 }
 ,{
   "name": "rdm",
-  "description": "Centralize, Manage and Secure Remote Connections",
-  "source": "https://devolutions.net/remote-desktop-manager/"
+  "description": "",
+  "source": ""
 }
 ,{
   "name": "wps-office",
-  "description": "WPS Office, is an office productivity suite.",
-  "source": "https://github.com/Rongronggg9/wps-office-repack"
+  "description": "",
+  "source": ""
 }
 ]
