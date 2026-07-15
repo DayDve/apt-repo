@@ -1,7 +1,3 @@
 name = "apt-repo"
 main = "src/index.ts"
 compatibility_date = "2026-07-15"
-
-routes = [
-  { pattern = "apt.smbit.pro", custom_domain = true },
-]
