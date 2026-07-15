@@ -6,15 +6,15 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 
 ## Available packages
 
-| App | Description | Source |
-|---|---|---|
-| **ayugram** | Telegram client with enhanced features | [AyuGram/AyuGramDesktop](https://github.com/AyuGram/AyuGramDesktop) |
-| **bees** | btrfs deduplication daemon | [Zygo/bees](https://github.com/Zygo/bees) |
-| **grub-btrfs** | GRUB menu entries for btrfs snapshots | [Antynea/grub-btrfs](https://github.com/Antynea/grub-btrfs) |
-| **keyd** | Key remapping daemon | [rvaiya/keyd](https://github.com/rvaiya/keyd) |
-| **rclone** | rsync for cloud storage | [rclone/rclone](https://github.com/rclone/rclone) |
-| **rdm** | Remote Desktop Manager | [Devolutions](https://devolutions.net/remote-desktop-manager/) |
-| **wps-office** | WPS Office repack with patches | [Rongronggg9/wps-office-repack](https://github.com/Rongronggg9/wps-office-repack) |
+| App | Description |
+|---|---|
+| [ayugram](https://github.com/AyuGram/AyuGramDesktop) | Telegram client with enhanced features |
+| [bees](https://github.com/Zygo/bees) | btrfs deduplication daemon |
+| [grub-btrfs](https://github.com/Antynea/grub-btrfs) | GRUB menu entries for btrfs snapshots |
+| [keyd](https://github.com/rvaiya/keyd) | Key remapping daemon |
+| [rclone](https://github.com/rclone/rclone) | rsync for cloud storage |
+| [rdm](https://devolutions.net/remote-desktop-manager/) | Remote Desktop Manager |
+| [wps-office](https://github.com/Rongronggg9/wps-office-repack) | WPS Office repack with patches |
 
 ## Install
 
@@ -27,12 +27,11 @@ sudo apt install <package>
 
 ## Want to add a package?
 
-Open a pull request with `apps/<app>/` containing three files:
+Open a pull request with `apps/<app>/` containing two files. Use [`apps/template/`](apps/template/) as a starting point.
 
 | File | Requirements |
 |---|---|
 | `Dockerfile` | Multi-stage build for `docker buildx`. Final stage must be `FROM scratch` with `COPY --from=<stage> /path/*.deb /`. Build arg `APP_VERSION` is passed automatically. |
-| `check_update` | Exit 0 if upstream has a newer version than `$1` (current release). Exit 1 otherwise. |
-| `get_version` | Print `version=<V>` on line 1, `---` on line 2, then changelog (used as release notes). |
+| `package` | Sourced by [`apps/build.sh`](apps/build.sh). Must define `SOURCE_URL`, `check_update()`, and `get_version()`. See [template](apps/template/package) for the interface and patterns. |
 
 The PR description should explain what the package is and why it doesn't belong in standard repos.
