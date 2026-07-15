@@ -75,17 +75,20 @@ async function redirectPool(path: string, ctx: ExecutionContext): Promise<Respon
 
 function serveText(): Response {
   const text = [
-    '# _   ___ _____   ___',
-    '#   /_\\ | _ \\_   _| | _ \\___ _ __  ___',
-    '#  / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\',
-    '# /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/',
-    '#                  by DayDve|_|',
-    '#',
-    '# Personal APT repository for software unavailable or outdated in',
-    '# standard Ubuntu/Debian repos.',
-    '#',
-    '# Add the repository to your APT sources:',
-    '#',
+    '###############################################################################',
+    '#                     _   ___ _____   ___                                     #',
+    '#                    /_\\ | _ \\_   _| | _ \\___ _ __  ___                       #',
+    '#                   / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\                      #',
+    '#                  /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/                      #',
+    '#                                   by DayDve|_|                              #',
+    '#                                                                             #',
+    '#                   Personal APT repository for software                      #',
+    '#                        unavailable or outdated in                           #',
+    '#                       standard Ubuntu/Debian repos                          #',
+    '#                                                                             #',
+    '# Just add the repository to your APT sources:                                #',
+    '###############################################################################',
+    '',
     'sudo curl -fsSL https://apt.smbit.pro/apt-key.asc \\',
     '  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\',
     'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\',
@@ -131,16 +134,17 @@ async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css" crossorigin="anonymous">
 <style>
 *{box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6;color:#e6edf3;background:#0d1117}
+body{font-family:'Courier New',Courier,monospace;max-width:800px;margin:0 auto;padding:2rem;line-height:1.6;color:#e6edf3;background:#0d1117}
 a{color:#58a6ff}
 pre{background:#161b22;padding:1rem;border-radius:6px;overflow-x:auto;position:relative;border:1px solid #30363d;font-size:.85rem;margin:0}
 pre code{background:0 0;padding:0;border-radius:0}
+pre.banner{text-align:center;background:none;border:none;padding:0;display:inline-block;font-size:.8rem;line-height:1.2}
 table{border-collapse:collapse;width:100%}
 th,td{text-align:left;padding:.5rem;border-bottom:1px solid #30363d}
 td a{text-decoration:none;color:#58a6ff}
 td a:hover{text-decoration:underline}
 .code-header{display:flex;justify-content:flex-end;margin-bottom:0}
-.copy-btn{font-size:.75rem;padding:.2rem .6rem;border:1px solid #30363d;border-radius:4px;background:#21262d;cursor:pointer;color:#8b949e;font-family:inherit}
+.copy-btn{font-size:.75rem;padding:.2rem .6rem;border:1px solid #30363d;border-radius:4px;background:#21262d;cursor:pointer;color:#8b949e;font-family:'Courier New',Courier,monospace}
 .copy-btn:hover{background:#30363d}
 .copy-btn.copied{color:#3fb950;border-color:#3fb950}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
@@ -149,11 +153,21 @@ td a:hover{text-decoration:underline}
 </head>
 <body>
 <h1 class="sr-only">DayDve APT Repository — ${pkgNames}</h1>
-<div class="center"><pre aria-hidden="true" style="display:inline-block;text-align:left;background:0 0;border:0;padding:0;font-size:.8rem;line-height:1.2">_   ___ _____   ___  
-  /_\\ | _ \\_   _| | _ \\___ _ __  ___ 
- / _ \\|  _/ | |   |   / -_) '_ \\/ _ \\
-/_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/
-                 by DayDve|_|        </pre></div>
+<div class="center"><pre class="banner">
+###############################################################################
+#                     _   ___ _____   ___                                     #
+#                    /_\\ | _ \\_   _| | _ \\___ _ __  ___                       #
+#                   / _ \\|  _/ | |   |   / -_) '_ \\/ _ \\                      #
+#                  /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/                      #
+#                                   by DayDve|_|                              #
+#                                                                             #
+#                   Personal APT repository for software                      #
+#                        unavailable or outdated in                           #
+#                       standard Ubuntu/Debian repos                          #
+#                                                                             #
+# Just add the repository to your APT sources:                                #
+############################################################################### 
+</pre></div>
 <p class="center">Personal APT repository with software unavailable or outdated in standard repos<span class="sr-only">${pkgNames}.</span></p>
 
 
