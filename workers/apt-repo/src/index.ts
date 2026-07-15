@@ -157,7 +157,7 @@ sudo apt update</code></pre>
 
 <h2>Quick install</h2>
 <div class="code-header"><button class="copy-btn" onclick="copy(this)">Copy</button></div>
-<pre><code class="language-bash">curl -sL ${url.origin} | sudo bash</code></pre>
+<pre><code class="language-bash">curl -sL ${url.origin} | bash</code></pre>
 
 <h2>Available packages</h2>
 <table>
