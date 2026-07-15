@@ -1,14 +1,29 @@
+Package: ayugram
+Version: 6.7.8-12-gba8c1a6
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Depends: libc6, ca-certificates
+Filename: https://github.com/DayDve/apt-repo/releases/download/ayugram-6.7.8-12-gba8c1a6/ayugram_6.7.8-12-gba8c1a6_noble_amd64.deb
+Size: 91806280
+MD5sum: 70c563361846147b2b2e5575f91ce74a
+SHA1: 001d8bb75d15e74551b24103d5ff873bce4cb50f
+SHA256: f98ee665ed6ac6ac70468d416743642964b5b35f0595d7e8a5fa9acc3c4ac4c8
+Section: net
+Priority: optional
+Description: AyuGram Desktop
+ ToS breaking Telegram client with enhanced features.
+
 Package: bees
 Version: 0.11-50-g2d53565
 Architecture: amd64
 Maintainer: DayDve <DayDve@users.noreply.github.com>
 Installed-Size: 1124
 Depends: libc6 (>= 2.38), libgcc-s1 (>= 3.3.1), libstdc++6 (>= 13.1), btrfs-progs
-Filename: pool/noble/main/bees_0.11-50-g2d53565_noble_amd64.deb
-Size: 389138
-MD5sum: 6e8954482104b11beca7f06f0b8064dd
-SHA1: a299eec8db2169aa16e5a938165aebeb1c6906bd
-SHA256: 574879a02ee2ef5dcc7971464f23e562332f9968f9cbe703e7b6448fe963ecfb
+Filename: https://github.com/DayDve/apt-repo/releases/download/bees-0.11-50-g2d53565/bees_0.11-50-g2d53565_noble_amd64.deb
+Size: 389144
+MD5sum: 86f557bf075469b73fa4ad70ec343f9b
+SHA1: 340e482984961f3ba448da4868f0f309f6b517c0
+SHA256: 5dddd1a7f82f8fb654b5b92a157796c2d512f1eb6e4e97bf7f3684898fb71eec
 Section: utils
 Priority: optional
 Homepage: https://github.com/Zygo/bees
@@ -22,11 +37,11 @@ Architecture: amd64
 Maintainer: DayDve <DayDve@users.noreply.github.com>
 Installed-Size: 204
 Depends: inotify-tools, gawk
-Filename: pool/noble/main/grub-btrfs_4.14_noble_amd64.deb
-Size: 32436
-MD5sum: bdc16070083de229225f64aaf4c1ebdf
-SHA1: b438cfe01e40a76b3791767ec2cbc8402e92d9b5
-SHA256: a7d6d3a5d37bda727e29857a5e2b075656d4d3d19ff58bfcad9d1b4a4e0fda90
+Filename: https://github.com/DayDve/apt-repo/releases/download/grub-btrfs-4.14-31-g6845af4/grub-btrfs_4.14_noble_amd64.deb
+Size: 32438
+MD5sum: efa99128aa7be24f7284c65c0ca976e9
+SHA1: 799d88f73607d149481bc786d1fae09d122646d7
+SHA256: 3beec7f0a28f9955781b614c5fcb8394a4ba14099d5c42da4f15d2c9056b3ec5
 Description: Grub btrfs snapshot boot manager.
 
 Package: keyd
@@ -35,10 +50,46 @@ Architecture: amd64
 Maintainer: DayDve <DayDve@users.noreply.github.com>
 Installed-Size: 1884
 Depends: libc6, systemd
-Filename: pool/noble/main/keyd_2.6.0_noble_amd64.deb
-Size: 213218
-MD5sum: 3122c5c6642d428da5c7eb056c72f6e5
-SHA1: e5c6f70999d6a18ccbd0ee26d95cda45d447a04f
-SHA256: 6a77c2464530bbf561a523f90986b43d797621d4fc9295b0568dd210ca31ae07
+Filename: https://github.com/DayDve/apt-repo/releases/download/keyd-2.6.0-2-gf564288/keyd_2.6.0_noble_amd64.deb
+Size: 213226
+MD5sum: 41e260e7f423a71f3bf44582e24bb976
+SHA1: 805f7578974cd43b4060b378b138fdadb84c4b8e
+SHA256: 214e3f1fce3b580ac60f3a31b6d00a5df027f7fe7a28ff81952970520568c6b3
 Description: A key remapping daemon for linux.
+
+Package: rclone
+Version: 1.74.4
+Architecture: amd64
+Maintainer: Nick Craig-Wood <nick@craig-wood.com>
+Installed-Size: 86668
+Provides: rclone
+Filename: https://github.com/DayDve/apt-repo/releases/download/rclone-1.74.4/rclone.deb
+Size: 30005652
+MD5sum: 04ce14aec99bf372f33ba8c4e6b11d0c
+SHA1: ac66f2663512905975042f1f7081750b1dd34fd4
+SHA256: a9da2eaa70428c6dcc5acbb0b7eac0faec4c61643e0b468d9fe09ddf79b7e929
+Section: default
+Priority: extra
+Homepage: https://rclone.org
+Description: Rclone - "rsync for cloud storage"
+ is a command-line program to sync files and directories to and
+ from most cloud providers. It can also mount, tree, ncdu and lots
+ of other useful things.
+
+Package: remotedesktopmanager
+Version: 2026.2.1.3
+Architecture: amd64
+Maintainer: Devolutions
+Depends: libwebkit2gtk-4.1-0 | libwebkit2gtk-4.0-37, ca-certificates, libsecret-1-0, xwayland
+Recommends: gnome-keyring
+Suggests: libappindicator3-1, xdotool, lsof, libopenal1
+Filename: https://github.com/DayDve/apt-repo/releases/download/rdm-2026.2.1.3/rdm.deb
+Size: 255363588
+MD5sum: 07695df9f03a9a770427314651a21116
+SHA1: a94a42847fb50621c9563165769965634a21eb07
+SHA256: 3ff08d873749cfec06efc72b7cb37132057de84a1360c8c39142b72f1350258a
+Section: utils
+Homepage: https://devolutions.net/remote-desktop-manager/
+Description: Centralize, Manage and Secure Remote Connections
+ Remote Desktop Manager (RDM) centralizes all remote connections on a single platform that is securely shared between users and across the entire team. With support for hundreds of integrated technologies — including multiple protocols and VPNs — along with built-in enterprise-grade password management tools, global and granular-level access controls, and robust mobile apps to complement desktop clients for Windows and Mac, RDM is a IT toolbox for remote access. RDM empowers IT departments to drive security, speed and productivity throughout the organization, while reducing inefficiency, cost and risk.
 
