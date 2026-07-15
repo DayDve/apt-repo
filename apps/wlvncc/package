@@ -1,0 +1,31 @@
+SOURCE_URL="https://github.com/any1/wlvncc"
+DESCRIPTION="Wayland native VNC client"
+
+check_update() {
+  local current="${1:-}"
+  
+  local latest_sha
+  latest_sha=$(gh api "repos/any1/wlvncc/commits?per_page=1" --jq '.[0].sha' 2>/dev/null | cut -c1-7 || echo "")
+  
+  local headers
+  headers=$(gh api "repos/any1/wlvncc/commits?per_page=1" -i --silent 2>/dev/null || echo "")
+  local total_commits
+  total_commits=$(echo "$headers" | grep -i "^link:" | grep -oP 'page=\K\d+(?=>; rel="last")' || echo "0")
+  
+  local meson_build
+  meson_build=$(curl -fsSL "https://raw.githubusercontent.com/any1/wlvncc/master/meson.build" 2>/dev/null || echo "")
+  
+  local base_version
+  base_version=$(echo "$meson_build" | grep -oP "version:\s*'\K[^']+" || echo "0.1.0")
+
+  version="${base_version}-${total_commits}-g${latest_sha}"
+  [ "$version" != "$current" ]
+}
+
+get_version() {
+  local current="${1:-}"
+  check_update "$current"
+  
+  # Return changelog / info link
+  echo "See commit history at: https://github.com/any1/wlvncc/commits/master"
+}
