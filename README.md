@@ -27,12 +27,11 @@ sudo apt install <package>
 
 ## Want to add a package?
 
-Open a pull request with `apps/<app>/` containing three files:
+Open a pull request with `apps/<app>/` containing two files. Use [`apps/template/`](apps/template/) as a starting point.
 
 | File | Requirements |
 |---|---|
 | `Dockerfile` | Multi-stage build for `docker buildx`. Final stage must be `FROM scratch` with `COPY --from=<stage> /path/*.deb /`. Build arg `APP_VERSION` is passed automatically. |
-| `check_update` | Exit 0 if upstream has a newer version than `$1` (current release). Exit 1 otherwise. |
-| `get_version` | Print `version=<V>` on line 1, `---` on line 2, then changelog (used as release notes). |
+| `package` | Sourced by [`apps/build.sh`](apps/build.sh). Must define `SOURCE_URL`, `check_update()`, and `get_version()`. See [template](apps/template/package) for interface and common patterns. Available helpers: `gh_tag_ahead`, `gh_latest_release`, `gh_tag_message`, `gh_commits_between`, `gh_release_body`. |
 
 The PR description should explain what the package is and why it doesn't belong in standard repos.

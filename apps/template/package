@@ -1,0 +1,91 @@
+# ============================================================
+# Package script for <app-name>
+# ============================================================
+# Required by build.sh:
+#   SOURCE_URL      — upstream project URL (used in packages.json)
+#   check_update()  — exit 0 (update available) / 1 (up-to-date)
+#   get_version()   — stdout:
+#                       version=<string>
+#                       source=<url>
+#                       ---
+#                       <changelog text>
+#
+# Available helpers from build.sh:
+#   gh_tag_ahead <owner/repo>
+#     Sets: LATEST_TAG, HEAD_SHA, AHEAD_COUNT
+#   gh_latest_release <owner/repo>
+#     Sets: LATEST_TAG, RELEASE_BODY
+#   gh_tag_message <owner/repo> <tag>
+#     Outputs annotated tag message (returns 1 if not annotated)
+#   gh_commits_between <owner/repo> <base> <head>
+#     Outputs commit list
+#   gh_release_body <owner/repo>
+#     Outputs latest release body
+#   gh_release_body_by_tag <owner/repo> <tag>
+#     Outputs release body for a specific tag
+# ============================================================
+
+SOURCE_URL="https://github.com/OWNER/REPO"
+
+# --- Pattern A: release-based versioning (e.g. rclone, wps-office) ---
+# check_update() {
+#   gh_latest_release OWNER/REPO
+#   local version="${LATEST_TAG#v}"
+#   [ "$version" != "${1:-}" ]
+# }
+#
+# get_version() {
+#   gh_latest_release OWNER/REPO
+#   local version="${LATEST_TAG#v}"
+#   echo "version=$version"
+#   echo "source=$SOURCE_URL"
+#   echo "---"
+#   echo "$RELEASE_BODY"
+# }
+
+# --- Pattern B: tag + commits-ahead versioning (e.g. bees, keyd, grub-btrfs) ---
+# check_update() {
+#   gh_tag_ahead OWNER/REPO
+#   local version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
+#   [ "$version" != "${1:-}" ]
+# }
+#
+# get_version() {
+#   local current="${1:-}"
+#   gh_tag_ahead OWNER/REPO
+#   local version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
+#   echo "version=$version"
+#   echo "source=$SOURCE_URL"
+#   echo "---"
+#   if [ -z "$current" ]; then
+#     gh_release_body OWNER/REPO
+#     return
+#   fi
+#   local current_tag_base="v$(echo "$current" | sed -E 's/-[0-9]+-g[0-9a-f]+$//')"
+#   if [ "$current_tag_base" != "$LATEST_TAG" ]; then
+#     gh_release_body OWNER/REPO
+#     return
+#   fi
+#   local old_sha; old_sha=$(echo "$current" | sed 's/.*-g//')
+#   gh_commits_between OWNER/REPO "$old_sha" HEAD
+# }
+
+# --- Pattern C: scraped version (e.g. rdm) ---
+# check_update() {
+#   local current="${1:-}"
+#   local url version
+#   url=$(curl -s https://example.com/download/ | grep -oP 'pattern' | head -1)
+#   version=$(grep -oP 'version-pattern' <<<"${url}")
+#   [ "$version" != "$current" ]
+# }
+#
+# get_version() {
+#   local current="${1:-}"
+#   local url version
+#   url=$(curl -s https://example.com/download/ | grep -oP 'pattern' | head -1)
+#   version=$(grep -oP 'version-pattern' <<<"${url}")
+#   echo "version=$version"
+#   echo "source=$SOURCE_URL"
+#   echo "---"
+#   # fetch changelog from upstream
+# }
