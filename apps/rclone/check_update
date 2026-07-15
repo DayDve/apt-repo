@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-current_version="$1"
-latest_tag=$(gh api repos/rclone/rclone/releases/latest --jq '.tag_name' 2>/dev/null || echo "unknown")
-latest_version="${latest_tag#v}"
-
-[ "$latest_version" != "$current_version" ]

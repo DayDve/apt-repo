@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-current_version="$1"
-current_clean="${current_version%.repack}"
-latest_tag=$(gh api repos/Rongronggg9/wps-office-repack/releases/latest --jq '.tag_name' 2>/dev/null || echo "unknown")
-latest_version="${latest_tag#v}"
-
-[ "$latest_version" != "$current_clean" ]

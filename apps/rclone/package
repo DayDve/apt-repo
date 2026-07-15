@@ -1,0 +1,18 @@
+SOURCE_URL="https://github.com/rclone/rclone"
+
+check_update() {
+  gh_latest_release rclone/rclone
+  local version="${LATEST_TAG#v}"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  local current="${1:-}"
+  gh_latest_release rclone/rclone
+  local version="${LATEST_TAG#v}"
+
+  echo "version=$version"
+  echo "source=$SOURCE_URL"
+  echo "---"
+  echo "$RELEASE_BODY"
+}

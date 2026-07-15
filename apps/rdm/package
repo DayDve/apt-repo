@@ -1,0 +1,32 @@
+SOURCE_URL="https://devolutions.net/remote-desktop-manager/"
+
+check_update() {
+  local current="${1:-}"
+  local url version
+  url=$(curl -s https://devolutions.net/remote-desktop-manager/download/ \
+    | grep -oP 'https://[^"]*Linux/[^"]*RemoteDesktopManager[^"]*amd64\.deb' | head -1)
+  version=$(grep -oP '^.*\K\d{4}(\.\d){3}' <<<"${url}")
+  [ "$version" != "$current" ]
+}
+
+get_version() {
+  local current="${1:-}"
+  local url version
+  url=$(curl -s https://devolutions.net/remote-desktop-manager/download/ \
+    | grep -oP 'https://[^"]*Linux/[^"]*RemoteDesktopManager[^"]*amd64\.deb' | head -1)
+  version=$(grep -oP '^.*\K\d{4}(\.\d){3}' <<<"${url}")
+
+  echo "version=$version"
+  echo "source=$SOURCE_URL"
+  echo "---"
+
+  curl -s https://devolutions.net/remote-desktop-manager/release-notes/linux/ \
+    | awk -v ver="$version" 'BEGIN{RS="<"}
+    /^article.*data-rn-version="/{if($0~"data-rn-version=\""ver"\"") f=1}
+    f && /^\/article/{exit}
+    f{v=$0; sub(/^[^>]*>/,"",v); if(v~/scrollIntoView|getElementById|x-on:|event\.|document\./) next;
+      gsub(/^[ \t\r\n]+|[ \t\r\n]+$/,"",v); if(v==""||v=="·") next;
+      if(v~/^(Features|Improvements|Fixes|Requires|New features)$/){started=1; h=v; next}
+      if(!started) next;
+      if(h){print "## " h ": " v; h=""} else print " - " v}'
+}

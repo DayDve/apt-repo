@@ -1,0 +1,65 @@
+SOURCE_URL="https://github.com/AyuGram/AyuGramDesktop"
+
+check_update() {
+  local current="${1:-}"
+  local tag tag_ref tag_type tag_sha dev_sha ahead
+
+  tag=$(gh api repos/AyuGram/AyuGramDesktop/releases --jq '.[0].tag_name' 2>/dev/null || echo "unknown")
+  tag_ref=$(gh api "repos/AyuGram/AyuGramDesktop/git/refs/tags/$tag" --jq '.object' 2>/dev/null || echo "")
+  tag_type=$(echo "$tag_ref" | jq -r '.type // empty')
+  if [ "$tag_type" = "commit" ]; then
+    tag_sha=$(echo "$tag_ref" | jq -r '.sha')
+  else
+    tag_sha=$(echo "$tag_ref" | jq -r '.object.sha // empty')
+  fi
+
+  dev_sha=$(gh api repos/AyuGram/AyuGramDesktop/commits/dev --jq '.sha' 2>/dev/null || echo "")
+
+  if [ -n "$tag_sha" ] && [ -n "$dev_sha" ]; then
+    ahead=$(gh api "repos/AyuGram/AyuGramDesktop/compare/$tag_sha...$dev_sha" --jq '.ahead_by' 2>/dev/null || echo "0")
+  else
+    ahead="0"
+  fi
+
+  local version="${tag#v}-${ahead}-g${dev_sha:0:7}"
+  [ "$version" != "$current" ]
+}
+
+get_version() {
+  local current="${1:-}"
+  local tag tag_ref tag_type tag_sha dev_sha ahead
+
+  tag=$(gh api repos/AyuGram/AyuGramDesktop/releases --jq '.[0].tag_name' 2>/dev/null || echo "unknown")
+  tag_ref=$(gh api "repos/AyuGram/AyuGramDesktop/git/refs/tags/$tag" --jq '.object' 2>/dev/null || echo "")
+  tag_type=$(echo "$tag_ref" | jq -r '.type // empty')
+  if [ "$tag_type" = "commit" ]; then
+    tag_sha=$(echo "$tag_ref" | jq -r '.sha')
+  else
+    tag_sha=$(echo "$tag_ref" | jq -r '.object.sha // empty')
+  fi
+
+  dev_sha=$(gh api repos/AyuGram/AyuGramDesktop/commits/dev --jq '.sha' 2>/dev/null || echo "")
+
+  if [ -n "$tag_sha" ] && [ -n "$dev_sha" ]; then
+    ahead=$(gh api "repos/AyuGram/AyuGramDesktop/compare/$tag_sha...$dev_sha" --jq '.ahead_by' 2>/dev/null || echo "0")
+  else
+    ahead="0"
+  fi
+
+  local version="${tag#v}-${ahead}-g${dev_sha:0:7}"
+
+  echo "version=$version"
+  echo "source=$SOURCE_URL"
+  echo "---"
+
+  gh_release_body AyuGram/AyuGramDesktop
+
+  if [ "$ahead" -gt 0 ] && [ -n "$current" ]; then
+    local current_sha
+    current_sha=$(echo "$current" | sed 's/.*-g//')
+    if [ -n "$current_sha" ] && [ "$current_sha" != "$dev_sha" ]; then
+      printf '\nCommits since last build:\n'
+      gh_commits_between AyuGram/AyuGramDesktop "$current_sha" "$dev_sha"
+    fi
+  fi
+}

@@ -1,0 +1,32 @@
+SOURCE_URL="https://github.com/Antynea/grub-btrfs"
+
+check_update() {
+  gh_tag_ahead Antynea/grub-btrfs
+  local version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  local current="${1:-}"
+  gh_tag_ahead Antynea/grub-btrfs
+  local version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
+
+  echo "version=$version"
+  echo "source=$SOURCE_URL"
+  echo "---"
+
+  if [ -z "$current" ]; then
+    gh_release_body Antynea/grub-btrfs
+    return
+  fi
+
+  local current_tag_base="v$(echo "$current" | sed -E 's/-[0-9]+-g[0-9a-f]+$//')"
+  if [ "$current_tag_base" != "$LATEST_TAG" ]; then
+    gh_release_body Antynea/grub-btrfs
+    return
+  fi
+
+  local old_sha
+  old_sha=$(echo "$current" | sed 's/.*-g//')
+  gh_commits_between Antynea/grub-btrfs "$old_sha" HEAD
+}

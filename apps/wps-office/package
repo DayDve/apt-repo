@@ -1,24 +1,26 @@
-#!/usr/bin/env bash
-set -e
+SOURCE_URL="https://github.com/Rongronggg9/wps-office-repack"
 
-current_version="$1"
-release=$(gh api repos/Rongronggg9/wps-office-repack/releases/latest 2>/dev/null)
-tag=$(echo "$release" | jq -r '.tag_name')
-version="${tag#v}.repack"
+check_update() {
+  gh_latest_release Rongronggg9/wps-office-repack
+  local version="${LATEST_TAG#v}.repack"
+  [ "$version" != "${1:-}" ]
+}
 
-echo "version=$version"
-echo "source=https://github.com/Rongronggg9/wps-office-repack"
-echo "---"
+get_version() {
+  local current="${1:-}"
+  gh_latest_release Rongronggg9/wps-office-repack
+  local version="${LATEST_TAG#v}.repack"
 
-body=$(echo "$release" | jq -r '.body')
+  echo "version=$version"
+  echo "source=$SOURCE_URL"
+  echo "---"
 
-python3 -c "
+  python3 -c "
 import sys, json, urllib.request, urllib.parse, re, html
 from html.parser import HTMLParser
 
 body = sys.stdin.read()
 
-# extract CHN Changelog section
 start_marker = '<summary><h1>CHN Changelog</h1></summary>'
 start = body.find(start_marker)
 if start < 0:
@@ -29,7 +31,6 @@ if end < 0:
     end = len(body)
 section = body[start:end]
 
-# strip HTML
 class MLStripper(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -52,10 +53,8 @@ s = MLStripper()
 s.feed(section)
 text = html.unescape(s.get_text())
 
-# clean lines
 lines = [l.strip() for l in text.split('\n') if l.strip()]
 
-# translate function
 def translate(text):
     try:
         params = urllib.parse.urlencode({'client': 'gtx', 'sl': 'zh-CN', 'tl': 'en', 'dt': 't', 'q': text}, encoding='utf-8')
@@ -71,11 +70,11 @@ def translate(text):
         return None
 
 for line in lines:
-    # check if contains chinese chars
     if re.search(r'[\u4e00-\u9fff]', line):
         t = translate(line)
         if t:
             print(t)
             continue
     print(line)
-" <<< "$body" 2>/dev/null || echo "(CHN Changelog extraction failed)"
+" <<< "$RELEASE_BODY" 2>/dev/null || echo "(CHN Changelog extraction failed)"
+}

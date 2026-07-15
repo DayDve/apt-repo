@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-current_version="$1"
-head_sha=$(gh api repos/AyuGram/AyuGramDesktop/commits/dev --jq '.sha' 2>/dev/null || echo "unknown")
-current_sha=$(echo "$current_version" | sed 's/.*-g//')
-
-[ -z "$current_version" ] || [ "$current_sha" != "$head_sha" ]

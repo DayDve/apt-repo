@@ -1,0 +1,31 @@
+SOURCE_URL="https://github.com/Zygo/bees"
+
+check_update() {
+  gh_tag_ahead Zygo/bees
+  local version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  local current="${1:-}"
+  gh_tag_ahead Zygo/bees
+  local version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
+
+  echo "version=$version"
+  echo "source=$SOURCE_URL"
+  echo "---"
+
+  if [ -z "$current" ]; then
+    gh_tag_message Zygo/bees "$LATEST_TAG" || gh_commits_between Zygo/bees "$LATEST_TAG" HEAD
+    return
+  fi
+
+  local current_tag_base="v$(echo "$current" | sed -E 's/-[0-9]+-g[0-9a-f]+$//')"
+  if [ "$current_tag_base" != "$LATEST_TAG" ]; then
+    gh_tag_message Zygo/bees "$LATEST_TAG" || true
+  fi
+
+  local old_sha
+  old_sha=$(echo "$current" | sed 's/.*-g//')
+  gh_commits_between Zygo/bees "$old_sha" HEAD
+}
