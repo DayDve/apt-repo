@@ -1,0 +1,18 @@
+# ============================================================
+# Package script for rustdesk
+# ============================================================
+
+SOURCE_URL="https://github.com/rustdesk/rustdesk"
+DESCRIPTION="Fast open-source remote desktop"
+
+check_update() {
+  gh_latest_release rustdesk/rustdesk
+  version="${LATEST_TAG}"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  gh_latest_release rustdesk/rustdesk
+  version="${LATEST_TAG}"
+  echo "$RELEASE_BODY" | sed -n '/<summary>Changelog<\/summary>/,/<\/details>/{/<summary>/d; /<\/details>/d; p;}'
+}
