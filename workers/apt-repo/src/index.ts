@@ -77,19 +77,19 @@ async function redirectPool(path: string, ctx: ExecutionContext): Promise<Respon
 
 function serveText(): Response {
   const text = [
-    '###############################################################################',
-    '#                     _   ___ _____   ___                                     #',
-    '#                    /_\\ | _ \\_   _| | _ \\___ _ __  ___                       #',
-    '#                   / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\                      #',
-    '#                  /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/                      #',
-    '#                                   by DayDve|_|                              #',
-    '#                                                                             #',
-    '#                   Personal APT repository for software                      #',
-    '#                        unavailable or outdated in                           #',
-    '#                       standard Ubuntu/Debian repos                          #',
-    '#                                                                             #',
-    '###############################################################################',
-    '# Just add the repository to your APT sources:                                #',
+    '######################################################################',
+    '#                 _   ___ _____   ___                                #',
+    '#                /_\\ | _ \\_   _| | _ \\___ _ __  ___                  #',
+    '#               / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\                 #',
+    '#              /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/                 #',
+    '#                               by DayDve|_|                         #',
+    '#                                                                    #',
+    '#               Personal APT repository for software                 #',
+    '#                    unavailable or outdated in                      #',
+    '#                   standard Ubuntu/Debian repos                     #',
+    '#                                                                    #',
+    '######################################################################',
+    '# Just add the repository to your APT sources:                       #',
     '',
     'sudo curl -fsSL https://apt.smbit.pro/apt-key.asc \\',
     '  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\',
@@ -150,15 +150,18 @@ td a:hover{text-decoration:underline}
 .copy-btn.copied svg{stroke:#3fb950}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 .center{text-align:center}
+.ascii-wide{display:block}
+.ascii-narrow{display:none}
+@media(max-width:768px){.ascii-wide{display:none}.ascii-narrow{display:block}}
 </style>
 </head>
 <body>
 <h1 class="sr-only">DayDve APT Repository — ${pkgNames}</h1>
-<div class="center"><div style="white-space:pre;line-height:1.2">
+<div class="center ascii-wide"><div style="white-space:pre;line-height:1.2">
 ###############################################################################
 #                     _   ___ _____   ___                                     #
 #                    /_\\ | _ \\_   _| | _ \\___ _ __  ___                       #
-#                   / _ \\|  _/ | |   |   / -_) '_ \\/ _ \\                      #
+#                   / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\                      #
 #                  /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/                      #
 #                                   by DayDve|_|                              #
 #                                                                             #
@@ -167,6 +170,20 @@ td a:hover{text-decoration:underline}
 #                       standard Ubuntu/Debian repos                          #
 #                                                                             #
 ###############################################################################
+</div></div>
+<div class="center ascii-narrow"><div style="white-space:pre;line-height:1.2">
+##########################################
+#    _   ___ _____   ___                 #
+#   /_\\ | _ \\_   _| | _ \\___ _ __  ___   #
+#  / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\  #
+# /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/  #
+#                  by DayDve|_|          #
+#                                        #
+#  Personal APT repository for software  #
+#       unavailable or outdated in       #
+#      standard Ubuntu/Debian repos      #
+#                                        #
+##########################################
 </div></div>
 
 <h2>How to add repo</h2>
