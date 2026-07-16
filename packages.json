@@ -29,6 +29,11 @@
   "source": "https://devolutions.net/remote-desktop-manager/"
 }
 ,{
+  "name": "scrcpy",
+  "description": "Mirror and control Android devices via USB/TCP",
+  "source": "https://github.com/Genymobile/scrcpy"
+}
+,{
   "name": "wlvncc",
   "description": "Wayland native VNC client",
   "source": "https://github.com/any1/wlvncc"
