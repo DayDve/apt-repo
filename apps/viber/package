@@ -1,0 +1,29 @@
+# ============================================================
+# Package script for viber
+# ============================================================
+
+SOURCE_URL="https://www.viber.com"
+DESCRIPTION="Free and secure calls and messages to anyone, anywhere"
+
+_viber_download_url() {
+  curl -sL 'https://www.viber.com/en/download/' | \
+    tr -d '\n' | \
+    grep -oP '^.*(\K<[^>]*a [^>]+id="desktop-btn-ubuntu"[^>]*>)' | \
+    grep -oP 'href="(\K[^"]+)'
+}
+
+check_update() {
+  local current="${1:-}" url version
+  url=$(_viber_download_url) || return 1
+  version=$(curl -fsSL -o /tmp/viber.deb "$url" && \
+    dpkg-deb -f /tmp/viber.deb Version && rm -f /tmp/viber.deb)
+  [ "$version" != "$current" ]
+}
+
+get_version() {
+  local url
+  url=$(_viber_download_url) || { echo "Failed to get download URL"; return 1; }
+  version=$(curl -fsSL -o /tmp/viber.deb "$url" && \
+    dpkg-deb -f /tmp/viber.deb Version && rm -f /tmp/viber.deb)
+  echo "Viber for Linux $version"
+}
