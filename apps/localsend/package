@@ -1,0 +1,18 @@
+# ============================================================
+# Package script for localsend
+# ============================================================
+
+SOURCE_URL="https://github.com/localsend/localsend"
+DESCRIPTION="Cross-platform file sharing over local network"
+
+check_update() {
+  gh_latest_release localsend/localsend
+  version="${LATEST_TAG#v}"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  gh_latest_release localsend/localsend
+  version="${LATEST_TAG#v}"
+  echo "$RELEASE_BODY"
+}
