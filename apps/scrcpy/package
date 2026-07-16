@@ -1,0 +1,18 @@
+# ============================================================
+# Package script for scrcpy
+# ============================================================
+
+SOURCE_URL="https://github.com/Genymobile/scrcpy"
+DESCRIPTION="Mirror and control Android devices via USB/TCP"
+
+check_update() {
+  gh_latest_release Genymobile/scrcpy
+  version="${LATEST_TAG#v}"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  gh_latest_release Genymobile/scrcpy
+  version="${LATEST_TAG#v}"
+  echo "$RELEASE_BODY"
+}
