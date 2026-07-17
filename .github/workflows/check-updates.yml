@@ -125,7 +125,7 @@ jobs:
           apps=$(gh run view ${{ github.run_id }} --repo ${{ github.repository }} --json jobs --jq '
             [.jobs[] | select(.name | startswith("build (")) |
              select(.steps[] | select(.name == "Build" and .conclusion == "success")) |
-             .name | sub("^build \\("; "") | sub("\\)$", "")]
+             .name | ltrimstr("build (") | rtrimstr(")")]
           ' | jq -R -s -c 'split("\n") | map(select(length > 0))')
           echo "list=$apps" >> "$GITHUB_OUTPUT"
 
