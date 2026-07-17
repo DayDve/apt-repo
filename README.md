@@ -1,6 +1,6 @@
 # apt-repo
 
-![Apps](https://img.shields.io/badge/apps-12-blue)
+![Apps](https://img.shields.io/badge/apps-13-blue)
 
 Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos. Packages are delivered as-is from upstream developers or repackagers - no guarantees on functionality or fitness for purpose.
 
@@ -8,6 +8,7 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 
 | App | Description |
 |---|---|
+| [ayugram](https://github.com/AyuGram/AyuGramDesktop) | Telegram client with enhanced features |
 | [bees](https://github.com/Zygo/bees) | btrfs deduplication daemon |
 | [grub-btrfs](https://github.com/Antynea/grub-btrfs) | GRUB menu entries for btrfs snapshots |
 | [keyd](https://github.com/rvaiya/keyd) | Key remapping daemon |
