@@ -1,3 +1,21 @@
+Package: bees
+Version: 0.11-50-g2d53565
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 1124
+Depends: libc6 (>= 2.38), libgcc-s1 (>= 3.3.1), libstdc++6 (>= 13.1), btrfs-progs
+Filename: pool/noble/main/bees_0.11-50-g2d53565_noble_amd64.deb
+Size: 389114
+MD5sum: b4597183c7a53918a0ba71d205f352e2
+SHA1: 167d304fd96b14c98da1a172b9b1d18e54ecdf39
+SHA256: fd18380b3110e307279e2be8ef400c4083c1c5e30e3d7385f2b23079cb2c5fd4
+Section: utils
+Priority: optional
+Homepage: https://github.com/Zygo/bees
+Description: Btrfs deduplication daemon
+ A daemon that deduplicates data on Btrfs volumes using
+ reflinks and stable file handles.
+
 Package: grub-btrfs
 Version: 4.14
 Architecture: amd64
@@ -130,6 +148,31 @@ Homepage: https://viber.com
 Description: Viber for Desktop.
  Free and secure calls and messages to anyone, anywhere, on any device and network, in any country!
  Viber for Desktop syncs your contacts, messages and call history with your mobile device.
+
+Package: winegui
+Version: 4.0.0
+Architecture: amd64
+Maintainer: Melroy van den Berg <melroy@melroy.org>
+Installed-Size: 14118
+Depends: libgtkmm-4.0-0, cabextract, unzip, p7zip, wget, zenity
+Suggests: libvulkan1, libvulkan1:i386, mesa-vulkan-drivers, mesa-vulkan-drivers:i386
+Filename: pool/noble/main/winegui.deb
+Size: 5663784
+MD5sum: 8b6eb82b10a67da5d75ca54a4a7fe864
+SHA1: 59c8d440e911ca0eddab626bbf8b9bc4bac216ca
+SHA256: 75b31819b07ddf7025138950b20039228a233748d549bbaccd5a293eae90d146
+Section: utils
+Priority: optional
+Homepage: https://winegui.melroy.org
+Description: WineGUI is a user-friendly WINE graphical interface
+ WineGUI is a friendly interface for Wine. Allowing you to easily manage your Wine machines/bottles.
+ .
+ WineGUI contains many features and conveniences, including but not limited to:
+ easy step-by-step wizard for creating a new machine, built-in application list, editing machines and configure your machine with a single click.
+ .
+ Plus so much more!
+ .
+ Code archive at: https://gitlab.melroy.org/melroy/winegui.
 
 Package: wlvncc
 Version: 0.1.0-150-gcc0abf8
