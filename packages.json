@@ -1,4 +1,9 @@
 [{
+  "name": "grub-btrfs",
+  "description": "GRUB menu entries for btrfs snapshots",
+  "source": "https://github.com/Antynea/grub-btrfs"
+}
+,{
   "name": "keyd",
   "description": "Key remapping daemon",
   "source": "https://github.com/rvaiya/keyd"
@@ -22,5 +27,10 @@
   "name": "rustdesk",
   "description": "Fast open-source remote desktop",
   "source": "https://github.com/rustdesk/rustdesk"
+}
+,{
+  "name": "viber",
+  "description": "Free and secure calls and messages to anyone, anywhere",
+  "source": "https://www.viber.com"
 }
 ]
