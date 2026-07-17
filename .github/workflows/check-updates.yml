@@ -74,15 +74,15 @@ jobs:
         if: steps.check.outputs.update == 'true' && matrix.app == 'ayugram'
         uses: actions/cache@v6
         with:
-          path: /tmp/ayugram-ccache
+          path: apps/ayugram/ccache
           key: ayugram-ccache-${{ hashFiles('apps/ayugram/Dockerfile') }}
           restore-keys: ayugram-ccache-
 
       - name: Prepare ayugram ccache dir
         if: steps.check.outputs.update == 'true' && matrix.app == 'ayugram'
         run: |
-          mkdir -p /tmp/ayugram-ccache
-          chmod 777 /tmp/ayugram-ccache
+          mkdir -p apps/ayugram/ccache
+          chmod 777 apps/ayugram/ccache
 
       - name: Build
         if: steps.check.outputs.update == 'true'
