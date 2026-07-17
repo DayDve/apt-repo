@@ -95,6 +95,22 @@ Priority: optional
 Homepage: https://rustdesk.com
 Description: A remote control software.
 
+Package: scrcpy
+Version: 4.1
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Depends: libSDL2-2.0-0, adb
+Conflicts: scrcpy-server
+Replaces: scrcpy-server
+Filename: pool/noble/main/scrcpy_4.1_noble_amd64.deb
+Size: 10656054
+MD5sum: 35d32b63935f3d61d93641e52bfe9636
+SHA1: 38838b436aa7eb00890ba95209fee624f76fee0a
+SHA256: fd4985ea327a62b40b5052ccd778d965b3e59ed26a37e501aec665acff935aa7
+Section: universe/utils
+Priority: optional
+Description: Mirror and control Android devices via USB/TCP
+
 Package: viber
 Version: 27.3.0.2
 Architecture: amd64
@@ -114,4 +130,34 @@ Homepage: https://viber.com
 Description: Viber for Desktop.
  Free and secure calls and messages to anyone, anywhere, on any device and network, in any country!
  Viber for Desktop syncs your contacts, messages and call history with your mobile device.
+
+Package: wps-office
+Version: 12.1.2.26885.AK.preread.sw+prefixed+fcitx5xwayland
+Architecture: amd64
+Maintainer: WPS Office Community Team <wps_linux@kingsoft.com>
+Installed-Size: 2563144
+Depends: libc6 (>= 2.15) | libc6.1, libfreetype6 (>= 2.4),
+         libcups2, libglib2.0-0, libglu1-mesa,
+         libsm6, libxrender1, libfontconfig1,
+         libxext6, libxcb1, libbz2-1.0
+Replaces: kingsoft-office
+Filename: pool/noble/main/wps-office.deb
+Size: 643948064
+MD5sum: 589747a286e1fc6c4c774f15672d47c4
+SHA1: 64f6463cbabc9898fc10bbedd00c949b1f7096c7
+SHA256: 703bba6fb4249afa0a83b0354d906de6ab771d3df7e4fb6ff5895a107e033a71
+Section: editors
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://linux.wps.cn
+Description: WPS Office, is an office productivity suite.
+ WPS Office including Writer, Presentation
+ and Spreadsheets, is a powerful office suite, which is able to process
+ word file, produce wonderful slides, and analyze data as well. It is
+ deeply compatible with all of the latest Microsoft Office file formats.
+ It can easily open and read the documents created with Microsoft Office.
+ This is the Linux version, and it's now a TESTING package.
+ Welcome to our website: https://linux.wps.cn
+Name: wps-office
+Relocations: /opt/kingsoft
 
