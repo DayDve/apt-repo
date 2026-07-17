@@ -1,4 +1,9 @@
 [{
+  "name": "bees",
+  "description": "btrfs deduplication daemon",
+  "source": "https://github.com/Zygo/bees"
+}
+,{
   "name": "grub-btrfs",
   "description": "GRUB menu entries for btrfs snapshots",
   "source": "https://github.com/Antynea/grub-btrfs"

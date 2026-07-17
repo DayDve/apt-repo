@@ -1,3 +1,21 @@
+Package: bees
+Version: 0.11-50-g2d53565
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 1124
+Depends: libc6 (>= 2.38), libgcc-s1 (>= 3.3.1), libstdc++6 (>= 13.1), btrfs-progs
+Filename: pool/noble/main/bees_0.11-50-g2d53565_noble_amd64.deb
+Size: 389146
+MD5sum: 3020c1aa114b258cb62481915272a7c0
+SHA1: 380a60b687b8261b35a8c5dd3eb97582b2329525
+SHA256: a7ed4fc45315fa6fd2f242b76fca797bf6cfc8b2dbc869dc4148ebb6df746578
+Section: utils
+Priority: optional
+Homepage: https://github.com/Zygo/bees
+Description: Btrfs deduplication daemon
+ A daemon that deduplicates data on Btrfs volumes using
+ reflinks and stable file handles.
+
 Package: grub-btrfs
 Version: 4.14
 Architecture: amd64
