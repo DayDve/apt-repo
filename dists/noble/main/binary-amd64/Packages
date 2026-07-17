@@ -131,6 +131,19 @@ Description: Viber for Desktop.
  Free and secure calls and messages to anyone, anywhere, on any device and network, in any country!
  Viber for Desktop syncs your contacts, messages and call history with your mobile device.
 
+Package: wlvncc
+Version: 0.1.0-150-gcc0abf8
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 340
+Depends: libc6, libwayland-client0, libxkbcommon0, libpixman-1-0, libgbm1, libssl3, libgnutls30, libsasl2-2, libjpeg8, libpng16-16t64, liblzo2-2, zlib1g, libegl1, libgles2, libavcodec60
+Filename: pool/noble/main/wlvncc_0.1.0-150-gcc0abf8_noble_amd64.deb
+Size: 78428
+MD5sum: 82cd794d37a2624496da984b3972613b
+SHA1: ebb6ee926105977e0f775d91b49ff671664d32eb
+SHA256: 328a0a2d8f61ba86594b6b3cd5fed58fcda4be4bd60ffac4c4a6299ae6e400a0
+Description: Wayland native VNC client
+
 Package: wps-office
 Version: 12.1.2.26885.AK.preread.sw+prefixed+fcitx5xwayland
 Architecture: amd64
