@@ -239,6 +239,8 @@ jobs:
             sleep 1
           done
 
+          pip install -q requests
+
           while read -r app; do
             [ -z "$app" ] && continue
             echo "=== Processing $app ==="
@@ -257,7 +259,8 @@ jobs:
             [ -z "$tag" ] && continue
             ver=$(echo "$tag" | sed "s/^${app}-//")
 
-            body=$(gh release view "$tag" --repo ${{ github.repository }} --json body --jq '.body')
+            body=$(gh release view "$tag" --repo ${{ github.repository }} --json body --jq '.body' \
+              | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' | head -c 500)
 
             # List release assets
             echo "Release assets:"
@@ -280,16 +283,24 @@ jobs:
             echo "deb=$deb"
 
             # Build caption (write to file to avoid shell expansion issues)
-            printf '<b>%s %s</b>\n%s\n<a href="%s">Разработчик</a>\n\n%s\n\n📦 <code>apt install %s</code>' \
+            printf '<b>%s %s</b>\n%s\n<a href="%s">Разработчик</a>\n\n%s\n\n\U0001F4E6 <code>apt install %s</code>' \
               "$app" "$ver" "$desc" "$src" "$body" "$app" > /tmp/caption.html
 
-            # Send
-            curl -sS --fail \
-              -F "chat_id=$TG_CHAT_ID" \
-              -F "document=@$deb" \
-              --form-string "parse_mode=HTML" \
-              --form-string "caption=$(cat /tmp/caption.html)" \
-              "http://localhost:8081/bot$TG_TOKEN/sendDocument"
+            # Send via Python to avoid shell escaping issues
+            DEB_PATH="$deb" python3 -c "
+          import os, requests, sys
+          token = os.environ['TG_TOKEN']
+          chat_id = os.environ['TG_CHAT_ID']
+          deb = os.environ['DEB_PATH']
+          with open('/tmp/caption.html') as f:
+              caption = f.read().strip()
+          r = requests.post(f'http://localhost:8081/bot{token}/sendDocument',
+              data={'chat_id': chat_id, 'parse_mode': 'HTML', 'caption': caption},
+              files={'document': open(deb, 'rb')})
+          print(r.status_code, r.text[:500])
+          if r.status_code != 200:
+              sys.exit(1)
+          "
 
             rm -rf /tmp/deb-notify
           done <<< "$apps"
