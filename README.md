@@ -1,6 +1,6 @@
 # apt-repo
 
-![Apps](https://img.shields.io/badge/apps-10-blue)
+![Apps](https://img.shields.io/badge/apps-11-blue)
 
 Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos. Packages are delivered as-is from upstream developers or repackagers - no guarantees on functionality or fitness for purpose.
 
@@ -8,6 +8,7 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 
 | App | Description |
 |---|---|
+| [bees](https://github.com/Zygo/bees) | btrfs deduplication daemon |
 | [grub-btrfs](https://github.com/Antynea/grub-btrfs) | GRUB menu entries for btrfs snapshots |
 | [keyd](https://github.com/rvaiya/keyd) | Key remapping daemon |
 | [localsend](https://github.com/localsend/localsend) | Cross-platform file sharing over local network |
