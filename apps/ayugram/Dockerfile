@@ -16,9 +16,8 @@ RUN git clone --depth 1 --branch dev \
 RUN chown -R user:user /build
 
 RUN --mount=type=bind,source=ccache,target=/build/ccache,readwrite \
+    chmod 777 /build/ccache && \
     su user -c ' \
-      mkdir -p /build/ccache && \
-      chmod 777 /build/ccache && \
       export CCACHE_DIR=/build/ccache && \
       export CCACHE_MAXSIZE=10G && \
       export CCACHE_COMPRESS=1 && \
