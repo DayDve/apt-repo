@@ -242,6 +242,8 @@ jobs:
             exit 0
           fi
 
+          cat /tmp/changed-apps-uniq
+
           # Start local Bot API server
           docker run -d --rm \
             -p 8081:8081 \
@@ -261,29 +263,43 @@ jobs:
 
           while read -r app; do
             [ -z "$app" ] && continue
+            echo "=== Processing $app ==="
 
             # Get package metadata from source
             source apps/build.sh
             source "apps/$app/package"
             desc="$DESCRIPTION"
             src="$SOURCE_URL"
+            echo "desc=$desc src=$src"
 
             # Get latest release info
             tag=$(gh release list --repo ${{ github.repository }} --json tagName --jq '.[].tagName' \
               | grep "^${app}-" | sort -V | tail -1)
+            echo "tag=$tag"
             [ -z "$tag" ] && continue
             ver=$(echo "$tag" | sed "s/^${app}-//")
 
             body=$(gh release view "$tag" --repo ${{ github.repository }} --json body --jq '.body')
 
+            # List release assets
+            echo "Release assets:"
+            gh release view "$tag" --repo ${{ github.repository }} --json assets --jq '.assets[].name'
+
             # Download .deb
             rm -rf /tmp/deb-notify
             mkdir -p /tmp/deb-notify
             gh release download "$tag" --repo ${{ github.repository }} \
-              --pattern '*.deb' --dir /tmp/deb-notify 2>/dev/null || continue
+              --pattern '*.deb' --dir /tmp/deb-notify || { echo "Download failed for $tag"; continue; }
+
+            echo "Downloaded files:"
+            ls -la /tmp/deb-notify/
 
             deb=$(ls /tmp/deb-notify/*.deb 2>/dev/null | head -1)
-            [ -z "$deb" ] && continue
+            if [ -z "$deb" ]; then
+              echo "No .deb found after download"
+              continue
+            fi
+            echo "deb=$deb"
 
             # Build caption
             caption=$(printf '<b>%s %s</b>\n%s\n<a href="%s">Разработчик</a>\n\n%s\n\n📦 <code>apt install %s</code>' \
