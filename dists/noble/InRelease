@@ -1,0 +1,42 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Architectures: amd64
+Codename: noble
+Components: main
+Date: Fri, 17 Jul 2026 13:45:14 +0000
+Label: DayDve apt repo
+Origin: DayDve
+Suite: noble
+MD5Sum:
+ 001d439c11203ece19cef940b516af1d              143 Release
+ a3b3ea525974fc7a01f383737ea1d138             4905 main/binary-amd64/Packages
+ 2fa86c8c05f49878a05e00fe4d0fecf0             2405 main/binary-amd64/Packages.gz
+SHA1:
+ 1c3fb9c8f3e3b8e89b79765fffbcc77ac8a8b89c              143 Release
+ a1d6209401092a348d01a3af0bb005df0db64e76             4905 main/binary-amd64/Packages
+ eae87796bbd63b3563b94bdad589137576d28a18             2405 main/binary-amd64/Packages.gz
+SHA256:
+ 227cfe6285662f28b6a91acc6909a38ff6ae25ccd400b57838845c1e1234adaa              143 Release
+ 705fd3fce66a5f814e940185d671dcb0235f89075f82728817cde64a94994201             4905 main/binary-amd64/Packages
+ c7a93817f913ac9be05ceb242c148a46a4f5c6ffc3a6160da92e2fcedb13f7a0             2405 main/binary-amd64/Packages.gz
+SHA512:
+ c67065d3b0bc0e3d329e51e9534e161637629dff1afca0177e5782d7f8e990228dea1ba67d3c89593805d61849586be61bbe2d3eff2392cbbc3e61fff23c3a10              143 Release
+ f608b1b631b0008beba891d7a568cf89a77cf5c17827a1eff9e026aa5055c9ccea2a63517d42fdcfd764cab961470ae80bdff4ffcf4077cc182f09fe6a7deb00             4905 main/binary-amd64/Packages
+ a0fe92f118983af2aa1033177bd42cde76a6d5c6542a78a95ec86cd3c63248cee86c32a6308790a33eb35669c718fb08a4323e5f2ac331f37a44f3e80f3a5d21             2405 main/binary-amd64/Packages.gz
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmpaMeoACgkQorBTLKwl
+HCcjvBAAqIwlQtHfKcm1vi9mqVbR9D19B2X1gathLbUzyyJ9PSeNt+/vS7NECqi6
++SlXxP1bs4lMs+AGL6HbCd2g0qAu3DOeq1L27bKu128yMQfolGv8uELHm/GkqXN3
+ycKsilP0AvVByNLT7PPKG8OGKpmXknT53hz5Sfw+bVWRxnYpTKvPC3ona33lXPQH
+sAe4SXKNQhOF4NlY/jIkcPMnLNMH/QneYEUA1yD5B917pFUoPVI5/ZdqY2TThjlf
+cNGTabt3tqHJcr+klCCFqoLlGu4jMNwjm4mx5lgypSTJCOFnLDzTM5oUXT+A7l+2
+QnQq9/A3lgqA/Zq9rQPaQICgzrxR7IJfoSpu7tD/X9l220cH5fagTan0bJ24ZYRJ
+Gx/GlCiMXQ9bn4PtQGMOw/h8ZS5T7ET1U4sVxzWUtkwTCROlDOt7iAb3t8ozv2bA
+4eeIgguiUgU/1Jh9kRkjb7nTFcHi55XkdvDJvzSZs+CRgiTOUJdO4f8TKVgBwZE7
+tsVddpN4ES3nkwiasd4Tr5LBZQn55aCbOdvt9QyuolGiGCPyERgV0W68UqtjwDTz
+FZrCQY6lGxU52tPE6cSwKRJIg7S/lJ4MLTBK3A/A4nQbowVgnhhrjXFPtfqK7ciu
+2VJ1N30WGH3MIwE2a0vL3psTq6RXlfAVGXUDYKuledQAgZp/rbw=
+=zQg7
+-----END PGP SIGNATURE-----
