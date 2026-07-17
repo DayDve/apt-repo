@@ -287,7 +287,7 @@ jobs:
             echo "deb=$deb"
 
             # Build caption (write to file to avoid shell expansion issues)
-            printf '<b>%s %s</b>\n%s\n<a href="%s">Разработчик</a>\n\n%s\n\n\U0001F4E6 <code>apt install %s</code>' \
+            printf '<b>%s %s</b>\n%s\n<a href="%s">Разработчик</a>\n\n<blockquote>\n%s\n</blockquote>\n\n\U0001F4E6 <code>apt install %s</code>' \
               "$app" "$ver" "$desc" "$src" "$body" "$app" > /tmp/caption.html
 
             # Send via Python to avoid shell escaping issues

@@ -12,18 +12,16 @@ get_version() {
   gh_tag_ahead rvaiya/keyd
   version="${LATEST_TAG#v}-${AHEAD_COUNT}-g${HEAD_SHA:0:7}"
 
-  if [ -z "$current" ]; then
+  local tag_base="${LATEST_TAG}"
+  local changelog
+  changelog=$(curl -sL "https://raw.githubusercontent.com/rvaiya/keyd/master/docs/CHANGELOG.md" \
+    | awk -v tag="$tag_base" '
+      /^# v/ { if (found) exit; if ($0 ~ "^# " tag) found=1; next }
+      found { print }
+    ')
+  if [ -n "$changelog" ]; then
+    echo "$changelog"
+  else
     gh_release_body rvaiya/keyd
-    return
   fi
-
-  local current_tag_base="v$(echo "$current" | sed -E 's/-[0-9]+-g[0-9a-f]+$//')"
-  if [ "$current_tag_base" != "$LATEST_TAG" ]; then
-    gh_release_body rvaiya/keyd
-    return
-  fi
-
-  local old_sha
-  old_sha=$(echo "$current" | sed 's/.*-g//')
-  gh_commits_between rvaiya/keyd "$old_sha" HEAD
 }
