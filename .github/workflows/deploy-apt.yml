@@ -301,16 +301,16 @@ jobs:
             fi
             echo "deb=$deb"
 
-            # Build caption
-            caption=$(printf '<b>%s %s</b>\n%s\n<a href="%s">Разработчик</a>\n\n%s\n\n📦 <code>apt install %s</code>' \
-              "$app" "$ver" "$desc" "$src" "$body" "$app")
+            # Build caption (write to file to avoid shell expansion issues)
+            printf '<b>%s %s</b>\n%s\n<a href="%s">Разработчик</a>\n\n%s\n\n📦 <code>apt install %s</code>' \
+              "$app" "$ver" "$desc" "$src" "$body" "$app" > /tmp/caption.html
 
             # Send
             curl -sS --fail \
               -F "chat_id=$TG_CHAT_ID" \
               -F "document=@$deb" \
-              -F "caption=$caption" \
-              -F "parse_mode=HTML" \
+              --form-string "parse_mode=HTML" \
+              --form-string "caption=$(cat /tmp/caption.html)" \
               "http://localhost:8081/bot$TG_TOKEN/sendDocument"
 
             rm -rf /tmp/deb-notify
