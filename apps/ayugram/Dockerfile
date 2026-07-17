@@ -15,7 +15,10 @@ RUN git clone --depth 1 --branch dev \
 
 RUN chown -R user:user /build
 
-RUN su user -c ' \
+RUN --mount=type=bind,source=/tmp/ayugram-ccache,target=/build/ccache,readwrite \
+    su user -c ' \
+      mkdir -p /build/ccache && \
+      chmod 777 /build/ccache && \
       export CCACHE_DIR=/build/ccache && \
       export CCACHE_MAXSIZE=10G && \
       export CCACHE_COMPRESS=1 && \
