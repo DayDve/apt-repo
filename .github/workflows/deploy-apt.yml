@@ -243,6 +243,10 @@ jobs:
 
           while read -r app; do
             [ -z "$app" ] && continue
+            if [ ! -f "apps/$app/package" ]; then
+              echo "No package for $app, skipping"
+              continue
+            fi
             echo "=== Processing $app ==="
 
             # Get package metadata from source
