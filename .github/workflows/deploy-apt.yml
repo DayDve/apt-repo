@@ -34,6 +34,10 @@ jobs:
             gh release download "$tag" --repo $GITHUB_REPOSITORY --dir "/tmp/by-tag/$tag" --pattern '*.deb' 2>/dev/null || true
           done
 
+      - name: Save old pool map
+        run: |
+          cp "$GITHUB_WORKSPACE/pool-map.json" /tmp/pool-map-old.json 2>/dev/null || echo '{}' > /tmp/pool-map-old.json
+
       - name: Generate Packages
         run: |
           > /tmp/tag-map
@@ -83,6 +87,31 @@ jobs:
             printf '"%s":"%s"' "$deb_name" "$tag" >> "$GITHUB_WORKSPACE/pool-map.json"
           done < /tmp/tag-map
           echo '}' >> "$GITHUB_WORKSPACE/pool-map.json"
+
+      - name: Detect changed apps
+        id: changed
+        run: |
+          jq -r 'to_entries[] | "\(.key)|\(.value)"' "$GITHUB_WORKSPACE/pool-map.json" | while IFS='|' read -r deb tag; do
+            old_tag=$(jq -r --arg d "$deb" '.[$d] // ""' /tmp/pool-map-old.json)
+            if [ "$tag" != "$old_tag" ]; then
+              app=$(echo "$tag" | sed -E 's/-[0-9].*//')
+              echo "$app" >> /tmp/changed-apps
+            fi
+          done
+          if [ -f /tmp/changed-apps ]; then
+            sort -u /tmp/changed-apps > /tmp/changed-apps-uniq
+            echo "count=$(wc -l < /tmp/changed-apps-uniq)" >> "$GITHUB_OUTPUT"
+          else
+            echo "count=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload changed apps
+        if: steps.changed.outputs.count != '0'
+        uses: actions/upload-artifact@v4
+        with:
+          name: changed-apps
+          path: /tmp/changed-apps-uniq
+          retention-days: 1
 
       - name: Get package info from master
         run: |
@@ -162,3 +191,113 @@ jobs:
             git -c user.name='github-actions' -c user.email='github-actions@github.com' commit -m "auto-update README from packages metadata"
             git push
           )
+
+  notify-failure:
+    needs: deploy
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send failure notification
+        env:
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_OWNER_ID: ${{ secrets.TG_OWNER_ID }}
+        run: |
+          TEXT=$(printf '%s\n' \
+            '❌ Deploy apt repo failed' \
+            "Workflow: ${{ github.workflow }}" \
+            "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}")
+          curl -sS --fail -F "chat_id=$TG_OWNER_ID" \
+            -F "text=$TEXT" \
+            "https://api.telegram.org/bot$TG_TOKEN/sendMessage"
+
+  notify-success:
+    needs: deploy
+    if: success()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+
+      - name: Download changed apps list
+        uses: actions/download-artifact@v4
+        with:
+          name: changed-apps
+          path: /tmp
+        continue-on-error: true
+
+      - name: Send notifications
+        env:
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          TG_OWNER_ID: ${{ secrets.TG_OWNER_ID }}
+          API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ ! -f /tmp/changed-apps-uniq ]; then
+            echo "No changed apps, skipping"
+            exit 0
+          fi
+
+          # Start local Bot API server
+          docker run -d --rm \
+            -p 8081:8081 \
+            --name telegram-bot-api \
+            -e TELEGRAM_API_ID="$API_ID" \
+            -e TELEGRAM_API_HASH="$API_HASH" \
+            aiogram/telegram-bot-api:latest \
+            --local
+
+          for i in $(seq 1 30); do
+            if curl -s "http://localhost:8081/bot$TG_TOKEN/getMe" > /dev/null 2>&1; then
+              echo "Bot API ready"
+              break
+            fi
+            sleep 1
+          done
+
+          while read -r app; do
+            [ -z "$app" ] && continue
+
+            # Get package metadata from source
+            source apps/build.sh
+            source "apps/$app/package"
+            desc="$DESCRIPTION"
+            src="$SOURCE_URL"
+
+            # Get latest release info
+            tag=$(gh release list --repo ${{ github.repository }} --json tagName --jq '.[].tagName' \
+              | grep "^${app}-" | sort -V | tail -1)
+            [ -z "$tag" ] && continue
+            ver=$(echo "$tag" | sed "s/^${app}-//")
+
+            body=$(gh release view "$tag" --repo ${{ github.repository }} --json body --jq '.body')
+
+            # Download .deb
+            rm -rf /tmp/deb-notify
+            mkdir -p /tmp/deb-notify
+            gh release download "$tag" --repo ${{ github.repository }} \
+              --pattern '*.deb' --dir /tmp/deb-notify 2>/dev/null || continue
+
+            deb=$(ls /tmp/deb-notify/*.deb 2>/dev/null | head -1)
+            [ -z "$deb" ] && continue
+
+            # Build caption
+            caption=$(printf '<b>%s %s</b>\n%s\n<a href="%s">Разработчик</a>\n\n%s\n\n📦 <code>apt install %s</code>' \
+              "$app" "$ver" "$desc" "$src" "$body" "$app")
+
+            # Send
+            curl -sS --fail \
+              -F "chat_id=$TG_CHAT_ID" \
+              -F "document=@$deb" \
+              -F "caption=$caption" \
+              -F "parse_mode=HTML" \
+              "http://localhost:8081/bot$TG_TOKEN/sendDocument"
+
+            rm -rf /tmp/deb-notify
+          done < /tmp/changed-apps-uniq
+
+          docker kill telegram-bot-api || true

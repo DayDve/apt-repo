@@ -77,6 +77,20 @@ jobs:
         run: |
           bash apps/build.sh ${{ matrix.app }} "${{ steps.current.outputs.version }}"
 
+      - name: Notify Failure
+        if: failure() && steps.check.outputs.update == 'true'
+        env:
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_OWNER_ID: ${{ secrets.TG_OWNER_ID }}
+        run: |
+          TEXT=$(printf '%s\n' \
+            '❌ Build failed: ${{ matrix.app }}' \
+            "Workflow: ${{ github.workflow }}" \
+            "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}")
+          curl -sS --fail -F "chat_id=$TG_OWNER_ID" \
+            -F "text=$TEXT" \
+            "https://api.telegram.org/bot$TG_TOKEN/sendMessage"
+
   deploy:
     needs: build
     if: always()
