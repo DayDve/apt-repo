@@ -187,10 +187,10 @@ jobs:
             "${{ github.server_url }}" \
             "${{ github.repository }}" \
             "${{ github.run_id }}")
-          curl -sS --fail \
+          curl -sS \
             --form-string "chat_id=$TG_OWNER_ID" \
             --form-string "text=$TEXT" \
-            "https://api.telegram.org/bot$TG_TOKEN/sendMessage"
+            "https://api.telegram.org/bot$TG_TOKEN/sendMessage" | grep -v '"ok":true'
 
   notify-success:
     needs: deploy
