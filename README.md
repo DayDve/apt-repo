@@ -1,6 +1,6 @@
 # apt-repo
 
-![Apps](https://img.shields.io/badge/apps-5-blue)
+![Apps](https://img.shields.io/badge/apps-7-blue)
 
 Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos. Packages are delivered as-is from upstream developers or repackagers - no guarantees on functionality or fitness for purpose.
 
@@ -8,11 +8,13 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 
 | App | Description |
 |---|---|
+| [grub-btrfs](https://github.com/Antynea/grub-btrfs) | GRUB menu entries for btrfs snapshots |
 | [keyd](https://github.com/rvaiya/keyd) | Key remapping daemon |
 | [localsend](https://github.com/localsend/localsend) | Cross-platform file sharing over local network |
 | [rclone](https://github.com/rclone/rclone) | rsync for cloud storage |
 | [remotedesktopmanager](https://devolutions.net/remote-desktop-manager/) | One application for every remote connection you'll ever open |
 | [rustdesk](https://github.com/rustdesk/rustdesk) | Fast open-source remote desktop |
+| [viber](https://www.viber.com) | Free and secure calls and messages to anyone, anywhere |
 
 ## Install
 
