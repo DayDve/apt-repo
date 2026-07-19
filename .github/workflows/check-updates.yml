@@ -140,7 +140,7 @@ jobs:
             [.jobs[] | select(.name | startswith("build (")) |
              select(.steps[] | select(.name == "Build" and .conclusion == "success")) |
              .name | ltrimstr("build (") | rtrimstr(")")]
-          ' | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          ')
           echo "list=$apps" >> "$GITHUB_OUTPUT"
 
       - name: Trigger apt repo deploy
