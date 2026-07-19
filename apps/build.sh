@@ -107,6 +107,7 @@ DEBEMAIL="${DEBEMAIL:-$GITHUB_REPOSITORY_OWNER@users.noreply.github.com}"
 
 if declare -f run_build > /dev/null; then
   DOCKER_IMAGE_NAME="apt-build-$app"
+  mkdir -p /tmp/deb-out
   docker buildx build \
     --load \
     --cache-from type=gha \
