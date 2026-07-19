@@ -1,4 +1,4 @@
-FROM ghcr.io/telegramdesktop/tdesktop/centos_env:latest AS build
+FROM ghcr.io/telegramdesktop/tdesktop/centos_env:latest
 
 USER root
 
@@ -14,6 +14,3 @@ RUN git clone --depth 1 --branch dev \
  && git submodule update --init --recursive --depth 1
 
 RUN chown -R user:user /build
-
-FROM scratch
-COPY --from=build /build /build
