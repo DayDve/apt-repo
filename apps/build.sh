@@ -105,10 +105,15 @@ fi
 DEBFULLNAME="${DEBFULLNAME:-$GITHUB_REPOSITORY_OWNER}"
 DEBEMAIL="${DEBEMAIL:-$GITHUB_REPOSITORY_OWNER@users.noreply.github.com}"
 
+ccache_scope="$app-ccache"
+
 docker buildx build \
   --output type=local,dest=/tmp/deb-out \
   --cache-from type=gha \
   --cache-to type=gha,mode=max \
+  --cache-from type=gha,scope="$ccache_scope" \
+  --cache-to type=gha,mode=max,scope="$ccache_scope" \
+  --build-arg "BUILDKIT_INLINE_CACHE=1" \
   --build-arg "DEBFULLNAME=$DEBFULLNAME" \
   --build-arg "DEBEMAIL=$DEBEMAIL" \
   --build-arg "APP_VERSION=$version" \

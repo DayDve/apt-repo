@@ -70,20 +70,6 @@ jobs:
             echo "update=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Restore ayugram ccache
-        if: steps.check.outputs.update == 'true' && matrix.app == 'ayugram'
-        uses: actions/cache@v6
-        with:
-          path: apps/ayugram/ccache
-          key: ayugram-ccache-${{ hashFiles('apps/ayugram/Dockerfile') }}
-          restore-keys: ayugram-ccache-
-
-      - name: Prepare ayugram ccache dir
-        if: steps.check.outputs.update == 'true' && matrix.app == 'ayugram'
-        run: |
-          mkdir -p apps/ayugram/ccache
-          chmod 777 apps/ayugram/ccache
-
       - name: Build
         if: steps.check.outputs.update == 'true'
         env:
