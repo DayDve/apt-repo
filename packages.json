@@ -1,9 +1,4 @@
 [{
-  "name": "ayugram",
-  "description": "Telegram client with enhanced features",
-  "source": "https://github.com/AyuGram/AyuGramDesktop"
-}
-,{
   "name": "bees",
   "description": "btrfs deduplication daemon",
   "source": "https://github.com/Zygo/bees"
