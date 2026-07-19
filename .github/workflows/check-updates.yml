@@ -91,12 +91,18 @@ jobs:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_OWNER_ID: ${{ secrets.TG_OWNER_ID }}
         run: |
-          TEXT=$(printf '❌ Build failed: %s\nWorkflow: %s\nRun: %s/%s/actions/runs/%s' \
+          error=$(gh run view ${{ github.run_id }} --repo ${{ github.repository }} \
+            --log --job "build (${{ matrix.app }})" 2>/dev/null | \
+            grep -E 'Error:|error:|exit code|docker:|Process completed' | tail -3 | \
+            sed 's/.*\x1b\[[0-9;]*m//g; s/^[[:space:]]*//; s/[[:space:]]*$//' | tr '\n' ' | ')
+          TEXT=$(printf '❌ Build failed: %s\n%s\nWorkflow: %s\nRun: %s/%s/actions/runs/%s' \
             "${{ matrix.app }}" \
+            "$error" \
             "${{ github.workflow }}" \
             "${{ github.server_url }}" \
             "${{ github.repository }}" \
             "${{ github.run_id }}")
+          TEXT=$(echo "$TEXT" | head -c 1000)
           curl -sS \
             --form-string "chat_id=$TG_OWNER_ID" \
             --form-string "text=$TEXT" \
