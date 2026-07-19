@@ -132,14 +132,14 @@ Package: scrcpy
 Version: 4.1
 Architecture: amd64
 Maintainer: DayDve <DayDve@users.noreply.github.com>
-Depends: libSDL2-2.0-0, adb
+Depends: libsdl2-2.0-0, adb
 Conflicts: scrcpy-server
 Replaces: scrcpy-server
 Filename: pool/noble/main/scrcpy_4.1_noble_amd64.deb
-Size: 10655930
-MD5sum: eedad98f4081407d67605fbde3584386
-SHA1: edc579375af0a88f1e4408234af774b85ceba600
-SHA256: 785d9ad0a6d40c0a90526f0464bf6d0ec2166df5abde3ac9289a962fa3099097
+Size: 10655416
+MD5sum: bda77dd695cee54345c7eb978d2d0b31
+SHA1: 368238aa66ba85afaa72b53956b14380fa727cee
+SHA256: 4783fd9bd1a100f22a6c4cbabadfefb50e6e44c9fd80317258bbd36ef365067c
 Section: universe/utils
 Priority: optional
 Description: Mirror and control Android devices via USB/TCP
