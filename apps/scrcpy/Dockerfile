@@ -35,7 +35,7 @@ Section: universe/utils\n\
 Priority: optional\n\
 Architecture: amd64\n\
 Maintainer: %s <%s>\n\
-Depends: libSDL2-2.0-0, adb\n\
+Depends: libsdl2-2.0-0, adb\n\
 Conflicts: scrcpy-server\n\
 Replaces: scrcpy-server\n\
 Description: Mirror and control Android devices via USB/TCP\n' \
