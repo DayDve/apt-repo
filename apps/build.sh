@@ -105,19 +105,26 @@ fi
 DEBFULLNAME="${DEBFULLNAME:-$GITHUB_REPOSITORY_OWNER}"
 DEBEMAIL="${DEBEMAIL:-$GITHUB_REPOSITORY_OWNER@users.noreply.github.com}"
 
-ccache_scope="$app-ccache"
-
-docker buildx build \
-  --output type=local,dest=/tmp/deb-out \
-  --cache-from type=gha \
-  --cache-to type=gha,mode=max \
-  --cache-from type=gha,scope="$ccache_scope" \
-  --cache-to type=gha,mode=max,scope="$ccache_scope" \
-  --build-arg "BUILDKIT_INLINE_CACHE=1" \
-  --build-arg "DEBFULLNAME=$DEBFULLNAME" \
-  --build-arg "DEBEMAIL=$DEBEMAIL" \
-  --build-arg "APP_VERSION=$version" \
-  -f "$dir/Dockerfile" "$dir"
+if declare -f run_build > /dev/null; then
+  DOCKER_IMAGE_NAME="apt-build-$app"
+  docker buildx build \
+    --load \
+    --cache-from type=gha \
+    --cache-to type=gha,mode=max \
+    -t "$DOCKER_IMAGE_NAME:$version" \
+    --build-arg "APP_VERSION=$version" \
+    -f "$dir/Dockerfile" "$dir"
+  run_build
+else
+  docker buildx build \
+    --output type=local,dest=/tmp/deb-out \
+    --cache-from type=gha \
+    --cache-to type=gha,mode=max \
+    --build-arg "DEBFULLNAME=$DEBFULLNAME" \
+    --build-arg "DEBEMAIL=$DEBEMAIL" \
+    --build-arg "APP_VERSION=$version" \
+    -f "$dir/Dockerfile" "$dir"
+fi
 
 deb="$(ls /tmp/deb-out/*.deb 2>/dev/null | head -1)"
 [ -z "$deb" ] && { echo "No .deb produced"; exit 1; }
