@@ -1,23 +1,23 @@
 Architectures: amd64
 Codename: 12.3.1.0.2726
 Components: main
-Date: Mon, 20 Jul 2026 16:25:19 +0000
+Date: Mon, 20 Jul 2026 16:28:53 +0000
 Label: DayDve apt repo
 Origin: DayDve
 Suite: 12.3.1.0.2726
 MD5Sum:
- bc126081dd0c33437e39551d9527c3a3              159 Release
+ cf5895d56809d03e7c9f66bc5c4e6fbb              159 Release
  b6c30ea0da74f40e00c7f59cd668bec6              519 main/binary-amd64/Packages
- 66d2d128bfb3c37e9559a1c28cfc607c              386 main/binary-amd64/Packages.gz
+ 7db9c635e1f192cc38d3c6fe6a0758e9              386 main/binary-amd64/Packages.gz
 SHA1:
- d8721dd6bbc9611e71462fd5cf04966a06bc6f69              159 Release
+ bb954ba94ede8cc2d322a389e4adbf22e7cf816c              159 Release
  bcc85ebf70353235f2acc7471eb6bf442043cbcb              519 main/binary-amd64/Packages
- 1cfc2b2e12d7b38a7ce48bbab611ac3de9e134d8              386 main/binary-amd64/Packages.gz
+ f870f32f26e9c6bab300aa4944398049f4a16bc7              386 main/binary-amd64/Packages.gz
 SHA256:
- 4af0e5025b40f30521d659ab5940c23df3dfc9420049ed3ca279ac065c06eac0              159 Release
+ 9b2586bdb36c70b3c188b5c040957286f112f9db5caca99e5f03a406fe135bf2              159 Release
  760c5090fa70a4354bb4eb507e0b71dcaec6e5021e2d384cee2fa21f56bfe77d              519 main/binary-amd64/Packages
- 01066f503fef80cf25b328ff516fa3b0acbb77fd0ae883401e2569f9e6fc2a8c              386 main/binary-amd64/Packages.gz
+ 1dbcce252f120484c48875bc82c014de2e8e261eb96e2540da755da4f9000f10              386 main/binary-amd64/Packages.gz
 SHA512:
- 729b25879492bcfba6b7ecaa059c69ab8e19c7465ba6b9c4e504b8d4d8d071da8b4d8daa7f46abca4a9fea052668c9ebf7946b7fde1c9adb501a43ee83cd101c              159 Release
+ 4a085668bf9e4a78971dcb332e60bc0116b70f3aabd004f28af5833667d25ad476c4ee734a22cadd3b4cc224499d7b8f597bbb454bbd35a2316ffbc767bbae5a              159 Release
  70034c63553cf0a66d0987fdad9500f7cffb22b33d60485ab5a699eeb38dc198a82e7c3b8aa58cd8d9ba5d08cb124951e9a04301f7139d0ffc9ea71392b38ae7              519 main/binary-amd64/Packages
- cc45f40408182dff4d7070c486a656c055950654b4e3300ffcf14c5958e9a9e166d585d158a3ca1e23f64ba9500cbf77a517cb1598b31b77403c6c4ec20b9506              386 main/binary-amd64/Packages.gz
+ e346c05ec2e4e4b77451fcc990d0c96c497b1fb41769e0e12b086a567d9d4cf39bb5f0e53eddd251676cf588ddbec3455b6be3802e30f9ee5351c50b41bdae46              386 main/binary-amd64/Packages.gz
