@@ -218,6 +218,8 @@ jobs:
           API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
           GH_TOKEN: ${{ github.token }}
           CHANGED_APPS: ${{ inputs.changed_apps }}
+          PROXY_URL: ${{ secrets.PROXY_URL }}
+          PROXY_TOKEN: ${{ secrets.PROXY_TOKEN }}
         run: |
           apps=$(echo "$CHANGED_APPS" | jq -r '.[]?' 2>/dev/null || true)
           if [ -z "$apps" ]; then
