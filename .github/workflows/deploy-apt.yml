@@ -222,6 +222,10 @@ jobs:
           PROXY_TOKEN: ${{ secrets.PROXY_TOKEN }}
         run: |
           apps=$(echo "$CHANGED_APPS" | jq -r '.[]?' 2>/dev/null || true)
+          # Handle double-encoded JSON arrays from workflow_dispatch
+          if echo "$apps" | grep -q '^\['; then
+            apps=$(echo "$apps" | jq -r '.[]?' 2>/dev/null || true)
+          fi
           if [ -z "$apps" ]; then
             echo "No changed apps, skipping"
             exit 0
