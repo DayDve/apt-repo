@@ -209,7 +209,7 @@ sudo apt update</code></pre>
 ${rows}
 </table>
 
-<p class="center"><a href="https://github.com/${REPO}"><img src="https://img.shields.io/badge/GitHub-DayDve%2Fapt--repo-181717?logo=github" alt="GitHub Repository"></a></p>
+<p class="center"><a href="https://github.com/${REPO}"><img src="https://img.shields.io/badge/GitHub-DayDve%2Fapt--repo-181717?logo=github" alt="GitHub Repository"></a> <a href="https://t.me/ddaptrepo"><img src="https://img.shields.io/badge/channel-@ddaptrepo-26A5E4?logo=telegram" alt="Telegram"></a></p>
 <p class="center" style="color:#8b949e;font-size:.85rem">Built for personal use</p>
 
 <script type="application/ld+json">
