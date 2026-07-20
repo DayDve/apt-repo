@@ -10,6 +10,8 @@ template = """\
 # apt-repo
 
 ![Apps](https://img.shields.io/badge/apps-__COUNT__-blue)
+[![Website](https://img.shields.io/badge/website-apt.smbit.pro-4a9eff)](https://apt.smbit.pro)
+[![Telegram](https://img.shields.io/badge/channel-@ddaptrepo-26A5E4?logo=telegram)](https://t.me/ddaptrepo)
 
 Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos. Packages are delivered as-is from upstream developers or repackagers - no guarantees on functionality or fitness for purpose.
 
