@@ -1,0 +1,23 @@
+# ============================================================
+# Package script for wps-office-langpack-ru
+# ============================================================
+
+SOURCE_URL="https://github.com/DayDve/wps-office-langpack-ru"
+DESCRIPTION="Russian language pack for WPS Office"
+
+check_update() {
+  local current="${1:-}" build_num
+  build_num=$(fetch_url "https://raw.githubusercontent.com/DayDve/wps-office-langpack-ru/master/version.txt" 2>/dev/null | tr -d '[:space:]')
+  [ -z "$build_num" ] && return 1
+  version="12.3.1.0.${build_num}"
+  [ "$version" != "$current" ]
+}
+
+get_version() {
+  local build_num
+  build_num=$(fetch_url "https://raw.githubusercontent.com/DayDve/wps-office-langpack-ru/master/version.txt" 2>/dev/null | tr -d '[:space:]')
+  [ -z "$build_num" ] && return 1
+  version="12.3.1.0.${build_num}"
+  local changelog_url="https://raw.githubusercontent.com/DayDve/wps-office-langpack-ru/master/CHANGELOG.md"
+  fetch_url "$changelog_url" 2>/dev/null | sed -n "/\[${version}\]/,/^## \[/p" | head -n -1 | tail -n +2
+}
