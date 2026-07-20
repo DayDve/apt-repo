@@ -68,6 +68,19 @@ pull_package_info() {
   echo "---"
 }
 
+# fetch_url: Fetches URL through proxy (direct → proxy → empty)
+# Usage: fetch_url <url> [curl_args...]
+# Requires: PROXY_URL, PROXY_TOKEN env vars
+fetch_url() {
+  local url="$1"; shift
+  [ -n "${PROXY_URL:-}" ] && [ -n "${PROXY_TOKEN:-}" ] || return 1
+  local encoded
+  encoded=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1],safe=''))" "$url")
+  curl -s --connect-timeout 10 --max-time 30 \
+    -H "X-Proxy-Token: ${PROXY_TOKEN}" \
+    "$@" "${PROXY_URL}?url=${encoded}"
+}
+
 # ============================================================
 # Main logic (skipped when sourced — e.g. from check-updates.yml)
 # ============================================================

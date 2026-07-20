@@ -5,18 +5,6 @@
 SOURCE_URL="https://github.com/winegui/WineGUI"
 DESCRIPTION="Wine prefix manager with a modern GUI"
 
-_gitlab_release_description() {
-  local desc
-  desc=$(curl -s --connect-timeout 30 --max-time 60 --header "Accept: application/json" \
-    "https://gitlab.melroy.org/api/v4/projects/melroy%2Fwinegui/releases" |
-    jq -r '.[0].description // empty')
-  if [ -n "$desc" ]; then
-    printf '%s' "$desc"
-  else
-    printf 'Подробный лог: https://gitlab.melroy.org/melroy/winegui/-/releases'
-  fi
-}
-
 check_update() {
   gh_latest_release winegui/WineGUI
   version="${LATEST_TAG#v}"
@@ -26,5 +14,12 @@ check_update() {
 get_version() {
   gh_latest_release winegui/WineGUI
   version="${LATEST_TAG#v}"
-  _gitlab_release_description
+  local api="https://gitlab.melroy.org/api/v4/projects/melroy%2Fwinegui/releases"
+  local release_page="https://gitlab.melroy.org/melroy/winegui/-/releases"
+  local desc
+  desc=$(curl -s --connect-timeout 10 --max-time 30 -H "Accept: application/json" "$api" 2>/dev/null \
+    | jq -r '.[0].description // empty' 2>/dev/null)
+  [ -z "$desc" ] && desc=$(fetch_url "$api" -H "Accept: application/json" \
+    | jq -r '.[0].description // empty' 2>/dev/null)
+  [ -n "$desc" ] && printf '%s' "$desc" || printf 'Подробный лог: %s' "$release_page"
 }
