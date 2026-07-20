@@ -63,4 +63,9 @@
   "description": "WPS Office repack with patches",
   "source": "https://github.com/Rongronggg9/wps-office-repack"
 }
+,{
+  "name": "wps-office-langpack-ru",
+  "description": "Russian language pack for WPS Office",
+  "source": "https://github.com/DayDve/wps-office-langpack-ru"
+}
 ]

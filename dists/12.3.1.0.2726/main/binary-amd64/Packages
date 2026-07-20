@@ -1,0 +1,14 @@
+Package: wps-office-langpack-ru
+Version: 12.3.1.0.2726
+Architecture: all
+Maintainer: Daydve <daydve@localhost>
+Depends: wps-office (>= 12)
+Filename: pool/12.3.1.0.2726/main/wps-office-langpack-ru_12.3.1.0.2726_all.deb
+Size: 3348478
+MD5sum: 75a63063fca6bd7be6331fc26cc589f9
+SHA1: 21fc7c8550b8327cdd0229650fcb3d9838be0aa2
+SHA256: a13c74d4ced04f9a58c0cdad1c6c22e966bfc55dbb39394b2f3370383b840ea6
+Section: localization
+Priority: optional
+Description: Russian language pack, plugins and font metric fixes for WPS Office 12
+

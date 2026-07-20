@@ -1,0 +1,42 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Architectures: amd64
+Codename: 12.3.1.0.2726
+Components: main
+Date: Mon, 20 Jul 2026 16:24:36 +0000
+Label: DayDve apt repo
+Origin: DayDve
+Suite: 12.3.1.0.2726
+MD5Sum:
+ ea3c59c36c62e8f018e909fd374604f4              159 Release
+ b6c30ea0da74f40e00c7f59cd668bec6              519 main/binary-amd64/Packages
+ b0551de39298fae099b2b8862b36e67d              386 main/binary-amd64/Packages.gz
+SHA1:
+ 8fad3b7fa01cfe9f4a06cc6630b44c2bfcad63d3              159 Release
+ bcc85ebf70353235f2acc7471eb6bf442043cbcb              519 main/binary-amd64/Packages
+ d6b6b1271ac11642596744fad03929d9fc137acd              386 main/binary-amd64/Packages.gz
+SHA256:
+ 0e07406c3594da801348a5742a2f14e11e075a20ea64224145834c9bd5b9dd9b              159 Release
+ 760c5090fa70a4354bb4eb507e0b71dcaec6e5021e2d384cee2fa21f56bfe77d              519 main/binary-amd64/Packages
+ 1c378b9d5fadce16598b064ee0432d0c2731a844ff5b4376d32af27ebb40df99              386 main/binary-amd64/Packages.gz
+SHA512:
+ b2e840bb669eb39142c0d9e42efb732fd5321e47288a832172093e907ec81580e3df7352d48b549b31e376624b962fd80cb186d243e3c870646e60f75e328bf3              159 Release
+ 70034c63553cf0a66d0987fdad9500f7cffb22b33d60485ab5a699eeb38dc198a82e7c3b8aa58cd8d9ba5d08cb124951e9a04301f7139d0ffc9ea71392b38ae7              519 main/binary-amd64/Packages
+ fcce029de28a9eff4cc52a67a141627e7dfcb9b3641ae8081e658506a4a87b80b7ff62bbefec79ad20c1eacdfcb0e948a0f1701798d0394657c775301e97bf0a              386 main/binary-amd64/Packages.gz
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmpeS8QACgkQorBTLKwl
+HCditw//Q1UC3DWtBIUx5PMqB7bFQXUZPdC09MZHPsbOzvf+o4ziEaOvMTIGJMwd
+8CNiFt59ywemQsAyHrsHBSWP36vagXwo9Sx2x4yYByUQMHVULUnAnco3x6SUdNqs
+0vmZxBlUNt0gv/gGwoIT/c/waZqURlrm4EIyTi3j/P6kjERfpDuOhWTW/avOnTUN
+TmPAP4ZCiGFKCSd2mjcCpk87VdKz6ufrjeh4MoycVltpAI/7cWLAKCRAZ524xBzv
+eW7q5NcLR26v6LD+8wWtAjqPBOhQkOohiwHHOaU86vstposZ6foQO6/m81fITYVD
+ahhaR4U3++qmbS/hTIOFot8uV4AmR8PuZjNUVHq58GdUWuiIX+Hkt8mU/acBiDIZ
+mcB5B3uSQlUmYtxEr060SxWOBzlfabP4c/5dlvx8ifZ0klHhPxI07SAkcxKGEZQj
+xC20KsDMm8fzT1ZivEP2PFRt+mu386MQA1q0hKFsrbzmY98OnORxYkR1/KmJYvTc
+XG1EoKZ3mHo7hPxc+k2Upglp1VD1GOy0QIh9KScwDZQlMYyxyToosIkOfL0z4IJW
+ABNZcLC+IQota5+Duag6i/2sYQjFuy/wBVEwRz4RJKBEj0GU5vZmcpIcZhmaE/Oc
+vb2gnu4SwBzS44UowvMeIuekL2ujKVz0CHY+d9sEeejzIzi/4nc=
+=j7Ug
+-----END PGP SIGNATURE-----
