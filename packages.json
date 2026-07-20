@@ -54,11 +54,6 @@
   "source": "https://github.com/winegui/WineGUI"
 }
 ,{
-  "name": "winegui",
-  "description": "Wine prefix manager with a modern GUI",
-  "source": "https://github.com/winegui/WineGUI"
-}
-,{
   "name": "wlvncc",
   "description": "Wayland native VNC client",
   "source": "https://github.com/any1/wlvncc"
