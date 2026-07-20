@@ -307,7 +307,7 @@ jobs:
           token = os.environ['TG_TOKEN']
           chat_id = os.environ['TG_CHAT_ID']
           deb = os.environ['DEB_PATH']
-          with open('/tmp/caption.html') as f:
+          with open('/tmp/caption.html', errors='replace') as f:
               caption = f.read().strip()
           r = requests.post(f'http://localhost:8081/bot{token}/sendDocument',
               data={'chat_id': chat_id, 'parse_mode': 'HTML', 'caption': caption},
