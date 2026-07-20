@@ -270,6 +270,7 @@ jobs:
             ver=$(echo "$tag" | sed "s/^${app}-//")
 
             body=$(get_version | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' | head -c 500)
+            echo "body=$body"
 
             # List release assets
             echo "Release assets:"
