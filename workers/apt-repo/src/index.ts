@@ -1,4 +1,6 @@
-interface Env { }
+interface Env {
+  PROXY_TOKEN: string;
+}
 
 interface Package {
   name: string;
@@ -12,12 +14,18 @@ const POOL_MAP = `https://raw.githubusercontent.com/${REPO}/apt/pool-map.json`;
 const PACKAGES_JSON = `https://raw.githubusercontent.com/${REPO}/apt/packages.json`;
 const CACHE_BUST = 'v4';
 
+import { handleGhaFallback } from './proxy';
+
 export default {
   async fetch(request: Request, _env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const path = url.pathname;
     const ua = (request.headers.get('User-Agent') || '').toLowerCase();
     const isBrowser = /mozilla|chrome|safari|firefox|edge/.test(ua);
+
+    if (path === '/gha-fallback') {
+      return handleGhaFallback(request, _env);
+    }
 
     if (path === '/' || path === '') {
       return isBrowser ? servePage(url, ctx) : serveText();
