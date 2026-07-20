@@ -270,7 +270,7 @@ jobs:
             [ -z "$tag" ] && continue
             ver=$(echo "$tag" | sed "s/^${app}-//")
 
-            body=$(get_version | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' | head -c 500)
+            body=$(get_version | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
 
             # List release assets
             echo "Release assets:"
@@ -308,7 +308,7 @@ jobs:
           chat_id = os.environ['TG_CHAT_ID']
           deb = os.environ['DEB_PATH']
           with open('/tmp/caption.html', errors='replace') as f:
-              caption = f.read().strip()
+              caption = f.read().strip()[:1024]
           r = requests.post(f'http://localhost:8081/bot{token}/sendDocument',
               data={'chat_id': chat_id, 'parse_mode': 'HTML', 'caption': caption},
               files={'document': open(deb, 'rb')})
