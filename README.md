@@ -1,6 +1,6 @@
 # apt-repo
 
-![Apps](https://img.shields.io/badge/apps-12-blue)
+![Apps](https://img.shields.io/badge/apps-14-blue)
 
 Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos. Packages are delivered as-is from upstream developers or repackagers - no guarantees on functionality or fitness for purpose.
 
@@ -8,6 +8,7 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 
 | App | Description |
 |---|---|
+| [ayugram](https://github.com/AyuGram/AyuGramDesktop) | Telegram client with enhanced features |
 | [bees](https://github.com/Zygo/bees) | btrfs deduplication daemon |
 | [grub-btrfs](https://github.com/Antynea/grub-btrfs) | GRUB menu entries for btrfs snapshots |
 | [keyd](https://github.com/rvaiya/keyd) | Key remapping daemon |
@@ -17,6 +18,7 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 | [rustdesk](https://github.com/rustdesk/rustdesk) | Fast open-source remote desktop |
 | [scrcpy](https://github.com/Genymobile/scrcpy) | Mirror and control Android devices via USB/TCP |
 | [viber](https://www.viber.com) | Free and secure calls and messages to anyone, anywhere |
+| [winegui](https://github.com/winegui/WineGUI) | Wine prefix manager with a modern GUI |
 | [winegui](https://github.com/winegui/WineGUI) | Wine prefix manager with a modern GUI |
 | [wlvncc](https://github.com/any1/wlvncc) | Wayland native VNC client |
 | [wps-office](https://github.com/Rongronggg9/wps-office-repack) | WPS Office repack with patches |
