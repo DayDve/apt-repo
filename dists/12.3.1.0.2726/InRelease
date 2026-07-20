@@ -4,39 +4,39 @@ Hash: SHA512
 Architectures: amd64
 Codename: 12.3.1.0.2726
 Components: main
-Date: Mon, 20 Jul 2026 16:24:36 +0000
+Date: Mon, 20 Jul 2026 16:25:19 +0000
 Label: DayDve apt repo
 Origin: DayDve
 Suite: 12.3.1.0.2726
 MD5Sum:
- ea3c59c36c62e8f018e909fd374604f4              159 Release
+ bc126081dd0c33437e39551d9527c3a3              159 Release
  b6c30ea0da74f40e00c7f59cd668bec6              519 main/binary-amd64/Packages
- b0551de39298fae099b2b8862b36e67d              386 main/binary-amd64/Packages.gz
+ 66d2d128bfb3c37e9559a1c28cfc607c              386 main/binary-amd64/Packages.gz
 SHA1:
- 8fad3b7fa01cfe9f4a06cc6630b44c2bfcad63d3              159 Release
+ d8721dd6bbc9611e71462fd5cf04966a06bc6f69              159 Release
  bcc85ebf70353235f2acc7471eb6bf442043cbcb              519 main/binary-amd64/Packages
- d6b6b1271ac11642596744fad03929d9fc137acd              386 main/binary-amd64/Packages.gz
+ 1cfc2b2e12d7b38a7ce48bbab611ac3de9e134d8              386 main/binary-amd64/Packages.gz
 SHA256:
- 0e07406c3594da801348a5742a2f14e11e075a20ea64224145834c9bd5b9dd9b              159 Release
+ 4af0e5025b40f30521d659ab5940c23df3dfc9420049ed3ca279ac065c06eac0              159 Release
  760c5090fa70a4354bb4eb507e0b71dcaec6e5021e2d384cee2fa21f56bfe77d              519 main/binary-amd64/Packages
- 1c378b9d5fadce16598b064ee0432d0c2731a844ff5b4376d32af27ebb40df99              386 main/binary-amd64/Packages.gz
+ 01066f503fef80cf25b328ff516fa3b0acbb77fd0ae883401e2569f9e6fc2a8c              386 main/binary-amd64/Packages.gz
 SHA512:
- b2e840bb669eb39142c0d9e42efb732fd5321e47288a832172093e907ec81580e3df7352d48b549b31e376624b962fd80cb186d243e3c870646e60f75e328bf3              159 Release
+ 729b25879492bcfba6b7ecaa059c69ab8e19c7465ba6b9c4e504b8d4d8d071da8b4d8daa7f46abca4a9fea052668c9ebf7946b7fde1c9adb501a43ee83cd101c              159 Release
  70034c63553cf0a66d0987fdad9500f7cffb22b33d60485ab5a699eeb38dc198a82e7c3b8aa58cd8d9ba5d08cb124951e9a04301f7139d0ffc9ea71392b38ae7              519 main/binary-amd64/Packages
- fcce029de28a9eff4cc52a67a141627e7dfcb9b3641ae8081e658506a4a87b80b7ff62bbefec79ad20c1eacdfcb0e948a0f1701798d0394657c775301e97bf0a              386 main/binary-amd64/Packages.gz
+ cc45f40408182dff4d7070c486a656c055950654b4e3300ffcf14c5958e9a9e166d585d158a3ca1e23f64ba9500cbf77a517cb1598b31b77403c6c4ec20b9506              386 main/binary-amd64/Packages.gz
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmpeS8QACgkQorBTLKwl
-HCditw//Q1UC3DWtBIUx5PMqB7bFQXUZPdC09MZHPsbOzvf+o4ziEaOvMTIGJMwd
-8CNiFt59ywemQsAyHrsHBSWP36vagXwo9Sx2x4yYByUQMHVULUnAnco3x6SUdNqs
-0vmZxBlUNt0gv/gGwoIT/c/waZqURlrm4EIyTi3j/P6kjERfpDuOhWTW/avOnTUN
-TmPAP4ZCiGFKCSd2mjcCpk87VdKz6ufrjeh4MoycVltpAI/7cWLAKCRAZ524xBzv
-eW7q5NcLR26v6LD+8wWtAjqPBOhQkOohiwHHOaU86vstposZ6foQO6/m81fITYVD
-ahhaR4U3++qmbS/hTIOFot8uV4AmR8PuZjNUVHq58GdUWuiIX+Hkt8mU/acBiDIZ
-mcB5B3uSQlUmYtxEr060SxWOBzlfabP4c/5dlvx8ifZ0klHhPxI07SAkcxKGEZQj
-xC20KsDMm8fzT1ZivEP2PFRt+mu386MQA1q0hKFsrbzmY98OnORxYkR1/KmJYvTc
-XG1EoKZ3mHo7hPxc+k2Upglp1VD1GOy0QIh9KScwDZQlMYyxyToosIkOfL0z4IJW
-ABNZcLC+IQota5+Duag6i/2sYQjFuy/wBVEwRz4RJKBEj0GU5vZmcpIcZhmaE/Oc
-vb2gnu4SwBzS44UowvMeIuekL2ujKVz0CHY+d9sEeejzIzi/4nc=
-=j7Ug
+iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmpeS/AACgkQorBTLKwl
+HCf16g//YZNnWI+LPbvgBKgSR0+5a8Tjqp79ZLUth5oZkIFtawKkAI1C5RYvFk/h
+GTBnfeTsCXFNFArJd9h+9dln0FEczJ/+xbhxXQcef7jjgNvO30QYb7CjpgwqOXwu
+P6DBAR8xEzs2nQxzEDRj0abAat9+D9HhULfcA5mOYNPRufzW+uWlAJdNzBGv5c3g
+Xb6H2PWTFPDTZ7Mgtnv9m4O64U82AYBizMaUDcul3n18wbNKruEQxFrAAmesFTVs
+YAHEhgcEtcjZABeKeCBdiRTads1PVx52iebpZ6A/zTdOXzg4TmzAH9oJZ+FdvP0d
+cK5vjnI+DftLqbyVkPLjKMEzYAaR9JHMjYg277YYEGhmg9t5M9EUAQlc7zcPVfPV
+ReQguO269rATvY/a5x9lbg8THP4Pzv/EpCnL+wiFeQwAjKzWb9a3ow4y08k/1B+W
++KrcV2gP913YWYHBpXp9PoyZ6r+OqlrkUUF6UyFhhk2fF4OxHSFdfgdrGGXxZz4w
+YmihumyxGZDY1eqcddRpQGdAcBYdosvlARInkLm2gkFnCYa/DvMziEGUYXOfwGsL
+KWO/DPokBV/7/0/4yQDCmVC4ZkaOpSDPH5bV1LnTyMQ+/tVlS7yISh+whfwyUtgE
+2TJsbUII4VnVdQbqSK/+VnL+/xUvdyhEWev6lNEwiWLrAzV4YzA=
+=a0RN
 -----END PGP SIGNATURE-----
