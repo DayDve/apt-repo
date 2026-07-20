@@ -232,3 +232,17 @@ Description: WPS Office, is an office productivity suite.
 Name: wps-office
 Relocations: /opt/kingsoft
 
+Package: wps-office-langpack-ru
+Version: 12.3.1.0.2726
+Architecture: all
+Maintainer: Daydve <daydve@localhost>
+Depends: wps-office (>= 12)
+Filename: pool/noble/main/wps-office-langpack-ru_12.3.1.0.2726_noble_noble_amd64.deb
+Size: 3348462
+MD5sum: 996834fcac6fad4cb71f4418911ee7ee
+SHA1: f453e6041ee2339b637615dc82bee938dbf96aad
+SHA256: 2d58cf7a631e9bf404782d76da5dac2bba0ea3047f30b2cc30c8aa04cb329330
+Section: localization
+Priority: optional
+Description: Russian language pack, plugins and font metric fixes for WPS Office 12
+
