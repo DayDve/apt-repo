@@ -302,13 +302,21 @@ jobs:
             } > /tmp/caption.html
 
             # Send via Python to avoid shell escaping issues
-            DEB_PATH="$deb" python3 -c "
+            RELEASE_TAG="$tag" DEB_PATH="$deb" python3 -c "
           import os, requests, sys
           token = os.environ['TG_TOKEN']
           chat_id = os.environ['TG_CHAT_ID']
           deb = os.environ['DEB_PATH']
+          tag = os.environ['RELEASE_TAG']
+          release_url = f'https://github.com/DayDve/apt-repo/releases/tag/{tag}'
           with open('/tmp/caption.html', errors='replace') as f:
-              caption = f.read().strip()[:1024]
+              caption = f.read().strip()
+          if len(caption) > 1024:
+              truncated = caption[:1000]
+              last_newline = truncated.rfind('\n')
+              if last_newline > 0:
+                  truncated = truncated[:last_newline]
+              caption = truncated + '\n...\n\n🔗 <a href=\"' + release_url + '\">Полный changelog</a>'
           r = requests.post(f'http://localhost:8081/bot{token}/sendDocument',
               data={'chat_id': chat_id, 'parse_mode': 'HTML', 'caption': caption},
               files={'document': open(deb, 'rb')})
