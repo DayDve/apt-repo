@@ -14,12 +14,11 @@ check_update() {
 get_version() {
   gh_latest_release winegui/WineGUI
   version="${LATEST_TAG#v}"
-  local api="https://gitlab.melroy.org/api/v4/projects/melroy%2Fwinegui/releases"
-  local release_page="https://gitlab.melroy.org/melroy/winegui/-/releases"
+  local releases_url="https://gitlab.melroy.org/melroy/winegui/-/releases"
   local desc
-  desc=$(curl -s --connect-timeout 10 --max-time 30 -H "Accept: application/json" "$api" 2>/dev/null \
+  desc=$(curl -s --connect-timeout 10 --max-time 30 -H "Accept: application/json" "$releases_url" 2>/dev/null \
     | jq -r '.[0].description // empty' 2>/dev/null)
-  [ -z "$desc" ] && desc=$(fetch_url "$api" -H "Accept: application/json" \
+  [ -z "$desc" ] && desc=$(fetch_url "$releases_url" -H "Accept: application/json" \
     | jq -r '.[0].description // empty' 2>/dev/null)
-  [ -n "$desc" ] && printf '%s' "$desc" || printf 'Подробный лог: %s' "$release_page"
+  [ -n "$desc" ] && printf '%s' "$desc" || printf 'Подробный лог: %s' "$releases_url"
 }
