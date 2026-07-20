@@ -1,0 +1,49 @@
+name: Debug SSH tunnel
+
+on:
+  workflow_dispatch:
+    inputs:
+      duration:
+        description: 'Sleep time in minutes'
+        required: false
+        default: '15'
+
+jobs:
+  tunnel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup SSH server
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq openssh-server
+          sudo mkdir -p /home/runner/.ssh
+          echo "${{ secrets.RUNNER_SSH_PUBKEY }}" | sudo tee /home/runner/.ssh/authorized_keys > /dev/null
+          sudo chmod 700 /home/runner/.ssh
+          sudo chmod 600 /home/runner/.ssh/authorized_keys
+          sudo chown -R runner:runner /home/runner/.ssh
+          sudo systemctl start ssh
+
+      - name: Open reverse tunnel
+        run: |
+          echo "${{ secrets.SSH_TUNNEL_KEY }}" > /tmp/tunnel_key
+          chmod 600 /tmp/tunnel_key
+          ssh -R 2222:localhost:22 \
+            -i /tmp/tunnel_key \
+            -o StrictHostKeyChecking=no \
+            -o ServerAliveInterval=30 \
+            -o ServerAliveCountMax=3 \
+            -N \
+            "${{ secrets.SSH_TUNNEL_USER }}@${{ secrets.SSH_TUNNEL_HOST }}" \
+            -p "${{ secrets.SSH_TUNNEL_PORT || '22' }}" &
+          echo "Tunnel PID: $!"
+          sleep 10
+          ssh -o StrictHostKeyChecking=no -i /tmp/tunnel_key \
+            "${{ secrets.SSH_TUNNEL_USER }}@${{ secrets.SSH_TUNNEL_HOST }}" \
+            -p "${{ secrets.SSH_TUNNEL_PORT || '22' }}" \
+            "echo 'Tunnel OK'"
+
+      - name: Sleep
+        run: |
+          echo "Подключайся: ssh runner@<server> -p 2222"
+          echo "Спим ${{ inputs.duration }} минут..."
+          sleep $(( ${{ inputs.duration }} * 60 ))
