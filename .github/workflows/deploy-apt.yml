@@ -216,8 +216,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           CHANGED_APPS: ${{ inputs.changed_apps }}
         run: |
-          # Parse input: if empty or "[]", skip
-          apps=$(echo "$CHANGED_APPS" | jq -r 'if type == "array" then .[] else empty end' 2>/dev/null || true)
+          echo "Raw CHANGED_APPS: >>>$CHANGED_APPS<<<"
+          echo "Type: $(echo "$CHANGED_APPS" | jq -r 'type' 2>/dev/null || echo 'not json')"
+          echo "Length: ${#CHANGED_APPS}"
+          apps=$(echo "$CHANGED_APPS" | jq -r '.[]?' 2>/dev/null || true)
+          echo "Parsed apps: >>>$apps<<<"
           if [ -z "$apps" ]; then
             echo "No changed apps, skipping"
             exit 0
