@@ -181,15 +181,18 @@ jobs:
         env:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_OWNER_ID: ${{ secrets.TG_OWNER_ID }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          TEXT=$(printf '❌ Deploy apt repo failed\nWorkflow: %s\nRun: %s/%s/actions/runs/%s' \
-            "${{ github.workflow }}" \
-            "${{ github.server_url }}" \
-            "${{ github.repository }}" \
-            "${{ github.run_id }}")
+          FAILED_STEP=$(curl -sH "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs" \
+            | jq -r '.jobs[] | select(.name == "deploy") | .steps[] | select(.conclusion == "failure") | .name')
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          TEXT=$(printf '❌ Deploy failed\nШаг: %s\n<a href="%s">Открыть</a>' \
+            "${FAILED_STEP:-unknown}" "$RUN_URL")
           curl -sS \
             --form-string "chat_id=$TG_OWNER_ID" \
             --form-string "text=$TEXT" \
+            --form-string "parse_mode=HTML" \
             "https://api.telegram.org/bot$TG_TOKEN/sendMessage" | grep -v '"ok":true'
 
   notify-success:

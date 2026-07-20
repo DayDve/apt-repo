@@ -6,4 +6,3 @@ node_modules
 *.pem
 secrets.*
 credentials*
-ccache/

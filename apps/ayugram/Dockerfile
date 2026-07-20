@@ -4,8 +4,6 @@ USER root
 
 ARG APP_VERSION
 
-RUN yum install -y ccache
-
 WORKDIR /build
 
 RUN git clone --depth 1 --branch dev \
@@ -15,23 +13,11 @@ RUN git clone --depth 1 --branch dev \
 
 RUN chown -R user:user /build
 
-RUN --mount=type=bind,source=ccache,target=/build/ccache,readwrite \
-    chmod 777 /build/ccache && \
-    su user -c ' \
-      export CCACHE_DIR=/build/ccache && \
-      export CCACHE_MAXSIZE=10G && \
-      export CCACHE_COMPRESS=1 && \
-      export CCACHE_SLOPPINESS=include_file_ctime,include_file_mtime,pch_defines,time_macros && \
-      export CCACHE_COMPILERCHECK=content && \
-      export CCACHE_BASEDIR=/build && \
-      export CCACHE_NOHASHDIR=1 && \
-      export CCACHE_CPP2=1 && \
+RUN su user -c ' \
       cd /build/src/Telegram && \
       ./configure.sh \
         -D TDESKTOP_API_ID=2040 \
-        -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627 \
-        -D CMAKE_C_COMPILER_LAUNCHER=ccache \
-        -D CMAKE_CXX_COMPILER_LAUNCHER=ccache && \
+        -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627 && \
       cmake --build ../out --config Release -j$(nproc) \
     '
 

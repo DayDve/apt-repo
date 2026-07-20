@@ -70,20 +70,6 @@ jobs:
             echo "update=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Restore ayugram ccache
-        if: steps.check.outputs.update == 'true' && matrix.app == 'ayugram'
-        uses: actions/cache@v6
-        with:
-          path: apps/ayugram/ccache
-          key: ayugram-ccache-${{ hashFiles('apps/ayugram/Dockerfile') }}
-          restore-keys: ayugram-ccache-
-
-      - name: Prepare ayugram ccache dir
-        if: steps.check.outputs.update == 'true' && matrix.app == 'ayugram'
-        run: |
-          mkdir -p apps/ayugram/ccache
-          chmod 777 apps/ayugram/ccache
-
       - name: Build
         if: steps.check.outputs.update == 'true'
         env:
@@ -96,16 +82,19 @@ jobs:
         env:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_OWNER_ID: ${{ secrets.TG_OWNER_ID }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          TEXT=$(printf '❌ Build failed: %s\nWorkflow: %s\nRun: %s/%s/actions/runs/%s' \
-            "${{ matrix.app }}" \
-            "${{ github.workflow }}" \
-            "${{ github.server_url }}" \
-            "${{ github.repository }}" \
-            "${{ github.run_id }}")
+          FAILED_STEP=$(curl -sH "Authorization: token $GH_TOKEN" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs" \
+            | jq -r --arg name "build (${{ matrix.app }})" \
+              '.jobs[] | select(.name == $name) | .steps[] | select(.conclusion == "failure") | .name')
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          TEXT=$(printf '❌ <b>%s</b> failed\nШаг: %s\n<a href="%s">Открыть</a>' \
+            "${{ matrix.app }}" "${FAILED_STEP:-unknown}" "$RUN_URL")
           curl -sS \
             --form-string "chat_id=$TG_OWNER_ID" \
             --form-string "text=$TEXT" \
+            --form-string "parse_mode=HTML" \
             "https://api.telegram.org/bot$TG_TOKEN/sendMessage" | grep -v '"ok":true'
 
   deploy:
