@@ -233,15 +233,16 @@ Name: wps-office
 Relocations: /opt/kingsoft
 
 Package: wps-office-langpack-ru
-Version: 12.3.1.0.2726
+Version: 12.3.1.0.2722
 Architecture: all
-Maintainer: Daydve <daydve@localhost>
+Maintainer: DayDve <daydve@smbit.pro>
 Depends: wps-office (>= 12)
-Filename: pool/noble/main/wps-office-langpack-ru_12.3.1.0.2726_noble_noble_amd64.deb
-Size: 3348462
-MD5sum: 996834fcac6fad4cb71f4418911ee7ee
-SHA1: f453e6041ee2339b637615dc82bee938dbf96aad
-SHA256: 2d58cf7a631e9bf404782d76da5dac2bba0ea3047f30b2cc30c8aa04cb329330
+Replaces: wps-office
+Filename: pool/noble/main/wps-office-langpack-ru_12.3.1.0.2722_noble_noble_amd64.deb
+Size: 3374338
+MD5sum: 5d5817ea9b32e5e2e17be90262ec5609
+SHA1: 24336ce214a63b658ed8f138c1780ec197b9ac84
+SHA256: a1ad0dbb6e075d2b851d3f141355eb257c70c6687da22b3b4a62116e19e6e383
 Section: localization
 Priority: optional
 Description: Russian language pack, plugins and font metric fixes for WPS Office 12
