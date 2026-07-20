@@ -16,9 +16,7 @@ get_version() {
   version="${LATEST_TAG#v}"
   local releases_url="https://gitlab.melroy.org/melroy/winegui/-/releases"
   local desc
-  desc=$(curl -s --connect-timeout 10 --max-time 30 -H "Accept: application/json" "$releases_url" 2>/dev/null \
-    | jq -r '.[0].description // empty' 2>/dev/null)
-  [ -z "$desc" ] && desc=$(fetch_url "$releases_url" -H "Accept: application/json" \
+  desc=$(fetch_url "$releases_url" -H "Accept: application/json" \
     | jq -r '.[0].description // empty' 2>/dev/null)
   [ -n "$desc" ] && printf '%s' "$desc" || printf 'Подробный лог: %s' "$releases_url"
 }

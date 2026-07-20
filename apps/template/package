@@ -25,6 +25,10 @@
 #     Outputs commit list
 #   gh_release_body <owner/repo>
 #     Outputs latest release body
+#
+# Universal helpers:
+#   fetch_url <url> [curl_args...]
+#     HTTP GET with direct → proxy fallback
 # ============================================================
 
 SOURCE_URL="https://example.com/OWNER/REPO"
@@ -78,3 +82,10 @@ DESCRIPTION="My awesome app"
 #   version=$(grep -oP '\d[\d.]*' <<<"$url")
 #   curl -s https://example.com/changelog | sed -n "/$version/,/^[0-9]/p"
 # }
+#
+# --- fetch_url: universal HTTP helper ---
+# fetch_url <url> [curl_args...]
+#   Tries direct curl first, falls back to Cloudflare Worker proxy
+#   if direct fails or returns empty. Works from CI runners where
+#   certain hosts may be unreachable (e.g. gitlab.melroy.org from GHA).
+#   Optional: PROXY_URL, PROXY_TOKEN env vars for proxy fallback.
