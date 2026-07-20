@@ -6,9 +6,15 @@ SOURCE_URL="https://github.com/winegui/WineGUI"
 DESCRIPTION="Wine prefix manager with a modern GUI"
 
 _gitlab_release_description() {
-  curl -s --connect-timeout 10 --max-time 15 --header "Accept: application/json" \
+  local desc
+  desc=$(curl -s --connect-timeout 30 --max-time 60 --header "Accept: application/json" \
     "https://gitlab.melroy.org/api/v4/projects/melroy%2Fwinegui/releases" |
-    jq -r '.[0].description // empty'
+    jq -r '.[0].description // empty')
+  if [ -n "$desc" ]; then
+    printf '%s' "$desc"
+  else
+    printf 'Подробный лог: https://gitlab.melroy.org/melroy/winegui/-/releases'
+  fi
 }
 
 check_update() {

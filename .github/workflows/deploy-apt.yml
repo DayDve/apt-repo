@@ -107,8 +107,11 @@ jobs:
         run: |
           echo -n '[' > "$GITHUB_WORKSPACE/packages.json"
           first=true
+          seen=""
           while IFS='|' read -r distro deb_name tag; do
             app=$(echo "$tag" | sed -E 's/-[0-9].*//')
+            echo " $seen " | grep -q " $app " && continue
+            seen="$seen $app"
             source_url=$(awk -F'|' -v a="$app" '$1==a{print $2}' /tmp/pkg-info)
             desc=$(awk -F'|' -v a="$app" '$1==a{print $3}' /tmp/pkg-info)
             if [ -z "$desc" ]; then
@@ -216,11 +219,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           CHANGED_APPS: ${{ inputs.changed_apps }}
         run: |
-          echo "Raw CHANGED_APPS: >>>$CHANGED_APPS<<<"
-          echo "Type: $(echo "$CHANGED_APPS" | jq -r 'type' 2>/dev/null || echo 'not json')"
-          echo "Length: ${#CHANGED_APPS}"
           apps=$(echo "$CHANGED_APPS" | jq -r '.[]?' 2>/dev/null || true)
-          echo "Parsed apps: >>>$apps<<<"
           if [ -z "$apps" ]; then
             echo "No changed apps, skipping"
             exit 0
@@ -270,7 +269,6 @@ jobs:
             ver=$(echo "$tag" | sed "s/^${app}-//")
 
             body=$(get_version | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' | head -c 500)
-            echo "body=$body"
 
             # List release assets
             echo "Release assets:"
