@@ -1,0 +1,22 @@
+# ============================================================
+# Package script for btrfs-assistant
+# ============================================================
+
+SOURCE_URL="https://gitlab.com/btrfs-assistant/btrfs-assistant"
+DESCRIPTION="GUI management tool for Btrfs filesystem"
+
+check_update() {
+  local current="${1:-}"
+  version=$(fetch_url "https://gitlab.com/api/v4/projects/btrfs-assistant%2Fbtrfs-assistant/repository/tags" 2>/dev/null \
+    | jq -r '.[0].name // empty')
+  [ -z "$version" ] && return 1
+  [ "$version" != "$current" ]
+}
+
+get_version() {
+  version=$(fetch_url "https://gitlab.com/api/v4/projects/btrfs-assistant%2Fbtrfs-assistant/repository/tags" 2>/dev/null \
+    | jq -r '.[0].name // empty')
+  [ -z "$version" ] && return 1
+  fetch_url "https://gitlab.com/btrfs-assistant/btrfs-assistant/-/raw/main/changelog" 2>/dev/null \
+    | sed -n "/^${version} /,/^###\|^$/p" | head -n -1 | tail -n +2
+}
