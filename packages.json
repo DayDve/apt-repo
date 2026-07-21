@@ -9,6 +9,11 @@
   "source": "https://github.com/Zygo/bees"
 }
 ,{
+  "name": "btrfs-assistant",
+  "description": "GUI management tool for Btrfs filesystem",
+  "source": "https://gitlab.com/btrfs-assistant/btrfs-assistant"
+}
+,{
   "name": "grub-btrfs",
   "description": "GRUB menu entries for btrfs snapshots",
   "source": "https://github.com/Antynea/grub-btrfs"

@@ -31,6 +31,21 @@ Description: Btrfs deduplication daemon
  A daemon that deduplicates data on Btrfs volumes using
  reflinks and stable file handles.
 
+Package: btrfs-assistant
+Version: 2.2
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 808
+Depends: libc6, libbtrfsutil1t64, btrfs-progs, libqt6core6t64, libqt6gui6t64, libqt6widgets6t64, libqt6dbus6t64, libgl1, libegl1, libqt6svg6
+Filename: pool/noble/main/btrfs-assistant_2.2_noble_amd64.deb
+Size: 215958
+MD5sum: 93dcb0a5432ddb983d1ac5fbdbfbe57b
+SHA1: cd775bd84c21da0a56cfa1c829afa8ee0cfa8991
+SHA256: 93d05def134dae42b767b144cd623e820098af007a82fd62f9257da801b6af60
+Description: GUI management tool for Btrfs filesystem
+ A Qt6-based tool for managing Btrfs filesystems, including
+ subvolumes, snapshots (Snapper/Timeshift), scrub, and balance operations.
+
 Package: grub-btrfs
 Version: 4.14
 Architecture: amd64
