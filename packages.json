@@ -39,6 +39,11 @@
   "source": "https://github.com/rustdesk/rustdesk"
 }
 ,{
+  "name": "scrcpy",
+  "description": "Mirror and control Android devices via USB/TCP",
+  "source": "https://github.com/Genymobile/scrcpy"
+}
+,{
   "name": "viber",
   "description": "Free and secure calls and messages to anyone, anywhere",
   "source": "https://www.viber.com"
