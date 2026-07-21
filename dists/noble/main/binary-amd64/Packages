@@ -128,22 +128,6 @@ Priority: optional
 Homepage: https://rustdesk.com
 Description: A remote control software.
 
-Package: scrcpy
-Version: 4.1
-Architecture: amd64
-Maintainer: DayDve <DayDve@users.noreply.github.com>
-Depends: libsdl2-2.0-0, adb
-Conflicts: scrcpy-server
-Replaces: scrcpy-server
-Filename: pool/noble/main/scrcpy_4.1_noble_amd64.deb
-Size: 10655950
-MD5sum: c32efa2232b8304af5b8e7cb3283714b
-SHA1: 13e89e06e947109d8673cc99094cbd96f087653d
-SHA256: 5413914b009fd73c2f03e4caf273e4c819172406356103be4522292ec79a26c0
-Section: universe/utils
-Priority: optional
-Description: Mirror and control Android devices via USB/TCP
-
 Package: viber
 Version: 27.3.0.2
 Architecture: amd64
@@ -233,16 +217,16 @@ Name: wps-office
 Relocations: /opt/kingsoft
 
 Package: wps-office-langpack-ru
-Version: 12.3.1.0.2733-1
+Version: 12.3.1.0.2739-1
 Architecture: all
 Maintainer: DayDve <daydve@smbit.pro>
 Depends: wps-office (>= 12)
 Replaces: wps-office
-Filename: pool/noble/main/wps-office-langpack-ru_12.3.1.0.2733-1_noble_noble_amd64.deb
-Size: 3352662
-MD5sum: 1b305d68473fecaa93453af76c609c63
-SHA1: dbc60c71a155d9dac34aebbbe56c8f54726d0911
-SHA256: c954541910ee2f42d36d0bcb5892ca82cbcbc2fb5119d9d0a94536f640b1645b
+Filename: pool/noble/main/wps-office-langpack-ru_12.3.1.0.2739-1_noble_noble_amd64.deb
+Size: 3400812
+MD5sum: 1ca11469d461aab42155ba832512da63
+SHA1: 105e26238cf4f77ab30d926bd8e060e4787db50a
+SHA256: d4284d234e1be00225144d06e14ee7bca021737fe4a00fb8df3c33ed4dbb3b9a
 Section: localization
 Priority: optional
 Description: Russian language pack, plugins and font metric fixes for WPS Office 12
