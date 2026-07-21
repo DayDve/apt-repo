@@ -1,6 +1,6 @@
 # apt-repo
 
-![Apps](https://img.shields.io/badge/apps-14-blue)
+![Apps](https://img.shields.io/badge/apps-15-blue)
 [![Website](https://img.shields.io/badge/website-apt.smbit.pro-4a9eff)](https://apt.smbit.pro)
 [![Telegram](https://img.shields.io/badge/channel-@ddaptrepo-26A5E4?logo=telegram)](https://t.me/ddaptrepo)
 
@@ -12,6 +12,7 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 |---|---|
 | [ayugram](https://github.com/AyuGram/AyuGramDesktop) | Telegram client with enhanced features |
 | [bees](https://github.com/Zygo/bees) | btrfs deduplication daemon |
+| [btrfs-assistant](https://gitlab.com/btrfs-assistant/btrfs-assistant) | GUI management tool for Btrfs filesystem |
 | [grub-btrfs](https://github.com/Antynea/grub-btrfs) | GRUB menu entries for btrfs snapshots |
 | [keyd](https://github.com/rvaiya/keyd) | Key remapping daemon |
 | [localsend](https://github.com/localsend/localsend) | Cross-platform file sharing over local network |
