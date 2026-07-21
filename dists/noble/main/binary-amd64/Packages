@@ -96,17 +96,17 @@ Description: Rclone - "rsync for cloud storage"
  of other useful things.
 
 Package: remotedesktopmanager
-Version: 2026.2.1.3
+Version: 2026.2.1.4
 Architecture: amd64
 Maintainer: Devolutions
 Depends: libwebkit2gtk-4.1-0 | libwebkit2gtk-4.0-37, ca-certificates, libsecret-1-0, xwayland
 Recommends: gnome-keyring
 Suggests: libappindicator3-1, xdotool, lsof, libopenal1
 Filename: pool/noble/main/rdm.deb
-Size: 255363588
-MD5sum: 07695df9f03a9a770427314651a21116
-SHA1: a94a42847fb50621c9563165769965634a21eb07
-SHA256: 3ff08d873749cfec06efc72b7cb37132057de84a1360c8c39142b72f1350258a
+Size: 255149996
+MD5sum: ef7ce07189bd7f9ff761d7a9dbd16796
+SHA1: fad83b225bc2a08d815dde24aa9e8420c3c8f51f
+SHA256: d5d9b78d579c7dae026f1453538d2cbbdf72228702f93486cb53639a5a009903
 Section: utils
 Homepage: https://devolutions.net/remote-desktop-manager/
 Description: Centralize, Manage and Secure Remote Connections
