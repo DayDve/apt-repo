@@ -1,0 +1,28 @@
+name: Deploy Worker
+
+on:
+  push:
+    branches: [worker]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: worker
+
+      - name: Deploy apt-repo
+        run: npx wrangler deploy
+        working-directory: workers/apt-repo
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
+      - name: Deploy gha-proxy
+        run: npx wrangler deploy
+        working-directory: workers/gha-proxy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
