@@ -93,11 +93,11 @@ jobs:
           done < /tmp/tag-map
           echo '}' >> "$GITHUB_WORKSPACE/pool-map.json"
 
-      - name: Get package info from master
+      - name: Get package info from apps
         run: |
-          git fetch origin master
-          for app in $(git ls-tree --name-only origin/master:apps/ | grep -v '^template$'); do
-            pkg_file="origin/master:apps/$app/package"
+          git fetch origin apps
+          for app in $(git ls-tree --name-only origin/apps:apps/ | grep -v '^template$'); do
+            pkg_file="origin/apps:apps/$app/package"
             url=$(git show "$pkg_file" | awk -F'"' '/^SOURCE_URL=/{print $2}')
             desc=$(git show "$pkg_file" | awk -F'"' '/^DESCRIPTION=/{print $2}')
             [ -n "$url" ] && echo "$app|$url|$desc"
@@ -163,11 +163,11 @@ jobs:
           git commit -m "deploy build $GITHUB_RUN_NUMBER"
           git push
 
-      - name: Update README on master
+      - name: Update README on apps
         run: |
           cp "$GITHUB_WORKSPACE/packages.json" /tmp/packages.json
-          git fetch origin master
-          git checkout master
+          git fetch origin apps
+          git checkout apps
           python3 scripts/gen_readme.py
           git add README.md
           git diff --cached --quiet || (
@@ -207,7 +207,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: master
+          ref: apps
 
       - name: Send notifications
         env:
@@ -217,6 +217,7 @@ jobs:
           API_ID: ${{ secrets.TELEGRAM_API_ID }}
           API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
           GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
           CHANGED_APPS: ${{ inputs.changed_apps }}
           PROXY_URL: ${{ secrets.PROXY_URL }}
           PROXY_TOKEN: ${{ secrets.PROXY_TOKEN }}
@@ -312,7 +313,7 @@ jobs:
           chat_id = os.environ['TG_CHAT_ID']
           deb = os.environ['DEB_PATH']
           tag = os.environ['RELEASE_TAG']
-          release_url = f'https://github.com/DayDve/apt-repo/releases/tag/{tag}'
+          release_url = f'https://github.com/{os.environ["REPO"]}/releases/tag/{tag}'
           with open('/tmp/caption.html', errors='replace') as f:
               caption = f.read().strip()
           if len(caption) > 1024:

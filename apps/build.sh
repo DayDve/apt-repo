@@ -134,7 +134,7 @@ docker buildx build \
 deb="$(ls /tmp/deb-out/*.deb 2>/dev/null | head -1)"
 [ -z "$deb" ] && { echo "No .deb produced"; exit 1; }
 
-if [ -n "$GITHUB_ACTIONS" ] && { [ "$GITHUB_REF" = "refs/heads/main" ] || [ "$GITHUB_REF" = "refs/heads/master" ]; }; then
+if [ -n "$GITHUB_ACTIONS" ] && { [ "$GITHUB_REF" = "refs/heads/main" ] || [ "$GITHUB_REF" = "refs/heads/master" ] || [ "$GITHUB_REF" = "refs/heads/apps" ]; }; then
   deb_name="$(basename "$deb" | sed "s/_amd64/_${distro}_amd64/")"
   mv "$deb" "/tmp/$deb_name"
 

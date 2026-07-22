@@ -18,9 +18,11 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - id: list
+        env:
+          INPUT_APP: ${{ inputs.app }}
         run: |
-          if [ -n "${{ inputs.app }}" ]; then
-            echo "matrix={\"app\":[\"${{ inputs.app }}\"]}" >> "$GITHUB_OUTPUT"
+          if [ -n "$INPUT_APP" ]; then
+            echo "matrix=$(jq -nc --arg a "$INPUT_APP" '{app:[$a]}')" >> "$GITHUB_OUTPUT"
           else
             apps=$(ls -d apps/*/ | sed 's|apps/||;s|/||' | jq -R -s -c 'split("\n") | map(select(length > 0))')
             echo "matrix={\"app\":$apps}" >> "$GITHUB_OUTPUT"
