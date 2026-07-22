@@ -183,7 +183,7 @@ td a:hover{text-decoration:underline}
 #                    /_\\ | _ \\_   _| | _ \\___ _ __  ___                       #
 #                   / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\                      #
 #                  /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/                      #
-#                                   by ${env.AUTHOR}|_|                              #
+#                                   by ${(env.AUTHOR || '').padEnd(6).slice(0, 6)}|_|                              #
 #                                                                             #
 #                   Personal APT repository for software                      #
 #                        unavailable or outdated in                           #
@@ -197,7 +197,7 @@ td a:hover{text-decoration:underline}
 #   /_\\ | _ \\_   _| | _ \\___ _ __  ___   #
 #  / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\  #
 # /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/  #
-#                  by ${env.AUTHOR || 'DayDve'}|_|          #
+#                  by ${(env.AUTHOR || '').padEnd(6).slice(0, 6)}|_|          #
 #                                        #
 #  Personal APT repository for software  #
 #       unavailable or outdated in       #
