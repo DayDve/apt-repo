@@ -321,7 +321,10 @@ jobs:
               last_newline = truncated.rfind('\n')
               if last_newline > 0:
                   truncated = truncated[:last_newline]
-              caption = truncated + '\n...\n\n🔗 <a href=\"' + release_url + '\">Полный changelog</a>'
+              truncated = truncated + '\n...\n\n🔗 <a href=\"' + release_url + '\">Полный changelog</a>'
+              if truncated.count('<blockquote>') > truncated.count('</blockquote>'):
+                  truncated += '\n</blockquote>'
+              caption = truncated
           r = requests.post(f'http://localhost:8081/bot{token}/sendDocument',
               data={'chat_id': chat_id, 'parse_mode': 'HTML', 'caption': caption},
               files={'document': open(deb, 'rb')})
