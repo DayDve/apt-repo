@@ -5,3 +5,11 @@ compatibility_date = "2026-07-15"
 routes = [
   { pattern = "apt.smbit.pro", custom_domain = true },
 ]
+
+[vars]
+REPO = "please_set_REPO_via_CI"
+PAGES_ORIGIN = "please_set_PAGES_ORIGIN_via_CI"
+CACHE_BUST = "please_set_CACHE_BUST_via_CI"
+SITE_NAME = "please_set_SITE_NAME_via_CI"
+AUTHOR = "please_set_AUTHOR_via_CI"
+TELEGRAM = "please_set_TELEGRAM_via_CI"

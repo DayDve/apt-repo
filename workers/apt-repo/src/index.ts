@@ -1,4 +1,11 @@
-interface Env {}
+interface Env {
+  REPO: string;
+  PAGES_ORIGIN: string;
+  CACHE_BUST: string;
+  SITE_NAME?: string;
+  AUTHOR?: string;
+  TELEGRAM?: string;
+}
 
 interface Package {
   name: string;
@@ -6,11 +13,9 @@ interface Package {
   source: string;
 }
 
-const REPO = 'DayDve/apt-repo';
-const PAGES = `https://daydve.github.io/apt-repo`;
-const POOL_MAP = `https://raw.githubusercontent.com/${REPO}/apt/pool-map.json`;
-const PACKAGES_JSON = `https://raw.githubusercontent.com/${REPO}/apt/packages.json`;
-const CACHE_BUST = 'v4';
+function repoOrigin(repo: string): string {
+  return `https://raw.githubusercontent.com/${repo}/apt`;
+}
 
 function escapeHtml(s: string): string {
   return s
@@ -22,29 +27,29 @@ function escapeHtml(s: string): string {
 }
 
 export default {
-  async fetch(request: Request, _env: Env, ctx: ExecutionContext): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const path = url.pathname;
     const ua = (request.headers.get('User-Agent') || '').toLowerCase();
     const isBrowser = /mozilla|chrome|safari|firefox|edge/.test(ua);
 
     if (path === '/' || path === '') {
-      return isBrowser ? servePage(url, ctx) : serveText(url);
+      return isBrowser ? servePage(url, ctx, env) : serveText(url);
     }
 
     if (path === '/apt-key.asc') {
-      return proxy(`${PAGES}/apt-key.asc`);
+      return proxy(`${env.PAGES_ORIGIN}/apt-repo/apt-key.asc`);
     }
 
     if (path.startsWith('/dists/')) {
-      return proxy(`${PAGES}${path}`);
+      return proxy(`${env.PAGES_ORIGIN}/apt-repo${path}`);
     }
 
     if (path.startsWith('/pool/')) {
-      return redirectPool(path, ctx);
+      return redirectPool(path, ctx, env);
     }
 
-    return isBrowser ? servePage(url, ctx) : new Response('Not found', { status: 404 });
+    return isBrowser ? servePage(url, ctx, env) : new Response('Not found', { status: 404 });
   },
 };
 
@@ -74,12 +79,13 @@ async function fetchJSON(url: string, cacheKey: string, ctx: ExecutionContext): 
   return data;
 }
 
-async function redirectPool(path: string, ctx: ExecutionContext): Promise<Response> {
+async function redirectPool(path: string, ctx: ExecutionContext, env: Env): Promise<Response> {
   const filename = path.split('/').pop()!;
-  const map = await fetchJSON(POOL_MAP, 'https://_cache/pool-map-' + CACHE_BUST, ctx) as Record<string, string> | null;
+  const poolMapUrl = `${repoOrigin(env.REPO)}/pool-map.json`;
+  const map = await fetchJSON(poolMapUrl, 'https://_cache/pool-map-' + env.CACHE_BUST, ctx) as Record<string, string> | null;
   if (!map || !map[filename]) return new Response('Not found', { status: 404 });
   return Response.redirect(
-    `https://github.com/${REPO}/releases/download/${map[filename]}/${filename}`,
+    `https://github.com/${env.REPO}/releases/download/${map[filename]}/${filename}`,
     302,
   );
 }
@@ -114,8 +120,9 @@ function serveText(url: URL): Response {
   });
 }
 
-async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
-  const pkgs = await fetchJSON(PACKAGES_JSON, 'https://_cache/packages-' + CACHE_BUST, ctx) as Package[] | null;
+async function servePage(url: URL, ctx: ExecutionContext, env: Env): Promise<Response> {
+  const packagesUrl = `${repoOrigin(env.REPO)}/packages.json`;
+  const pkgs = await fetchJSON(packagesUrl, 'https://_cache/packages-' + env.CACHE_BUST, ctx) as Package[] | null;
 
   let rows = '';
   if (pkgs) {
@@ -139,11 +146,11 @@ async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DayDve APT Repository — ${pkgNames}</title>
-<meta name="description" content="Personal APT repository for Ubuntu with packages unavailable in standard repos: ${pkgNames}. Install via apt.smbit.pro.">
+<title>${env.SITE_NAME || 'DayDve APT Repository'} — ${pkgNames}</title>
+<meta name="description" content="${env.SITE_NAME || 'Personal APT repository'} for Ubuntu with packages unavailable in standard repos: ${pkgNames}. Install via ${url.origin}.">
 <meta name="keywords" content="APT, repository, Ubuntu, noble, ${pkgNames}">
-<meta property="og:title" content="DayDve APT Repository">
-<meta property="og:description" content="Personal APT repository for Ubuntu with: ${pkgNames}">
+<meta property="og:title" content="${env.SITE_NAME || 'DayDve APT Repository'}">
+<meta property="og:description" content="${env.SITE_NAME || 'Personal APT repository'} for Ubuntu with: ${pkgNames}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${safeOrigin}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css" crossorigin="anonymous">
@@ -169,14 +176,14 @@ td a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
-<h1 class="sr-only">DayDve APT Repository — ${pkgNames}</h1>
+<h1 class="sr-only">${env.SITE_NAME || 'DayDve APT Repository'} — ${pkgNames}</h1>
 <div class="center ascii-wide"><div style="white-space:pre;line-height:1.2">
 ###############################################################################
 #                     _   ___ _____   ___                                     #
 #                    /_\\ | _ \\_   _| | _ \\___ _ __  ___                       #
 #                   / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\                      #
 #                  /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/                      #
-#                                   by DayDve|_|                              #
+#                                   by ${env.AUTHOR || 'DayDve'}|_|                              #
 #                                                                             #
 #                   Personal APT repository for software                      #
 #                        unavailable or outdated in                           #
@@ -190,7 +197,7 @@ td a:hover{text-decoration:underline}
 #   /_\\ | _ \\_   _| | _ \\___ _ __  ___   #
 #  / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\  #
 # /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/  #
-#                  by DayDve|_|          #
+#                  by ${env.AUTHOR || 'DayDve'}|_|          #
 #                                        #
 #  Personal APT repository for software  #
 #       unavailable or outdated in       #
@@ -222,15 +229,15 @@ sudo apt update</code></pre>
 ${rows}
 </table>
 
-<p class="center"><a href="https://github.com/${REPO}"><img src="https://img.shields.io/badge/GitHub-DayDve%2Fapt--repo-181717?logo=github" alt="GitHub Repository"></a> <a href="https://t.me/ddaptrepo"><img src="https://img.shields.io/badge/channel-@ddaptrepo-26A5E4?logo=telegram" alt="Telegram"></a></p>
+<p class="center"><a href="https://github.com/${env.REPO}"><img src="https://img.shields.io/badge/GitHub-${encodeURIComponent(env.REPO).replace(/-/g, '--')}-181717?logo=github" alt="GitHub Repository"></a>${env.TELEGRAM ? ` <a href="${env.TELEGRAM}"><img src="https://img.shields.io/badge/channel-${encodeURIComponent(env.TELEGRAM.replace(/.*\//, '@')).replace(/-/g, '--')}-26A5E4?logo=telegram" alt="Telegram"></a>` : ''}</p>
 <p class="center" style="color:#8b949e;font-size:.85rem">Built for personal use</p>
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "DayDve APT Repository",
-  "description": "Personal APT repository for Ubuntu Noble with: ${pkgNames}",
+  "name": "${env.SITE_NAME || 'DayDve APT Repository'}",
+  "description": "${env.SITE_NAME || 'Personal APT repository'} for Ubuntu Noble with: ${pkgNames}",
   "url": "${safeOrigin}",
   "about": {
     "@type": "SoftwareSourceCode",
