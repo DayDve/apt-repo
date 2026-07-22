@@ -313,7 +313,7 @@ jobs:
           chat_id = os.environ['TG_CHAT_ID']
           deb = os.environ['DEB_PATH']
           tag = os.environ['RELEASE_TAG']
-          release_url = f'https://github.com/{os.environ["REPO"]}/releases/tag/{tag}'
+          release_url = f'https://github.com/{os.environ[\"REPO\"]}/releases/tag/{tag}'
           with open('/tmp/caption.html', errors='replace') as f:
               caption = f.read().strip()
           if len(caption) > 1024:
