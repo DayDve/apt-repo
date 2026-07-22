@@ -146,11 +146,11 @@ async function servePage(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${env.SITE_NAME || 'DayDve APT Repository'} — ${pkgNames}</title>
-<meta name="description" content="${env.SITE_NAME || 'Personal APT repository'} for Ubuntu with packages unavailable in standard repos: ${pkgNames}. Install via ${url.origin}.">
+<title>${env.SITE_NAME} — ${pkgNames}</title>
+<meta name="description" content="${env.SITE_NAME} for Ubuntu with packages unavailable in standard repos: ${pkgNames}. Install via ${url.origin}.">
 <meta name="keywords" content="APT, repository, Ubuntu, noble, ${pkgNames}">
-<meta property="og:title" content="${env.SITE_NAME || 'DayDve APT Repository'}">
-<meta property="og:description" content="${env.SITE_NAME || 'Personal APT repository'} for Ubuntu with: ${pkgNames}">
+<meta property="og:title" content="${env.SITE_NAME}">
+<meta property="og:description" content="${env.SITE_NAME} for Ubuntu with: ${pkgNames}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${safeOrigin}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css" crossorigin="anonymous">
@@ -176,14 +176,14 @@ td a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
-<h1 class="sr-only">${env.SITE_NAME || 'DayDve APT Repository'} — ${pkgNames}</h1>
+<h1 class="sr-only">${env.SITE_NAME} — ${pkgNames}</h1>
 <div class="center ascii-wide"><div style="white-space:pre;line-height:1.2">
 ###############################################################################
 #                     _   ___ _____   ___                                     #
 #                    /_\\ | _ \\_   _| | _ \\___ _ __  ___                       #
 #                   / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\                      #
 #                  /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/                      #
-#                                   by ${env.AUTHOR || 'DayDve'}|_|                              #
+#                                   by ${env.AUTHOR}|_|                              #
 #                                                                             #
 #                   Personal APT repository for software                      #
 #                        unavailable or outdated in                           #
@@ -236,8 +236,8 @@ ${rows}
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "${env.SITE_NAME || 'DayDve APT Repository'}",
-  "description": "${env.SITE_NAME || 'Personal APT repository'} for Ubuntu Noble with: ${pkgNames}",
+  "name": "${env.SITE_NAME}",
+  "description": "${env.SITE_NAME} for Ubuntu Noble with: ${pkgNames}",
   "url": "${safeOrigin}",
   "about": {
     "@type": "SoftwareSourceCode",
