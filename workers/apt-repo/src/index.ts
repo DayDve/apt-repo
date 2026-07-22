@@ -26,6 +26,11 @@ function escapeHtml(s: string): string {
     .replace(/'/g, '&#39;');
 }
 
+function asciiLine(pipePos: number, author: string, rightPad: number): string {
+  const beforeBy = Math.max(0, pipePos - 4 - author.length);
+  return `#${' '.repeat(beforeBy)}by ${author}|_|${' '.repeat(rightPad)}#`;
+}
+
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
@@ -140,17 +145,19 @@ async function servePage(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
 
   const pkgNames = pkgs ? pkgs.map(p => escapeHtml(p.name)).join(', ') : 'ayugram, bees, grub-btrfs, keyd, rclone, rdm, wps-office';
   const safeOrigin = escapeHtml(url.origin);
+  const siteName = env.SITE_NAME || '';
+  const author = env.AUTHOR || '';
 
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${env.SITE_NAME} — ${pkgNames}</title>
-<meta name="description" content="${env.SITE_NAME} for Ubuntu with packages unavailable in standard repos: ${pkgNames}. Install via ${url.origin}.">
+<title>${siteName} — ${pkgNames}</title>
+<meta name="description" content="${siteName} for Ubuntu with packages unavailable in standard repos: ${pkgNames}. Install via ${url.origin}.">
 <meta name="keywords" content="APT, repository, Ubuntu, noble, ${pkgNames}">
-<meta property="og:title" content="${env.SITE_NAME}">
-<meta property="og:description" content="${env.SITE_NAME} for Ubuntu with: ${pkgNames}">
+<meta property="og:title" content="${siteName}">
+<meta property="og:description" content="${siteName} for Ubuntu with: ${pkgNames}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${safeOrigin}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css" crossorigin="anonymous">
@@ -176,14 +183,14 @@ td a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
-<h1 class="sr-only">${env.SITE_NAME} — ${pkgNames}</h1>
+<h1 class="sr-only">${siteName} — ${pkgNames}</h1>
 <div class="center ascii-wide"><div style="white-space:pre;line-height:1.2">
 ###############################################################################
 #                     _   ___ _____   ___                                     #
 #                    /_\\ | _ \\_   _| | _ \\___ _ __  ___                       #
 #                   / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\                      #
 #                  /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/                      #
-#                                   by ${(env.AUTHOR || '').padEnd(6).slice(0, 6)}|_|                              #
+${asciiLine(45, author, 30)}
 #                                                                             #
 #                   Personal APT repository for software                      #
 #                        unavailable or outdated in                           #
@@ -197,7 +204,7 @@ td a:hover{text-decoration:underline}
 #   /_\\ | _ \\_   _| | _ \\___ _ __  ___   #
 #  / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\  #
 # /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/  #
-#                  by ${(env.AUTHOR || '').padEnd(6).slice(0, 6)}|_|          #
+${asciiLine(28, author, 10)}
 #                                        #
 #  Personal APT repository for software  #
 #       unavailable or outdated in       #
@@ -236,8 +243,8 @@ ${rows}
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "${env.SITE_NAME}",
-  "description": "${env.SITE_NAME} for Ubuntu Noble with: ${pkgNames}",
+  "name": "${siteName}",
+  "description": "${siteName} for Ubuntu Noble with: ${pkgNames}",
   "url": "${safeOrigin}",
   "about": {
     "@type": "SoftwareSourceCode",

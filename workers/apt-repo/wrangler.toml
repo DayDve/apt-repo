@@ -6,6 +6,9 @@ routes = [
   { pattern = "apt.smbit.pro", custom_domain = true },
 ]
 
+
+# To deploy locally: fill in your values below, then run  wrangler deploy
+# CI overrides these via --var from GitHub Variables.
 [vars]
 REPO = "please_set_REPO_via_CI"
 PAGES_ORIGIN = "please_set_PAGES_ORIGIN_via_CI"
