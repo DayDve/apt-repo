@@ -39,7 +39,7 @@ export default {
     const isBrowser = /mozilla|chrome|safari|firefox|edge/.test(ua);
 
     if (path === '/' || path === '') {
-      return isBrowser ? servePage(url, ctx, env) : serveText(url);
+      return isBrowser ? servePage(url, ctx, env) : serveText(url, env);
     }
 
     if (path === '/apt-key.asc') {
@@ -95,15 +95,16 @@ async function redirectPool(path: string, ctx: ExecutionContext, env: Env): Prom
   );
 }
 
-function serveText(url: URL): Response {
+function serveText(url: URL, env: Env): Response {
   const origin = url.origin;
+  const author = env.AUTHOR || '';
   const text = [
     '######################################################################',
     '#                 _   ___ _____   ___                                #',
     '#                /_\\ | _ \\_   _| | _ \\___ _ __  ___                  #',
     '#               / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\                 #',
     '#              /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/                 #',
-    '#                               by DayDve|_|                         #',
+    asciiLine(41, author, 25),
     '#                                                                    #',
     '#               Personal APT repository for software                 #',
     '#                    unavailable or outdated in                      #',
