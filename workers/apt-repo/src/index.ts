@@ -12,6 +12,15 @@ const POOL_MAP = `https://raw.githubusercontent.com/${REPO}/apt/pool-map.json`;
 const PACKAGES_JSON = `https://raw.githubusercontent.com/${REPO}/apt/packages.json`;
 const CACHE_BUST = 'v4';
 
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 export default {
   async fetch(request: Request, _env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
@@ -20,7 +29,7 @@ export default {
     const isBrowser = /mozilla|chrome|safari|firefox|edge/.test(ua);
 
     if (path === '/' || path === '') {
-      return isBrowser ? servePage(url, ctx) : serveText();
+      return isBrowser ? servePage(url, ctx) : serveText(url);
     }
 
     if (path === '/apt-key.asc') {
@@ -75,7 +84,8 @@ async function redirectPool(path: string, ctx: ExecutionContext): Promise<Respon
   );
 }
 
-function serveText(): Response {
+function serveText(url: URL): Response {
+  const origin = url.origin;
   const text = [
     '######################################################################',
     '#                 _   ___ _____   ___                                #',
@@ -91,10 +101,10 @@ function serveText(): Response {
     '######################################################################',
     '# Just add the repository to your APT sources:                       #',
     '',
-    'sudo curl -fsSL https://apt.smbit.pro/apt-key.asc \\',
+    `sudo curl -fsSL ${origin}/apt-key.asc \\`,
     '  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\',
     'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\',
-    '  https://apt.smbit.pro noble main" \\',
+    `  ${origin} noble main" \\`,
     '  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\',
     'sudo apt update',
     '',
@@ -110,16 +120,19 @@ async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
   let rows = '';
   if (pkgs) {
     rows = pkgs.map(p => {
+      const safeName = escapeHtml(p.name);
+      const safeDesc = escapeHtml(p.description);
       const name = p.source
-        ? `<a href="${p.source}" target="_blank" rel="noopener">${p.name}</a>`
-        : p.name;
-      return `<tr><td>${name}</td><td>${p.description}</td></tr>`;
+        ? `<a href="${escapeHtml(p.source)}" target="_blank" rel="noopener">${safeName}</a>`
+        : safeName;
+      return `<tr><td>${name}</td><td>${safeDesc}</td></tr>`;
     }).join('\n');
   } else {
     rows = '<tr><td colspan="2">Failed to load package list</td></tr>';
   }
 
-  const pkgNames = pkgs ? pkgs.map(p => p.name).join(', ') : 'ayugram, bees, grub-btrfs, keyd, rclone, rdm, wps-office';
+  const pkgNames = pkgs ? pkgs.map(p => escapeHtml(p.name)).join(', ') : 'ayugram, bees, grub-btrfs, keyd, rclone, rdm, wps-office';
+  const safeOrigin = escapeHtml(url.origin);
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -132,7 +145,7 @@ async function servePage(url: URL, ctx: ExecutionContext): Promise<Response> {
 <meta property="og:title" content="DayDve APT Repository">
 <meta property="og:description" content="Personal APT repository for Ubuntu with: ${pkgNames}">
 <meta property="og:type" content="website">
-<meta property="og:url" content="${url.origin}">
+<meta property="og:url" content="${safeOrigin}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css" crossorigin="anonymous">
 <style>
 *{box-sizing:border-box}
@@ -218,7 +231,7 @@ ${rows}
   "@type": "WebPage",
   "name": "DayDve APT Repository",
   "description": "Personal APT repository for Ubuntu Noble with: ${pkgNames}",
-  "url": "${url.origin}",
+  "url": "${safeOrigin}",
   "about": {
     "@type": "SoftwareSourceCode",
     "programmingLanguage": "deb",
