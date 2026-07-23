@@ -47,7 +47,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           tag=$(gh release list --repo ${{ github.repository }} --json tagName --jq '.[].tagName' \
-            | grep "^${{ matrix.app }}-" | sort -V | tail -1)
+            | grep "^${{ matrix.app }}-[0-9]" | sort -V | tail -1)
           if [ -n "$tag" ]; then
             echo "version=$(echo "$tag" | sed "s/^${{ matrix.app }}-//")" >> "$GITHUB_OUTPUT"
           else

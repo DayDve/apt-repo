@@ -270,12 +270,12 @@ jobs:
 
             # Get latest release info
             tag=$(gh release list --repo ${{ github.repository }} --json tagName --jq '.[].tagName' \
-              | grep "^${app}-" | sort -V | tail -1)
+              | grep "^${app}-[0-9]" | sort -V | tail -1)
             echo "tag=$tag"
             [ -z "$tag" ] && continue
             ver=$(echo "$tag" | sed "s/^${app}-//")
 
-            body=$(get_version | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
+            body=$(get_version "$ver" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
 
             # List release assets
             echo "Release assets:"
