@@ -37,9 +37,20 @@ jobs:
       - name: Download release assets
         env:
           GH_TOKEN: ${{ github.token }}
+          CHANGED_APPS: ${{ inputs.changed_apps }}
         run: |
           mkdir -p /tmp/by-tag
-          gh release list --repo $GITHUB_REPOSITORY --json tagName --jq '.[].tagName' | while read tag; do
+          apps=$(echo "$CHANGED_APPS" | jq -r '.[]?' 2>/dev/null || true)
+          if echo "$apps" | grep -q '^\['; then
+            apps=$(echo "$apps" | jq -r '.[]?' 2>/dev/null || true)
+          fi
+          [ -z "$apps" ] && { echo "No changed apps"; exit 0; }
+          echo "$apps" | while read -r app; do
+            [ -z "$app" ] && continue
+            tag=$(gh release list --repo $GITHUB_REPOSITORY --json tagName --jq '.[].tagName' \
+              | grep "^${app}-[0-9]" | sort -V | tail -1)
+            [ -z "$tag" ] && continue
+            mkdir -p "/tmp/by-tag/$tag"
             gh release download "$tag" --repo $GITHUB_REPOSITORY --dir "/tmp/by-tag/$tag" --pattern '*.deb' 2>/dev/null || true
           done
 
@@ -47,6 +58,13 @@ jobs:
         run: |
           > /tmp/tag-map
           > /tmp/pool-map-entries
+
+          # Copy existing pool from apt branch
+          if [ -d "$GITHUB_WORKSPACE/pool" ]; then
+            cp -a "$GITHUB_WORKSPACE/pool" /tmp/
+          fi
+
+          # Overlay new .deb from changed releases
           for tag_dir in /tmp/by-tag/*/; do
             [ -d "$tag_dir" ] || continue
             tag=$(basename "$tag_dir")
