@@ -34,12 +34,12 @@ sudo apt update
 
 ## Want to add a package?
 
-Open a pull request with `apps/<app>/` containing two files. Use [`apps/template/`](apps/template/) as a starting point.
+Open a pull request with `apps/<app>/` containing two files. Use [`docs/template/`](docs/template/) as a starting point.
 
 | File | Requirements |
 |---|---|
 | `Dockerfile` | Multi-stage build for `docker buildx`. Final stage must be `FROM scratch` with `COPY --from=<stage> /path/*.deb /`. Build arg `APP_VERSION` is passed automatically. |
-| `package` | Sourced by [`apps/build.sh`](apps/build.sh). Must define `SOURCE_URL`, `check_update()`, and `get_version()`. See [template](apps/template/package) for the interface and patterns. |
+| `package` | Sourced by [`apps/build.sh`](apps/build.sh). Must define `SOURCE_URL`, `check_update()`, and `get_version()`. See [template](docs/template/package) for the interface and patterns. |
 
 The PR description should explain what the package is and why it doesn't belong in standard repos.
 """

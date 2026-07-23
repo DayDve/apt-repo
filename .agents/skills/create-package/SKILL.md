@@ -172,10 +172,14 @@ COPY --from=package /out/*.deb /
 ```
 apps/
 ├── build.sh                    # Main build script (DO NOT MODIFY without understanding)
-├── template/
-│   ├── Dockerfile              # Reference Dockerfile
-│   └── package                 # Reference package script with all patterns
 ├── <app-name>/
+│   ├── Dockerfile              # Build instructions
+│   └── package                 # Version detection + changelog
+├── ...
+docs/
+└── template/                   # Reference templates
+    ├── Dockerfile
+    └── package
 │   ├── Dockerfile              # Build instructions
 │   └── package                 # Version detection + changelog
 └── ...
