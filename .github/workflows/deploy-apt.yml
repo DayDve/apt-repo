@@ -275,7 +275,7 @@ jobs:
             [ -z "$tag" ] && continue
             ver=$(echo "$tag" | sed "s/^${app}-//")
 
-            body=$(get_version "$ver" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
+            body=$(gh release view "$tag" --repo ${{ github.repository }} --json body --jq -r '.body // empty' 2>/dev/null | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
 
             # List release assets
             echo "Release assets:"
