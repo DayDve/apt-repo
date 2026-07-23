@@ -277,3 +277,18 @@ Section: localization
 Priority: optional
 Description: Russian language pack, plugins and font metric fixes for WPS Office 12
 
+Package: wps-office-langpack-ru
+Version: 12.3.1.0.2767-1
+Architecture: all
+Maintainer: DayDve <daydve@smbit.pro>
+Depends: wps-office (>= 12)
+Replaces: wps-office
+Filename: pool/noble/main/wps-office-langpack-ru_12.3.1.0.2767-1_noble_amd64.deb
+Size: 3375132
+MD5sum: 431a4d16d29c5b096c7c523383ae335e
+SHA1: ce84d3667306c68ccebe87367173a6603178d1a9
+SHA256: b3509c7b9aa1e8775725d8044f5cdfda990e04f43f066b1e53a873ea3163f2b2
+Section: localization
+Priority: optional
+Description: Russian language pack, plugins and font metric fixes for WPS Office 12
+
