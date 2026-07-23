@@ -85,6 +85,14 @@ fetch_url() {
   return 1
 }
 
+# gh_fetch_raw: Fetches a raw file from a GitHub repo using the API
+# Usage: gh_fetch_raw <owner/repo> <path> [branch]
+# Uses gh api with GH_TOKEN, no curl/proxy needed.
+gh_fetch_raw() {
+  local repo="$1" path="$2" ref="${3:-master}"
+  gh api "repos/$repo/contents/$path?ref=$ref" --jq '.content' 2>/dev/null | base64 -d 2>/dev/null
+}
+
 # ============================================================
 # Main logic (skipped when sourced — e.g. from check-updates.yml)
 # ============================================================
