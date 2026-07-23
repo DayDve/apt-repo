@@ -76,6 +76,8 @@ jobs:
         if: steps.check.outputs.update == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          PROXY_URL: ${{ secrets.PROXY_URL }}
+          PROXY_TOKEN: ${{ secrets.PROXY_TOKEN }}
         run: |
           bash apps/build.sh ${{ matrix.app }} "${{ steps.current.outputs.version }}"
 

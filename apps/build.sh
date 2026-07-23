@@ -138,16 +138,21 @@ if [ -n "$GITHUB_ACTIONS" ] && { [ "$GITHUB_REF" = "refs/heads/main" ] || [ "$GI
   deb_name="$(basename "$deb" | sed "s/_amd64/_${distro}_amd64/")"
   mv "$deb" "/tmp/$deb_name"
 
-  if gh release view "$app-$version" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
-    echo "Release $app-$version already exists, skipping"
-  else
-    gh release create \
-      "$app-$version" \
-      "/tmp/$deb_name" \
-      --title "$app $version" \
-      --notes-file /tmp/changelog \
-      --repo "$GITHUB_REPOSITORY"
-  fi
+    if [ -s /tmp/changelog ]; then
+      notes_flag="--notes-file /tmp/changelog"
+    else
+      notes_flag=""
+    fi
+    if gh release view "$app-$version" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+      echo "Release $app-$version already exists, skipping"
+    else
+      gh release create \
+        "$app-$version" \
+        "/tmp/$deb_name" \
+        --title "$app $version" \
+        $notes_flag \
+        --repo "$GITHUB_REPOSITORY"
+    fi
 
   gh release delete-asset "$app-$version" "$app-$version.tar.gz" --repo "$GITHUB_REPOSITORY" --yes 2>/dev/null || true
   gh release delete-asset "$app-$version" "$app-$version.zip" --repo "$GITHUB_REPOSITORY" --yes 2>/dev/null || true
