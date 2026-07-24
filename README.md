@@ -1,6 +1,6 @@
 # apt-repo
 
-![Apps](https://img.shields.io/badge/apps-15-blue)
+![Apps](https://img.shields.io/badge/apps-1-blue)
 [![Website](https://img.shields.io/badge/website-apt.smbit.pro-4a9eff)](https://apt.smbit.pro)
 [![Telegram](https://img.shields.io/badge/channel-@ddaptrepo-26A5E4?logo=telegram)](https://t.me/ddaptrepo)
 
@@ -10,20 +10,6 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 
 | App | Description |
 |---|---|
-| [ayugram](https://github.com/AyuGram/AyuGramDesktop) | Telegram client with enhanced features |
-| [bees](https://github.com/Zygo/bees) | btrfs deduplication daemon |
-| [btrfs-assistant](https://gitlab.com/btrfs-assistant/btrfs-assistant) | GUI management tool for Btrfs filesystem |
-| [grub-btrfs](https://github.com/Antynea/grub-btrfs) | GRUB menu entries for btrfs snapshots |
-| [keyd](https://github.com/rvaiya/keyd) | Key remapping daemon |
-| [localsend](https://github.com/localsend/localsend) | Cross-platform file sharing over local network |
-| [rclone](https://github.com/rclone/rclone) | rsync for cloud storage |
-| [remotedesktopmanager](https://devolutions.net/remote-desktop-manager/) | One application for every remote connection you'll ever open |
-| [rustdesk](https://github.com/rustdesk/rustdesk) | Fast open-source remote desktop |
-| [scrcpy](https://github.com/Genymobile/scrcpy) | Mirror and control Android devices via USB/TCP |
-| [viber](https://www.viber.com) | Free and secure calls and messages to anyone, anywhere |
-| [winegui](https://github.com/winegui/WineGUI) | Wine prefix manager with a modern GUI |
-| [wlvncc](https://github.com/any1/wlvncc) | Wayland native VNC client |
-| [wps-office](https://github.com/Rongronggg9/wps-office-repack) | WPS Office repack with patches |
 | [wps-office-langpack-ru](https://github.com/DayDve/wps-office-langpack-ru) | Russian language pack for WPS Office |
 
 ## Install
@@ -40,8 +26,6 @@ sudo apt update
 ## Want to add a package?
 
 Open a pull request with `apps/<app>/` containing two files. Use [`docs/template/`](docs/template/) as a starting point.
-
-The directory name (`<app>`) becomes the package name in the APT repository — e.g. `apps/foo/` produces `foo_<version>_amd64.deb`.
 
 | File | Requirements |
 |---|---|
