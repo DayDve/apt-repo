@@ -1,6 +1,77 @@
-[{
-  "name": "wps-office-langpack-ru",
-  "description": "Russian language pack for WPS Office",
-  "source": "https://github.com/DayDve/wps-office-langpack-ru"
-}
+[
+  {
+    "name": "ayugram",
+    "description": "",
+    "source": ""
+  },
+  {
+    "name": "bees",
+    "description": "",
+    "source": ""
+  },
+  {
+    "name": "btrfs-assistant",
+    "description": "",
+    "source": ""
+  },
+  {
+    "name": "grub-btrfs",
+    "description": "",
+    "source": ""
+  },
+  {
+    "name": "keyd",
+    "description": "",
+    "source": ""
+  },
+  {
+    "name": "localsend",
+    "description": "",
+    "source": ""
+  },
+  {
+    "name": "rclone",
+    "description": "",
+    "source": ""
+  },
+  {
+    "name": "remotedesktopmanager",
+    "description": "",
+    "source": ""
+  },
+  {
+    "name": "rustdesk",
+    "description": "",
+    "source": ""
+  },
+  {
+    "name": "scrcpy",
+    "description": "",
+    "source": ""
+  },
+  {
+    "name": "viber",
+    "description": "",
+    "source": ""
+  },
+  {
+    "name": "winegui",
+    "description": "",
+    "source": ""
+  },
+  {
+    "name": "wlvncc",
+    "description": "",
+    "source": ""
+  },
+  {
+    "name": "wps-office",
+    "description": "",
+    "source": ""
+  },
+  {
+    "name": "wps-office-langpack-ru",
+    "description": "",
+    "source": ""
+  }
 ]
