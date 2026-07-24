@@ -104,7 +104,7 @@ async function serveText(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
   let pkgLines: string[];
   if (pkgs && pkgs.length > 0) {
     const shown = pkgs.slice(0, 10);
-    pkgLines = shown.map(p => `# ${p.name} - ${p.description}`);
+    pkgLines = shown.map(p => `#  ${p.name} - ${p.description}`);
     if (pkgs.length > 10) {
       pkgLines.push(`# And ${pkgs.length - 10} more ...`);
     }
