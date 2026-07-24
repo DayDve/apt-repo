@@ -106,7 +106,7 @@ async function serveText(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
     const shown = pkgs.slice(0, 10);
     pkgLines = shown.map(p => `#  ${p.name} - ${p.description}`);
     if (pkgs.length > 10) {
-      pkgLines.push(`# And ${pkgs.length - 10} more ...`);
+      pkgLines.push('#', `# And ${pkgs.length - 10} more ...`);
     }
   } else {
     pkgLines = ['# (failed to load package list)'];
