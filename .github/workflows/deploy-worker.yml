@@ -24,6 +24,7 @@ jobs:
           [ -n "$SITE_NAME" ] && args+=(--var "SITE_NAME:$SITE_NAME")
           [ -n "$AUTHOR" ] && args+=(--var "AUTHOR:$AUTHOR")
           [ -n "$TELEGRAM" ] && args+=(--var "TELEGRAM:$TELEGRAM")
+          [ -n "$APT_ORIGIN" ] && args+=(--var "APT_ORIGIN:$APT_ORIGIN")
           npx wrangler deploy "${args[@]}"
         working-directory: workers/apt-repo
         env:
@@ -34,6 +35,7 @@ jobs:
           SITE_NAME: ${{ vars.SITE_NAME }}
           AUTHOR: ${{ vars.AUTHOR }}
           TELEGRAM: ${{ vars.TELEGRAM }}
+          APT_ORIGIN: ${{ vars.APT_ORIGIN }}
 
       - name: Deploy gha-proxy
         run: npx wrangler deploy

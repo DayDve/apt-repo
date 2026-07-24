@@ -5,6 +5,7 @@ interface Env {
   SITE_NAME?: string;
   AUTHOR?: string;
   TELEGRAM?: string;
+  APT_ORIGIN?: string;
 }
 
 interface Package {
@@ -96,7 +97,7 @@ async function redirectPool(path: string, ctx: ExecutionContext, env: Env): Prom
 }
 
 async function serveText(url: URL, ctx: ExecutionContext, env: Env): Promise<Response> {
-  const origin = url.origin;
+  const aptOrigin = env.APT_ORIGIN || url.origin;
   const author = env.AUTHOR || '';
   const packagesUrl = `${repoOrigin(env.REPO)}/packages.json`;
   const pkgs = await fetchJSON(packagesUrl, 'https://_cache/packages-' + env.CACHE_BUST, ctx) as Package[] | null;
@@ -131,10 +132,10 @@ async function serveText(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
     '#',
     '# If you want to use this repo, just add it to your APT sources:',
     '#',
-    `sudo curl -fsSL ${origin}/apt-key.asc \\`,
+    `sudo curl -fsSL ${aptOrigin}/apt-key.asc \\`,
     '  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\',
     'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\',
-    `  ${origin} noble main" \\`,
+    `  ${aptOrigin} noble main" \\`,
     '  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\',
     'sudo apt update',
     '',
@@ -164,6 +165,8 @@ async function servePage(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
 
   const pkgNames = pkgs ? pkgs.map(p => escapeHtml(p.name)).join(', ') : 'ayugram, bees, grub-btrfs, keyd, rclone, rdm, wps-office';
   const safeOrigin = escapeHtml(url.origin);
+  const aptOrigin = env.APT_ORIGIN || url.origin;
+  const safeAptOrigin = escapeHtml(aptOrigin);
   const siteName = env.SITE_NAME || '';
   const author = env.AUTHOR || '';
 
@@ -238,10 +241,10 @@ ${asciiLine(28, author, 10)}
 
 <h2>How to add repo</h2>
 <div class="code-wrap">
-<pre><code class="language-bash">sudo curl -fsSL ${url.origin}/apt-key.asc \\
+<pre><code class="language-bash">sudo curl -fsSL ${safeAptOrigin}/apt-key.asc \\
   -o /etc/apt/keyrings/daydve-apt-repo.asc && \\
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\
-  ${url.origin} noble main" \\
+  ${safeAptOrigin} noble main" \\
   | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\
 sudo apt update</code></pre>
 <button class="copy-btn" onclick="copy(this)" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
@@ -249,7 +252,7 @@ sudo apt update</code></pre>
 
 <h2>Or just run this</h2>
 <div class="code-wrap">
-<pre><code class="language-bash">curl -sL ${url.origin} | bash</code></pre>
+<pre><code class="language-bash">curl -sL ${safeAptOrigin} | bash</code></pre>
 <button class="copy-btn" onclick="copy(this)" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
 </div>
 
