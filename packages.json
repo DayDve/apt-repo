@@ -1,77 +1,77 @@
 [
   {
     "name": "ayugram",
-    "description": "",
-    "source": ""
+    "description": "Telegram client with enhanced features",
+    "source": "https://github.com/AyuGram/AyuGramDesktop"
   },
   {
     "name": "bees",
-    "description": "",
-    "source": ""
+    "description": "btrfs deduplication daemon",
+    "source": "https://github.com/Zygo/bees"
   },
   {
     "name": "btrfs-assistant",
-    "description": "",
-    "source": ""
+    "description": "GUI management tool for Btrfs filesystem",
+    "source": "https://gitlab.com/btrfs-assistant/btrfs-assistant"
   },
   {
     "name": "grub-btrfs",
-    "description": "",
-    "source": ""
+    "description": "GRUB menu entries for btrfs snapshots",
+    "source": "https://github.com/Antynea/grub-btrfs"
   },
   {
     "name": "keyd",
-    "description": "",
-    "source": ""
+    "description": "Key remapping daemon",
+    "source": "https://github.com/rvaiya/keyd"
   },
   {
     "name": "localsend",
-    "description": "",
-    "source": ""
+    "description": "Cross-platform file sharing over local network",
+    "source": "https://github.com/localsend/localsend"
   },
   {
     "name": "rclone",
-    "description": "",
-    "source": ""
+    "description": "rsync for cloud storage",
+    "source": "https://github.com/rclone/rclone"
   },
   {
     "name": "remotedesktopmanager",
-    "description": "",
-    "source": ""
+    "description": "One application for every remote connection you'll ever open",
+    "source": "https://devolutions.net/remote-desktop-manager/"
   },
   {
     "name": "rustdesk",
-    "description": "",
-    "source": ""
+    "description": "Fast open-source remote desktop",
+    "source": "https://github.com/rustdesk/rustdesk"
   },
   {
     "name": "scrcpy",
-    "description": "",
-    "source": ""
+    "description": "Mirror and control Android devices via USB/TCP",
+    "source": "https://github.com/Genymobile/scrcpy"
   },
   {
     "name": "viber",
-    "description": "",
-    "source": ""
+    "description": "Free and secure calls and messages to anyone, anywhere",
+    "source": "https://www.viber.com"
   },
   {
     "name": "winegui",
-    "description": "",
-    "source": ""
+    "description": "Wine prefix manager with a modern GUI",
+    "source": "https://github.com/winegui/WineGUI"
   },
   {
     "name": "wlvncc",
-    "description": "",
-    "source": ""
+    "description": "Wayland native VNC client",
+    "source": "https://github.com/any1/wlvncc"
   },
   {
     "name": "wps-office",
-    "description": "",
-    "source": ""
+    "description": "WPS Office repack with patches",
+    "source": "https://github.com/Rongronggg9/wps-office-repack"
   },
   {
     "name": "wps-office-langpack-ru",
-    "description": "",
-    "source": ""
+    "description": "Russian language pack for WPS Office",
+    "source": "https://github.com/DayDve/wps-office-langpack-ru"
   }
 ]
