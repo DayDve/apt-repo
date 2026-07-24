@@ -39,7 +39,7 @@ export default {
     const isBrowser = /mozilla|chrome|safari|firefox|edge/.test(ua);
 
     if (path === '/' || path === '') {
-      return isBrowser ? servePage(url, ctx, env) : serveText(url, env);
+      return isBrowser ? servePage(url, ctx, env) : serveText(url, ctx, env);
     }
 
     if (path === '/apt-key.asc') {
@@ -95,9 +95,22 @@ async function redirectPool(path: string, ctx: ExecutionContext, env: Env): Prom
   );
 }
 
-function serveText(url: URL, env: Env): Response {
+async function serveText(url: URL, ctx: ExecutionContext, env: Env): Promise<Response> {
   const origin = url.origin;
   const author = env.AUTHOR || '';
+  const packagesUrl = `${repoOrigin(env.REPO)}/packages.json`;
+  const pkgs = await fetchJSON(packagesUrl, 'https://_cache/packages-' + env.CACHE_BUST, ctx) as Package[] | null;
+
+  let pkgLines: string[];
+  if (pkgs && pkgs.length > 0) {
+    const shown = pkgs.slice(0, 10);
+    pkgLines = shown.map(p => `# ${p.name} - ${p.description}`);
+    if (pkgs.length > 10) {
+      pkgLines.push(`# And ${pkgs.length - 10} more ...`);
+    }
+  } else {
+    pkgLines = ['# (failed to load package list)'];
+  }
   const text = [
     '######################################################################',
     '#                 _   ___ _____   ___                                #',
@@ -111,8 +124,12 @@ function serveText(url: URL, env: Env): Response {
     '#                   standard Ubuntu/Debian repos                     #',
     '#                                                                    #',
     '######################################################################',
-    '# Just add the repository to your APT sources:                       #',
-    '',
+    '#',
+    '# Apps already in this repo:',
+    ...pkgLines,
+    '#',
+    '# If you want to use this repo, just add it to your APT sources:',
+    '#',
     `sudo curl -fsSL ${origin}/apt-key.asc \\`,
     '  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\',
     'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\',
