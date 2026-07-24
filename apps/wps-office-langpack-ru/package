@@ -6,10 +6,13 @@ SOURCE_URL="https://github.com/DayDve/wps-office-langpack-ru"
 DESCRIPTION="Russian language pack for WPS Office"
 
 check_update() {
-  local current="${1:-}" build_num
+  local current="${1:-}" build_num changelog
   build_num=$(gh_fetch_raw DayDve/wps-office-langpack-ru version.txt | tr -d '[:space:]')
   [ -z "$build_num" ] && return 1
   version="12.3.1.0.${build_num}"
+  changelog=$(gh_fetch_raw DayDve/wps-office-langpack-ru CHANGELOG.md)
+  [ -z "$changelog" ] && return 1
+  echo "$changelog" | grep -q "\[${version}" || return 1
   [ "$version" != "$current" ]
 }
 
@@ -18,5 +21,5 @@ get_version() {
   build_num=$(gh_fetch_raw DayDve/wps-office-langpack-ru version.txt | tr -d '[:space:]')
   [ -z "$build_num" ] && return 1
   version="12.3.1.0.${build_num}"
-  gh_fetch_raw DayDve/wps-office-langpack-ru CHANGELOG.md | sed -n "/\[${version}/,/^## \[/p" | head -n -1 | tail -n +2
+  gh_fetch_raw DayDve/wps-office-langpack-ru CHANGELOG.md | sed -n "/\[${version//./\.}/,/^## \[/p" | head -n -1 | tail -n +2
 }
