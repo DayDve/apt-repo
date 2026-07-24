@@ -188,6 +188,10 @@ pre{background:#161b22;padding:1rem;overflow-x:auto;font-size:.85rem;margin:0;bo
 pre code{background:transparent!important;padding:0!important}
 table{border-collapse:collapse;width:100%}
 th,td{text-align:left;padding:.5rem;border-bottom:1px solid #333}
+.table-scroll{max-height:410px;overflow-y:auto}
+.table-scroll thead{position:sticky;top:0;background:#0d1117}
+.table-scroll::-webkit-scrollbar{width:6px}
+.table-scroll::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
 td a{text-decoration:none;color:#58a6ff}
 td a:hover{text-decoration:underline}
 .code-wrap{position:relative}
@@ -250,10 +254,14 @@ sudo apt update</code></pre>
 </div>
 
 <h2>Available packages</h2>
+<div class="table-scroll">
 <table>
-<tr><th>Package</th><th>Description</th></tr>
+<thead><tr><th>Package</th><th>Description</th></tr></thead>
+<tbody>
 ${rows}
+</tbody>
 </table>
+</div>
 
 <p class="center"><a href="https://github.com/${env.REPO}"><img src="https://img.shields.io/badge/GitHub-${encodeURIComponent(env.REPO).replace(/-/g, '--')}-181717?logo=github" alt="GitHub Repository"></a>${env.TELEGRAM ? ` <a href="${env.TELEGRAM}"><img src="https://img.shields.io/badge/channel-${encodeURIComponent(env.TELEGRAM.replace(/.*\//, '@')).replace(/-/g, '--')}-26A5E4?logo=telegram" alt="Telegram"></a>` : ''}</p>
 <p class="center" style="color:#8b949e;font-size:.85rem">Built for personal use</p>
