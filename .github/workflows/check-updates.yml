@@ -1,6 +1,11 @@
 name: Check updates
 
 on:
+  push:
+    paths:
+      - 'apps/**'
+    branches:
+      - apps
   schedule:
     - cron: '0 */6 * * *'
   workflow_dispatch:
