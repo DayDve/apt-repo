@@ -4,39 +4,39 @@ Hash: SHA512
 Architectures: amd64
 Codename: 12.3.1.0.2722
 Components: main
-Date: Fri, 24 Jul 2026 13:40:23 +0000
+Date: Mon, 27 Jul 2026 09:48:44 +0000
 Label: DayDve apt repo
 Origin: DayDve
 Suite: 12.3.1.0.2722
 MD5Sum:
- af7496f6fc606e353a9fb7472d55088d              159 Release
+ e2ccc65db6ad64bc6eb9fa9a0d06d71e              159 Release
  be91fa6165181441b2653eabfc10634d              540 main/binary-amd64/Packages
  8d9bb30f0a93cb7ab7067c572bd50f37              395 main/binary-amd64/Packages.gz
 SHA1:
- 13e957e1d33873541626ef8706925c6a81972253              159 Release
+ c33aaac433678450e2c5e4c90a23be04bdd4df52              159 Release
  1a25997ab5bbe0c749e6d49f524c4f626974f124              540 main/binary-amd64/Packages
  01fef37cd7dc15599984cea5540763a5d03ad2e0              395 main/binary-amd64/Packages.gz
 SHA256:
- c8086c964bec35f3318638a889493579249f1a6f9bc867bb2d9b0bc093396cb6              159 Release
+ 95e5623e52f96357518f8d97929c551e0e904bb3226f5a05aa5d3511df89e49b              159 Release
  5fe73c64d77f9aafb373a56606bb2d316fb8df7653f3cbb6005a21df2265cba6              540 main/binary-amd64/Packages
  c5bc16ca1645c75add784075b1117f80942614c89a5923312b1a53fc383a3061              395 main/binary-amd64/Packages.gz
 SHA512:
- 3fc8672f959bfe1a98ee6e06850aa1a8cbafbcf6f3fa1cb24463c69909397a20bcaa6a304b84e3998f52319644d5d0b0ed755622539f0e09eb0d7cf2806cef21              159 Release
+ 66946d9981c804c6ac9a835c95112fa283c115b1af7bd3ed93e54cf7096a0bb757e8d3ba72ccbcec9b490416befcedd42932f439cc5e26d6a185c94324278fe6              159 Release
  8e9134bad8fe29b67de421306c4f69eda9835bea2b832dd4931711031bdf362449dc5cd86193d445ae387a172ffd74d6e4bf19148ff3e329ebbd7a2503ae9a44              540 main/binary-amd64/Packages
  8770a5664c422d79c511a30a8ab0e13723171fd76b60ac0f9dd922793ceb0da9e1b8fd612ee7fd30c9fd980a62e564adc0f82be0e155fee811e400ef3b5f2e1a              395 main/binary-amd64/Packages.gz
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmpja0cACgkQorBTLKwl
-HCfhdA/6A+25AFkepAQXP4Ua8/E4zGE/mw2KdirLlp0LQUrXXroH+Eg0WabEmgzu
-mj4Ml7Dr3GnXSmCR8s2lfD6o1hPgIDF1D/X4fL1xIEZt6n3Gsy7NNc43tKseWSnu
-27y84OgW2lTfuvttlXWTazdPju3tDGdXYqRL8tURtPpbgo1IY1+r/iIn7s9EIb3o
-2UFpJ57KcNM+/0rL8+LmXT/zrSP0XAlaygwG7EIDOBKO/B9rhW7vphauskOj12GD
-QnYSuFpstcUTPQQefaig+f3UhQYbRIdra1h8gQW/KTSn8XlQ40KJS+1Jti0VJbtr
-1/D8XrC0oRU3PzZcuqjrIaaOBM6oVtGfSXIkeo+s7firN47VMAzLK8Z8pExh2bjo
-vjrBTW8+/S/BO0LXa3lZaxUfQxcAjLUTNzP5UECb8s9CUH/xFaHiyqH/aJti+g0V
-orWvJP+STg94/qIyZz+xteAFAJuk6mM4K/94D1A/b8p9LQ8BKpDndZ86G3TSS4d0
-jdMzECwtMJBecC2G8xegyyFk/9wPX9ZaZbVUC9Mwx9rIGxmNfWOsErko4JDsVZv0
-ay3bHvlCsmKvfExno6LzcMsOJriWVoYWKmksYZh3QzPvc4r4As8bznP/lxbpz1DV
-Ca8ZPrJ+ffiYzC6c2NB+pfmg+XrGBm9ezuNPJbx7vJz1VRFHf8U=
-=o7u3
+iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmpnKXwACgkQorBTLKwl
+HCfc3w/8DgzgNTPg64C+ebN5iyR/O2irg9TQiUemctTylcQc5nxihaWZc/CBnkAc
+HKKLRBvhc6Iz9+f8eP5vMuC6lOXcv1dlqzSxRFfY5oHScRpeTO+XYHipDr39+8LL
+a/ejFfTuhvMcUVXX0U7zFcXHJ2Hl9C505q9l+uS5/LHrG/1RP6jV+U28DU969clN
+KllnbI07F5TtIXBIoIdZJYGSkkKkQD8AbCuP+e3EUQjYZVVSrOLiOJnuV3DOEZi1
+naUPsdcT5W99hlER22PbVo7FTkuKH2WAtWYiraIdIyOQngVT5vhs3hACOqrOKxAp
+aE1NVe6qiQCXFh8wCPCw+luv50uf4zKUOuTcNVB8+tIM5dulMZR1UrH8NCmHQRIa
+gVdmCC9wskALGqiksvdSIJnlbFDM6AVOZgE56271qWtNAShMiZIiwh34c8atpQv2
+QERnpgnUNRB63ihJIcr+GGxe5K/igRNUCxtszt/TX4HjdOrnN3tz7bkfRU5+Ssz5
+fF6BBG5wndyY9nzMJppmQl/Ne4bI4iNuBRGX5kWnqWl4qnf7xvEetQUTCLSXIB+c
+q9DjbPgKTfcrZSd9zsxxljBetUSZzsfKrNHi/5qBwmTNrFPLYTQt/6CnH+NsYffV
+x3D6L5CftJk1V+oR32VJWOns+qS9FAne5Mj3/chZKnz1v+Nq9Us=
+=iDBA
 -----END PGP SIGNATURE-----
