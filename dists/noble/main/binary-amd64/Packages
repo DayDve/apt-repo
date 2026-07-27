@@ -46,6 +46,31 @@ Description: GUI management tool for Btrfs filesystem
  A Qt6-based tool for managing Btrfs filesystems, including
  subvolumes, snapshots (Snapper/Timeshift), scrub, and balance operations.
 
+Package: fonts-noto-lite
+Version: 1.0
+Architecture: all
+Maintainer: daydve <daydve@users.noreply.github.com>
+Depends: fontconfig
+Conflicts: fonts-noto-extra
+Replaces: fonts-noto-extra
+Provides: fonts-noto-extra
+Filename: pool/noble/main/fonts-noto-lite.deb
+Size: 2002
+MD5sum: bf4de36ff5b4e3f6356e9f25b054a4a1
+SHA1: cd0b4f3f2931c7bad351ca404ac1285f00355f2d
+SHA256: 9e3ee9c02886446bb3724dd00a1b53e87ed3c8943945e7b8c1871a3be1a16c03
+Section: fonts
+Priority: optional
+Description: Hides non-Latin/Cyrillic Noto fonts from font selection dialogs
+ Installs a fontconfig rule that hides Noto font families for scripts
+ other than Latin and Cyrillic (Arabic, Hebrew, Thai, CJK, Devanagari,
+ etc.) from font selection dialogs. Only Noto Sans, Noto Serif,
+ Noto Sans Display, Noto Serif Display, and Noto Sans Mono
+ remain visible.
+ .
+ The fonts-noto-extra package (all non-Latin/Cyrillic weight variants) is
+ removed automatically via Conflicts.
+
 Package: grub-btrfs
 Version: 4.14
 Architecture: amd64

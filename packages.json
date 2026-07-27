@@ -14,6 +14,11 @@
   "source": "https://gitlab.com/btrfs-assistant/btrfs-assistant"
 }
 ,{
+  "name": "fonts-noto-lite",
+  "description": "Hide non-Latin/Cyrillic Noto fonts from font selection dialogs on Ubuntu/Debian",
+  "source": "https://github.com/DayDve/fonts-noto-lite"
+}
+,{
   "name": "grub-btrfs",
   "description": "GRUB menu entries for btrfs snapshots",
   "source": "https://github.com/Antynea/grub-btrfs"
