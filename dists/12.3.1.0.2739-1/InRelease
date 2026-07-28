@@ -8,36 +8,37 @@ Codename: 12.3.1.0.2739-1
 Architectures: amd64
 Components: main
 Description: DayDve APT Repository
+Date: Tue, 28 Jul 2026 13:18:38 +0000
 
 MD5Sum:
  dc894a8710165517d5a478c056e22bbe 546 main/binary-amd64/Packages
  0bae603ef90d4723e3f500a1f8d46b34 397 main/binary-amd64/Packages.gz
- e24590347340975eca2888d6330e0fc1 1316 main/dep-11/Components-amd64.yml.gz
+ c16418e34fe41e75a43abe71b9a702ae 1316 main/dep-11/Components-amd64.yml.gz
 SHA1:
  5274079fd6e12ef5db512dd3a3526ab829c798fd 546 main/binary-amd64/Packages
  a6d3d3c390456923f42e759174e5f9c2b2ab431e 397 main/binary-amd64/Packages.gz
- c9f0f90794ab67810285589c1050352580c9658b 1316 main/dep-11/Components-amd64.yml.gz
+ 983fb90ab08608ef82aaa7514b7f79e51a99ae59 1316 main/dep-11/Components-amd64.yml.gz
 SHA256:
  6d9123eb081923bf09b1fd4675fe0f007efd7ae973b4d7cb8da4c243758fc8d5 546 main/binary-amd64/Packages
  9cdf36d346a1c2004cc683e173fc591b6346e3b009fd0ee68b7ef7b570c78306 397 main/binary-amd64/Packages.gz
- 1876ef9ad58951d67ae9743f96269c1c1d35d58bf27ee3d713c1d46a73bc37db 1316 main/dep-11/Components-amd64.yml.gz
+ fc420b10e7a59df4709ce92b45b583ef3e15271fc1929c65be97ac181dc0f0ad 1316 main/dep-11/Components-amd64.yml.gz
 SHA512:
  9c034b6f4a687385509079d93d6dd3b3e4a821977b79078dd07eb14587379d981e8fdd686fa4cd8410966ab363da23c43b840732e07573b9bf52af764bf641fa 546 main/binary-amd64/Packages
  8ae38b31e3a56846b4af783310bf988d26928a56e2ff77d50948c69d8bf4632102bc57e25f518bb673e2ebf9f50c9728f7c1f695c4a519e400fa6c2b7f2dffcf 397 main/binary-amd64/Packages.gz
- 52ac46606ba9f45a0a9b58a6a027fbe8c8a3d5f61b6a4a049ef867f6685bb49374e5c51ac05780a59dc459ba6cf721eae678d276a38e3b79a48b854e08828a71 1316 main/dep-11/Components-amd64.yml.gz
+ 2c8f880f580a29f60bf1d9bf26c6aa19745a40896e9cca5b00a4c2f232c4ebf53964d0e7e859fb064d95058347b07c2dedb5af25d14e3034174d5dc24882007f 1316 main/dep-11/Components-amd64.yml.gz
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmpoqFgACgkQorBTLKwl
-HCcNfA/+Kj1bPRiE9zqRr6O4YE/BlKSzXVWsNsly7yduwqW4jn01XV/Cl5cmHAbh
-+1bETLtRJ2nVV916PqhtLPjOOmPMHsTxPtBqzgWHHEj9YbRubhigEypxUnyikThC
-O1zEvmWcBDa1wJiOnnrunkai5kMhylL3BZtTgwT1bI2fFcW9hh+uMVeamBH0j/7c
-kwx7MX+iiuma4frcu3RpumcQFYtw/woda7s8uZm+pmU3VajvUAZRX7JHbFcGzkN8
-GCKcsE76t00BbRgF4XUtqiwUW8AosRC9wDgHi+YQzq7fJpuvZlMg0zGfHpYVoWAI
-og1hLNYsm4BPxUuFopmBFaVQiVmaDCU7BY8zpqwN0RSRonF+8H3SOqPOQ+FHjrwg
-g0MKs0GVdIllXybpibTkGHjLlmZniHbiXv1S1aNrPx/ehJClhz9r4SpEjbRIIhPw
-GBiWxDS3omQBrGOepKjL9/FfLY9ZW8kl3pGvQM5JykvYNhz0/txTp5NmK67QCgiS
-niqNaDTdBR4tVST0BkSssjcRDVm8w6EdOC7vKgk/u/3FBGQy/lsYDb3gmwj9fLd0
-E8t6XdZ4r8Z9uWiZggqJk/5eixfuTIYTe1+BWvap0DU+INrF0cJk9m+2C4VOjsLb
-+zOJ2W8scMg8fOpWyCHZcVFayRZRTiFeNjBZZS1nlDGUxPhm+SM=
-=3Hqw
+iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmporC8ACgkQorBTLKwl
+HCeDqg/+IWqsOoJdWDpKj5rNiHylt3P/eWOGPMoVNvjF+mhJG/vu681k8F6JRJ3V
++3I25yucLf5TW25p8dYK/uOByO00win6hXeEhSqzl3ArtP5CuboxEd3naoDd/mvG
+gdFh2NKw6j6Dny0rvd+RyJxFWJM9n1MCnxkm2XlGkavGkQDhMDvxTeAdePBMtctY
+MdPC37REmHFOo+C93WbM99V81HQGuU74efWG1anKGGFKLviitOY0+3KKSOKRqDsu
+8GGcqvhhvvgE0i6nWQijD+kOzS2fBplDY9qvBgtXH8u008uiaEP78/Jrb6frhnso
+x5mroYWGQgviqwCEgEIvoq0QaHUBgvymxrNR12Yk+gBcmgBNZcnudyf0/kdcP3UU
+Vhmgn0QLagTyJpMYVy3ZW0PhlKffFlJtHJoqOhs79+0sriP3gMmP6mCJzrwcNCKi
++1taBnrIeKRTwhP6qIz4AjlWG0Donl9BouW5k1yFjRNonLZGOC2Htmg/9YpZ+dmF
+PA0juS6OtRiSpXk36xksnksAZ+UrQQTtmeNUv2zrvsBIdmTyDwcoTfPByddJOYbN
+0+IlBs+If1E16U3cok7CroMIeq/zEKgTLob+Gc2CNy1IOOCAfvBGudd3lGQsZWXW
+cWzSVeWxuXBdXWYp4H92C/VdP6Ymjfo2WVBRkDBegRT74BhG57E=
+=pV8e
 -----END PGP SIGNATURE-----
