@@ -34,6 +34,11 @@
   "source": "https://github.com/localsend/localsend"
 }
 ,{
+  "name": "mc-ng",
+  "description": "A Midnight Commander fork with an extensible plugin architecture for panels and editor, featuring built-in integrations for Docker, Kubernetes, S3, MongoDB, and Git.",
+  "source": "https://github.com/ilia-maslakov/mcdev"
+}
+,{
   "name": "rclone",
   "description": "rsync for cloud storage",
   "source": "https://github.com/rclone/rclone"
