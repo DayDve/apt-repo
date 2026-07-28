@@ -173,6 +173,25 @@ jobs:
               -o "APT::FTPArchive::Release::Architectures=amd64" \
               -o "APT::FTPArchive::Release::Components=main" \
               "dists/$distro" > "dists/$distro/Release"
+
+            # Append dep-11 checksums if present
+            dep11_dir="dists/$distro/main/dep-11"
+            if [ -d "$dep11_dir" ]; then
+              for f in "$dep11_dir"/*; do
+                [ -f "$f" ] || continue
+                rel_path="main/dep-11/$(basename "$f")"
+                md5=$(md5sum "$f" | awk '{print $1}')
+                size=$(stat -c%s "$f")
+                sha1=$(sha1sum "$f" | awk '{print $1}')
+                sha256=$(sha256sum "$f" | awk '{print $1}')
+                sha512=$(sha512sum "$f" | awk '{print $1}')
+                # Insert before SHA512 section (last section)
+                sed -i "/^SHA512:/i\\ ${md5} ${size} ${rel_path}" "dists/$distro/Release"
+                sed -i "/^SHA1:/i\\ ${sha1} ${size} ${rel_path}" "dists/$distro/Release"
+                sed -i "/^SHA256:/i\\ ${sha256} ${size} ${rel_path}" "dists/$distro/Release"
+                sed -i "/^SHA512:/i\\ ${sha512} ${size} ${rel_path}" "dists/$distro/Release"
+              done
+            fi
           done
 
       - name: Sign Release
