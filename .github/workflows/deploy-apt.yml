@@ -183,6 +183,7 @@ jobs:
               echo "Architectures: amd64"
               echo "Components: main"
               echo "Description: DayDve APT Repository"
+              echo "Date: $(date -Ru)"
               echo ""
               echo "MD5Sum:"
               for f in "${files[@]}"; do
