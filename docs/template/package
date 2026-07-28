@@ -4,6 +4,8 @@
 # Contract (required by build.sh):
 #   SOURCE_URL      — upstream URL
 #   DESCRIPTION     — human-readable package description
+#   CHANGELOG_URL   — (optional) URL for "full changelog" link in Telegram notifications.
+#                      If unset, falls back to SOURCE_URL.
 #   check_update()  — exit 0 if update available, 1 if up-to-date
 #   get_version()   — sets $version, outputs changelog to stdout
 #
