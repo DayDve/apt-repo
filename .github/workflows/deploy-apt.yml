@@ -170,46 +170,35 @@ jobs:
           for distro in dists/*/; do
             [ -d "$distro" ] || continue
             distro=$(basename "$distro")
-            release_file="dists/$distro/Release"
 
-            # Collect all files in tree (exclude Release/signing files)
-            mapfile -t files < <(cd "dists/$distro" && find . -type f ! -name "Release" ! -name "Release.gpg" ! -name "InRelease" | sed 's|^\./||' | sort)
+            # Generate base Release with apt-ftparchive (includes Release self-reference)
+            apt-ftparchive release \
+              -o APT::FTPArchive::Release::Origin="DayDve" \
+              -o APT::FTPArchive::Release::Label="DayDve apt repo" \
+              -o "APT::FTPArchive::Release::Suite=$distro" \
+              -o "APT::FTPArchive::Release::Codename=$distro" \
+              -o "APT::FTPArchive::Release::Architectures=amd64" \
+              -o "APT::FTPArchive::Release::Components=main" \
+              "dists/$distro" > "dists/$distro/Release"
 
-            {
-              echo "Origin: DayDve"
-              echo "Label: DayDve apt repo"
-              echo "Suite: $distro"
-              echo "Codename: $distro"
-              echo "Architectures: amd64"
-              echo "Components: main"
-              echo "Description: DayDve APT Repository"
-              echo "Date: $(date -Ru)"
-              echo ""
-              echo "MD5Sum:"
-              for f in "${files[@]}"; do
-                md5=$(md5sum "dists/$distro/$f" | awk '{print $1}')
-                sz=$(stat -c%s "dists/$distro/$f")
-                printf ' %s %s %s\n' "$md5" "$sz" "$f"
+            # Append dep-11 checksums into each hash section
+            dep11_dir="dists/$distro/main/dep-11"
+            if [ -d "$dep11_dir" ]; then
+              for f in "$dep11_dir"/*; do
+                [ -f "$f" ] || continue
+                rel="main/dep-11/$(basename "$f")"
+                sz=$(stat -c%s "$f")
+                md5=$(md5sum "$f" | awk '{print $1}')
+                s1=$(sha1sum "$f" | awk '{print $1}')
+                s2=$(sha256sum "$f" | awk '{print $1}')
+                s5=$(sha512sum "$f" | awk '{print $1}')
+                # Insert into correct sections: before the next section header
+                sed -i "/^SHA1:/i\\ $md5 $sz $rel" "dists/$distro/Release"
+                sed -i "/^SHA256:/i\\ $s1  $sz $rel" "dists/$distro/Release"
+                sed -i "/^SHA512:/i\\ $s2  $sz $rel" "dists/$distro/Release"
+                sed -i "\$a\\ $s5  $sz $rel" "dists/$distro/Release"
               done
-              echo "SHA1:"
-              for f in "${files[@]}"; do
-                sha=$(sha1sum "dists/$distro/$f" | awk '{print $1}')
-                sz=$(stat -c%s "dists/$distro/$f")
-                printf ' %s %s %s\n' "$sha" "$sz" "$f"
-              done
-              echo "SHA256:"
-              for f in "${files[@]}"; do
-                sha=$(sha256sum "dists/$distro/$f" | awk '{print $1}')
-                sz=$(stat -c%s "dists/$distro/$f")
-                printf ' %s %s %s\n' "$sha" "$sz" "$f"
-              done
-              echo "SHA512:"
-              for f in "${files[@]}"; do
-                sha=$(sha512sum "dists/$distro/$f" | awk '{print $1}')
-                sz=$(stat -c%s "dists/$distro/$f")
-                printf ' %s %s %s\n' "$sha" "$sz" "$f"
-              done
-            } > "$release_file"
+            fi
           done
 
       - name: Sign Release
