@@ -111,8 +111,10 @@ jobs:
           for distro in dists/*/; do
             [ -d "$distro" ] || continue
             distro=$(basename "$distro")
-            mkdir -p "dists/$distro/main/dep-11"
-            xml_file="dists/$distro/main/dep-11/Components-amd64.xml"
+            # Remove old dep-11 path; use dep11 (without dash) to match APT's 50appstream
+            rm -rf "dists/$distro/main/dep-11"
+            mkdir -p "dists/$distro/main/dep11"
+            xml_file="dists/$distro/main/dep11/Components-amd64.xml"
             echo '<?xml version="1.0" encoding="UTF-8"?>' > "$xml_file"
             echo '<components origin="daydve-apt">' >> "$xml_file"
             while IFS='|' read -r app url desc type cats; do
@@ -124,7 +126,11 @@ jobs:
               printf '    <summary>%s</summary>\n' "$desc" >> "$xml_file"
               printf '    <metadata_license>CC0-1.0</metadata_license>\n' >> "$xml_file"
               printf '    <project_license>GPL-3.0-or-later</project_license>\n' >> "$xml_file"
+              printf '    <pkgname>%s</pkgname>\n' "$app" >> "$xml_file"
               printf '    <url type="homepage">%s</url>\n' "$url" >> "$xml_file"
+              if [ "$type" = "desktop-application" ]; then
+                printf '    <launchable type="desktop-id">%s.desktop</launchable>\n' "$app" >> "$xml_file"
+              fi
               printf '    <provides>\n      <binary>%s</binary>\n    </provides>\n' "$app" >> "$xml_file"
               if [ -n "$cats" ]; then
                 echo '    <categories>' >> "$xml_file"
@@ -137,12 +143,10 @@ jobs:
               echo '  </component>' >> "$xml_file"
             done < /tmp/pkg-info
             echo '</components>' >> "$xml_file"
-            yml_plain="dists/$distro/main/dep-11/Components-amd64.yml"
+            yml_plain="dists/$distro/main/dep11/Components-amd64.yml"
             appstreamcli convert "$xml_file" "$yml_plain" --format yaml
-            gzip -9kf "$yml_plain"
+            gzip -9f "$yml_plain"
             rm -f "$xml_file" "$yml_plain"
-            # Clean up any old XML files from previous deploys
-            rm -f "dists/$distro/main/dep-11/Components-amd64.xml" "dists/$distro/main/dep-11/Components-amd64.xml.gz"
           done
 
       - name: Generate packages.json
@@ -182,11 +186,11 @@ jobs:
               "dists/$distro" > "dists/$distro/Release"
 
             # Append dep-11 checksums into each hash section
-            dep11_dir="dists/$distro/main/dep-11"
+            dep11_dir="dists/$distro/main/dep11"
             if [ -d "$dep11_dir" ]; then
               for f in "$dep11_dir"/*; do
                 [ -f "$f" ] || continue
-                rel="main/dep-11/$(basename "$f")"
+                rel="main/dep11/$(basename "$f")"
                 sz=$(stat -c%s "$f")
                 md5=$(md5sum "$f" | awk '{print $1}')
                 s1=$(sha1sum "$f" | awk '{print $1}')
@@ -222,6 +226,8 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           rm -rf dists/noble/main/binary-i386 2>/dev/null || true
+          # Clean up old dep-11 path (with dash) — APT expects dep11 (no dash)
+          rm -rf dists/*/main/dep-11 2>/dev/null || true
           git add -A
           git commit -m "deploy build $GITHUB_RUN_NUMBER"
           git push
