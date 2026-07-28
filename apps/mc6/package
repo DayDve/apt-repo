@@ -15,5 +15,5 @@ get_version() {
   version="${LATEST_TAG#v}"
   local raw
   raw=$(gh_release_body ilia-maslakov/mcdev)
-  ai_changelog "mc-ng" "$raw"
+  ai_changelog "mc6" "$raw"
 }

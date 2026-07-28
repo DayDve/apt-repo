@@ -23,15 +23,19 @@ COPY .changelog /tmp/changelog
 RUN DESTDIR=/pkg && \
     make install DESTDIR=$DESTDIR && \
     mkdir -p $DESTDIR/DEBIAN && \
+    mkdir -p $DESTDIR/usr/share/applications && \
+    mkdir -p $DESTDIR/usr/share/metainfo && \
+    printf '[Desktop Entry]\nType=Application\nName=mc6\nGenericName=File Manager\nComment=Heavily modified Midnight Commander fork with plugins\nExec=mc\nIcon=mc\nTerminal=true\nCategories=System;FileTools;\nKeywords=file;manager;midnight;commander;\n' > $DESTDIR/usr/share/applications/mc6.desktop && \
+    printf '<?xml version="1.0" encoding="UTF-8"?>\n<component type="console-application">\n  <id>io.github.daydve.apt.mc6</id>\n  <metadata_license>CC0-1.0</metadata_license>\n  <project_license>GPL-3.0-or-later</project_license>\n  <name>mc6</name>\n  <summary>Heavily modified Midnight Commander fork with plugins, arcmc, and more</summary>\n  <description>\n    <p>A heavily modified fork of GNU Midnight Commander based on 4.8.33 with panel plugins (git, docker, k8s, mongodb, s3), arcmc archive manager, code folding, undo history, and more.</p>\n  </description>\n  <provides>\n    <binary>mc</binary>\n  </provides>\n  <categories>\n    <category>System</category>\n    <category>FileTools</category>\n  </categories>\n</component>\n' > $DESTDIR/usr/share/metainfo/io.github.daydve.apt.mc6.metainfo.xml && \
     if [ -s /tmp/changelog ]; then \
-      printf 'mc-ng (%s-1) noble; urgency=low\n\n' "$APP_VERSION" > $DESTDIR/DEBIAN/changelog && \
+      printf 'mc6 (%s-1) noble; urgency=low\n\n' "$APP_VERSION" > $DESTDIR/DEBIAN/changelog && \
       sed 's/^/  * /' /tmp/changelog >> $DESTDIR/DEBIAN/changelog && \
       printf '\n -- %s <%s>  %s\n' \
         "${DEBFULLNAME:-Unknown}" "${DEBEMAIL:-unknown@unknown}" \
         "$(date -R)" >> $DESTDIR/DEBIAN/changelog; \
     fi && \
     cat <<EOF > $DESTDIR/DEBIAN/control
-Package: mc-ng
+Package: mc6
 Version: ${APP_VERSION}
 Architecture: amd64
 Maintainer: ${DEBFULLNAME:-Unknown} <${DEBEMAIL:-unknown@unknown}>
@@ -42,14 +46,14 @@ Description: Heavily modified Midnight Commander fork with plugins, arcmc, and m
  arcmc archive manager, code folding, undo history, macro explorer,
  structured tree viewer, grep-style filter, ANSI terminal replay,
  embedded terminal, and configurable panel view modes.
-Conflicts: mc, mc-data
-Replaces: mc, mc-data
+Conflicts: mc, mc-data, mc-plugins
+Replaces: mc, mc-data, mc-plugins
 Depends: libglib2.0-0t64, libslang2, libncurses6 | libncurses5,
          libssh2-1t64, libaspell15, e2fslibs
 Installed-Size: $(du -sk $DESTDIR | cut -f1)
 EOF
 
-RUN dpkg-deb --build /pkg "/mc-ng_${APP_VERSION}_amd64.deb"
+RUN dpkg-deb --build /pkg "/mc6_${APP_VERSION}_amd64.deb"
 
 FROM scratch
-COPY --from=builder /mc-ng_*.deb /
+COPY --from=builder /mc6_*.deb /
