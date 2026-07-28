@@ -176,7 +176,6 @@ jobs:
             [ -d "$distro" ] || continue
             distro=$(basename "$distro")
 
-            # Generate base Release with apt-ftparchive (includes Release self-reference)
             apt-ftparchive release \
               -o APT::FTPArchive::Release::Origin="DayDve" \
               -o APT::FTPArchive::Release::Label="DayDve apt repo" \
@@ -186,24 +185,7 @@ jobs:
               -o "APT::FTPArchive::Release::Components=main" \
               "dists/$distro" > "dists/$distro/Release"
 
-            # Append dep-11 checksums into each hash section
-            dep11_dir="dists/$distro/main/dep11"
-            if [ -d "$dep11_dir" ]; then
-              for f in "$dep11_dir"/*; do
-                [ -f "$f" ] || continue
-                rel="main/dep11/$(basename "$f")"
-                sz=$(stat -c%s "$f")
-                md5=$(md5sum "$f" | awk '{print $1}')
-                s1=$(sha1sum "$f" | awk '{print $1}')
-                s2=$(sha256sum "$f" | awk '{print $1}')
-                s5=$(sha512sum "$f" | awk '{print $1}')
-                # Insert into correct sections: before the next section header
-                sed -i "/^SHA1:/i\\ $md5 $sz $rel" "dists/$distro/Release"
-                sed -i "/^SHA256:/i\\ $s1  $sz $rel" "dists/$distro/Release"
-                sed -i "/^SHA512:/i\\ $s2  $sz $rel" "dists/$distro/Release"
-                sed -i "\$a\\ $s5  $sz $rel" "dists/$distro/Release"
-              done
-            fi
+            # apt-ftparchive picks up dep11 files automatically
           done
 
       - name: Sign Release
