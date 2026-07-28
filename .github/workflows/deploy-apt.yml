@@ -130,6 +130,7 @@ jobs:
               printf '    <url type="homepage">%s</url>\n' "$url" >> "$xml_file"
               if [ "$type" = "desktop-application" ]; then
                 printf '    <launchable type="desktop-id">%s.desktop</launchable>\n' "$app" >> "$xml_file"
+                printf '    <icon type="stock">%s</icon>\n' "$app" >> "$xml_file"
               fi
               printf '    <provides>\n      <binary>%s</binary>\n    </provides>\n' "$app" >> "$xml_file"
               if [ -n "$cats" ]; then
