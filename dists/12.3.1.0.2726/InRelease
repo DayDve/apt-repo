@@ -1,44 +1,50 @@
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA512
 
-Origin: DayDve
-Label: DayDve apt repo
-Suite: 12.3.1.0.2726
-Codename: 12.3.1.0.2726
 Architectures: amd64
+Codename: 12.3.1.0.2726
 Components: main
-Description: DayDve APT Repository
-Date: Tue, 28 Jul 2026 13:18:38 +0000
-
+Date: Tue, 28 Jul 2026 13:42:27 +0000
+Label: DayDve apt repo
+Origin: DayDve
+Suite: 12.3.1.0.2726
 MD5Sum:
- b6c30ea0da74f40e00c7f59cd668bec6 519 main/binary-amd64/Packages
- afe24e8d4fa08077636a846d46222db4 386 main/binary-amd64/Packages.gz
- c16418e34fe41e75a43abe71b9a702ae 1316 main/dep-11/Components-amd64.yml.gz
+ 23ce9472c54a1428555be6c5c2cb2a68              159 Release
+ b6c30ea0da74f40e00c7f59cd668bec6              519 main/binary-amd64/Packages
+ afe24e8d4fa08077636a846d46222db4              386 main/binary-amd64/Packages.gz
+ e7ad87fc20a87185be3e7603284b3a6b             1316 main/dep-11/Components-amd64.yml.gz
+ e7ad87fc20a87185be3e7603284b3a6b 1316 main/dep-11/Components-amd64.yml.gz
 SHA1:
- bcc85ebf70353235f2acc7471eb6bf442043cbcb 519 main/binary-amd64/Packages
- e8bbd7b909ae3cbd28d4314a7d24a7b5b56981b5 386 main/binary-amd64/Packages.gz
- 983fb90ab08608ef82aaa7514b7f79e51a99ae59 1316 main/dep-11/Components-amd64.yml.gz
+ 6f625f5e4c5ae89373db7ea516d87654a2d86f7d              159 Release
+ bcc85ebf70353235f2acc7471eb6bf442043cbcb              519 main/binary-amd64/Packages
+ e8bbd7b909ae3cbd28d4314a7d24a7b5b56981b5              386 main/binary-amd64/Packages.gz
+ 104878f4898eed2ae55ec34bc173172ebf000325             1316 main/dep-11/Components-amd64.yml.gz
+ 104878f4898eed2ae55ec34bc173172ebf000325  1316 main/dep-11/Components-amd64.yml.gz
 SHA256:
- 760c5090fa70a4354bb4eb507e0b71dcaec6e5021e2d384cee2fa21f56bfe77d 519 main/binary-amd64/Packages
- dab918703bd85ae4e485f534d9d5319e8bba57b01c646928e1ccd03665bafb4c 386 main/binary-amd64/Packages.gz
- fc420b10e7a59df4709ce92b45b583ef3e15271fc1929c65be97ac181dc0f0ad 1316 main/dep-11/Components-amd64.yml.gz
+ 9c1796fa3504a6dee740e23549f1dff3afd657a705ac3e4c0a6224865d987cd5              159 Release
+ 760c5090fa70a4354bb4eb507e0b71dcaec6e5021e2d384cee2fa21f56bfe77d              519 main/binary-amd64/Packages
+ dab918703bd85ae4e485f534d9d5319e8bba57b01c646928e1ccd03665bafb4c              386 main/binary-amd64/Packages.gz
+ cc0bce61291809993eb1cd25fbdc3e25cf405b866299e5d74b341c9620b8a91b             1316 main/dep-11/Components-amd64.yml.gz
+ cc0bce61291809993eb1cd25fbdc3e25cf405b866299e5d74b341c9620b8a91b  1316 main/dep-11/Components-amd64.yml.gz
 SHA512:
- 70034c63553cf0a66d0987fdad9500f7cffb22b33d60485ab5a699eeb38dc198a82e7c3b8aa58cd8d9ba5d08cb124951e9a04301f7139d0ffc9ea71392b38ae7 519 main/binary-amd64/Packages
- 0d5ced06bd84fb2a3da808cf090a9ca67ad92a12a0f14d64ccada36c439b9e7fb5e9c44fb8e8b4bd9a3386610baf9a39a79c65b92439891ba01451e5b1123b45 386 main/binary-amd64/Packages.gz
- 2c8f880f580a29f60bf1d9bf26c6aa19745a40896e9cca5b00a4c2f232c4ebf53964d0e7e859fb064d95058347b07c2dedb5af25d14e3034174d5dc24882007f 1316 main/dep-11/Components-amd64.yml.gz
+ ba41a34f7c3e6d1cbddd42bc26dee14e68b133027f0b0f2fd07a97cd4c40e32d76d8e67bd07feca36e8e019f38823aca359876129b994bbbfe165712740d9bd5              159 Release
+ 70034c63553cf0a66d0987fdad9500f7cffb22b33d60485ab5a699eeb38dc198a82e7c3b8aa58cd8d9ba5d08cb124951e9a04301f7139d0ffc9ea71392b38ae7              519 main/binary-amd64/Packages
+ 0d5ced06bd84fb2a3da808cf090a9ca67ad92a12a0f14d64ccada36c439b9e7fb5e9c44fb8e8b4bd9a3386610baf9a39a79c65b92439891ba01451e5b1123b45              386 main/binary-amd64/Packages.gz
+ badf0c7ce01fdb095f726f5f38f7b26274e4d352446d579ad75b5c933e57d2e7eed3be4e45483f42d44dc88725a6e42dda05a16ad36751c5222ae9485478c4ff             1316 main/dep-11/Components-amd64.yml.gz
+ badf0c7ce01fdb095f726f5f38f7b26274e4d352446d579ad75b5c933e57d2e7eed3be4e45483f42d44dc88725a6e42dda05a16ad36751c5222ae9485478c4ff  1316 main/dep-11/Components-amd64.yml.gz
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmporC8ACgkQorBTLKwl
-HCfgrw/+JMxx7J+PZVHBcAM22uoxPEQOBkdnUAOooDTizwugEdwcElD8JE6tq73S
-+7Lmppa4QF7Aq6a3iLApUhxr+feJTT3ABIGoO+8oE/UToD1Ji6YE6WR8RftxvGz2
-f5o/pMgV2anAEmgDJHR2/3Y66AYae+aE/VlJOzBzUW1Nq+bWRIfc5FsR3gQtghys
-k+Bu2KgEWjCgK4lPhrAF+KSeIWdDPCP/5hpZudvAaPwSNU5UjQO1YM+labHxSjG/
-axSIX702v351H07bOM3e4XggHYqM0Ta0IROxC8QTF90Vgt0KJnq+Pvn4/lVZhi38
-9PLCQS41QmSloMBQhJCRvZNRwpcP1969c8pbPO4SSQz9dzM8SH4lS2+ukMYzo2Qe
-7QOY6KIxblegPscPAnR3gt9B99egdRHeZkqwFwBiFFHgMJIqm2b+hqIO4YWxIkZf
-adotJLBW3qb596ys6j9o7jqpOGOpKMG8VLkjxbC/xkvvhgib7YlYamVJ600HbYVL
-5Tktvp/XtcTaPjHdHOaB0Mjawpul4F5UL3m0b/MGeKDSvqUf/RHOTTjDIqAF29xZ
-P1qc0uacbtxB4IQkMnQRX0cgOBmEwdRTu5WoiY8KtU8rGgocj0Gwncf3w0AvIuzw
-m0Cu0IaQYW9Qd3HGdJDwYsIjNABBflg54RDLKjIr/xZqrO6ixDU=
-=iypG
+iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmposcQACgkQorBTLKwl
+HCf9Ug/+Km8SOb4dI5fuACiW3iqkkLdd/5GHYQb92+rtu0NAPP6Bl2M8+OBkkAXb
+l34oOgOzDtZgwz/dEnL0cQipV6jZ3P4ZhAIzU6FNYdRjN3Ury5xaceLMrl5pZmow
+l9nw+WmxfJ0WbERJDVxDEGr47Tk1+ZkpiZnYE72A457Po6g7DD09aVwojxSIRP96
+Fnk3Vo0/7gJtb+IdOpotzpZHBsSnSzpy34M/SAA441AbM1ytbJCBlp1F01mTNvZw
+mVLEp25XX9k30HQGJDxXqMYEzw+FyZu2IRD5jKsTMuOKYrIaHNrLwwZOToM3k8CR
+sZ+BdZKmst+7jfPd4rG2dygC3su3GRh58hxxq8dqHhI5Lk5FsTM1wehKnMKMPBEr
+t4+f0sizpGfXJbxFifodb1vNS5uWp7pjJzciq81vWzgQ9tBU//wRYUjTh6Oy5Gzx
+qHnJDf+PPIYHt+SD5hUuVGLd7r7Teng/O+xTHLlr7b83/EZvItY2IS50QJKFGNz5
+E+DG5dkkDJLjg/KUg6o+C6bEBSmvUPnDQDxLBEVa/mmTj4VHxk+PkFFR/lihgFuy
+slrgS+/0iV3Av+C8ze2qJbFnpkL+ZLnGexjkkW42pufykfRBbDJlV4FXVT2KnKP1
+KQMX+MhltWwsLRAZ6VCLbDyUaefxj4ELDefUk9EK+zG/3jHyFbc=
+=s8uQ
 -----END PGP SIGNATURE-----
