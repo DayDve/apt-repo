@@ -7,3 +7,5 @@ node_modules
 secrets.*
 credentials*
 AGENTS.md
+.opencode/
+*.deb
