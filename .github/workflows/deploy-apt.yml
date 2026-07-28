@@ -141,6 +141,8 @@ jobs:
             appstreamcli convert "$xml_file" "$yml_plain" --format yaml
             gzip -9kf "$yml_plain"
             rm -f "$xml_file" "$yml_plain"
+            # Clean up any old XML files from previous deploys
+            rm -f "dists/$distro/main/dep-11/Components-amd64.xml" "dists/$distro/main/dep-11/Components-amd64.xml.gz"
           done
 
       - name: Generate packages.json
@@ -168,33 +170,45 @@ jobs:
           for distro in dists/*/; do
             [ -d "$distro" ] || continue
             distro=$(basename "$distro")
-            apt-ftparchive release \
-              -o APT::FTPArchive::Release::Origin="DayDve" \
-              -o APT::FTPArchive::Release::Label="DayDve apt repo" \
-              -o "APT::FTPArchive::Release::Suite=$distro" \
-              -o "APT::FTPArchive::Release::Codename=$distro" \
-              -o "APT::FTPArchive::Release::Architectures=amd64" \
-              -o "APT::FTPArchive::Release::Components=main" \
-              "dists/$distro" > "dists/$distro/Release"
+            release_file="dists/$distro/Release"
 
-            # Append dep-11 checksums if present
-            dep11_dir="dists/$distro/main/dep-11"
-            if [ -d "$dep11_dir" ]; then
-              for f in "$dep11_dir"/*; do
-                [ -f "$f" ] || continue
-                rel_path="main/dep-11/$(basename "$f")"
-                md5=$(md5sum "$f" | awk '{print $1}')
-                size=$(stat -c%s "$f")
-                sha1=$(sha1sum "$f" | awk '{print $1}')
-                sha256=$(sha256sum "$f" | awk '{print $1}')
-                sha512=$(sha512sum "$f" | awk '{print $1}')
-                # Insert before SHA512 section (last section)
-                sed -i "/^SHA512:/i\\ ${md5} ${size} ${rel_path}" "dists/$distro/Release"
-                sed -i "/^SHA1:/i\\ ${sha1} ${size} ${rel_path}" "dists/$distro/Release"
-                sed -i "/^SHA256:/i\\ ${sha256} ${size} ${rel_path}" "dists/$distro/Release"
-                sed -i "/^SHA512:/i\\ ${sha512} ${size} ${rel_path}" "dists/$distro/Release"
+            # Collect all files in tree (exclude Release/signing files)
+            mapfile -t files < <(cd "dists/$distro" && find . -type f ! -name "Release" ! -name "Release.gpg" ! -name "InRelease" | sed 's|^\./||' | sort)
+
+            {
+              echo "Origin: DayDve"
+              echo "Label: DayDve apt repo"
+              echo "Suite: $distro"
+              echo "Codename: $distro"
+              echo "Architectures: amd64"
+              echo "Components: main"
+              echo "Description: DayDve APT Repository"
+              echo ""
+              echo "MD5Sum:"
+              for f in "${files[@]}"; do
+                md5=$(md5sum "dists/$distro/$f" | awk '{print $1}')
+                sz=$(stat -c%s "dists/$distro/$f")
+                printf ' %s %s %s\n' "$md5" "$sz" "$f"
               done
-            fi
+              echo "SHA1:"
+              for f in "${files[@]}"; do
+                sha=$(sha1sum "dists/$distro/$f" | awk '{print $1}')
+                sz=$(stat -c%s "dists/$distro/$f")
+                printf ' %s %s %s\n' "$sha" "$sz" "$f"
+              done
+              echo "SHA256:"
+              for f in "${files[@]}"; do
+                sha=$(sha256sum "dists/$distro/$f" | awk '{print $1}')
+                sz=$(stat -c%s "dists/$distro/$f")
+                printf ' %s %s %s\n' "$sha" "$sz" "$f"
+              done
+              echo "SHA512:"
+              for f in "${files[@]}"; do
+                sha=$(sha512sum "dists/$distro/$f" | awk '{print $1}')
+                sz=$(stat -c%s "dists/$distro/$f")
+                printf ' %s %s %s\n' "$sha" "$sz" "$f"
+              done
+            } > "$release_file"
           done
 
       - name: Sign Release
