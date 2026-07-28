@@ -1,31 +1,27 @@
 Architectures: amd64
 Codename: noble
 Components: main
-Date: Tue, 28 Jul 2026 15:31:57 +0000
+Date: Tue, 28 Jul 2026 15:51:16 +0000
 Label: DayDve apt repo
 Origin: DayDve
 Suite: noble
 MD5Sum:
- 8e5fd57d7139f08e181ba1743dd8710d              143 Release
- 942dd3e0da22fa9c1367a0a9bb1eae05            14805 main/binary-amd64/Packages
- 9552bb0df194ba6a4f294052817873a0             5966 main/binary-amd64/Packages.gz
- 150a5efd54c52cf262d2f56f4755e579             1447 main/dep11/Components-amd64.yml.gz
- 150a5efd54c52cf262d2f56f4755e579 1447 main/dep11/Components-amd64.yml.gz
+ 0b5c29a430066258d738b0c9d3173b7e              143 Release
+ 5c86f5d00ee51605e5a2c1116d387a7c            14805 main/binary-amd64/Packages
+ 6fbc98c08e3daf5ceaa156b33dee9aef             5966 main/binary-amd64/Packages.gz
+ 6233273dd3d46f330b148a85c22650dd             1501 main/dep11/Components-amd64.yml.gz
 SHA1:
- a63fc3473329f1e342dd67ab04cb0e95736dd5ef              143 Release
- ad8868b95ac3c6e83156d21fdbf99f6e298fba70            14805 main/binary-amd64/Packages
- 5c7659f9ae6565949102f303866f49091b54d6dd             5966 main/binary-amd64/Packages.gz
- 2d22850cea40abc05ad787e043fcb11d78278b5f             1447 main/dep11/Components-amd64.yml.gz
- 2d22850cea40abc05ad787e043fcb11d78278b5f  1447 main/dep11/Components-amd64.yml.gz
+ 4f79371c434159246b91dfa77bc7df9849425904              143 Release
+ e09a0683243a2a2a57fbd6de45d186508c9f910a            14805 main/binary-amd64/Packages
+ c4b7a8667d69d52af43f8e5bdd409dd1f64e22a8             5966 main/binary-amd64/Packages.gz
+ 4884e98ae3e679c4db64e0f2554146728d0fff9c             1501 main/dep11/Components-amd64.yml.gz
 SHA256:
- 2c2387d4b79f11177c84958e07e71a6351f517beaaad69beb8b2cfcc6d5352e9              143 Release
- a88e1d79da95b8b022be040ea63e450b1a1918d0c466a293b4bcb1fed06c1d29            14805 main/binary-amd64/Packages
- fad6ae43682dca4ba8f24c31063c682f3d9861c4c5b5414d1e044f3c864e1988             5966 main/binary-amd64/Packages.gz
- 1f0b0d4a905674e8bb6d4e83f8858bbd55019bce44811b9f22a544c977fcffe4             1447 main/dep11/Components-amd64.yml.gz
- 1f0b0d4a905674e8bb6d4e83f8858bbd55019bce44811b9f22a544c977fcffe4  1447 main/dep11/Components-amd64.yml.gz
+ b6ba0a841d4db894d624fb7254a5097f2fa51ac08939719f68b22c6f02986f9f              143 Release
+ c61bbb2b435fcb9d4c3346b3adc1e5a42f4adbd3c04aac8adb3c07aae168e059            14805 main/binary-amd64/Packages
+ a1fec86de2230c12b3ff1d71457e552dbce8ca9a84e879857e99d3c0418b2ad9             5966 main/binary-amd64/Packages.gz
+ 456aea05576985481ee6dcc1f9cd3fef45fd594305c86061da62c4efea401d8a             1501 main/dep11/Components-amd64.yml.gz
 SHA512:
- 6e6de2d79b063df52d503cbd3523015aec6eb8e6bc42070ba43fbd7f142b7daced3edc75e2cabdd53ffa2d7175a42a8e09ff579664e54b0e53958f7704223118              143 Release
- 63bcc0411e39335f0411607abbe5c363af46754802606c54ef95dfae6b04a7e1bbf4d4adf0996e643eeff365cd6dc1bbcad1d1ed211b5388c1b8c8ece368514a            14805 main/binary-amd64/Packages
- d534dd08d84af2b28c8229a9f7ca1400e7e8f00b48c253c7d9cdff2e534d4b52ce7b0dc8e6c8eced134e791408c2f3efcf2c206935d4a919ca89a0c25b936858             5966 main/binary-amd64/Packages.gz
- 5399814d0d2488b271c474ef5b30b406e7282b4d3ab2da3650deeb89365a24cb92d6c012c18a0c0b3af1c31dae8434f3d78f440175307017154b89f3084d42a3             1447 main/dep11/Components-amd64.yml.gz
- 5399814d0d2488b271c474ef5b30b406e7282b4d3ab2da3650deeb89365a24cb92d6c012c18a0c0b3af1c31dae8434f3d78f440175307017154b89f3084d42a3  1447 main/dep11/Components-amd64.yml.gz
+ 031b6f2e810f893e2d444202adf1fc60e22a5c3c8b378b8ddfc8c926f42b52982e52a0877a22ad1a90508a839c003dee2fc493c58358a5e6f1664a8598bbb803              143 Release
+ d8da37039ef4ccc0bf32ca5e8cd9563982f8c95c00ffab56f2475b5ddf5116436a24c2ab15576d4a6b05d187b57dfad36ddde057a0b1981da4684ab1a210a6d7            14805 main/binary-amd64/Packages
+ 31c5c060a0e19623f9b8f9914a62fee5ca1bee70c310ddb5644e2e3e19f25e50f62bfda6926c11a103f0214bcd0058a0b8a5ffaac5fc0a6eb2125219535ec539             5966 main/binary-amd64/Packages.gz
+ 133b71830f397d030db540abe90af3ca040980968e02885cf9f28a5a567b756808f68b4dd3809aa81970b1fa37452be5d9be5b1776d11d5a05c5ac0225537f46             1501 main/dep11/Components-amd64.yml.gz
