@@ -138,7 +138,7 @@ jobs:
             done < /tmp/pkg-info
             echo '</components>' >> "$xml_file"
             yml_plain="dists/$distro/main/dep-11/Components-amd64.yml"
-            appstreamcli convert "$xml_file" "$yml_plain" -t yaml
+            appstreamcli convert "$xml_file" "$yml_plain" --format yaml
             gzip -9kf "$yml_plain"
             rm -f "$xml_file" "$yml_plain"
           done
