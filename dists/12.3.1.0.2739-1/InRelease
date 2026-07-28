@@ -4,39 +4,47 @@ Hash: SHA512
 Architectures: amd64
 Codename: 12.3.1.0.2739-1
 Components: main
-Date: Tue, 28 Jul 2026 10:28:11 +0000
+Date: Tue, 28 Jul 2026 10:33:15 +0000
 Label: DayDve apt repo
 Origin: DayDve
 Suite: 12.3.1.0.2739-1
 MD5Sum:
- 62a76052a7f2251075abeffcf981231c              163 Release
+ 0f3723a0b91f345164cfff35b11eccc5              163 Release
  dc894a8710165517d5a478c056e22bbe              546 main/binary-amd64/Packages
  0bae603ef90d4723e3f500a1f8d46b34              397 main/binary-amd64/Packages.gz
+ 5b55fcf615d60b9cfae39221c4d0e255517cfa12 9184 main/dep-11/Components-amd64.xml
+ 3c82d77b186a98c6f69ad8cb38f0173e1a51a3aa 1453 main/dep-11/Components-amd64.xml.gz
 SHA1:
- d6de20700c4d47ea059e25e45222a438bbbc024f              163 Release
+ cf6627e163baba98d572065943dc8207158fbc32              163 Release
  5274079fd6e12ef5db512dd3a3526ab829c798fd              546 main/binary-amd64/Packages
  a6d3d3c390456923f42e759174e5f9c2b2ab431e              397 main/binary-amd64/Packages.gz
+ f9775eb023e1a72e75e4107941cb40da38d19c437112b2d3e308db32f40faf93 9184 main/dep-11/Components-amd64.xml
+ 48cda4f6eca009dea8de046fb88be8e2b536f96630b194d4722acb5cd2b859b4 1453 main/dep-11/Components-amd64.xml.gz
 SHA256:
- dfca8e9aa1432eebbec60d7b1ab7406f7e7bffc8164f5d7a4546d5191a6d5126              163 Release
+ 21c0247c78341fc0052e5aac7d6cc8486987d06105a2fbc44a6c9c3fc2cd8d0f              163 Release
  6d9123eb081923bf09b1fd4675fe0f007efd7ae973b4d7cb8da4c243758fc8d5              546 main/binary-amd64/Packages
  9cdf36d346a1c2004cc683e173fc591b6346e3b009fd0ee68b7ef7b570c78306              397 main/binary-amd64/Packages.gz
+ 667d00668a0f101a902eaab077d392b2 9184 main/dep-11/Components-amd64.xml
+ 25b3ce022f8c4c27806c7881722d3587559122e72d595d131b28bd455fc42daf40ea4f2834c2c1b28b9af4fd7790b5ae49ffcbb041bdad53f996292ab9446780 9184 main/dep-11/Components-amd64.xml
+ eff8dc96c283f6a845da7adf7208ad56 1453 main/dep-11/Components-amd64.xml.gz
+ ec2ec7dce749398a6674626518220362a6c13f2a37619b940b198ae2044f7bb964224745db2e3cc13d4b3d646f1a05921a591941bf2acd1d1a208e6ec8600d24 1453 main/dep-11/Components-amd64.xml.gz
 SHA512:
- 24130b82c915e6536a97f82caa0dd0d26f1d0570794a503106e0ace599e5637d0110b7f65147ba897d7410c502affeb7c2c4b17828a2f882669d05d4767ed97c              163 Release
+ 0e0cae35eb78d863990f5515a1180a2e2ef642ae2bba99e8a9a0acc8e4a0742c46510547995607ec4cbdfd62acc8adf93f9ed83f9bf29cf36181143feb6ac6cd              163 Release
  9c034b6f4a687385509079d93d6dd3b3e4a821977b79078dd07eb14587379d981e8fdd686fa4cd8410966ab363da23c43b840732e07573b9bf52af764bf641fa              546 main/binary-amd64/Packages
  8ae38b31e3a56846b4af783310bf988d26928a56e2ff77d50948c69d8bf4632102bc57e25f518bb673e2ebf9f50c9728f7c1f695c4a519e400fa6c2b7f2dffcf              397 main/binary-amd64/Packages.gz
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmpohDsACgkQorBTLKwl
-HCeNtw//caDl7tZV0QYMZldFmnjtdhSZ8GnYCTSUubOtINzi38a3uLDME8s2k+oh
-MwadafTPBQWvWiZdxaMaTVskfz6KiZ/WTllDBHRv0R4MNeVNX9jg7aEmo9D60+tW
-biH7WFzHP0ql8p0P8JIJbjwA4P5TA+FBmCU1ih59GFcVMyux5dCYuY8gAq9Kkwyz
-ldjzgZZ7pWpw0ZU1u2xeoe9HUphIb1qJ6MDtWcxnwl46EaXYfszKJYf8RfD2hPh3
-IQJxoebL25CbxVGqQhfcdXkCg9VklRnXCy9Jj7GOSQf2xO+9uIALiKDcwERNRq16
-aqZJynBLfZH49I0GHbrXQLF1VbDLfv1CTqhZuAwVpSHaq7FSC3DHIa1YZtqDzq3U
-LfqYck2mQ7ZZPEO0gT4SCX6Zxs1uaHUNQzsbMKMZ4yhe12lVUHn0heQbAGuV2GjD
-C1HmITD9MEdn0z0v0Wrd36si3rX4q79ZhN3yq08hc1Cv2bSKSEH9MmtvIfd+5lGh
-L4LH1UHQrVyVt08lVTDNZ2+JLqtxqBBazmEjqDFZObrMsYj6cYVEtMpXSu7iZXzC
-jYbl4vZCpRnKhxSVNYFnCpuOeHYOKzTvB9g5UbnO117cdteGbM2ScJTvn4CTEOYb
-wogQDDqSxrgCLYZRTvSuRb6j705AcmcNXmFI9442TKAWG/JIR2w=
-=2XWV
+iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmpohWsACgkQorBTLKwl
+HCcIEQ/+MYjsACe7EfiTZonQRwvz62eE5qL/QYTK2b8huW4InajsiGsVU/ZxggFE
+PjpBfmPJ+Y2HPbsrqLhyxW3pHwyG4vVU/x/upgdbo1BRwbJHwbN4em6KaqKFH55m
+jqR2pSNRZbtjDtfPiA6smtU2HcJr1G1yLNbuQpkjRfviGfwk44+jQB2O72vignF0
+1JTIV5yjwArpppSIW1TyBgRztqfvH0sRDTA94vTd14ag0ZsrzbKSZ4WVGdGXnM40
+svieS0wdb9QRB2JWQBddoJyJkf/FmNyyvs8+sOXcdLBCG1Kg9AHQ/JB+zllnK4Fg
+dtDyVT4TKI+ADMvz5iy2d/Pp/VzejLCSnxmFV9FuNxLwJkDcVmeAOtuQhIRVNC1w
+Ph8uEIHRKMTohnIjgFjYFpC7iFqG9k1Pin6Dh17EUDokA+KFMcMpufEtqOP3AbTX
+fFNTQ9cwISwsQb/nmVvnHVvP8VQE7/HW+0Ke14JTALBTPPcOUh6gOuMd9Cshvf3n
+KaX7JtFCUFLiThdXbluw8jSBUziLzCkALzHQPZ3ITRWkM+8JX5PCNAcm51JQvkZx
+rxGhdjLz3vBgpgMNBZ5+MVvp3LDJBYlDtOm+hUVZAhDSP/z1ZQtZ1LENyEsBULo4
+DaLvVGt4uPGGX8CvyPVPk2nsj5XWEB6sxLU58JNPOU3GBAuL2ps=
+=nW5A
 -----END PGP SIGNATURE-----

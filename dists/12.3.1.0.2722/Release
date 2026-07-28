@@ -1,23 +1,31 @@
 Architectures: amd64
 Codename: 12.3.1.0.2722
 Components: main
-Date: Tue, 28 Jul 2026 10:28:11 +0000
+Date: Tue, 28 Jul 2026 10:33:15 +0000
 Label: DayDve apt repo
 Origin: DayDve
 Suite: 12.3.1.0.2722
 MD5Sum:
- 704ee7bf1ed007a324d1e5281e1c12c7              159 Release
+ 2df307d655c22306fa99112e524bd0ab              159 Release
  be91fa6165181441b2653eabfc10634d              540 main/binary-amd64/Packages
  8d9bb30f0a93cb7ab7067c572bd50f37              395 main/binary-amd64/Packages.gz
+ 5b55fcf615d60b9cfae39221c4d0e255517cfa12 9184 main/dep-11/Components-amd64.xml
+ 3c82d77b186a98c6f69ad8cb38f0173e1a51a3aa 1453 main/dep-11/Components-amd64.xml.gz
 SHA1:
- af451c4389ad6c6ec49fc78e3814b16c285aa178              159 Release
+ 294444046659b0645f791a7804993054b640962c              159 Release
  1a25997ab5bbe0c749e6d49f524c4f626974f124              540 main/binary-amd64/Packages
  01fef37cd7dc15599984cea5540763a5d03ad2e0              395 main/binary-amd64/Packages.gz
+ f9775eb023e1a72e75e4107941cb40da38d19c437112b2d3e308db32f40faf93 9184 main/dep-11/Components-amd64.xml
+ 48cda4f6eca009dea8de046fb88be8e2b536f96630b194d4722acb5cd2b859b4 1453 main/dep-11/Components-amd64.xml.gz
 SHA256:
- d71b71242d37b00aa915074dc8a1aa4a4e42b16fbac9ab38def011920bb4c7ab              159 Release
+ 616d812baa6efabbd4e3c9275bc6f05482118079fbf6f25b909e1c62410cc1c4              159 Release
  5fe73c64d77f9aafb373a56606bb2d316fb8df7653f3cbb6005a21df2265cba6              540 main/binary-amd64/Packages
  c5bc16ca1645c75add784075b1117f80942614c89a5923312b1a53fc383a3061              395 main/binary-amd64/Packages.gz
+ 667d00668a0f101a902eaab077d392b2 9184 main/dep-11/Components-amd64.xml
+ 25b3ce022f8c4c27806c7881722d3587559122e72d595d131b28bd455fc42daf40ea4f2834c2c1b28b9af4fd7790b5ae49ffcbb041bdad53f996292ab9446780 9184 main/dep-11/Components-amd64.xml
+ eff8dc96c283f6a845da7adf7208ad56 1453 main/dep-11/Components-amd64.xml.gz
+ ec2ec7dce749398a6674626518220362a6c13f2a37619b940b198ae2044f7bb964224745db2e3cc13d4b3d646f1a05921a591941bf2acd1d1a208e6ec8600d24 1453 main/dep-11/Components-amd64.xml.gz
 SHA512:
- 704c37757bfb54ff4bd91454489568938e2c075ec4c3fd8d732a0880bed5350ca9529c9e8c6140453a55536c8dd2d8fb326f21ae77f54633dd35017a570ccd96              159 Release
+ fc3eb8e4fa281a7871dca35872418c9ea1e06380fa2383bac3e9aaf8f108c06898685e6569476128c5b4ec56efe56638dbc94478a0263c7284e2c25d8d2e99b4              159 Release
  8e9134bad8fe29b67de421306c4f69eda9835bea2b832dd4931711031bdf362449dc5cd86193d445ae387a172ffd74d6e4bf19148ff3e329ebbd7a2503ae9a44              540 main/binary-amd64/Packages
  8770a5664c422d79c511a30a8ab0e13723171fd76b60ac0f9dd922793ceb0da9e1b8fd612ee7fd30c9fd980a62e564adc0f82be0e155fee811e400ef3b5f2e1a              395 main/binary-amd64/Packages.gz
