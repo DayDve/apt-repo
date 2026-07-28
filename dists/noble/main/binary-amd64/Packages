@@ -138,6 +138,28 @@ Description: Heavily modified Midnight Commander fork with plugins, arcmc, and m
  structured tree viewer, grep-style filter, ANSI terminal replay,
  embedded terminal, and configurable panel view modes.
 
+Package: mc6
+Version: 6.0.1
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 16044
+Depends: libglib2.0-0t64, libslang2, libncurses6 | libncurses5,
+         libssh2-1t64, libaspell15, e2fslibs
+Conflicts: mc, mc-data, mc-plugins
+Replaces: mc, mc-data, mc-plugins
+Filename: pool/noble/main/mc6_6.0.1_noble_amd64.deb
+Size: 4092196
+MD5sum: 509ef3e96c3ec68cd99903cee5277204
+SHA1: c2efe950286371831ee3c09620b963149e581214
+SHA256: 22ec54457a257014cfc67bd8b43648c61335d19364e5cf5e6d58f7a4275ccff6
+Description: Heavily modified Midnight Commander fork with plugins, arcmc, and more
+ A heavily modified fork of GNU Midnight Commander based on 4.8.33.
+ The author does not expect all changes to be accepted upstream.
+ Adds panel plugins (git, docker, k8s, mongodb, s3, ftp, sftp, samba, systemd),
+ arcmc archive manager, code folding, undo history, macro explorer,
+ structured tree viewer, grep-style filter, ANSI terminal replay,
+ embedded terminal, and configurable panel view modes.
+
 Package: rclone
 Version: 1.74.4
 Architecture: amd64
