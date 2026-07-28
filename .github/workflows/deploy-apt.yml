@@ -108,7 +108,6 @@ jobs:
       - name: Generate AppStream metadata
         run: |
           git fetch origin apps
-          REPO_URL="https://github.com/${{ github.repository }}"
           for distro in dists/*/; do
             [ -d "$distro" ] || continue
             distro=$(basename "$distro")
@@ -119,23 +118,19 @@ jobs:
             while IFS='|' read -r app url desc type cats; do
               [ -z "$app" ] && continue
               [ -z "$type" ] && type="console-application"
-              cat <<XMLEOF >> "$xml_file"
-  <component type="${type}">
-    <id>io.github.daydve.apt.${app}</id>
-    <name>${app}</name>
-    <summary>${desc}</summary>
-    <metadata_license>CC0-1.0</metadata_license>
-    <project_license>GPL-3.0-or-later</project_license>
-    <url type="homepage">${url}</url>
-    <provides>
-      <binary>${app}</binary>
-    </provides>
-XMLEOF
+              printf '  <component type="%s">\n' "$type" >> "$xml_file"
+              printf '    <id>io.github.daydve.apt.%s</id>\n' "$app" >> "$xml_file"
+              printf '    <name>%s</name>\n' "$app" >> "$xml_file"
+              printf '    <summary>%s</summary>\n' "$desc" >> "$xml_file"
+              printf '    <metadata_license>CC0-1.0</metadata_license>\n' >> "$xml_file"
+              printf '    <project_license>GPL-3.0-or-later</project_license>\n' >> "$xml_file"
+              printf '    <url type="homepage">%s</url>\n' "$url" >> "$xml_file"
+              printf '    <provides>\n      <binary>%s</binary>\n    </provides>\n' "$app" >> "$xml_file"
               if [ -n "$cats" ]; then
                 echo '    <categories>' >> "$xml_file"
                 IFS=';' read -ra CAT_ARRAY <<< "$cats"
                 for cat in "${CAT_ARRAY[@]}"; do
-                  echo "      <category>${cat}</category>" >> "$xml_file"
+                  printf '      <category>%s</category>\n' "$cat" >> "$xml_file"
                 done
                 echo '    </categories>' >> "$xml_file"
               fi
