@@ -148,10 +148,10 @@ Depends: libglib2.0-0t64, libslang2, libncurses6 | libncurses5,
 Conflicts: mc, mc-data, mc-plugins
 Replaces: mc, mc-data, mc-plugins
 Filename: pool/noble/main/mc6_6.0.1_noble_amd64.deb
-Size: 4104166
-MD5sum: 4e33125431facf638b70bcfcdddcc14a
-SHA1: 774b07dc84aa2c2b7237de34216feaecd9fc3229
-SHA256: 09beb97aba282f4f1f2dc264fb046746bfe0621bf4f8d8a76ab4d4f32dad1aa3
+Size: 4105818
+MD5sum: c934f342a6b5cc3a2d3934e2050aeb77
+SHA1: 90242b3247d31395ef3adc10b9fac29025f58b18
+SHA256: 91a5661b55748a7835a9752fee3025f6d73b0d0920fd19ed62ed4b7a4cd059af
 Description: Heavily modified Midnight Commander fork with plugins, arcmc, and more
  A heavily modified fork of GNU Midnight Commander based on 4.8.33.
  The author does not expect all changes to be accepted upstream.
