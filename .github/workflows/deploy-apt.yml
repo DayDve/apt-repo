@@ -25,7 +25,7 @@ jobs:
       - name: Install tools
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq apt-utils dpkg-dev gnupg
+          sudo apt-get install -y -qq apt-utils dpkg-dev gnupg appstream
 
       - name: Import GPG key
         env:
@@ -137,7 +137,10 @@ jobs:
               echo '  </component>' >> "$xml_file"
             done < /tmp/pkg-info
             echo '</components>' >> "$xml_file"
-            gzip -9kf "$xml_file"
+            yml_plain="dists/$distro/main/dep-11/Components-amd64.yml"
+            appstreamcli convert "$xml_file" "$yml_plain" -t yaml
+            gzip -9kf "$yml_plain"
+            rm -f "$xml_file" "$yml_plain"
           done
 
       - name: Generate packages.json
