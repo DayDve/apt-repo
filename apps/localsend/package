@@ -4,6 +4,8 @@
 
 SOURCE_URL="https://github.com/localsend/localsend"
 DESCRIPTION="Cross-platform file sharing over local network"
+APPSTREAM_TYPE="desktop-application"
+APPSTREAM_CATEGORIES="Network;FileTransfer"
 
 check_update() {
   gh_latest_release localsend/localsend

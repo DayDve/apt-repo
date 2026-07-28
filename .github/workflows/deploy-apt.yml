@@ -100,8 +100,50 @@ jobs:
             pkg_file="origin/apps:apps/$app/package"
             url=$(git show "$pkg_file" | awk -F'"' '/^SOURCE_URL=/{print $2}')
             desc=$(git show "$pkg_file" | awk -F'"' '/^DESCRIPTION=/{print $2}')
-            [ -n "$url" ] && echo "$app|$url|$desc"
+            type=$(git show "$pkg_file" | awk -F'"' '/^APPSTREAM_TYPE=/{print $2}')
+            cats=$(git show "$pkg_file" | awk -F'"' '/^APPSTREAM_CATEGORIES=/{print $2}')
+            [ -n "$url" ] && echo "$app|$url|$desc|$type|$cats"
           done > /tmp/pkg-info
+
+      - name: Generate AppStream metadata
+        run: |
+          git fetch origin apps
+          REPO_URL="https://github.com/${{ github.repository }}"
+          for distro in dists/*/; do
+            [ -d "$distro" ] || continue
+            distro=$(basename "$distro")
+            mkdir -p "dists/$distro/main/dep-11"
+            xml_file="dists/$distro/main/dep-11/Components-amd64.xml"
+            echo '<?xml version="1.0" encoding="UTF-8"?>' > "$xml_file"
+            echo '<components origin="daydve-apt">' >> "$xml_file"
+            while IFS='|' read -r app url desc type cats; do
+              [ -z "$app" ] && continue
+              [ -z "$type" ] && type="console-application"
+              cat <<XMLEOF >> "$xml_file"
+  <component type="${type}">
+    <id>io.github.daydve.apt.${app}</id>
+    <name>${app}</name>
+    <summary>${desc}</summary>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>GPL-3.0-or-later</project_license>
+    <url type="homepage">${url}</url>
+    <provides>
+      <binary>${app}</binary>
+    </provides>
+XMLEOF
+              if [ -n "$cats" ]; then
+                echo '    <categories>' >> "$xml_file"
+                IFS=';' read -ra CAT_ARRAY <<< "$cats"
+                for cat in "${CAT_ARRAY[@]}"; do
+                  echo "      <category>${cat}</category>" >> "$xml_file"
+                done
+                echo '    </categories>' >> "$xml_file"
+              fi
+              echo '  </component>' >> "$xml_file"
+            done < /tmp/pkg-info
+            echo '</components>' >> "$xml_file"
+            gzip -9kf "$xml_file"
+          done
 
       - name: Generate packages.json
         run: |

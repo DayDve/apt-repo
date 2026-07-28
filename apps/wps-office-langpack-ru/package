@@ -4,6 +4,8 @@
 
 SOURCE_URL="https://github.com/DayDve/wps-office-langpack-ru"
 DESCRIPTION="Russian language pack for WPS Office"
+APPSTREAM_TYPE="addon"
+APPSTREAM_CATEGORIES=""
 
 check_update() {
   local current="${1:-}" build_num changelog

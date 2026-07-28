@@ -65,6 +65,12 @@ The `package` file is **sourced** by `apps/build.sh`. It must define:
 SOURCE_URL="https://..."        # upstream URL
 DESCRIPTION="..."               # one-line description
 
+# AppStream metadata (optional, for KDE Discover visibility)
+APPSTREAM_TYPE="desktop-application"              # desktop-application | console-application | font | addon
+APPSTREAM_CATEGORIES="InstantMessaging;Network"    # Freedesktop categories via ;
+APPSTREAM_KEYWORDS="telegram,messenger,chat"       # Comma-separated search keywords
+APPSTREAM_SUMMARY="Enhanced Telegram client"       # Short summary (if DESCRIPTION is long)
+
 check_update() {                # exit 0 if update available
   ...
 }
@@ -74,6 +80,27 @@ get_version() {                 # MUST set $version, SHOULD print changelog to s
   echo "changelog text here"
 }
 ```
+
+### AppStream variables
+
+| Variable | Required | Description |
+|---|---|---|
+| `APPSTREAM_TYPE` | No | Component type. Default: `console-application` |
+| `APPSTREAM_CATEGORIES` | No | Semicolon-separated Freedesktop categories |
+| `APPSTREAM_KEYWORDS` | No | Comma-separated search keywords |
+| `APPSTREAM_SUMMARY` | No | Short summary for Discover |
+
+### Screenshots
+
+Place screenshots in `apps/<app>/screenshots/` directory:
+```
+apps/<app>/screenshots/
+├── screenshot-1.png
+├── screenshot-2.png
+└── ...
+```
+
+Screenshots are automatically included in AppStream metadata as GitHub raw URLs.
 
 ### Available helpers (from build.sh)
 

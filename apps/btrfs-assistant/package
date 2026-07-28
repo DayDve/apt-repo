@@ -4,6 +4,8 @@
 
 SOURCE_URL="https://gitlab.com/btrfs-assistant/btrfs-assistant"
 DESCRIPTION="GUI management tool for Btrfs filesystem"
+APPSTREAM_TYPE="desktop-application"
+APPSTREAM_CATEGORIES="System;Filesystem"
 
 check_update() {
   local current="${1:-}"

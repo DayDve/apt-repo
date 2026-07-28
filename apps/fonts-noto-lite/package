@@ -1,5 +1,7 @@
 SOURCE_URL="https://github.com/DayDve/fonts-noto-lite"
 DESCRIPTION="Hide non-Latin/Cyrillic Noto fonts from font selection dialogs on Ubuntu/Debian"
+APPSTREAM_TYPE="font"
+APPSTREAM_CATEGORIES="Fonts"
 
 check_update() {
   gh_latest_release DayDve/fonts-noto-lite

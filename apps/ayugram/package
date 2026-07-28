@@ -1,5 +1,7 @@
 SOURCE_URL="https://github.com/AyuGram/AyuGramDesktop"
 DESCRIPTION="Telegram client with enhanced features"
+APPSTREAM_TYPE="desktop-application"
+APPSTREAM_CATEGORIES="InstantMessaging"
 
 check_update() {
   local current="${1:-}"

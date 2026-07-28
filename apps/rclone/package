@@ -1,5 +1,7 @@
 SOURCE_URL="https://github.com/rclone/rclone"
 DESCRIPTION="rsync for cloud storage"
+APPSTREAM_TYPE="console-application"
+APPSTREAM_CATEGORIES="Utility;FileTransfer"
 
 check_update() {
   gh_latest_release rclone/rclone

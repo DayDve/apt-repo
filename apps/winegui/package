@@ -4,6 +4,8 @@
 
 SOURCE_URL="https://github.com/winegui/WineGUI"
 DESCRIPTION="Wine prefix manager with a modern GUI"
+APPSTREAM_TYPE="desktop-application"
+APPSTREAM_CATEGORIES="System;Emulator"
 
 check_update() {
   gh_latest_release winegui/WineGUI

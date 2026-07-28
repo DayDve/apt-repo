@@ -1,5 +1,7 @@
 SOURCE_URL="https://devolutions.net/remote-desktop-manager/"
 DESCRIPTION="One application for every remote connection you'll ever open"
+APPSTREAM_TYPE="desktop-application"
+APPSTREAM_CATEGORIES="Utility;Security;RemoteAccess"
 
 check_update() {
   local current="${1:-}"

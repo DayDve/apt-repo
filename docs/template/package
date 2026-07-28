@@ -9,6 +9,16 @@
 #   check_update()  — exit 0 if update available, 1 if up-to-date
 #   get_version()   — sets $version, outputs changelog to stdout
 #
+# AppStream metadata (optional, for KDE Discover visibility):
+#   APPSTREAM_TYPE        — desktop-application | console-application | font | addon
+#   APPSTREAM_CATEGORIES  — Freedesktop categories separated by ;
+#   APPSTREAM_KEYWORDS    — Comma-separated search keywords
+#   APPSTREAM_SUMMARY     — Short summary (if DESCRIPTION is long)
+#
+# Screenshots (optional):
+#   Place screenshots in apps/<app>/screenshots/screenshot-*.png
+# ============================================================
+#
 # build.sh sources this file, then calls get_version() which
 # must set the global $version variable and print the changelog.
 # build.sh calls pull_package_info to format the metadata header.

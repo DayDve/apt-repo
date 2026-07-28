@@ -4,6 +4,8 @@
 
 SOURCE_URL="https://github.com/rustdesk/rustdesk"
 DESCRIPTION="Fast open-source remote desktop"
+APPSTREAM_TYPE="desktop-application"
+APPSTREAM_CATEGORIES="Network;RemoteAccess"
 
 check_update() {
   gh_latest_release rustdesk/rustdesk
