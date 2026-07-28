@@ -19,15 +19,23 @@ ARG DEBEMAIL
 ARG APP_VERSION
 
 COPY .changelog /tmp/changelog
+COPY icons/ /tmp/icons/
 
 RUN DESTDIR=/pkg && \
     make install DESTDIR=$DESTDIR && \
     mkdir -p $DESTDIR/DEBIAN && \
     mkdir -p $DESTDIR/usr/share/applications && \
     mkdir -p $DESTDIR/usr/share/metainfo && \
-    printf '[Desktop Entry]\nType=Application\nName=mc6\nGenericName=File Manager\nComment=Heavily modified Midnight Commander fork with plugins\nExec=mc\nIcon=mc\nTerminal=true\nCategories=ConsoleOnly;Utility;FileManager;System;FileTools;\nKeywords=file manager;console;\n' > $DESTDIR/usr/share/applications/mc6.desktop && \
-    printf '[Desktop Entry]\nType=Application\nName=mc6 editor\nComment=Edit text files\nExec=mcedit\nIcon=mc\nTerminal=true\nCategories=Utility;TextEditor;\nKeywords=editor;console;text;\n' > $DESTDIR/usr/share/applications/mc6edit.desktop && \
-    printf '<?xml version="1.0" encoding="UTF-8"?>\n<component type="desktop-application">\n  <id>io.github.daydve.apt.mc6</id>\n  <metadata_license>CC0-1.0</metadata_license>\n  <project_license>GPL-3.0-or-later</project_license>\n  <name>mc6</name>\n  <summary>Heavily modified Midnight Commander fork with plugins, arcmc, and more</summary>\n  <description>\n    <p>A heavily modified fork of GNU Midnight Commander based on 4.8.33 with panel plugins (git, docker, k8s, mongodb, s3), arcmc archive manager, code folding, undo history, and more.</p>\n  </description>\n  <launchable type="desktop-id">mc6.desktop</launchable>\n  <provides>\n    <binary>mc</binary>\n  </provides>\n  <categories>\n    <category>System</category>\n    <category>FileTools</category>\n  </categories>\n</component>\n' > $DESTDIR/usr/share/metainfo/io.github.daydve.apt.mc6.metainfo.xml && \
+    mkdir -p $DESTDIR/usr/share/pixmaps && \
+    mkdir -p $DESTDIR/usr/share/icons/hicolor/scalable/apps && \
+    mkdir -p $DESTDIR/usr/share/icons/hicolor/64x64/apps && \
+    cp /tmp/icons/mc.svg $DESTDIR/usr/share/icons/hicolor/scalable/apps/mc6.svg && \
+    cp /tmp/icons/mc6.png $DESTDIR/usr/share/icons/hicolor/64x64/apps/mc6.png && \
+    cp /tmp/icons/mc6.xpm $DESTDIR/usr/share/pixmaps/mc6.xpm && \
+    cp /tmp/icons/mc6edit.xpm $DESTDIR/usr/share/pixmaps/mc6edit.xpm && \
+    printf '[Desktop Entry]\nType=Application\nName=mc6\nGenericName=File Manager\nComment=Heavily modified Midnight Commander fork with plugins\nExec=mc\nIcon=mc6\nTerminal=true\nCategories=ConsoleOnly;Utility;FileManager;System;FileTools;\nKeywords=file manager;console;\n' > $DESTDIR/usr/share/applications/mc6.desktop && \
+    printf '[Desktop Entry]\nType=Application\nName=mc6 editor\nComment=Edit text files\nExec=mcedit\nIcon=mc6edit\nTerminal=true\nCategories=Utility;TextEditor;\nKeywords=editor;console;text;\n' > $DESTDIR/usr/share/applications/mc6edit.desktop && \
+    printf '<?xml version="1.0" encoding="UTF-8"?>\n<component type="desktop-application">\n  <id>io.github.daydve.apt.mc6</id>\n  <metadata_license>CC0-1.0</metadata_license>\n  <project_license>GPL-3.0-or-later</project_license>\n  <name>mc6</name>\n  <summary>Heavily modified Midnight Commander fork with plugins, arcmc, and more</summary>\n  <description>\n    <p>A heavily modified fork of GNU Midnight Commander based on 4.8.33 with panel plugins (git, docker, k8s, mongodb, s3), arcmc archive manager, code folding, undo history, and more.</p>\n  </description>\n  <url type="homepage">https://github.com/ilia-maslakov/mcdev</url>\n  <launchable type="desktop-id">mc6.desktop</launchable>\n  <provides>\n    <binary>mc</binary>\n  </provides>\n  <categories>\n    <category>System</category>\n    <category>FileTools</category>\n  </categories>\n</component>\n' > $DESTDIR/usr/share/metainfo/io.github.daydve.apt.mc6.metainfo.xml && \
     if [ -s /tmp/changelog ]; then \
       printf 'mc6 (%s-1) noble; urgency=low\n\n' "$APP_VERSION" > $DESTDIR/DEBIAN/changelog && \
       sed 's/^/  * /' /tmp/changelog >> $DESTDIR/DEBIAN/changelog && \
