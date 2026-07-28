@@ -1,35 +1,24 @@
-Architectures: amd64
-Codename: 12.3.1.0.2726
-Components: main
-Date: Tue, 28 Jul 2026 10:54:08 +0000
-Label: DayDve apt repo
 Origin: DayDve
+Label: DayDve apt repo
 Suite: 12.3.1.0.2726
+Codename: 12.3.1.0.2726
+Architectures: amd64
+Components: main
+Description: DayDve APT Repository
+
 MD5Sum:
- a0cc624d9315243f39d7683dba9351b6              159 Release
- b6c30ea0da74f40e00c7f59cd668bec6              519 main/binary-amd64/Packages
- afe24e8d4fa08077636a846d46222db4              386 main/binary-amd64/Packages.gz
- 3af1df61e2f83e8ccc0aef5c4f2c07e2             1316 main/dep-11/Components-amd64.yml.gz
- 3c82d77b186a98c6f69ad8cb38f0173e1a51a3aa 1453 main/dep-11/Components-amd64.xml.gz
- c511adc668060e535d96d52c8c65e9f4d0e25d7d 1316 main/dep-11/Components-amd64.yml.gz
+ b6c30ea0da74f40e00c7f59cd668bec6 519 main/binary-amd64/Packages
+ afe24e8d4fa08077636a846d46222db4 386 main/binary-amd64/Packages.gz
+ e24590347340975eca2888d6330e0fc1 1316 main/dep-11/Components-amd64.yml.gz
 SHA1:
- 45c5afd6c20a9191d4f5471b8eae8ba6cc03f67b              159 Release
- bcc85ebf70353235f2acc7471eb6bf442043cbcb              519 main/binary-amd64/Packages
- e8bbd7b909ae3cbd28d4314a7d24a7b5b56981b5              386 main/binary-amd64/Packages.gz
- c511adc668060e535d96d52c8c65e9f4d0e25d7d             1316 main/dep-11/Components-amd64.yml.gz
- 48cda4f6eca009dea8de046fb88be8e2b536f96630b194d4722acb5cd2b859b4 1453 main/dep-11/Components-amd64.xml.gz
- 1e9cbf8e98f44765984d5836de0fc901668ca49e6646f842a2d73cdcc40cbffe 1316 main/dep-11/Components-amd64.yml.gz
+ bcc85ebf70353235f2acc7471eb6bf442043cbcb 519 main/binary-amd64/Packages
+ e8bbd7b909ae3cbd28d4314a7d24a7b5b56981b5 386 main/binary-amd64/Packages.gz
+ c9f0f90794ab67810285589c1050352580c9658b 1316 main/dep-11/Components-amd64.yml.gz
 SHA256:
- f9de87d90e220adbf16036adbb0a6ff1f5b7624169e569141d8b8a5e21564b9c              159 Release
- 760c5090fa70a4354bb4eb507e0b71dcaec6e5021e2d384cee2fa21f56bfe77d              519 main/binary-amd64/Packages
- dab918703bd85ae4e485f534d9d5319e8bba57b01c646928e1ccd03665bafb4c              386 main/binary-amd64/Packages.gz
- 1e9cbf8e98f44765984d5836de0fc901668ca49e6646f842a2d73cdcc40cbffe             1316 main/dep-11/Components-amd64.yml.gz
- eff8dc96c283f6a845da7adf7208ad56 1453 main/dep-11/Components-amd64.xml.gz
- ec2ec7dce749398a6674626518220362a6c13f2a37619b940b198ae2044f7bb964224745db2e3cc13d4b3d646f1a05921a591941bf2acd1d1a208e6ec8600d24 1453 main/dep-11/Components-amd64.xml.gz
- 3af1df61e2f83e8ccc0aef5c4f2c07e2 1316 main/dep-11/Components-amd64.yml.gz
- 5e8ec3768c9b628dd55769b5504b3955e0439cc3b4b0785b9d48c71af19b34fd092290caf99362ee3ec861d0de3e339ea90b44517695ba04c72809e94aa12666 1316 main/dep-11/Components-amd64.yml.gz
+ 760c5090fa70a4354bb4eb507e0b71dcaec6e5021e2d384cee2fa21f56bfe77d 519 main/binary-amd64/Packages
+ dab918703bd85ae4e485f534d9d5319e8bba57b01c646928e1ccd03665bafb4c 386 main/binary-amd64/Packages.gz
+ 1876ef9ad58951d67ae9743f96269c1c1d35d58bf27ee3d713c1d46a73bc37db 1316 main/dep-11/Components-amd64.yml.gz
 SHA512:
- 279d95db18a6487b50f95986a6cd026ead99c4469515affcebd0aab5df981598e5c04b5e15405e1a6a1581dfb3fa8a30a01c86eec6a7642550da8133b6a50d29              159 Release
- 70034c63553cf0a66d0987fdad9500f7cffb22b33d60485ab5a699eeb38dc198a82e7c3b8aa58cd8d9ba5d08cb124951e9a04301f7139d0ffc9ea71392b38ae7              519 main/binary-amd64/Packages
- 0d5ced06bd84fb2a3da808cf090a9ca67ad92a12a0f14d64ccada36c439b9e7fb5e9c44fb8e8b4bd9a3386610baf9a39a79c65b92439891ba01451e5b1123b45              386 main/binary-amd64/Packages.gz
- 5e8ec3768c9b628dd55769b5504b3955e0439cc3b4b0785b9d48c71af19b34fd092290caf99362ee3ec861d0de3e339ea90b44517695ba04c72809e94aa12666             1316 main/dep-11/Components-amd64.yml.gz
+ 70034c63553cf0a66d0987fdad9500f7cffb22b33d60485ab5a699eeb38dc198a82e7c3b8aa58cd8d9ba5d08cb124951e9a04301f7139d0ffc9ea71392b38ae7 519 main/binary-amd64/Packages
+ 0d5ced06bd84fb2a3da808cf090a9ca67ad92a12a0f14d64ccada36c439b9e7fb5e9c44fb8e8b4bd9a3386610baf9a39a79c65b92439891ba01451e5b1123b45 386 main/binary-amd64/Packages.gz
+ 52ac46606ba9f45a0a9b58a6a027fbe8c8a3d5f61b6a4a049ef867f6685bb49374e5c51ac05780a59dc459ba6cf721eae678d276a38e3b79a48b854e08828a71 1316 main/dep-11/Components-amd64.yml.gz

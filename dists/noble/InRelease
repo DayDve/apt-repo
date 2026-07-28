@@ -1,54 +1,43 @@
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA512
 
-Architectures: amd64
-Codename: noble
-Components: main
-Date: Tue, 28 Jul 2026 10:54:08 +0000
-Label: DayDve apt repo
 Origin: DayDve
+Label: DayDve apt repo
 Suite: noble
+Codename: noble
+Architectures: amd64
+Components: main
+Description: DayDve APT Repository
+
 MD5Sum:
- 2860d2c5e1c24b819efe2661a71a66d1              143 Release
- e64ea53c8627f602a23b0bc097187ef7            13790 main/binary-amd64/Packages
- b2b9123a10a8ef63f178243c3b560202             5823 main/binary-amd64/Packages.gz
- 3af1df61e2f83e8ccc0aef5c4f2c07e2             1316 main/dep-11/Components-amd64.yml.gz
- 3c82d77b186a98c6f69ad8cb38f0173e1a51a3aa 1453 main/dep-11/Components-amd64.xml.gz
- c511adc668060e535d96d52c8c65e9f4d0e25d7d 1316 main/dep-11/Components-amd64.yml.gz
+ e64ea53c8627f602a23b0bc097187ef7 13790 main/binary-amd64/Packages
+ b6238c3b9b053eb638734cf735895e30 5823 main/binary-amd64/Packages.gz
+ e24590347340975eca2888d6330e0fc1 1316 main/dep-11/Components-amd64.yml.gz
 SHA1:
- 43551edb1c9d4c8fbf6234fd7d6d3952672f14e0              143 Release
- 0d4d07e092e17e76fa77db82ce0a9b2e7449dd0f            13790 main/binary-amd64/Packages
- 602f9ece1241d307503d8999a57163fb0b800719             5823 main/binary-amd64/Packages.gz
- c511adc668060e535d96d52c8c65e9f4d0e25d7d             1316 main/dep-11/Components-amd64.yml.gz
- 48cda4f6eca009dea8de046fb88be8e2b536f96630b194d4722acb5cd2b859b4 1453 main/dep-11/Components-amd64.xml.gz
- 1e9cbf8e98f44765984d5836de0fc901668ca49e6646f842a2d73cdcc40cbffe 1316 main/dep-11/Components-amd64.yml.gz
+ 0d4d07e092e17e76fa77db82ce0a9b2e7449dd0f 13790 main/binary-amd64/Packages
+ 9860689b057e2ff7b742051af6a902464ca86658 5823 main/binary-amd64/Packages.gz
+ c9f0f90794ab67810285589c1050352580c9658b 1316 main/dep-11/Components-amd64.yml.gz
 SHA256:
- 27eec5f97d8632055243c9ae69948be88c53f4b3308d5ccdce8580b8e9efdea9              143 Release
- a02cdb795537ec4b9b676060a3823c7f99b75c493e5ef73a74743c4f38ce608f            13790 main/binary-amd64/Packages
- 53ac622586e662611aedbb699a609c8e9317d396887d342294aef3620226f8c9             5823 main/binary-amd64/Packages.gz
- 1e9cbf8e98f44765984d5836de0fc901668ca49e6646f842a2d73cdcc40cbffe             1316 main/dep-11/Components-amd64.yml.gz
- eff8dc96c283f6a845da7adf7208ad56 1453 main/dep-11/Components-amd64.xml.gz
- ec2ec7dce749398a6674626518220362a6c13f2a37619b940b198ae2044f7bb964224745db2e3cc13d4b3d646f1a05921a591941bf2acd1d1a208e6ec8600d24 1453 main/dep-11/Components-amd64.xml.gz
- 3af1df61e2f83e8ccc0aef5c4f2c07e2 1316 main/dep-11/Components-amd64.yml.gz
- 5e8ec3768c9b628dd55769b5504b3955e0439cc3b4b0785b9d48c71af19b34fd092290caf99362ee3ec861d0de3e339ea90b44517695ba04c72809e94aa12666 1316 main/dep-11/Components-amd64.yml.gz
+ a02cdb795537ec4b9b676060a3823c7f99b75c493e5ef73a74743c4f38ce608f 13790 main/binary-amd64/Packages
+ bcd4f1adf3199fb30b2825b5374bf3b2b32c46184833332c7bb0b1a615a093ee 5823 main/binary-amd64/Packages.gz
+ 1876ef9ad58951d67ae9743f96269c1c1d35d58bf27ee3d713c1d46a73bc37db 1316 main/dep-11/Components-amd64.yml.gz
 SHA512:
- ce060d7de6894a528eca5571a7c4f3b0dd0aaf350a084af1b6e82b8ff0a2e8d16d7c67fc24aef79a5218e19817cb03127b0b68432408ce8a31b28b72e02a2f79              143 Release
- 5cbd77e27f9e8d8bc2b2c367b4b01fe37b4d1cb45e8d314698a0ca1db9f2beae4e8bb0c429f09d30933d318f336b6d7002504ea2919f427003648b1387a54708            13790 main/binary-amd64/Packages
- 074a9986d60a7ba6c89a63d71345e861ed09f6187b29248d61d1653ab82c39ed38d2295733ce51683f717d9c4b802cb631a12742a9ced0f4fa2420bd26f581b5             5823 main/binary-amd64/Packages.gz
- 5e8ec3768c9b628dd55769b5504b3955e0439cc3b4b0785b9d48c71af19b34fd092290caf99362ee3ec861d0de3e339ea90b44517695ba04c72809e94aa12666             1316 main/dep-11/Components-amd64.yml.gz
+ 5cbd77e27f9e8d8bc2b2c367b4b01fe37b4d1cb45e8d314698a0ca1db9f2beae4e8bb0c429f09d30933d318f336b6d7002504ea2919f427003648b1387a54708 13790 main/binary-amd64/Packages
+ 8365fdd601c97f960efeba9d65436ff7514a744c0b2b5d4189e614d51aa5f41f9a68fdf1144ab037664d8983d4c8ee2e04fd4a6eb40bf728bcb2a648e88a8307 5823 main/binary-amd64/Packages.gz
+ 52ac46606ba9f45a0a9b58a6a027fbe8c8a3d5f61b6a4a049ef867f6685bb49374e5c51ac05780a59dc459ba6cf721eae678d276a38e3b79a48b854e08828a71 1316 main/dep-11/Components-amd64.yml.gz
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmpoilEACgkQorBTLKwl
-HCe9lg/+LsAIr9NHA/b7wkURKaAdJHw6PO4wNPgSVb2yNVBSkNzZoqRyk/AW8G8i
-shq3kC9YZoX1tYoE0wUkRr5k1vPo4a9XimeSw1jkFnzvnY72JR+6VNcXeJTkXoX9
-IXXn1eChD32P9zERNGS+HlmSdUL4y8F6oVJgeKFFyKGfW9Jq7kSm3Rn2yCJ7zyTI
-6a15HleZx7lpXqr+m08+Tpawf6plmqThA0CsRshb9D+x1U5KddLM3c2hUioOtpB4
-eal1zbRgsUVdWGjYKi36dZkcW+j/fpxo91qgNTPGyJ2B/PTvIG/mwu7bTQqHj43P
-WgHJ+NPLKtkfPByVfD1a9iUxLbPw/k5tcdWENBozb8HoQj0nz9f0ydEE//4t24c1
-ZBiMNA9FpDdSYlx5pjQKHFtQOrmbVBNpjyja+Md8usojmBCT4y45h7Lb8e0yMWtG
-r+TYenwi+anUwje/ZxwqmqSZMAEtFVGRwKhqfQ8LHX7PVHXOUEREBXeWaSt9Zop6
-sGGfZG7P4UvUModUCVvpHDtNFyf2nx9C2IDrKTazh3KBUROVXMPoZp+8twdS/XDK
-feKCEbzNeBVLg0O1FvJM+Dan8ZgTmvb1IEWE1g16AhEFjy1pKXzqJY01EJPsLGSc
-vjn3us/ZDIwatnVuAei8I4NsDjE+nlZfCehbKbA/sXLtT4/JyKc=
-=SADh
+iQIzBAEBCgAdFiEEdVs44XV2Yyq8tijCorBTLKwlHCcFAmpoqFgACgkQorBTLKwl
+HCeGFg/+P2xN4CARr6kOY8p9aFO5y0zbUj1FqEgjECKPXinqBiFV6znfRQrVomAv
+3TFYh5u9e8E6FOgvQnCwgNXvBhMHVc3qs0ae0A5eYDm5ghx36PK6iTPm0sFH6dXK
+zUkUo6/XjAelS4CyUxOtZbyoeJ4YQv+0fmK+5haIGD7vPDXTP6VwwLtpehY/p6jk
+ToWJZXxc9fb1rRBzsm4IOgfgRIPmy14G2ua38hT5IoPTglY4crpAH/Doni2aMgU5
+NfrLfqyiexCD1s4yhhqQEXZxwFC/9WGea1BZolA9Pf3wEuUjkCiBkXXTmNkoSo8w
+66AdxsaUuj4OSsMTx0L1ihjMnOZLfCd8HRDYpYV1zO8cW/8Ye5GMcXZ6WSYE4LGi
+1U0ibgiMXfBp+/Y0lFI6y40K7g1RdGdMOIwowabOgt8+RNUbU30elq3LQAK9+DrG
+/RRR8QKFKVaiHKPoOzSVOp0AmusgM65BdCl6oXRIlMJnEazUVXBirt6wiDitrR8+
+8FkC/EmtGo/N0qS4Ss7cJeOTvqD2y3bdsZjBAJVmnjdr2qVZgY7UBZ7edSP0aR3G
+ct6lmP2Cq0XUrJmo3dVP0CyI6kpXMmzmFdaj8koBRcV/67SlbczNOL+Dk2i8zZpi
+DzASFwitur9xJ8cU9P4x/DUe5Nqqhdb45O6G1Fz732cMzwycfNw=
+=+hyB
 -----END PGP SIGNATURE-----
