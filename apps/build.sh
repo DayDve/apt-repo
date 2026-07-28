@@ -93,6 +93,64 @@ gh_fetch_raw() {
   gh api "repos/$repo/contents/$path?ref=$ref" --jq '.content' 2>/dev/null | base64 -d 2>/dev/null
 }
 
+# ai_changelog: Generate a concise changelog from raw release notes via Gemini
+# Usage: ai_changelog <package_name> <raw_text>
+# Reads raw release notes, calls Gemini API, outputs concise changelog.
+# Falls back to truncated raw text if GEMINI_API_KEY is unset or API fails.
+ai_changelog() {
+  local pkg_name="$1" raw_text="$2"
+  local api_key="${GEMINI_API_KEY:-}"
+  api_key="${api_key//\"/}"
+  api_key="${api_key//\'/}"
+  api_key="$(echo "$api_key" | xargs)"
+
+  if [ -z "$api_key" ]; then
+    printf '%s' "$raw_text" | head -15
+    return 0
+  fi
+
+  local prompt="You are a technical writer for Linux packages. Generate a concise, useful changelog in English for the package '$pkg_name' based on the following release notes.
+
+RULES:
+- Write ONLY factual information useful to the end user.
+- NO filler, NO praise, NO marketing language.
+- NO technical developer terms (build system, CI, dpkg, Makefile).
+- Length: 3-5 short bullet points in Markdown list format.
+- If the release notes contain section headers, summarize the key user-facing changes from each section.
+- Output ONLY the markdown list, nothing else.
+
+RELEASE NOTES:
+$raw_text"
+
+  local payload
+  payload=$(jq -n --arg p "$prompt" '{
+    contents: [{parts: [{text: $p}]}],
+    generationConfig: {temperature: 0.2}
+  }')
+
+  local endpoints=(
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent"
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+  )
+
+  local result=""
+  for url in "${endpoints[@]}"; do
+    result=$(curl -s --max-time 30 \
+      -H "Content-Type: application/json" \
+      -H "X-goog-api-key: $api_key" \
+      -d "$payload" "$url" 2>/dev/null) || continue
+    result=$(echo "$result" | jq -r '.candidates[0].content.parts[0].text // empty' 2>/dev/null) || continue
+    [ -n "$result" ] && break
+  done
+
+  if [ -n "$result" ]; then
+    printf '%s' "$result"
+  else
+    printf '%s' "$raw_text" | head -15
+  fi
+}
+
 # ============================================================
 # Main logic (skipped when sourced — e.g. from check-updates.yml)
 # ============================================================
@@ -130,6 +188,10 @@ fi
 DEBFULLNAME="${DEBFULLNAME:-$GITHUB_REPOSITORY_OWNER}"
 DEBEMAIL="${DEBEMAIL:-$GITHUB_REPOSITORY_OWNER@users.noreply.github.com}"
 
+if [ -s /tmp/changelog ]; then
+  cp /tmp/changelog "$dir/.changelog"
+fi
+
 docker buildx build \
   --output type=local,dest=/tmp/deb-out \
   --cache-from type=gha \
@@ -138,6 +200,8 @@ docker buildx build \
   --build-arg "DEBEMAIL=$DEBEMAIL" \
   --build-arg "APP_VERSION=$version" \
   -f "$dir/Dockerfile" "$dir"
+
+rm -f "$dir/.changelog"
 
 deb="$(ls /tmp/deb-out/*.deb 2>/dev/null | head -1)"
 [ -z "$deb" ] && { echo "No .deb produced"; exit 1; }

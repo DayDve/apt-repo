@@ -18,9 +18,18 @@ ARG DEBFULLNAME
 ARG DEBEMAIL
 ARG APP_VERSION
 
+COPY .changelog /tmp/changelog
+
 RUN DESTDIR=/pkg && \
     make install DESTDIR=$DESTDIR && \
     mkdir -p $DESTDIR/DEBIAN && \
+    if [ -s /tmp/changelog ]; then \
+      printf 'mc-ng (%s-1) noble; urgency=low\n\n' "$APP_VERSION" > $DESTDIR/DEBIAN/changelog && \
+      sed 's/^/  * /' /tmp/changelog >> $DESTDIR/DEBIAN/changelog && \
+      printf '\n -- %s <%s>  %s\n' \
+        "${DEBFULLNAME:-Unknown}" "${DEBEMAIL:-unknown@unknown}" \
+        "$(date -R)" >> $DESTDIR/DEBIAN/changelog; \
+    fi && \
     cat <<EOF > $DESTDIR/DEBIAN/control
 Package: mc-ng
 Version: ${APP_VERSION}
@@ -33,10 +42,10 @@ Description: Heavily modified Midnight Commander fork with plugins, arcmc, and m
  arcmc archive manager, code folding, undo history, macro explorer,
  structured tree viewer, grep-style filter, ANSI terminal replay,
  embedded terminal, and configurable panel view modes.
-Conflicts: mc
-Replaces: mc
+Conflicts: mc, mc-data
+Replaces: mc, mc-data
 Depends: libglib2.0-0t64, libslang2, libncurses6 | libncurses5,
-         libssh2-1t64, libaspell15t64, e2fslibs
+         libssh2-1t64, libaspell15, e2fslibs
 Installed-Size: $(du -sk $DESTDIR | cut -f1)
 EOF
 

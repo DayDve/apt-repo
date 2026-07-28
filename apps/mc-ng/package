@@ -1,5 +1,5 @@
 SOURCE_URL="https://github.com/ilia-maslakov/mcdev"
-DESCRIPTION="Heavily modified Midnight Commander fork with plugins, arcmc, and more"
+DESCRIPTION="A Midnight Commander fork with an extensible plugin architecture for panels and editor, featuring built-in integrations for Docker, Kubernetes, S3, MongoDB, and Git."
 
 check_update() {
   gh_tag_ahead ilia-maslakov/mcdev
@@ -11,5 +11,7 @@ get_version() {
   local current="${1:-}"
   gh_tag_ahead ilia-maslakov/mcdev
   version="${LATEST_TAG#v}"
-  gh_release_body ilia-maslakov/mcdev
+  local raw
+  raw=$(gh_release_body ilia-maslakov/mcdev)
+  ai_changelog "mc-ng" "$raw"
 }
