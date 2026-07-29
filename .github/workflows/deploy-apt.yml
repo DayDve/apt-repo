@@ -146,8 +146,8 @@ jobs:
             echo '</components>' >> "$xml_file"
             yml_plain="dists/$distro/main/dep11/Components-amd64.yml"
             appstreamcli convert "$xml_file" "$yml_plain" --format yaml
-            gzip -9f "$yml_plain"
-            rm -f "$xml_file" "$yml_plain"
+            gzip -9kf "$yml_plain"
+            rm -f "$xml_file"
           done
 
       - name: Generate packages.json
