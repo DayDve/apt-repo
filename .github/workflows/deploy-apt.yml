@@ -195,11 +195,13 @@ jobs:
                 deb|'')
                   if [ -n "$icon_path" ]; then
                     icon_file="/tmp/icon-$app"
-                    dpkg-deb --fsys-tarfile "$deb" | tar -xO "$icon_path" > "$icon_file" 2>/dev/null || icon_file=""
+                    icon_arch="${icon_path#./}"
+                    icon_arch="./$icon_arch"
+                    dpkg-deb --fsys-tarfile "$deb" | tar -xO "$icon_arch" > "$icon_file" 2>/dev/null || icon_file=""
                   fi
                   if [ -z "$icon_file" ] || [ ! -s "$icon_file" ]; then
                     # Auto-discover: find largest PNG in hicolor/*/apps/
-                    icon_in_deb=$(dpkg-deb --fsys-tarfile "$deb" | tar -tzf - 2>/dev/null \
+                    icon_in_deb=$(dpkg-deb --fsys-tarfile "$deb" | tar -t 2>/dev/null \
                       | grep -oP '\./usr/share/icons/hicolor/\d+x\d+/apps/.*\.png' \
                       | sort -t/ -k5 -rV | head -1)
                     if [ -n "$icon_in_deb" ]; then
