@@ -71,7 +71,7 @@ jobs:
             [ -z "$(ls "/tmp/pool/$distro/main/"*.deb 2>/dev/null)" ] && continue
 
             cd "/tmp/pool/$distro"
-            dpkg-scanpackages --multiversion main > Packages
+            dpkg-scanpackages main > Packages
 
             # rewrite Filename to full relative path from repo root
             sed -i "s|^Filename: main/|Filename: pool/$distro/main/|" Packages
