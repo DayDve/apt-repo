@@ -16,7 +16,8 @@ Categories:
 Url:
   homepage: https://github.com/AyuGram/AyuGramDesktop
 Icon:
-  stock: ayugram
+  cached:
+  - name: ayugram
 Launchable:
   desktop-id:
   - ayugram.desktop
@@ -55,7 +56,8 @@ Categories:
 Url:
   homepage: https://gitlab.com/btrfs-assistant/btrfs-assistant
 Icon:
-  stock: btrfs-assistant
+  cached:
+  - name: btrfs-assistant
 Launchable:
   desktop-id:
   - btrfs-assistant.desktop
@@ -127,7 +129,8 @@ Categories:
 Url:
   homepage: https://github.com/localsend/localsend
 Icon:
-  stock: localsend
+  cached:
+  - name: localsend
 Launchable:
   desktop-id:
   - localsend.desktop
@@ -150,7 +153,8 @@ Categories:
 Url:
   homepage: https://github.com/ilia-maslakov/mcdev
 Icon:
-  stock: mc6
+  cached:
+  - name: mc6
 Launchable:
   desktop-id:
   - mc6.desktop
@@ -190,7 +194,8 @@ Categories:
 Url:
   homepage: https://devolutions.net/remote-desktop-manager/
 Icon:
-  stock: remotedesktopmanager
+  cached:
+  - name: remotedesktopmanager
 Launchable:
   desktop-id:
   - remotedesktopmanager.desktop
@@ -212,7 +217,8 @@ Categories:
 Url:
   homepage: https://github.com/rustdesk/rustdesk
 Icon:
-  stock: rustdesk
+  cached:
+  - name: rustdesk
 Launchable:
   desktop-id:
   - rustdesk.desktop
@@ -234,7 +240,8 @@ Categories:
 Url:
   homepage: https://github.com/Genymobile/scrcpy
 Icon:
-  stock: scrcpy
+  cached:
+  - name: scrcpy
 Launchable:
   desktop-id:
   - scrcpy.desktop
@@ -256,7 +263,8 @@ Categories:
 Url:
   homepage: https://www.viber.com
 Icon:
-  stock: viber
+  cached:
+  - name: viber
 Launchable:
   desktop-id:
   - viber.desktop
@@ -278,7 +286,8 @@ Categories:
 Url:
   homepage: https://github.com/winegui/WineGUI
 Icon:
-  stock: winegui
+  cached:
+  - name: winegui
 Launchable:
   desktop-id:
   - winegui.desktop
@@ -300,7 +309,8 @@ Categories:
 Url:
   homepage: https://github.com/any1/wlvncc
 Icon:
-  stock: wlvncc
+  cached:
+  - name: wlvncc
 Launchable:
   desktop-id:
   - wlvncc.desktop
@@ -336,7 +346,8 @@ Categories:
 Url:
   homepage: https://github.com/Rongronggg9/wps-office-repack
 Icon:
-  stock: wps-office
+  cached:
+  - name: wps-office
 Launchable:
   desktop-id:
   - wps-office.desktop
