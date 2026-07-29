@@ -1,0 +1,345 @@
+---
+File: DEP-11
+Version: '1.0'
+Origin: daydve-apt
+---
+Type: desktop-application
+ID: io.github.daydve.apt.ayugram
+Package: ayugram
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: ayugram
+Summary:
+  C: Telegram client with enhanced features
+Categories:
+- InstantMessaging
+Url:
+  homepage: https://github.com/AyuGram/AyuGramDesktop
+Icon:
+  stock: ayugram
+Launchable:
+  desktop-id:
+  - ayugram.desktop
+Provides:
+  binaries:
+  - ayugram
+---
+Type: console-application
+ID: io.github.daydve.apt.bees
+Package: bees
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: bees
+Summary:
+  C: btrfs deduplication daemon
+Categories:
+- System
+- Filesystem
+Url:
+  homepage: https://github.com/Zygo/bees
+Provides:
+  binaries:
+  - bees
+---
+Type: desktop-application
+ID: io.github.daydve.apt.btrfs-assistant
+Package: btrfs-assistant
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: btrfs-assistant
+Summary:
+  C: GUI management tool for Btrfs filesystem
+Categories:
+- System
+- Filesystem
+Url:
+  homepage: https://gitlab.com/btrfs-assistant/btrfs-assistant
+Icon:
+  stock: btrfs-assistant
+Launchable:
+  desktop-id:
+  - btrfs-assistant.desktop
+Provides:
+  binaries:
+  - btrfs-assistant
+---
+Type: font
+ID: io.github.daydve.apt.fonts-noto-lite
+Package: fonts-noto-lite
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: fonts-noto-lite
+Summary:
+  C: Hide non-Latin/Cyrillic Noto fonts from font selection dialogs on Ubuntu/Debian
+Categories:
+- Fonts
+Url:
+  homepage: https://github.com/DayDve/fonts-noto-lite
+Provides:
+  binaries:
+  - fonts-noto-lite
+---
+Type: console-application
+ID: io.github.daydve.apt.grub-btrfs
+Package: grub-btrfs
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: grub-btrfs
+Summary:
+  C: GRUB menu entries for btrfs snapshots
+Categories:
+- System
+- Boot
+Url:
+  homepage: https://github.com/Antynea/grub-btrfs
+Provides:
+  binaries:
+  - grub-btrfs
+---
+Type: console-application
+ID: io.github.daydve.apt.keyd
+Package: keyd
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: keyd
+Summary:
+  C: Key remapping daemon
+Categories:
+- System
+- Hardware
+Url:
+  homepage: https://github.com/rvaiya/keyd
+Provides:
+  binaries:
+  - keyd
+---
+Type: desktop-application
+ID: io.github.daydve.apt.localsend
+Package: localsend
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: localsend
+Summary:
+  C: Cross-platform file sharing over local network
+Categories:
+- Network
+- FileTransfer
+Url:
+  homepage: https://github.com/localsend/localsend
+Icon:
+  stock: localsend
+Launchable:
+  desktop-id:
+  - localsend.desktop
+Provides:
+  binaries:
+  - localsend
+---
+Type: desktop-application
+ID: io.github.daydve.apt.mc6
+Package: mc6
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: mc6
+Summary:
+  C: A Midnight Commander fork with an extensible plugin architecture for panels and editor, featuring built-in integrations
+    for Docker, Kubernetes, S3, MongoDB, and Git.
+Categories:
+- System
+- FileTools
+Url:
+  homepage: https://github.com/ilia-maslakov/mcdev
+Icon:
+  stock: mc6
+Launchable:
+  desktop-id:
+  - mc6.desktop
+Provides:
+  binaries:
+  - mc6
+---
+Type: console-application
+ID: io.github.daydve.apt.rclone
+Package: rclone
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: rclone
+Summary:
+  C: rsync for cloud storage
+Categories:
+- Utility
+- FileTransfer
+Url:
+  homepage: https://github.com/rclone/rclone
+Provides:
+  binaries:
+  - rclone
+---
+Type: desktop-application
+ID: io.github.daydve.apt.remotedesktopmanager
+Package: remotedesktopmanager
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: remotedesktopmanager
+Summary:
+  C: One application for every remote connection you'll ever open
+Categories:
+- Utility
+- Security
+- RemoteAccess
+Url:
+  homepage: https://devolutions.net/remote-desktop-manager/
+Icon:
+  stock: remotedesktopmanager
+Launchable:
+  desktop-id:
+  - remotedesktopmanager.desktop
+Provides:
+  binaries:
+  - remotedesktopmanager
+---
+Type: desktop-application
+ID: io.github.daydve.apt.rustdesk
+Package: rustdesk
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: rustdesk
+Summary:
+  C: Fast open-source remote desktop
+Categories:
+- Network
+- RemoteAccess
+Url:
+  homepage: https://github.com/rustdesk/rustdesk
+Icon:
+  stock: rustdesk
+Launchable:
+  desktop-id:
+  - rustdesk.desktop
+Provides:
+  binaries:
+  - rustdesk
+---
+Type: desktop-application
+ID: io.github.daydve.apt.scrcpy
+Package: scrcpy
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: scrcpy
+Summary:
+  C: Mirror and control Android devices via USB/TCP
+Categories:
+- Utility
+- Development
+Url:
+  homepage: https://github.com/Genymobile/scrcpy
+Icon:
+  stock: scrcpy
+Launchable:
+  desktop-id:
+  - scrcpy.desktop
+Provides:
+  binaries:
+  - scrcpy
+---
+Type: desktop-application
+ID: io.github.daydve.apt.viber
+Package: viber
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: viber
+Summary:
+  C: Free and secure calls and messages to anyone, anywhere
+Categories:
+- InstantMessaging
+- Network
+Url:
+  homepage: https://www.viber.com
+Icon:
+  stock: viber
+Launchable:
+  desktop-id:
+  - viber.desktop
+Provides:
+  binaries:
+  - viber
+---
+Type: desktop-application
+ID: io.github.daydve.apt.winegui
+Package: winegui
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: winegui
+Summary:
+  C: Wine prefix manager with a modern GUI
+Categories:
+- System
+- Emulator
+Url:
+  homepage: https://github.com/winegui/WineGUI
+Icon:
+  stock: winegui
+Launchable:
+  desktop-id:
+  - winegui.desktop
+Provides:
+  binaries:
+  - winegui
+---
+Type: desktop-application
+ID: io.github.daydve.apt.wlvncc
+Package: wlvncc
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: wlvncc
+Summary:
+  C: Wayland native VNC client
+Categories:
+- Network
+- RemoteAccess
+Url:
+  homepage: https://github.com/any1/wlvncc
+Icon:
+  stock: wlvncc
+Launchable:
+  desktop-id:
+  - wlvncc.desktop
+Provides:
+  binaries:
+  - wlvncc
+---
+Type: addon
+ID: io.github.daydve.apt.wps-office-langpack-ru
+Package: wps-office-langpack-ru
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: wps-office-langpack-ru
+Summary:
+  C: Russian language pack for WPS Office
+Url:
+  homepage: https://github.com/DayDve/wps-office-langpack-ru
+Provides:
+  binaries:
+  - wps-office-langpack-ru
+---
+Type: desktop-application
+ID: io.github.daydve.apt.wps-office
+Package: wps-office
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: wps-office
+Summary:
+  C: WPS Office repack with patches
+Categories:
+- Office
+- WordProcessor
+Url:
+  homepage: https://github.com/Rongronggg9/wps-office-repack
+Icon:
+  stock: wps-office
+Launchable:
+  desktop-id:
+  - wps-office.desktop
+Provides:
+  binaries:
+  - wps-office
