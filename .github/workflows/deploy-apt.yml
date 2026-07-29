@@ -238,10 +238,8 @@ jobs:
                 continue
               fi
 
-              for S in 128 64 48; do
-                if [ "$S" -le "$W" ] || { [ "$W" -lt 48 ] && [ "$S" -eq 48 ]; }; then
-                  convert -resize "${S}x${S}" "$icon_file" "/tmp/icons-$S/${app}.png" 2>/dev/null
-                fi
+              for S in 48 64 128; do
+                convert -resize "${S}x${S}" "$icon_file" "/tmp/icons-$S/${app}.png" 2>/dev/null
               done
               rm -f "$icon_file"
             done
