@@ -328,6 +328,9 @@ Summary:
   C: Russian language pack for WPS Office
 Url:
   homepage: https://github.com/DayDve/wps-office-langpack-ru
+Icon:
+  cached:
+  - name: wps-office-langpack-ru
 Provides:
   binaries:
   - wps-office-langpack-ru
