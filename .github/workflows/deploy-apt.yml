@@ -170,11 +170,9 @@ jobs:
 
               tag=$(grep "|$deb_name|" /tmp/tag-map | head -1 | cut -d'|' -f3)
               [ -z "$tag" ] && continue
-              # tag = <app>-<version>
               app=$(echo "$tag" | sed -E 's/-[0-9].*//')
               [ -z "$app" ] && continue
 
-              # Only desktop-applications get icons
               type=$(awk -F'|' -v a="$app" '$1==a{print $4}' /tmp/pkg-info)
               [ "$type" != "desktop-application" ] && continue
 
@@ -200,7 +198,6 @@ jobs:
                     dpkg-deb --fsys-tarfile "$deb" | tar -xO "$icon_arch" > "$icon_file" 2>/dev/null || icon_file=""
                   fi
                   if [ -z "$icon_file" ] || [ ! -s "$icon_file" ]; then
-                    # Auto-discover: find largest PNG in hicolor/*/apps/
                     icon_in_deb=$(dpkg-deb --fsys-tarfile "$deb" | tar -t 2>/dev/null \
                       | grep -oP '\./usr/share/icons/hicolor/\d+x\d+/apps/.*\.png' \
                       | sort -t/ -k5 -rV | head -1)
@@ -215,7 +212,6 @@ jobs:
               [ -z "$icon_file" ] && [ ! -f "$icon_file" ] && continue
               [ ! -s "$icon_file" ] && { rm -f "$icon_file"; continue; }
 
-              # Determine type and dimensions
               mime=$(file -b --mime-type "$icon_file" 2>/dev/null)
 
               if [ "$mime" = "image/svg+xml" ]; then
@@ -226,7 +222,6 @@ jobs:
                 continue
               fi
 
-              # PNG — get dimensions
               read -r W H <<< "$(identify -format '%w %h' "$icon_file" 2>/dev/null)"
               if [ -z "$W" ] || [ "$W" -eq 0 ]; then
                 rm -f "$icon_file"
@@ -242,13 +237,15 @@ jobs:
             done
           done
 
+          # Create tarballs — both .tar (for APT MetaKey) and .tar.gz (for efficient transfer)
           for distro_dir in dists/*/; do
             [ -d "$distro_dir" ] || continue
             distro=$(basename "$distro_dir")
             for size in 48 64 128; do
               src="/tmp/icons-$size"
               if [ -n "$(ls "$src"/*.png 2>/dev/null)" ]; then
-                tar czf "$GITHUB_WORKSPACE/dists/$distro/main/dep11/icons-${size}x${size}.tar.gz" -C "$src" .
+                tar cf "$GITHUB_WORKSPACE/dists/$distro/main/dep11/icons-${size}x${size}.tar" -C "$src" .
+                gzip -9kf "$GITHUB_WORKSPACE/dists/$distro/main/dep11/icons-${size}x${size}.tar"
               fi
             done
           done
