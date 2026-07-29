@@ -15,6 +15,14 @@
 #   APPSTREAM_KEYWORDS    — Comma-separated search keywords
 #   APPSTREAM_SUMMARY     — Short summary (if DESCRIPTION is long)
 #
+# Icons for DEP-11 (optional, for app icons in KDE Discover):
+#   ICON_SOURCE  — file | url | deb (default: deb = auto-extract from .deb)
+#   ICON_PATH    — path depends on ICON_SOURCE:
+#                    file — relative to apps/<app>/ (e.g. "icons/mc6.png")
+#                    url  — full URL to PNG/SVG
+#                    deb  — path inside .deb (e.g. "usr/share/.../app.png")
+#                          if unset, auto-discovers *.png in hicolor/*/apps/
+#
 # Screenshots (optional):
 #   Place screenshots in apps/<app>/screenshots/screenshot-*.png
 # ============================================================

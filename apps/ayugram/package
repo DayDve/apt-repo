@@ -2,6 +2,8 @@ SOURCE_URL="https://github.com/AyuGram/AyuGramDesktop"
 DESCRIPTION="Telegram client with enhanced features"
 APPSTREAM_TYPE="desktop-application"
 APPSTREAM_CATEGORIES="InstantMessaging"
+ICON_SOURCE="deb"
+ICON_PATH="usr/share/icons/hicolor/512x512/apps/com.ayugram.desktop.png"
 
 check_update() {
   local current="${1:-}"

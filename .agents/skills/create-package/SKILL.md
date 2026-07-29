@@ -89,6 +89,33 @@ get_version() {                 # MUST set $version, SHOULD print changelog to s
 | `APPSTREAM_CATEGORIES` | No | Semicolon-separated Freedesktop categories |
 | `APPSTREAM_KEYWORDS` | No | Comma-separated search keywords |
 | `APPSTREAM_SUMMARY` | No | Short summary for Discover |
+| `ICON_SOURCE` | No | Icon source: `file` / `url` / `deb` (default: `deb` = auto-extract from .deb) |
+| `ICON_PATH` | No | Path for icon. For `file`: relative to `apps/<app>/`; for `url`: full URL; for `deb`: path inside .deb (optional — if unset, auto-discovers `*.png` in `hicolor/*/apps/`) |
+
+### Icons for DEP-11
+
+For apps to show icons in Discover, the deploy script needs PNG icons at standard sizes (48×48, 64×64, 128×128) in DEP-11 tarballs.
+
+**If you want icons for your package:**
+
+1. **PNG icon at known size** — add to `apps/<app>/` and set:
+   ```bash
+   ICON_SOURCE="file"
+   ICON_PATH="icons/myapp.png"
+   ```
+
+2. **Icon inside the .deb** (most common for prebuilt .deb packages) — set the exact path:
+   ```bash
+   ICON_SOURCE="deb"
+   ICON_PATH="usr/share/icons/hicolor/256x256/apps/myapp.png"
+   ```
+   Or leave both unset (defaults to auto-extract from .deb).
+
+3. **Icon from URL**:
+   ```bash
+   ICON_SOURCE="url"
+   ICON_PATH="https://example.com/icon.png"
+   ```
 
 ### Screenshots
 

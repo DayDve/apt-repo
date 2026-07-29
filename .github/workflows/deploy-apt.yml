@@ -102,7 +102,9 @@ jobs:
             desc=$(git show "$pkg_file" | awk -F'"' '/^DESCRIPTION=/{print $2}')
             type=$(git show "$pkg_file" | awk -F'"' '/^APPSTREAM_TYPE=/{print $2}')
             cats=$(git show "$pkg_file" | awk -F'"' '/^APPSTREAM_CATEGORIES=/{print $2}')
-            [ -n "$url" ] && echo "$app|$url|$desc|$type|$cats"
+            icon_source=$(git show "$pkg_file" | awk -F'"' '/^ICON_SOURCE=/{print $2}')
+            icon_path=$(git show "$pkg_file" | awk -F'"' '/^ICON_PATH=/{print $2}')
+            [ -n "$url" ] && echo "$app|$url|$desc|$type|$cats|$icon_source|$icon_path"
           done > /tmp/pkg-info
 
       - name: Generate AppStream metadata
@@ -117,7 +119,7 @@ jobs:
             xml_file="dists/$distro/main/dep11/Components-amd64.xml"
             echo '<?xml version="1.0" encoding="UTF-8"?>' > "$xml_file"
             echo '<components origin="daydve-apt">' >> "$xml_file"
-            while IFS='|' read -r app url desc type cats; do
+            while IFS='|' read -r app url desc type cats icon_source icon_path; do
               [ -z "$app" ] && continue
               [ -z "$type" ] && type="console-application"
               printf '  <component type="%s">\n' "$type" >> "$xml_file"
@@ -148,6 +150,105 @@ jobs:
             appstreamcli convert "$xml_file" "$yml_plain" --format yaml
             gzip -9kf "$yml_plain"
             rm -f "$xml_file"
+          done
+
+      - name: Generate icon tarballs
+        run: |
+          sudo apt-get install -y -qq librsvg2-bin imagemagick 2>/dev/null
+
+          for distro_dir in /tmp/pool/*/; do
+            [ -d "$distro_dir" ] || continue
+            distro=$(basename "$distro_dir")
+
+            for size in 48 64 128; do
+              mkdir -p "/tmp/icons-$size"
+            done
+
+            for deb in "/tmp/pool/$distro/main/"*.deb; do
+              [ -f "$deb" ] || continue
+              deb_name=$(basename "$deb")
+
+              tag=$(grep "|$deb_name|" /tmp/tag-map | head -1 | cut -d'|' -f3)
+              [ -z "$tag" ] && continue
+              # tag = <app>-<version>
+              app=$(echo "$tag" | sed -E 's/-[0-9].*//')
+              [ -z "$app" ] && continue
+
+              # Only desktop-applications get icons
+              type=$(awk -F'|' -v a="$app" '$1==a{print $4}' /tmp/pkg-info)
+              [ "$type" != "desktop-application" ] && continue
+
+              icon_source=$(awk -F'|' -v a="$app" '$1==a{print $6}' /tmp/pkg-info)
+              icon_path=$(awk -F'|' -v a="$app" '$1==a{print $7}' /tmp/pkg-info)
+              [ -z "$icon_source" ] && icon_source="deb"
+
+              icon_file=""
+              case "$icon_source" in
+                file)
+                  icon_file="/tmp/icon-$app"
+                  git show "origin/apps:apps/$app/$icon_path" > "$icon_file" 2>/dev/null || icon_file=""
+                  ;;
+                url)
+                  icon_file="/tmp/icon-$app"
+                  curl -fsSL -o "$icon_file" "$icon_path" 2>/dev/null || icon_file=""
+                  ;;
+                deb|'')
+                  if [ -n "$icon_path" ]; then
+                    icon_file="/tmp/icon-$app"
+                    dpkg-deb --fsys-tarfile "$deb" | tar -xO "$icon_path" > "$icon_file" 2>/dev/null || icon_file=""
+                  fi
+                  if [ -z "$icon_file" ] || [ ! -s "$icon_file" ]; then
+                    # Auto-discover: find largest PNG in hicolor/*/apps/
+                    icon_in_deb=$(dpkg-deb --fsys-tarfile "$deb" | tar -tzf - 2>/dev/null \
+                      | grep -oP '\./usr/share/icons/hicolor/\d+x\d+/apps/.*\.png' \
+                      | sort -t/ -k5 -rV | head -1)
+                    if [ -n "$icon_in_deb" ]; then
+                      icon_file="/tmp/icon-$app"
+                      dpkg-deb --fsys-tarfile "$deb" | tar -xO "$icon_in_deb" > "$icon_file" 2>/dev/null || icon_file=""
+                    fi
+                  fi
+                  ;;
+              esac
+
+              [ -z "$icon_file" ] && [ ! -f "$icon_file" ] && continue
+              [ ! -s "$icon_file" ] && { rm -f "$icon_file"; continue; }
+
+              # Determine type and dimensions
+              mime=$(file -b --mime-type "$icon_file" 2>/dev/null)
+
+              if [ "$mime" = "image/svg+xml" ]; then
+                for S in 48 64 128; do
+                  rsvg-convert -w "$S" -h "$S" -o "/tmp/icons-$S/${app}_${app}.png" "$icon_file" 2>/dev/null
+                done
+                rm -f "$icon_file"
+                continue
+              fi
+
+              # PNG — get dimensions
+              read -r W H <<< "$(identify -format '%w %h' "$icon_file" 2>/dev/null)"
+              if [ -z "$W" ] || [ "$W" -eq 0 ]; then
+                rm -f "$icon_file"
+                continue
+              fi
+
+              for S in 128 64 48; do
+                if [ "$S" -le "$W" ] || { [ "$W" -lt 48 ] && [ "$S" -eq 48 ]; }; then
+                  convert -resize "${S}x${S}" "$icon_file" "/tmp/icons-$S/${app}_${app}.png" 2>/dev/null
+                fi
+              done
+              rm -f "$icon_file"
+            done
+          done
+
+          for distro_dir in dists/*/; do
+            [ -d "$distro_dir" ] || continue
+            distro=$(basename "$distro_dir")
+            for size in 48 64 128; do
+              src="/tmp/icons-$size"
+              if [ -n "$(ls "$src"/*.png 2>/dev/null)" ]; then
+                tar czf "$GITHUB_WORKSPACE/dists/$distro/main/dep11/icons-${size}x${size}.tar.gz" -C "$src" .
+              fi
+            done
           done
 
       - name: Generate packages.json

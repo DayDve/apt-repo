@@ -2,6 +2,8 @@ SOURCE_URL="https://github.com/ilia-maslakov/mcdev"
 DESCRIPTION="A Midnight Commander fork with an extensible plugin architecture for panels and editor, featuring built-in integrations for Docker, Kubernetes, S3, MongoDB, and Git."
 APPSTREAM_TYPE="desktop-application"
 APPSTREAM_CATEGORIES="System;FileTools"
+ICON_SOURCE="file"
+ICON_PATH="icons/mc6.png"
 
 check_update() {
   gh_tag_ahead ilia-maslakov/mcdev
