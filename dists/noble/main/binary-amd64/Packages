@@ -116,28 +116,6 @@ Homepage: https://localsend.org/
 Description: An open source cross-platform alternative to AirDrop
 Uploaders: TheGB0077 <gb.lima.dev@gmail.com>
 
-Package: mc-ng
-Version: 6.0.1
-Architecture: amd64
-Maintainer: DayDve <DayDve@users.noreply.github.com>
-Installed-Size: 16028
-Depends: libglib2.0-0t64, libslang2, libncurses6 | libncurses5,
-         libssh2-1t64, libaspell15, e2fslibs
-Conflicts: mc, mc-data
-Replaces: mc, mc-data
-Filename: pool/noble/main/mc-ng_6.0.1_noble_amd64.deb
-Size: 4094698
-MD5sum: 6e53e8c89a4fb2339db27993bb5ac0ea
-SHA1: 4fb6dfeab70f5863ea1b38cfd7be06b3728a6010
-SHA256: 7f6cb2fafe100ff36711eabbb086efb2b8f6c2e5bb18a59cab1cf82a69eace72
-Description: Heavily modified Midnight Commander fork with plugins, arcmc, and more
- A heavily modified fork of GNU Midnight Commander based on 4.8.33.
- The author does not expect all changes to be accepted upstream.
- Adds panel plugins (git, docker, k8s, mongodb, s3, ftp, sftp, samba, systemd),
- arcmc archive manager, code folding, undo history, macro explorer,
- structured tree viewer, grep-style filter, ANSI terminal replay,
- embedded terminal, and configurable panel view modes.
-
 Package: mc6
 Version: 6.0.1
 Architecture: amd64

@@ -34,11 +34,6 @@
   "source": "https://github.com/localsend/localsend"
 }
 ,{
-  "name": "mc-ng",
-  "description": "Heavily modified Midnight Commander fork with plugins, arcmc, and more",
-  "source": ""
-}
-,{
   "name": "mc6",
   "description": "A Midnight Commander fork with an extensible plugin architecture for panels and editor, featuring built-in integrations for Docker, Kubernetes, S3, MongoDB, and Git.",
   "source": "https://github.com/ilia-maslakov/mcdev"
