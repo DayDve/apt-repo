@@ -132,7 +132,7 @@ jobs:
               printf '    <url type="homepage">%s</url>\n' "$url" >> "$xml_file"
               if [ "$type" = "desktop-application" ]; then
                 printf '    <launchable type="desktop-id">%s.desktop</launchable>\n' "$app" >> "$xml_file"
-                printf '    <icon type="stock">%s</icon>\n' "$app" >> "$xml_file"
+                printf '    <icon type="cached">%s</icon>\n' "$app" >> "$xml_file"
               fi
               printf '    <provides>\n      <binary>%s</binary>\n    </provides>\n' "$app" >> "$xml_file"
               if [ -n "$cats" ]; then
@@ -216,7 +216,7 @@ jobs:
 
               if [ "$mime" = "image/svg+xml" ]; then
                 for S in 48 64 128; do
-                  rsvg-convert -w "$S" -h "$S" -o "/tmp/icons-$S/${app}_${app}.png" "$icon_file" 2>/dev/null
+                  rsvg-convert -w "$S" -h "$S" -o "/tmp/icons-$S/${app}.png" "$icon_file" 2>/dev/null
                 done
                 rm -f "$icon_file"
                 continue
@@ -230,7 +230,7 @@ jobs:
 
               for S in 128 64 48; do
                 if [ "$S" -le "$W" ] || { [ "$W" -lt 48 ] && [ "$S" -eq 48 ]; }; then
-                  convert -resize "${S}x${S}" "$icon_file" "/tmp/icons-$S/${app}_${app}.png" 2>/dev/null
+                  convert -resize "${S}x${S}" "$icon_file" "/tmp/icons-$S/${app}.png" 2>/dev/null
                 fi
               done
               rm -f "$icon_file"
