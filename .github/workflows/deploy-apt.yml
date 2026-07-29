@@ -203,6 +203,14 @@ jobs:
                     icon_in_deb=$(dpkg-deb --fsys-tarfile "$deb" | tar -t 2>/dev/null \
                       | grep -oP '\./usr/share/icons/hicolor/\d+x\d+/apps/.*\.png' \
                       | sort -t/ -k5 -rV | head -1)
+                    if [ -z "$icon_in_deb" ]; then
+                      icon_in_deb=$(dpkg-deb --fsys-tarfile "$deb" | tar -t 2>/dev/null \
+                        | grep -oP '\./usr/share/icons/hicolor/scalable/apps/.*\.svg' | head -1)
+                    fi
+                    if [ -z "$icon_in_deb" ]; then
+                      icon_in_deb=$(dpkg-deb --fsys-tarfile "$deb" | tar -t 2>/dev/null \
+                        | grep -oP '\./usr/share/pixmaps/.*\.png' | head -1)
+                    fi
                     if [ -n "$icon_in_deb" ]; then
                       icon_file="/tmp/icon-$app"
                       dpkg-deb --fsys-tarfile "$deb" | tar -xO "$icon_in_deb" > "$icon_file" 2>/dev/null || icon_file=""
