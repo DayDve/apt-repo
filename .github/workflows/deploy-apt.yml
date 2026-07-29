@@ -130,9 +130,11 @@ jobs:
               printf '    <project_license>GPL-3.0-or-later</project_license>\n' >> "$xml_file"
               printf '    <pkgname>%s</pkgname>\n' "$app" >> "$xml_file"
               printf '    <url type="homepage">%s</url>\n' "$url" >> "$xml_file"
+              if [ "$type" = "desktop-application" ] || [ "$type" = "addon" ]; then
+                printf '    <icon type="cached">%s</icon>\n' "$app" >> "$xml_file"
+              fi
               if [ "$type" = "desktop-application" ]; then
                 printf '    <launchable type="desktop-id">%s.desktop</launchable>\n' "$app" >> "$xml_file"
-                printf '    <icon type="cached">%s</icon>\n' "$app" >> "$xml_file"
               fi
               printf '    <provides>\n      <binary>%s</binary>\n    </provides>\n' "$app" >> "$xml_file"
               if [ -n "$cats" ]; then
@@ -174,7 +176,7 @@ jobs:
               [ -z "$app" ] && continue
 
               type=$(awk -F'|' -v a="$app" '$1==a{print $4}' /tmp/pkg-info)
-              [ "$type" != "desktop-application" ] && continue
+              [ "$type" != "desktop-application" ] && [ "$type" != "addon" ] && continue
 
               icon_source=$(awk -F'|' -v a="$app" '$1==a{print $6}' /tmp/pkg-info)
               icon_path=$(awk -F'|' -v a="$app" '$1==a{print $7}' /tmp/pkg-info)
