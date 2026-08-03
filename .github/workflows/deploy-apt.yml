@@ -122,6 +122,7 @@ jobs:
             while IFS='|' read -r app url desc type cats icon_source icon_path; do
               [ -z "$app" ] && continue
               [ -z "$type" ] && type="console-application"
+              [ "$type" = "none" ] && continue
               printf '  <component type="%s">\n' "$type" >> "$xml_file"
               printf '    <id>io.github.daydve.apt.%s</id>\n' "$app" >> "$xml_file"
               printf '    <name>%s</name>\n' "$app" >> "$xml_file"
@@ -394,6 +395,8 @@ jobs:
 
           echo "$apps"
 
+          all_apps="$apps"
+
           # Start local Bot API server
           docker run -d --rm \
             -p 8081:8081 \
@@ -415,6 +418,15 @@ jobs:
 
           while read -r app; do
             [ -z "$app" ] && continue
+            # mc6-data / mc6-plugins carry the same changelog source as their
+            # main package — skip their Telegram message when the main app is
+            # updated in the same run to avoid triple notifications.
+            base="${app%-data}"
+            base="${base%-plugins}"
+            if [ "$base" != "$app" ] && echo "$all_apps" | grep -qx "$base"; then
+              echo "Skipping $app Telegram message (changelog covered by $base)"
+              continue
+            fi
             if [ ! -f "apps/$app/package" ]; then
               echo "No package for $app, skipping"
               continue

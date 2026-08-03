@@ -1,0 +1,19 @@
+SOURCE_URL="https://github.com/ilia-maslakov/mcdev"
+DESCRIPTION="Midnight Commander with Plugins — data files"
+APPSTREAM_TYPE="none"
+
+# Architecture-independent data for mc6. Version-locked to the same upstream
+# tag as mc6 / mc6-plugins; never build it alone or mc6's strict
+# "mc6-data (= <version>)" dependency breaks.
+check_update() {
+  gh_latest_release ilia-maslakov/mcdev
+  version="${LATEST_TAG#v}"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  local current="${1:-}"
+  gh_latest_release ilia-maslakov/mcdev
+  version="${LATEST_TAG#v}"
+  echo "Data files for mc6 ${version} (architecture-independent)."
+}
