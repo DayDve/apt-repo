@@ -8,6 +8,11 @@
 #                      If unset, falls back to SOURCE_URL.
 #   check_update()  — exit 0 if update available, 1 if up-to-date
 #   get_version()   — sets $version, outputs changelog to stdout
+#   FAMILY          — (optional) name of the main package in a multi-package
+#                     family. Helper packages derived from the same upstream
+#                     source set FAMILY="<main>", so all family .debs are sent
+#                     as ONE Telegram message (sendMediaGroup). Leave unset for
+#                     standalone apps.
 #
 # AppStream metadata (optional, for KDE Discover visibility):
 #   APPSTREAM_TYPE        — desktop-application | console-application | font | addon
