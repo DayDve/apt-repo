@@ -35,7 +35,17 @@
 }
 ,{
   "name": "mc6",
-  "description": "A Midnight Commander fork with an extensible plugin architecture for panels and editor, featuring built-in integrations for Docker, Kubernetes, S3, MongoDB, and Git.",
+  "description": "Midnight Commander with Plugins",
+  "source": "https://github.com/ilia-maslakov/mcdev"
+}
+,{
+  "name": "mc6-data",
+  "description": "Midnight Commander with Plugins — data files",
+  "source": "https://github.com/ilia-maslakov/mcdev"
+}
+,{
+  "name": "mc6-plugins",
+  "description": "Midnight Commander with Plugins — panel plugins (git, docker, k8s, s3, samba, mongo, ftp, sftp, systemd, shell links, arcmc)",
   "source": "https://github.com/ilia-maslakov/mcdev"
 }
 ,{

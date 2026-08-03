@@ -117,70 +117,68 @@ Description: An open source cross-platform alternative to AirDrop
 Uploaders: TheGB0077 <gb.lima.dev@gmail.com>
 
 Package: mc6
-Version: 6.0.1
+Version: 3:6.0.3-1
 Architecture: amd64
-Maintainer: DayDve <DayDve@users.noreply.github.com>
-Installed-Size: 16136
-Depends: libglib2.0-0t64, libslang2, libncurses6 | libncurses5,
-         libssh2-1t64, libaspell15, e2fslibs
-Conflicts: mc, mc-data, mc-plugins
-Replaces: mc, mc-data, mc-plugins
-Filename: pool/noble/main/mc6_6.0.1_noble_amd64.deb
-Size: 4105732
-MD5sum: fb5bcd6234333616d6dd846dce3b5723
-SHA1: daa386fa57b0addfa86bec5ff142b79d78622d08
-SHA256: 607a504113f645b5581b77df0cc52449188ca3e491ac04224cc2abd5ab795fd0
-Description: Heavily modified Midnight Commander fork with plugins, arcmc, and more
- A heavily modified fork of GNU Midnight Commander based on 4.8.33.
- The author does not expect all changes to be accepted upstream.
- Adds panel plugins (git, docker, k8s, mongodb, s3, ftp, sftp, samba, systemd),
- arcmc archive manager, code folding, undo history, macro explorer,
- structured tree viewer, grep-style filter, ANSI terminal replay,
- embedded terminal, and configurable panel view modes.
+Maintainer: Ilia Maslakov <il.smind@gmail.com>
+Installed-Size: 1799
+Depends: libc6 (>= 2.38), libext2fs2t64 (>= 1.37), libglib2.0-0t64 (>= 2.78.0), libgpm2 (>= 1.20.7), libmagic1t64 (>= 5.12), libslang2 (>= 2.2.4), perl:any, python3:any, mc6-data (= 3:6.0.3-1)
+Recommends: mailcap, perl, sensible-utils, unzip
+Suggests: mc6-plugins, aspell, hunspell
+Conflicts: mc
+Replaces: mc
+Provides: mc (= 3:6.0.3-1)
+Filename: pool/noble/main/mc6_6.0.3-1_noble_amd64.deb
+Size: 622424
+MD5sum: a3ec6548edc2fa425aeb91659ad6c0f6
+SHA1: dca6ca4181f06e8a61b8559107e25e39943a3999
+SHA256: 6bd4f9c026050b7a7912f90b22d39c589f652a853e96c7a396c4d1e3d0f458a0
+Section: utils
+Priority: optional
+Homepage: https://github.com/ilia-maslakov/mcdev/wiki
+Description: Midnight Commander with Plugins
+ A fork of GNU Midnight Commander with dynamically loaded panel plugins.  It
+ installs /usr/bin/mc and the mcedit, mcview, mcdiff and mctree symlinks.
 
-Package: mc6
-Version: 6.0.2
-Architecture: amd64
-Maintainer: DayDve <DayDve@users.noreply.github.com>
-Installed-Size: 16332
-Depends: libglib2.0-0t64, libslang2, libncurses6 | libncurses5,
-         libssh2-1t64, libaspell15, e2fslibs
-Conflicts: mc, mc-data, mc-plugins
-Replaces: mc, mc-data, mc-plugins
-Filename: pool/noble/main/mc6_6.0.2_noble_amd64.deb
-Size: 4173106
-MD5sum: 20a376f2a21abcdf27ac75cf437b5d3f
-SHA1: bd29ac901a9a8531a1ad12247a2a97b217af1173
-SHA256: f563aaf4b4a20a18553efcf8e783df16f93c7ea44fa8c40a92553542ff1e7c9c
-Description: Heavily modified Midnight Commander fork with plugins, arcmc, and more
- A heavily modified fork of GNU Midnight Commander based on 4.8.33.
- The author does not expect all changes to be accepted upstream.
- Adds panel plugins (git, docker, k8s, mongodb, s3, ftp, sftp, samba, systemd),
- arcmc archive manager, code folding, undo history, macro explorer,
- structured tree viewer, grep-style filter, ANSI terminal replay,
- embedded terminal, and configurable panel view modes.
+Package: mc6-data
+Source: mc6
+Version: 3:6.0.3-1
+Architecture: all
+Maintainer: Ilia Maslakov <il.smind@gmail.com>
+Installed-Size: 6098
+Conflicts: mc-data
+Replaces: mc-data
+Provides: mc-data (= 3:6.0.3-1)
+Filename: pool/noble/main/mc6-data_6.0.3-1_noble_all.deb
+Size: 1254132
+MD5sum: 7e0117628e031da121ce373f7a0ea129
+SHA1: 5060c62091746bf52070f942865be16871ce51a0
+SHA256: 5de98f9b23ff784e5dd3cafd26d05ee2a9fbd6660d89c09420c411458133c384
+Section: utils
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://github.com/ilia-maslakov/mcdev/wiki
+Description: Midnight Commander with Plugins -- data files
+ Architecture-independent data, manuals and translations for mc6.
 
-Package: mc6
-Version: 6.0.3
+Package: mc6-plugins
+Source: mc6
+Version: 3:6.0.3-1
 Architecture: amd64
-Maintainer: DayDve <DayDve@users.noreply.github.com>
-Installed-Size: 16228
-Depends: libglib2.0-0t64, libslang2, libncurses6 | libncurses5,
-         libssh2-1t64, libaspell15, e2fslibs
-Conflicts: mc, mc-data, mc-plugins
-Replaces: mc, mc-data, mc-plugins
-Filename: pool/noble/main/mc6_6.0.3_noble_amd64.deb
-Size: 4145990
-MD5sum: 71144436f4da10502dd77b2f726c0da1
-SHA1: 78fa5542eb81832c9ef7faee6323f9d41fe80fe9
-SHA256: d61d31017eadba91b77d15cf35649de67ef35ce70059ee73781cf7b0e3541504
-Description: Heavily modified Midnight Commander fork with plugins, arcmc, and more
- A heavily modified fork of GNU Midnight Commander based on 4.8.33.
- The author does not expect all changes to be accepted upstream.
- Adds panel plugins (git, docker, k8s, mongodb, s3, ftp, sftp, samba, systemd),
- arcmc archive manager, code folding, undo history, macro explorer,
- structured tree viewer, grep-style filter, ANSI terminal replay,
- embedded terminal, and configurable panel view modes.
+Maintainer: Ilia Maslakov <il.smind@gmail.com>
+Installed-Size: 860
+Depends: libarchive13t64 (>= 3.2.1), libbson-1.0-0t64 (>= 1.30.4), libc6 (>= 2.38), libcurl4t64 (>= 7.16.2), libglib2.0-0t64 (>= 2.76.0), libmagic1t64 (>= 5.12), libmongoc-1.0-0t64 (>= 1.30.4), libsmbclient0 (>= 2:4.0.3+dfsg1), libssh2-1t64 (>= 1.2.9), mc6 (= 3:6.0.3-1)
+Enhances: mc6
+Filename: pool/noble/main/mc6-plugins_6.0.3-1_noble_amd64.deb
+Size: 240724
+MD5sum: b1b0cbac521bc70759364b73e25021ae
+SHA1: be8474d136cd0034a71c0ab0a0e2d2b0c4a5c754
+SHA256: c800e249160c0d987e6571eccd33dedba71c41255f1c1fdf59d781366c0e0a14
+Section: utils
+Priority: optional
+Homepage: https://github.com/ilia-maslakov/mcdev/wiki
+Description: Midnight Commander with Plugins -- panel plugins
+ Dynamic panel plugins for Git, Docker, Kubernetes, MongoDB, S3, FTP,
+ SFTP, Samba, systemd, shell links, panelize and archive management.
 
 Package: rclone
 Version: 1.75.0
@@ -380,6 +378,22 @@ Size: 3400242
 MD5sum: c99bab652d273f3ece2e366471b56ed2
 SHA1: 248c35191f5993e20e99db20e673088d6dfc2766
 SHA256: de91a94ac4f22975c6a65d4fb3b1b702633301a8d4b0b63aa5b475ac35cabb18
+Section: localization
+Priority: optional
+Description: Russian language pack, plugins and font metric fixes for WPS Office 12
+
+Package: wps-office-langpack-ru
+Version: 12.3.1.0.2940-1
+Architecture: all
+Maintainer: DayDve <daydve@smbit.pro>
+Depends: wps-office (>= 12)
+Recommends: ttf-mscorefonts-installer
+Replaces: wps-office
+Filename: pool/noble/main/wps-office-langpack-ru_12.3.1.0.2940-1_noble_amd64.deb
+Size: 3399324
+MD5sum: dd5336a5d7d6377f00a8f0c445825a72
+SHA1: 30c2355a168dcc1ba3451f0933b11f6c897ee36c
+SHA256: efe8344bc5855be9114e980fa5c39f56bd3f65a2a21ab579879fed9b0f11219d
 Section: localization
 Priority: optional
 Description: Russian language pack, plugins and font metric fixes for WPS Office 12

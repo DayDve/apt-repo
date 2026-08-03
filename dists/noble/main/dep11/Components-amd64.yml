@@ -145,8 +145,7 @@ ProjectLicense: GPL-3.0-or-later
 Name:
   C: mc6
 Summary:
-  C: A Midnight Commander fork with an extensible plugin architecture for panels and editor, featuring built-in integrations
-    for Docker, Kubernetes, S3, MongoDB, and Git.
+  C: Midnight Commander with Plugins
 Categories:
 - System
 - FileTools
