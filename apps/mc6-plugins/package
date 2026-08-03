@@ -2,17 +2,9 @@ SOURCE_URL="https://github.com/ilia-maslakov/mcdev"
 DESCRIPTION="Midnight Commander with Plugins — panel plugins (git, docker, k8s, s3, samba, mongo, ftp, sftp, systemd, shell links, arcmc)"
 APPSTREAM_TYPE="none"
 
-# Upstream publishes one combined changelog for the whole mc6 release; keep
-# only the "### Plugins" sections for this package (mc6 carries the rest).
-plugins_changelog() {
-  awk '
-    { sub(/\r$/, "") }
-    /^### Plugins$/ { print; active=1; next }
-    /^#/ { if (active) exit }
-    active { print }
-  '
-}
-
+# Upstream publishes one combined changelog for the whole mc6 release; the
+# ai_changelog scope keeps only the plugin-related items for this package
+# (mc6 carries the rest).
 check_update() {
   gh_latest_release ilia-maslakov/mcdev
   version="${LATEST_TAG#v}"
@@ -23,6 +15,6 @@ get_version() {
   local current="${1:-}" raw
   gh_latest_release ilia-maslakov/mcdev
   version="${LATEST_TAG#v}"
-  raw=$(gh_release_body ilia-maslakov/mcdev | plugins_changelog)
-  ai_changelog "mc6-plugins" "$raw"
+  raw=$(gh_release_body ilia-maslakov/mcdev)
+  ai_changelog "mc6-plugins" "$raw" "the dynamically loaded panel and editor plugins (git, docker, k8s, s3, samba, mongo, ftp, sftp, systemd, shell links, arcmc archive manager)"
 }

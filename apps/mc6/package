@@ -5,9 +5,9 @@ APPSTREAM_CATEGORIES="System;FileTools"
 ICON_SOURCE="file"
 ICON_PATH="icons/mc6.png"
 
-# Upstream ships three prebuilt debs per release (mc6, mc6-data, mc6-plugins);
-# this package tracks the main binary only. Ship mc6-data + mc6-plugins too,
-# all three are version-locked to the same upstream tag.
+# One upstream release builds three packages (mc6, mc6-data, mc6-plugins),
+# all version-locked to the same tag; each app rebuilds the upstream Debian
+# source package and ships its own deb. This package tracks the main binary.
 check_update() {
   gh_latest_release ilia-maslakov/mcdev
   version="${LATEST_TAG#v}"
@@ -19,5 +19,5 @@ get_version() {
   gh_latest_release ilia-maslakov/mcdev
   version="${LATEST_TAG#v}"
   raw=$(gh_release_body ilia-maslakov/mcdev)
-  ai_changelog "mc6" "$raw"
+  ai_changelog "mc6" "$raw" "the main binary (file manager, editor, viewer, embedded terminal, shell integration)"
 }

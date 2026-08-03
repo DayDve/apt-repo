@@ -94,11 +94,13 @@ gh_fetch_raw() {
 }
 
 # ai_changelog: Generate a concise changelog from raw release notes via Gemini
-# Usage: ai_changelog <package_name> <raw_text>
+# Usage: ai_changelog <package_name> <raw_text> [scope]
+# <scope> optionally describes what the package contains when several packages
+# share one upstream release; Gemini then keeps only changes that apply to it.
 # Reads raw release notes, calls Gemini API, outputs concise changelog.
 # Falls back to truncated raw text if GEMINI_API_KEY is unset or API fails.
 ai_changelog() {
-  local pkg_name="$1" raw_text="$2"
+  local pkg_name="$1" raw_text="$2" scope="${3:-}"
   local api_key="${GEMINI_API_KEY:-}"
   api_key="${api_key//\"/}"
   api_key="${api_key//\'/}"
@@ -107,6 +109,17 @@ ai_changelog() {
   if [ -z "$api_key" ]; then
     printf '%s' "$raw_text" | head -15
     return 0
+  fi
+
+  local scope_block=""
+  if [ -n "$scope" ]; then
+    scope_block="This upstream release ships as several packages built from one source tree.
+The changelog must cover ONLY the package '$pkg_name', which contains: $scope.
+Drop changes that belong to the other packages and drop build/packaging internals.
+If no release note applies to this package, output exactly:
+No user-facing changes for this release.
+
+"
   fi
 
   local prompt="You are a technical writer for Linux packages. Generate a concise, useful changelog in English for the package '$pkg_name' based on the following release notes.
@@ -119,7 +132,7 @@ RULES:
 - If the release notes contain section headers, summarize the key user-facing changes from each section.
 - Output ONLY the markdown list, nothing else.
 
-RELEASE NOTES:
+${scope_block}RELEASE NOTES:
 $raw_text"
 
   local payload

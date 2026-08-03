@@ -12,8 +12,9 @@ check_update() {
 }
 
 get_version() {
-  local current="${1:-}"
+  local current="${1:-}" raw
   gh_latest_release ilia-maslakov/mcdev
   version="${LATEST_TAG#v}"
-  echo "Data files for mc6 ${version} (architecture-independent)."
+  raw=$(gh_release_body ilia-maslakov/mcdev)
+  ai_changelog "mc6-data" "$raw" "architecture-independent data files (icons, skins, syntax highlighting, help, translations)"
 }
