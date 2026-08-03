@@ -120,18 +120,18 @@ Package: mc6
 Version: 3:6.0.3-1
 Architecture: amd64
 Maintainer: Ilia Maslakov <il.smind@gmail.com>
-Installed-Size: 1799
-Depends: libc6 (>= 2.38), libext2fs2t64 (>= 1.37), libglib2.0-0t64 (>= 2.78.0), libgpm2 (>= 1.20.7), libmagic1t64 (>= 5.12), libslang2 (>= 2.2.4), perl:any, python3:any, mc6-data (= 3:6.0.3-1)
+Installed-Size: 1895
+Depends: libc6 (>= 2.38), libext2fs2t64 (>= 1.37), libglib2.0-0t64 (>= 2.77.3), libgpm2 (>= 1.20.7), libmagic1t64 (>= 5.12), libslang2 (>= 2.2.4), perl:any, python3:any, mc6-data (= 3:6.0.3-1)
 Recommends: mailcap, perl, sensible-utils, unzip
 Suggests: mc6-plugins, aspell, hunspell
 Conflicts: mc
 Replaces: mc
 Provides: mc (= 3:6.0.3-1)
 Filename: pool/noble/main/mc6_6.0.3-1_noble_amd64.deb
-Size: 622424
-MD5sum: a3ec6548edc2fa425aeb91659ad6c0f6
-SHA1: dca6ca4181f06e8a61b8559107e25e39943a3999
-SHA256: 6bd4f9c026050b7a7912f90b22d39c589f652a853e96c7a396c4d1e3d0f458a0
+Size: 708918
+MD5sum: 4b0da8a4bd6b600da7582eb5ee429174
+SHA1: a8823cebf9642762619e00899caecc0e73406168
+SHA256: f1f0baeb80392d1d28b9a7b42b492d7497793752a14d0eff7203f968f92d8404
 Section: utils
 Priority: optional
 Homepage: https://github.com/ilia-maslakov/mcdev/wiki
@@ -149,10 +149,10 @@ Conflicts: mc-data
 Replaces: mc-data
 Provides: mc-data (= 3:6.0.3-1)
 Filename: pool/noble/main/mc6-data_6.0.3-1_noble_all.deb
-Size: 1254132
-MD5sum: 7e0117628e031da121ce373f7a0ea129
-SHA1: 5060c62091746bf52070f942865be16871ce51a0
-SHA256: 5de98f9b23ff784e5dd3cafd26d05ee2a9fbd6660d89c09420c411458133c384
+Size: 1336574
+MD5sum: eb7f8176b43fe1e7cd298a502ecea5dd
+SHA1: 6022261af41e2809064d454235f1b0a5b0180864
+SHA256: 5a65a4237149b7d0d09f9b5e68e90c22a0edf7bb9bce7a4a51a43730a91b2039
 Section: utils
 Priority: optional
 Multi-Arch: foreign
@@ -165,14 +165,14 @@ Source: mc6
 Version: 3:6.0.3-1
 Architecture: amd64
 Maintainer: Ilia Maslakov <il.smind@gmail.com>
-Installed-Size: 860
-Depends: libarchive13t64 (>= 3.2.1), libbson-1.0-0t64 (>= 1.30.4), libc6 (>= 2.38), libcurl4t64 (>= 7.16.2), libglib2.0-0t64 (>= 2.76.0), libmagic1t64 (>= 5.12), libmongoc-1.0-0t64 (>= 1.30.4), libsmbclient0 (>= 2:4.0.3+dfsg1), libssh2-1t64 (>= 1.2.9), mc6 (= 3:6.0.3-1)
+Installed-Size: 870
+Depends: libarchive13t64 (>= 3.2.1), libbson-1.0-0t64 (>= 1.26.0), libc6 (>= 2.38), libcurl4t64 (>= 7.16.2), libglib2.0-0t64 (>= 2.75.3), libmagic1t64 (>= 5.12), libmongoc-1.0-0t64 (>= 1.26.0), libsmbclient0 (>= 2:4.0.3+dfsg1), libssh2-1t64 (>= 1.2.9), mc6 (= 3:6.0.3-1)
 Enhances: mc6
 Filename: pool/noble/main/mc6-plugins_6.0.3-1_noble_amd64.deb
-Size: 240724
-MD5sum: b1b0cbac521bc70759364b73e25021ae
-SHA1: be8474d136cd0034a71c0ab0a0e2d2b0c4a5c754
-SHA256: c800e249160c0d987e6571eccd33dedba71c41255f1c1fdf59d781366c0e0a14
+Size: 255528
+MD5sum: 48f2ef645f9ec12ebe8cdc1a7f8ca404
+SHA1: 2e53365b8ddc56ebc1b198a86502a590437460d1
+SHA256: 8e975ba189d01cc6f7046f57cdc1954e61e0688e77a49761c933a9d8d57823a2
 Section: utils
 Priority: optional
 Homepage: https://github.com/ilia-maslakov/mcdev/wiki
