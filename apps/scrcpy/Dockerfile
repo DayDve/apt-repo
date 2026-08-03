@@ -22,6 +22,9 @@ WORKDIR /build
 
 COPY --from=download /extracted/scrcpy usr/bin/scrcpy
 COPY --from=download /extracted/scrcpy-server usr/share/scrcpy/scrcpy-server
+# Official release builds are PORTABLE: the binary looks for scrcpy-server
+# next to itself (/usr/bin), not in /usr/share/scrcpy.
+RUN ln -s ../share/scrcpy/scrcpy-server usr/bin/scrcpy-server
 COPY --from=download /extracted/scrcpy.png usr/share/icons/hicolor/256x256/apps/scrcpy.png
 COPY --from=download /extracted/scrcpy.1 usr/share/man/man1/scrcpy.1
 COPY --from=download /extracted/LICENSE usr/share/doc/scrcpy/LICENSE
