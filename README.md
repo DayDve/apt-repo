@@ -1,6 +1,6 @@
 # apt-repo
 
-![Apps](https://img.shields.io/badge/apps-17-blue)
+![Apps](https://img.shields.io/badge/apps-19-blue)
 [![Website](https://img.shields.io/badge/website-apt.smbit.pro-4a9eff)](https://apt.smbit.pro)
 [![Telegram](https://img.shields.io/badge/channel-@ddaptrepo-26A5E4?logo=telegram)](https://t.me/ddaptrepo)
 
@@ -17,7 +17,9 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 | [grub-btrfs](https://github.com/Antynea/grub-btrfs) | GRUB menu entries for btrfs snapshots |
 | [keyd](https://github.com/rvaiya/keyd) | Key remapping daemon |
 | [localsend](https://github.com/localsend/localsend) | Cross-platform file sharing over local network |
-| [mc6](https://github.com/ilia-maslakov/mcdev) | A Midnight Commander fork with an extensible plugin architecture for panels and editor, featuring built-in integrations for Docker, Kubernetes, S3, MongoDB, and Git. |
+| [mc6](https://github.com/ilia-maslakov/mcdev) | Midnight Commander with Plugins |
+| [mc6-data](https://github.com/ilia-maslakov/mcdev) | Midnight Commander with Plugins — data files |
+| [mc6-plugins](https://github.com/ilia-maslakov/mcdev) | Midnight Commander with Plugins — panel plugins (git, docker, k8s, s3, samba, mongo, ftp, sftp, systemd, shell links, arcmc) |
 | [rclone](https://github.com/rclone/rclone) | rsync for cloud storage |
 | [remotedesktopmanager](https://devolutions.net/remote-desktop-manager/) | One application for every remote connection you'll ever open |
 | [rustdesk](https://github.com/rustdesk/rustdesk) | Fast open-source remote desktop |
