@@ -1,6 +1,8 @@
 SOURCE_URL="https://github.com/ilia-maslakov/mcdev"
 DESCRIPTION="Midnight Commander with Plugins — data files"
 APPSTREAM_TYPE="none"
+# Share the Telegram notification with the main package (one combined message).
+FAMILY="mc6"
 
 # Architecture-independent data for mc6. Version-locked to the same upstream
 # tag as mc6 / mc6-plugins; never build it alone or mc6's strict

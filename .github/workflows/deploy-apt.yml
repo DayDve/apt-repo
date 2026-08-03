@@ -393,10 +393,6 @@ jobs:
             exit 0
           fi
 
-          echo "$apps"
-
-          all_apps="$apps"
-
           # Start local Bot API server
           docker run -d --rm \
             -p 8081:8081 \
@@ -416,110 +412,8 @@ jobs:
 
           pip install -q requests
 
-          while read -r app; do
-            [ -z "$app" ] && continue
-            # mc6-data / mc6-plugins carry the same changelog source as their
-            # main package — skip their Telegram message when the main app is
-            # updated in the same run to avoid triple notifications.
-            base="${app%-data}"
-            base="${base%-plugins}"
-            if [ "$base" != "$app" ] && echo "$all_apps" | grep -qx "$base"; then
-              echo "Skipping $app Telegram message (changelog covered by $base)"
-              continue
-            fi
-            if [ ! -f "apps/$app/package" ]; then
-              echo "No package for $app, skipping"
-              continue
-            fi
-            echo "=== Processing $app ==="
-
-            # Get package metadata from source
-            source apps/build.sh
-            source "apps/$app/package"
-            desc="$DESCRIPTION"
-            src="$SOURCE_URL"
-            changelog_url="${CHANGELOG_URL:-$SOURCE_URL}"
-            echo "desc=$desc src=$src changelog_url=$changelog_url"
-
-            # Get latest release info
-            tag=$(gh release list --repo ${{ github.repository }} --json tagName --jq '.[].tagName' \
-              | grep "^${app}-[0-9]" | sort -V | tail -1)
-            echo "tag=$tag"
-            [ -z "$tag" ] && continue
-            ver=$(echo "$tag" | sed "s/^${app}-//")
-
-            body=$(gh release view "$tag" --repo ${{ github.repository }} --json body --jq '.body // ""' 2>/dev/null | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
-
-            # List release assets
-            echo "Release assets:"
-            gh release view "$tag" --repo ${{ github.repository }} --json assets --jq '.assets[].name'
-
-            # Download .deb
-            rm -rf /tmp/deb-notify
-            mkdir -p /tmp/deb-notify
-            gh release download "$tag" --repo ${{ github.repository }} \
-              --pattern '*.deb' --dir /tmp/deb-notify || { echo "Download failed for $tag"; continue; }
-
-            echo "Downloaded files:"
-            ls -la /tmp/deb-notify/
-
-            deb=$(ls /tmp/deb-notify/*.deb 2>/dev/null | head -1)
-            if [ -z "$deb" ]; then
-              echo "No .deb found after download"
-              continue
-            fi
-            echo "deb=$deb"
-
-            # Build caption (write to file to avoid shell expansion issues)
-            {
-              printf '<b>%s %s</b>\n%s\n<a href="%s">Разработчик</a>\n\n' \
-                "$app" "$ver" "$desc" "$src"
-              printf "\U0001F4DD WHAT'S NEW\n"
-              printf '<blockquote>\n%s\n</blockquote>\n\n' "$body"
-              printf "\U0001F4E6 <code>apt install %s</code>" "$app"
-            } > /tmp/caption.html
-
-            # Send via Python to avoid shell escaping issues
-            RELEASE_TAG="$tag" DEB_PATH="$deb" SOURCE_URL="$src" CHANGELOG_URL="$changelog_url" python3 -c "
-          import os, requests, sys
-          token = os.environ['TG_TOKEN']
-          chat_id = os.environ['TG_CHAT_ID']
-          deb = os.environ['DEB_PATH']
-          tag = os.environ['RELEASE_TAG']
-          source_url = os.environ['SOURCE_URL'].rstrip('/')
-          changelog_url = os.environ.get('CHANGELOG_URL', '').rstrip('/')
-          # Extract owner/repo from https://github.com/owner/repo
-          parts = source_url.split('github.com/')[-1]
-          release_url = f'https://github.com/{parts}/releases/tag/{tag}'
-          # Prefer CHANGELOG_URL; if it's a GitHub repo, append /releases/tag/{tag}
-          if changelog_url:
-              cl_parts = changelog_url.split('github.com/')[-1] if 'github.com/' in changelog_url else ''
-              if cl_parts and '/' in cl_parts:
-                  link = f'https://github.com/{cl_parts}/releases/tag/{tag}'
-              else:
-                  link = changelog_url
-          else:
-              link = release_url
-          with open('/tmp/caption.html', errors='replace') as f:
-              caption = f.read().strip()
-          if len(caption) > 1024:
-              truncated = caption[:1000]
-              last_newline = truncated.rfind('\n')
-              if last_newline > 0:
-                  truncated = truncated[:last_newline]
-              truncated = truncated + '\n...\n\n🔗 <a href=\"' + link + '\">Полный changelog</a>'
-              if truncated.count('<blockquote>') > truncated.count('</blockquote>'):
-                  truncated += '\n</blockquote>'
-              caption = truncated
-          r = requests.post(f'http://localhost:8081/bot{token}/sendDocument',
-              data={'chat_id': chat_id, 'parse_mode': 'HTML', 'caption': caption},
-              files={'document': open(deb, 'rb')})
-          print(r.status_code, r.text[:500])
-          if r.status_code != 200:
-              sys.exit(1)
-          "
-
-            rm -rf /tmp/deb-notify
-          done <<< "$apps"
+          # Apps declaring FAMILY="<main>" in their package file are sent as one
+          # combined message (sendMediaGroup) together with the main app's deb.
+          python3 scripts/notify_tg.py
 
           docker kill telegram-bot-api || true

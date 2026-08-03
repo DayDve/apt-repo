@@ -1,6 +1,8 @@
 SOURCE_URL="https://github.com/ilia-maslakov/mcdev"
 DESCRIPTION="Midnight Commander with Plugins — panel plugins (git, docker, k8s, s3, samba, mongo, ftp, sftp, systemd, shell links, arcmc)"
 APPSTREAM_TYPE="none"
+# Share the Telegram notification with the main package (one combined message).
+FAMILY="mc6"
 
 # Upstream publishes one combined changelog for the whole mc6 release; the
 # ai_changelog scope keeps only the plugin-related items for this package
