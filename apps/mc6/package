@@ -3,7 +3,7 @@ DESCRIPTION="Midnight Commander with Plugins"
 APPSTREAM_TYPE="desktop-application"
 APPSTREAM_CATEGORIES="System;FileTools"
 ICON_SOURCE="file"
-ICON_PATH="icons/mc6.png"
+ICON_PATH="icons/mc6.svg"
 
 # One upstream release builds three packages (mc6, mc6-data, mc6-plugins),
 # all version-locked to the same tag; each app rebuilds the upstream Debian
