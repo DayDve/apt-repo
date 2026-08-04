@@ -71,6 +71,31 @@ Description: Hides non-Latin/Cyrillic Noto fonts from font selection dialogs
  The fonts-noto-extra package (all non-Latin/Cyrillic weight variants) is
  removed automatically via Conflicts.
 
+Package: fonts-noto-lite
+Version: 1.0.1
+Architecture: all
+Maintainer: DayDve <daydve@smbit.pro>
+Depends: fontconfig
+Conflicts: fonts-noto-extra
+Replaces: fonts-noto-extra
+Provides: fonts-noto-extra
+Filename: pool/noble/main/fonts-noto-lite_1.0.1_noble_all.deb
+Size: 2368
+MD5sum: 7a770df0668165f918870d56de23028c
+SHA1: 4e65b53143a95a82aae87201e24586359591f972
+SHA256: 127789c0fe3664d59424c5f551c2f4acfff977c3f33ac15f998c5048ef33bf04
+Section: fonts
+Priority: optional
+Description: Hides non-Latin/Cyrillic Noto fonts from font selection dialogs
+ Installs a fontconfig rule that hides Noto font families for scripts
+ other than Latin and Cyrillic (Arabic, Hebrew, Thai, CJK, Devanagari,
+ etc.) from font selection dialogs. Only Noto Sans, Noto Serif,
+ Noto Sans Display, Noto Serif Display, and Noto Sans Mono
+ remain visible.
+ .
+ The fonts-noto-extra package (all non-Latin/Cyrillic weight variants) is
+ removed automatically via Conflicts.
+
 Package: grub-btrfs
 Version: 4.14
 Architecture: amd64
