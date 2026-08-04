@@ -24,7 +24,23 @@ RUN mkdir -p /src && cd /src \
  && cd "mc6-${APP_VERSION}" \
  && apt-get build-dep -y --no-install-recommends ./ \
  && useradd -m build \
- && chown -R build /src \
+ && chown -R build /src
+
+COPY desktop/mc6.desktop /src/mc6-${APP_VERSION}/debian/mc6.desktop
+COPY desktop/mc6edit.desktop /src/mc6-${APP_VERSION}/debian/mc6edit.desktop
+COPY icons/ /src/mc6-${APP_VERSION}/debian/icons/
+
+RUN cd "/src/mc6-${APP_VERSION}" \
+ && printf '%s\n' \
+      'debian/mc6.desktop usr/share/applications/' \
+      'debian/mc6edit.desktop usr/share/applications/' \
+      'debian/icons/mc6.svg usr/share/icons/hicolor/scalable/apps/' \
+      'debian/icons/mc6edit.svg usr/share/icons/hicolor/scalable/apps/' \
+      'debian/icons/mc6.png usr/share/icons/hicolor/64x64/apps/' \
+      'debian/icons/mc6.xpm usr/share/pixmaps/' \
+      'debian/icons/mc6edit.xpm usr/share/pixmaps/' \
+      >> debian/mc6.install \
+ && chown -R build:build debian/mc6.desktop debian/mc6edit.desktop debian/icons \
  && su build -c "cd /src/mc6-${APP_VERSION} && dpkg-buildpackage -us -uc -b" \
  && cp "/src/mc6_${APP_VERSION}-1_amd64.deb" /
 

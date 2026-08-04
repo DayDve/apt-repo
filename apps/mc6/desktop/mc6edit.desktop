@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=mc6 editor
+GenericName=Text Editor
+Comment=Edit text files
+Exec=mcedit
+Icon=mc6edit
+Terminal=true
+Categories=Utility;TextEditor;
+Keywords=editor;console;text;

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=mc6
+GenericName=File Manager
+Comment=Heavily modified Midnight Commander fork with plugins
+Exec=mc
+Icon=mc6
+Terminal=true
+Categories=ConsoleOnly;Utility;FileManager;System;FileTools;
+Keywords=file manager;console;
