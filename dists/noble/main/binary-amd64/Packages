@@ -1,18 +1,3 @@
-Package: ayugram
-Version: 6.7.8-12-gba8c1a6
-Architecture: amd64
-Maintainer: DayDve <DayDve@users.noreply.github.com>
-Depends: libc6, ca-certificates
-Filename: pool/noble/main/ayugram_6.7.8-12-gba8c1a6_noble_amd64.deb
-Size: 91806362
-MD5sum: 74eca70890d136928abc75e521dd0b7e
-SHA1: 5daf32988dfe49bda2bf8dc29d09f26b4f5082d5
-SHA256: 5aa799685063d25f46c4810ceeca676be195f44de3fec8aa62a3b7a22bc754ca
-Section: net
-Priority: optional
-Description: AyuGram Desktop
- ToS breaking Telegram client with enhanced features.
-
 Package: bees
 Version: 0.11-50-g2d53565
 Architecture: amd64
@@ -298,10 +283,10 @@ Depends: libsdl2-2.0-0, adb
 Conflicts: scrcpy-server
 Replaces: scrcpy-server
 Filename: pool/noble/main/scrcpy_4.1_noble_amd64.deb
-Size: 10656044
-MD5sum: ab893569fdb0099f0d3a551ca8e61539
-SHA1: f79f068a5a8bcb95c4d8d5eddf1196b36e50badf
-SHA256: cdc9cf37b87c9cd33bcd243b6a352bdb7c1dd03b345c8f265fdd6109fc4e4c38
+Size: 10656024
+MD5sum: 36adb2cccd185afca5c20828c5334abb
+SHA1: 571622530704c46522bf5781a2af7e9aa470b916
+SHA256: 8797cef889153b97f6945e3a51a598dc5f4952ee3d9139d717664eb572b5a9d1
 Section: universe/utils
 Priority: optional
 Description: Mirror and control Android devices via USB/TCP
