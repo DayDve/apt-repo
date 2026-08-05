@@ -49,7 +49,7 @@ RUN cat > usr/share/applications/scrcpy.desktop <<'EOF'
 Name=scrcpy
 GenericName=Android Remote Control
 Comment=Display and control your Android device
-Exec=/bin/sh -c "\"\$SHELL\" -i -c scrcpy"
+Exec=/bin/sh -c "\$SHELL -i -c scrcpy"
 Icon=scrcpy
 Terminal=false
 Type=Application
@@ -62,7 +62,7 @@ RUN cat > usr/share/applications/scrcpy-console.desktop <<'EOF'
 Name=scrcpy (console)
 GenericName=Android Remote Control
 Comment=Display and control your Android device
-Exec=/bin/bash --norc --noprofile -i -c "\"\$SHELL\" -i -c scrcpy || read -p 'Press Enter to quit...'"
+Exec=/bin/bash --norc --noprofile -i -c "\$SHELL -i -c scrcpy || read -p 'Press Enter to quit...'"
 Icon=scrcpy
 Terminal=true
 Type=Application
