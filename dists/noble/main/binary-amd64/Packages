@@ -96,6 +96,39 @@ Description: Hides non-Latin/Cyrillic Noto fonts from font selection dialogs
  The fonts-noto-extra package (all non-Latin/Cyrillic weight variants) is
  removed automatically via Conflicts.
 
+Package: fonts-noto-lite
+Version: 1.1.0
+Architecture: all
+Maintainer: DayDve <daydve@smbit.pro>
+Depends: dpkg, fontconfig
+Conflicts: fonts-noto-extra
+Replaces: fonts-noto-extra
+Provides: fonts-noto-extra
+Filename: pool/noble/main/fonts-noto-lite_1.1.0_noble_all.deb
+Size: 6066
+MD5sum: adb34cf2167e348444d7d073a3e6e85c
+SHA1: 75b266b2de0991f1f0a28eaa1c123bedc4c42c75
+SHA256: 5ad44d4015934df5374175e23195179015421c7593c1f21d5577c784784aba44
+Section: fonts
+Priority: optional
+Description: Hides non-Latin/Cyrillic Noto fonts from font selection dialogs
+ Hides Noto font families for scripts other than Latin and Cyrillic
+ (Arabic, Hebrew, Thai, CJK, Devanagari, etc.) from font selection
+ dialogs. Only Noto Sans, Noto Serif, Noto Sans Display, Noto Serif
+ Display, Noto Sans Mono, and Noto Color Emoji remain visible.
+ .
+ On install the hidden font files are moved out of the fontconfig search
+ paths via dpkg-divert. This is what hides them from Flatpak apps too:
+ sandboxes mount the host font dirs read-only at /run/host/fonts, so a
+ font absent on the host is absent in every sandbox. The owning font
+ packages stay installed; the files are moved back on removal.
+ .
+ A fontconfig reject rule remains installed as a system-wide fallback
+ for any Noto font that ends up in a search path without being diverted.
+ .
+ The fonts-noto-extra package (all non-Latin/Cyrillic weight variants) is
+ removed automatically via Conflicts.
+
 Package: grub-btrfs
 Version: 4.14
 Architecture: amd64
@@ -103,10 +136,10 @@ Maintainer: DayDve <DayDve@users.noreply.github.com>
 Installed-Size: 204
 Depends: inotify-tools, gawk
 Filename: pool/noble/main/grub-btrfs_4.14_noble_amd64.deb
-Size: 32430
-MD5sum: ee4725fa1e1ba5ca7e5b63917cd95120
-SHA1: 9bb9b0d0c92948dd28b4d310963f4cc774f64beb
-SHA256: 55e3efbf685112da072b0c0b60fc49aeb98866b396e82fb90189abeefc3cfef9
+Size: 32394
+MD5sum: 66ea77b5cb02a52c3eec0f239871a14e
+SHA1: 8d350c5df6af42e490731976251f2fea73753182
+SHA256: 883df4f87b57d580d7400ea19869eead7e4436b534c7c378c0e1afebc86b9c66
 Description: Grub btrfs snapshot boot manager.
 
 Package: keyd
@@ -265,10 +298,10 @@ Depends: libsdl2-2.0-0, adb
 Conflicts: scrcpy-server
 Replaces: scrcpy-server
 Filename: pool/noble/main/scrcpy_4.1_noble_amd64.deb
-Size: 10655468
-MD5sum: 02ed0fbe1f6602706343dad78e2a2dbb
-SHA1: d0cb8b1e83bbed0bf85eeaee99eba0855f42914d
-SHA256: 6750fb2d4dc2ac4ecc8ff7b1fdb8ae51fe27e9110abf3c5e1f360f97ce0365c3
+Size: 10656044
+MD5sum: ab893569fdb0099f0d3a551ca8e61539
+SHA1: f79f068a5a8bcb95c4d8d5eddf1196b36e50badf
+SHA256: cdc9cf37b87c9cd33bcd243b6a352bdb7c1dd03b345c8f265fdd6109fc4e4c38
 Section: universe/utils
 Priority: optional
 Description: Mirror and control Android devices via USB/TCP
