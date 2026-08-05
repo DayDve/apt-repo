@@ -14,6 +14,9 @@ RUN git clone --depth 1 --branch dev \
 RUN chown -R user:user /build
 
 RUN su user -c ' \
+      cd /build/src && \
+      sed -i "s/if (NOT CMAKE_GENERATOR MATCHES \"Visual Studio|Xcode\")/if (FALSE)/" Telegram/cmake/generate_lang.cmake && \
+      grep -q "if (FALSE)" Telegram/cmake/generate_lang.cmake && \
       cd /build/src/Telegram && \
       ./configure.sh \
         -D TDESKTOP_API_ID=2040 \
