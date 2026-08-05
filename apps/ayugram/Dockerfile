@@ -18,7 +18,9 @@ RUN su user -c ' \
       ./configure.sh \
         -D TDESKTOP_API_ID=2040 \
         -D TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627 && \
-      cmake --build ../out --config Release -j$(nproc) \
+      cd ../out && \
+      cmake -D CMAKE_C_FLAGS="-Wno-error=stringop-overread" . && \
+      cmake --build . --config Release -j$(nproc) \
     '
 
 RUN test -f src/out/Release/AyuGram
