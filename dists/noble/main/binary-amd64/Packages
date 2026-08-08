@@ -13,6 +13,21 @@ Priority: optional
 Description: AyuGram Desktop
  ToS breaking Telegram client with enhanced features.
 
+Package: ayugram
+Version: 7.0.9-0-g032ad32
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Depends: libc6, ca-certificates
+Filename: pool/noble/main/ayugram_7.0.9-0-g032ad32_noble_amd64.deb
+Size: 98262916
+MD5sum: 74c2bb25de6148904d8848cf8d683858
+SHA1: 02c538bd8cbc8ac531d10bf67dcef66981fdca49
+SHA256: 1cf7073f18ed6745d3cf6104236e397664d8a037b66c3728aaf1177223310733
+Section: net
+Priority: optional
+Description: AyuGram Desktop
+ ToS breaking Telegram client with enhanced features.
+
 Package: bees
 Version: 0.11-50-g2d53565
 Architecture: amd64
