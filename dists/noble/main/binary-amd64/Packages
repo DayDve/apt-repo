@@ -172,19 +172,6 @@ SHA1: 8d350c5df6af42e490731976251f2fea73753182
 SHA256: 883df4f87b57d580d7400ea19869eead7e4436b534c7c378c0e1afebc86b9c66
 Description: Grub btrfs snapshot boot manager.
 
-Package: keyd
-Version: 2.6.0
-Architecture: amd64
-Maintainer: DayDve <DayDve@users.noreply.github.com>
-Installed-Size: 1884
-Depends: libc6, systemd
-Filename: pool/noble/main/keyd_2.6.0_noble_amd64.deb
-Size: 213230
-MD5sum: cae7a21a26d811b9dbafa5609136d16a
-SHA1: 6322dfbfeb33492f43d80c26e59b6653960093ee
-SHA256: 6897af6a4b5de995d251b7425926469b3bc7e58e7bbac80c1557d5a2ccf0f33c
-Description: A key remapping daemon for linux.
-
 Package: localsend
 Version: 1.17.0+58
 Architecture: amd64
@@ -507,6 +494,22 @@ Size: 3399324
 MD5sum: dd5336a5d7d6377f00a8f0c445825a72
 SHA1: 30c2355a168dcc1ba3451f0933b11f6c897ee36c
 SHA256: efe8344bc5855be9114e980fa5c39f56bd3f65a2a21ab579879fed9b0f11219d
+Section: localization
+Priority: optional
+Description: Russian language pack, plugins and font metric fixes for WPS Office 12
+
+Package: wps-office-langpack-ru
+Version: 12.3.1.0.3038-1
+Architecture: all
+Maintainer: DayDve <daydve@smbit.pro>
+Depends: wps-office (>= 12)
+Recommends: ttf-mscorefonts-installer
+Replaces: wps-office
+Filename: pool/noble/main/wps-office-langpack-ru_12.3.1.0.3038-1_noble_amd64.deb
+Size: 3392100
+MD5sum: 4c7b583443e5561074519f2b6cd8b0ba
+SHA1: 28e7721371736a84f22c7d7e6b8b8c192e2fe486
+SHA256: 3a1e9a6bfdc28386972cc940e532bcc739413c4c7a0454094b092029fc4c6771
 Section: localization
 Priority: optional
 Description: Russian language pack, plugins and font metric fixes for WPS Office 12

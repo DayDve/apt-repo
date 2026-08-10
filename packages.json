@@ -24,11 +24,6 @@
   "source": "https://github.com/Antynea/grub-btrfs"
 }
 ,{
-  "name": "keyd",
-  "description": "Key remapping daemon",
-  "source": "https://github.com/rvaiya/keyd"
-}
-,{
   "name": "localsend",
   "description": "Cross-platform file sharing over local network",
   "source": "https://github.com/localsend/localsend"
