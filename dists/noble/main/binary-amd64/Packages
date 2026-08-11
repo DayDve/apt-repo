@@ -425,6 +425,19 @@ SHA1: 11ad24414dce66740bc873951d40e6b897e76a4d
 SHA256: 89c034cd1268a078a7b652258a7be482f102484d0c2f3339e16ed89f354e1c08
 Description: Wayland native VNC client
 
+Package: wlvncc
+Version: 0.1.0-150-gcc0abf8-1
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 340
+Depends: libc6, libdrm2, libwayland-client0, libwayland-cursor0, libxkbcommon0, libpixman-1-0, libgbm1, libgnutls30, libgcrypt20, libsasl2-2, libjpeg8, libpng16-16t64, liblzo2-2, zlib1g, libegl1, libgles2, libavcodec60, libavutil58
+Filename: pool/noble/main/wlvncc_0.1.0-150-gcc0abf8-1_noble_amd64.deb
+Size: 78552
+MD5sum: 068f89c3e00de06467c49ef7c6bd50da
+SHA1: 43112b7a735a140dc8329d07d856fb11bdce9f8e
+SHA256: 0f117f315404bb3c9a9fc174a84e5fe8fc274e65883921e3ea70fff46d2b48aa
+Description: Wayland native VNC client
+
 Package: wps-office-langpack-ru
 Version: 12.3.1.0.2739-1
 Architecture: all

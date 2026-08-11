@@ -294,7 +294,7 @@ Provides:
   binaries:
   - winegui
 ---
-Type: desktop-application
+Type: console-application
 ID: io.github.daydve.apt.wlvncc
 Package: wlvncc
 ProjectLicense: GPL-3.0-or-later
@@ -307,12 +307,6 @@ Categories:
 - RemoteAccess
 Url:
   homepage: https://github.com/any1/wlvncc
-Icon:
-  cached:
-  - name: wlvncc
-Launchable:
-  desktop-id:
-  - wlvncc.desktop
 Provides:
   binaries:
   - wlvncc
