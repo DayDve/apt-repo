@@ -24,6 +24,11 @@
   "source": "https://github.com/Antynea/grub-btrfs"
 }
 ,{
+  "name": "keyd",
+  "description": "Key remapping daemon",
+  "source": "https://github.com/rvaiya/keyd"
+}
+,{
   "name": "localsend",
   "description": "Cross-platform file sharing over local network",
   "source": "https://github.com/localsend/localsend"
@@ -80,6 +85,12 @@
   "name": "wlvncc",
   "description": "Wayland native VNC client",
   "source": "https://github.com/any1/wlvncc"
+}
+,{
+  "name": "wps-office",
+  "description": "WPS Office repack with patches",
+  "source": "https://github.com/Rongronggg9/wps-office-repack",
+  "group": "wps-office"
 }
 ,{
   "name": "wps-office-langpack-ru",

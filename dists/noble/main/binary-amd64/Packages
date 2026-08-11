@@ -172,6 +172,19 @@ SHA1: 8d350c5df6af42e490731976251f2fea73753182
 SHA256: 883df4f87b57d580d7400ea19869eead7e4436b534c7c378c0e1afebc86b9c66
 Description: Grub btrfs snapshot boot manager.
 
+Package: keyd
+Version: 2.6.0
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 1884
+Depends: libc6, systemd
+Filename: pool/noble/main/keyd_2.6.0_noble_amd64.deb
+Size: 213230
+MD5sum: cae7a21a26d811b9dbafa5609136d16a
+SHA1: 6322dfbfeb33492f43d80c26e59b6653960093ee
+SHA256: 6897af6a4b5de995d251b7425926469b3bc7e58e7bbac80c1557d5a2ccf0f33c
+Description: A key remapping daemon for linux.
+
 Package: localsend
 Version: 1.17.0+58
 Architecture: amd64
@@ -437,6 +450,36 @@ MD5sum: 068f89c3e00de06467c49ef7c6bd50da
 SHA1: 43112b7a735a140dc8329d07d856fb11bdce9f8e
 SHA256: 0f117f315404bb3c9a9fc174a84e5fe8fc274e65883921e3ea70fff46d2b48aa
 Description: Wayland native VNC client
+
+Package: wps-office
+Version: 12.1.2.26885.AK.preread.sw+prefixed+fcitx5xwayland
+Architecture: amd64
+Maintainer: WPS Office Community Team <wps_linux@kingsoft.com>
+Installed-Size: 2563144
+Depends: libc6 (>= 2.15) | libc6.1, libfreetype6 (>= 2.4),
+         libcups2, libglib2.0-0, libglu1-mesa,
+         libsm6, libxrender1, libfontconfig1,
+         libxext6, libxcb1, libbz2-1.0
+Replaces: kingsoft-office
+Filename: pool/noble/main/wps-office.deb
+Size: 643948064
+MD5sum: 589747a286e1fc6c4c774f15672d47c4
+SHA1: 64f6463cbabc9898fc10bbedd00c949b1f7096c7
+SHA256: 703bba6fb4249afa0a83b0354d906de6ab771d3df7e4fb6ff5895a107e033a71
+Section: editors
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://linux.wps.cn
+Description: WPS Office, is an office productivity suite.
+ WPS Office including Writer, Presentation
+ and Spreadsheets, is a powerful office suite, which is able to process
+ word file, produce wonderful slides, and analyze data as well. It is
+ deeply compatible with all of the latest Microsoft Office file formats.
+ It can easily open and read the documents created with Microsoft Office.
+ This is the Linux version, and it's now a TESTING package.
+ Welcome to our website: https://linux.wps.cn
+Name: wps-office
+Relocations: /opt/kingsoft
 
 Package: wps-office-langpack-ru
 Version: 12.3.1.0.2739-1
