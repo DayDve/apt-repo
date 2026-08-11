@@ -8,17 +8,22 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 
 ## Available packages
 
+Related packages are grouped together; groups are shown as a bold header row.
+
 | App | Description |
 |---|---|
+| **mc6** | |
+| [mc6](https://github.com/ilia-maslakov/mcdev) | Midnight Commander with Plugins |
+| [mc6-data](https://github.com/ilia-maslakov/mcdev) | Midnight Commander with Plugins — data files |
+| [mc6-plugins](https://github.com/ilia-maslakov/mcdev) | Midnight Commander with Plugins — panel plugins (git, docker, k8s, s3, samba, mongo, ftp, sftp, systemd, shell links, arcmc) |
+| **wps-office** | |
+| [wps-office-langpack-ru](https://github.com/DayDve/wps-office-langpack-ru) | Russian language pack for WPS Office |
 | [ayugram](https://github.com/AyuGram/AyuGramDesktop) | Telegram client with enhanced features |
 | [bees](https://github.com/Zygo/bees) | btrfs deduplication daemon |
 | [btrfs-assistant](https://gitlab.com/btrfs-assistant/btrfs-assistant) | GUI management tool for Btrfs filesystem |
 | [fonts-noto-lite](https://github.com/DayDve/fonts-noto-lite) | Hide non-Latin/Cyrillic Noto fonts from font selection dialogs on Ubuntu/Debian |
 | [grub-btrfs](https://github.com/Antynea/grub-btrfs) | GRUB menu entries for btrfs snapshots |
 | [localsend](https://github.com/localsend/localsend) | Cross-platform file sharing over local network |
-| [mc6](https://github.com/ilia-maslakov/mcdev) | Midnight Commander with Plugins |
-| [mc6-data](https://github.com/ilia-maslakov/mcdev) | Midnight Commander with Plugins — data files |
-| [mc6-plugins](https://github.com/ilia-maslakov/mcdev) | Midnight Commander with Plugins — panel plugins (git, docker, k8s, s3, samba, mongo, ftp, sftp, systemd, shell links, arcmc) |
 | [rclone](https://github.com/rclone/rclone) | rsync for cloud storage |
 | [remotedesktopmanager](https://devolutions.net/remote-desktop-manager/) | One application for every remote connection you'll ever open |
 | [rustdesk](https://github.com/rustdesk/rustdesk) | Fast open-source remote desktop |
@@ -26,7 +31,6 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 | [viber](https://www.viber.com) | Free and secure calls and messages to anyone, anywhere |
 | [winegui](https://github.com/winegui/WineGUI) | Wine prefix manager with a modern GUI |
 | [wlvncc](https://github.com/any1/wlvncc) | Wayland native VNC client |
-| [wps-office-langpack-ru](https://github.com/DayDve/wps-office-langpack-ru) | Russian language pack for WPS Office |
 
 ## Install
 
