@@ -1,9 +1,32 @@
 import json
+from collections import OrderedDict
 
 with open('/tmp/packages.json') as f:
     pkgs = json.load(f)
 
-rows = '\n'.join('| [{}]({}) | {} |'.format(p['name'], p['source'], p['description']) for p in pkgs)
+
+def pkg_row(p):
+    return '| [{}]({}) | {} |'.format(p['name'], p['source'], p['description'])
+
+
+groups = OrderedDict()
+standalone = []
+for p in pkgs:
+    g = p.get('group')
+    if g:
+        groups.setdefault(g, []).append(p)
+    else:
+        standalone.append(p)
+
+rows = []
+for g in sorted(groups):
+    rows.append('| **{}** | |'.format(g))
+    for m in sorted(groups[g], key=lambda p: p['name']):
+        rows.append(pkg_row(m))
+for p in sorted(standalone, key=lambda p: p['name']):
+    rows.append(pkg_row(p))
+
+rows = '\n'.join(rows)
 n = len(pkgs)
 
 template = """\
@@ -16,6 +39,8 @@ template = """\
 Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos. Packages are delivered as-is from upstream developers or repackagers - no guarantees on functionality or fitness for purpose.
 
 ## Available packages
+
+Related packages are grouped together; groups are shown as a bold header row.
 
 | App | Description |
 |---|---|

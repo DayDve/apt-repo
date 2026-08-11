@@ -1,5 +1,6 @@
 SOURCE_URL="https://github.com/Rongronggg9/wps-office-repack"
 DESCRIPTION="WPS Office repack with patches"
+GROUP="wps-office"
 APPSTREAM_TYPE="desktop-application"
 APPSTREAM_CATEGORIES="Office;WordProcessor"
 

@@ -3,6 +3,8 @@ DESCRIPTION="Midnight Commander with Plugins — panel plugins (git, docker, k8s
 APPSTREAM_TYPE="none"
 # Share the Telegram notification with the main package (one combined message).
 FAMILY="mc6"
+# Display grouping: all mc6 packages shown as one entry on the site/README.
+GROUP="mc6"
 
 # Upstream publishes one combined changelog for the whole mc6 release; the
 # ai_changelog scope keeps only the plugin-related items for this package

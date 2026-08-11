@@ -1,5 +1,7 @@
 SOURCE_URL="https://github.com/ilia-maslakov/mcdev"
 DESCRIPTION="Midnight Commander with Plugins"
+# Display grouping: all mc6 packages shown as one entry on the site/README.
+GROUP="mc6"
 APPSTREAM_TYPE="desktop-application"
 APPSTREAM_CATEGORIES="System;FileTools"
 ICON_SOURCE="file"
