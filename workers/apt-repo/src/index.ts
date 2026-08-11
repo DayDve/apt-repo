@@ -130,7 +130,10 @@ function displayEntries(pkgs: Package[]): DisplayEntry[] {
     entries.push({ kind: 'family', name: g, head, members });
   }
   for (const p of standalone) entries.push({ kind: 'pkg', name: p.name, pkg: p });
-  entries.sort((a, b) => a.name.localeCompare(b.name));
+  entries.sort((a, b) => {
+    if (a.kind !== b.kind) return a.kind === 'family' ? -1 : 1;
+    return a.name.localeCompare(b.name);
+  });
   return entries;
 }
 
