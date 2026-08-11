@@ -1,7 +1,8 @@
 SOURCE_URL="https://github.com/any1/wlvncc"
 DESCRIPTION="Wayland native VNC client"
-APPSTREAM_TYPE="desktop-application"
+APPSTREAM_TYPE="console-application"
 APPSTREAM_CATEGORIES="Network;RemoteAccess"
+PKGREV="${PKGREV:-1}"
 
 check_update() {
   local current="${1:-}"
@@ -20,7 +21,7 @@ check_update() {
   local base_version
   base_version=$(echo "$meson_build" | grep -oP "version:\s*'\K[^']+" || echo "0.1.0")
 
-  version="${base_version}-${total_commits}-g${latest_sha}"
+  version="${base_version}-${total_commits}-g${latest_sha}-${PKGREV}"
   [ "$version" != "$current" ]
 }
 
