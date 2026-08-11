@@ -39,7 +39,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p /tmp/by-tag
-          gh release list --repo $GITHUB_REPOSITORY --json tagName --jq '.[].tagName' | while read tag; do
+          gh release list --repo $GITHUB_REPOSITORY --limit 1000 --json tagName --jq '.[].tagName' | while read tag; do
             gh release download "$tag" --repo $GITHUB_REPOSITORY --dir "/tmp/by-tag/$tag" --pattern '*.deb' 2>/dev/null || true
           done
 

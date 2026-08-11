@@ -64,7 +64,7 @@ def build_groups(apps):
 
 
 def gh_list_tags(app):
-    r = sh(["gh", "release", "list", "--repo", os.environ["REPO"],
+    r = sh(["gh", "release", "list", "--limit", "1000", "--repo", os.environ["REPO"],
             "--json", "tagName", "--jq", ".[].tagName"])
     tags = [t for t in r.stdout.splitlines()
             if re.match(r"^%s-[0-9]" % re.escape(app), t)]
