@@ -1,6 +1,6 @@
 # apt-repo
 
-![Apps](https://img.shields.io/badge/apps-18-blue)
+![Apps](https://img.shields.io/badge/apps-17-blue)
 [![Website](https://img.shields.io/badge/website-apt.smbit.pro-4a9eff)](https://apt.smbit.pro)
 [![Telegram](https://img.shields.io/badge/channel-@ddaptrepo-26A5E4?logo=telegram)](https://t.me/ddaptrepo)
 
@@ -26,7 +26,6 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 | [viber](https://www.viber.com) | Free and secure calls and messages to anyone, anywhere |
 | [winegui](https://github.com/winegui/WineGUI) | Wine prefix manager with a modern GUI |
 | [wlvncc](https://github.com/any1/wlvncc) | Wayland native VNC client |
-| [wps-office](https://github.com/Rongronggg9/wps-office-repack) | WPS Office repack with patches |
 | [wps-office-langpack-ru](https://github.com/DayDve/wps-office-langpack-ru) | Russian language pack for WPS Office |
 
 ## Install
