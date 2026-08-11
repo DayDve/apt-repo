@@ -1,6 +1,6 @@
 # apt-repo
 
-![Apps](https://img.shields.io/badge/apps-17-blue)
+![Apps](https://img.shields.io/badge/apps-19-blue)
 [![Website](https://img.shields.io/badge/website-apt.smbit.pro-4a9eff)](https://apt.smbit.pro)
 [![Telegram](https://img.shields.io/badge/channel-@ddaptrepo-26A5E4?logo=telegram)](https://t.me/ddaptrepo)
 
@@ -8,21 +8,33 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 
 ## Available packages
 
-Related packages are grouped together; groups are shown as a bold header row.
+Packages that belong together are combined into a family (collapsible).
+
+<details>
+<summary><b><a href="https://github.com/ilia-maslakov/mcdev">mc6</a></b> — Midnight Commander with Plugins · 3 packages</summary>
+
+- [mc6](https://github.com/ilia-maslakov/mcdev)
+- [mc6-data](https://github.com/ilia-maslakov/mcdev)
+- [mc6-plugins](https://github.com/ilia-maslakov/mcdev)
+
+</details>
+
+<details>
+<summary><b><a href="https://github.com/Rongronggg9/wps-office-repack">wps-office</a></b> — WPS Office repack with patches · 2 packages</summary>
+
+- [wps-office](https://github.com/Rongronggg9/wps-office-repack)
+- [wps-office-langpack-ru](https://github.com/DayDve/wps-office-langpack-ru)
+
+</details>
 
 | App | Description |
 |---|---|
-| **mc6** | |
-| [mc6](https://github.com/ilia-maslakov/mcdev) | Midnight Commander with Plugins |
-| [mc6-data](https://github.com/ilia-maslakov/mcdev) | Midnight Commander with Plugins — data files |
-| [mc6-plugins](https://github.com/ilia-maslakov/mcdev) | Midnight Commander with Plugins — panel plugins (git, docker, k8s, s3, samba, mongo, ftp, sftp, systemd, shell links, arcmc) |
-| **wps-office** | |
-| [wps-office-langpack-ru](https://github.com/DayDve/wps-office-langpack-ru) | Russian language pack for WPS Office |
 | [ayugram](https://github.com/AyuGram/AyuGramDesktop) | Telegram client with enhanced features |
 | [bees](https://github.com/Zygo/bees) | btrfs deduplication daemon |
 | [btrfs-assistant](https://gitlab.com/btrfs-assistant/btrfs-assistant) | GUI management tool for Btrfs filesystem |
 | [fonts-noto-lite](https://github.com/DayDve/fonts-noto-lite) | Hide non-Latin/Cyrillic Noto fonts from font selection dialogs on Ubuntu/Debian |
 | [grub-btrfs](https://github.com/Antynea/grub-btrfs) | GRUB menu entries for btrfs snapshots |
+| [keyd](https://github.com/rvaiya/keyd) | Key remapping daemon |
 | [localsend](https://github.com/localsend/localsend) | Cross-platform file sharing over local network |
 | [rclone](https://github.com/rclone/rclone) | rsync for cloud storage |
 | [remotedesktopmanager](https://devolutions.net/remote-desktop-manager/) | One application for every remote connection you'll ever open |
