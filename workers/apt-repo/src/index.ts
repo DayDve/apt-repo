@@ -97,6 +97,54 @@ async function redirectPool(path: string, ctx: ExecutionContext, env: Env): Prom
   );
 }
 
+interface DisplayEntry {
+  kind: 'family' | 'pkg';
+  name: string;
+  head?: Package;
+  members?: Package[];
+  pkg?: Package;
+}
+
+// Related packages (declared via GROUP= in their package file) are collapsed
+// into one "family" row. A group with a single member is shown standalone.
+function displayEntries(pkgs: Package[]): DisplayEntry[] {
+  const groups = new Map<string, Package[]>();
+  const standalone: Package[] = [];
+  for (const p of pkgs) {
+    if (p.group) {
+      const arr = groups.get(p.group) || [];
+      arr.push(p);
+      groups.set(p.group, arr);
+    } else {
+      standalone.push(p);
+    }
+  }
+  const entries: DisplayEntry[] = [];
+  for (const [g, members] of groups.entries()) {
+    members.sort((a, b) => a.name.localeCompare(b.name));
+    if (members.length < 2) {
+      standalone.push(members[0]);
+      continue;
+    }
+    const head = members.find(m => m.name === g) || members[0];
+    entries.push({ kind: 'family', name: g, head, members });
+  }
+  for (const p of standalone) entries.push({ kind: 'pkg', name: p.name, pkg: p });
+  entries.sort((a, b) => a.name.localeCompare(b.name));
+  return entries;
+}
+
+function pkgLine(e: DisplayEntry): string {
+  if (e.kind === 'pkg' && e.pkg) {
+    return `#  ${e.pkg.name} - ${e.pkg.description}`;
+  }
+  if (e.head && e.members) {
+    const names = e.members.map(m => m.name).join(', ');
+    return `#  ${e.name} - ${e.head.description} (packages: ${names})`;
+  }
+  return '';
+}
+
 async function serveText(url: URL, ctx: ExecutionContext, env: Env): Promise<Response> {
   const aptOrigin = env.APT_ORIGIN || url.origin;
   const author = env.AUTHOR || '';
@@ -105,10 +153,11 @@ async function serveText(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
 
   let pkgLines: string[];
   if (pkgs && pkgs.length > 0) {
-    const shown = pkgs.slice(0, 10);
-    pkgLines = shown.map(p => `#  ${p.group ? `[${p.group}] ` : ''}${p.name} - ${p.description}`);
-    if (pkgs.length > 10) {
-      pkgLines.push('#', `# And ${pkgs.length - 10} more ...`);
+    const entries = displayEntries(pkgs);
+    const shown = entries.slice(0, 10);
+    pkgLines = shown.map(pkgLine);
+    if (entries.length > 10) {
+      pkgLines.push('#', `# And ${entries.length - 10} more ...`);
     }
   } else {
     pkgLines = ['# (failed to load package list)'];
@@ -152,20 +201,7 @@ async function servePage(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
 
   let rows = '';
   if (pkgs) {
-    const groups = new Map<string, Package[]>();
-    const standalone: Package[] = [];
-    for (const p of pkgs) {
-      if (p.group) {
-        const arr = groups.get(p.group) || [];
-        arr.push(p);
-        groups.set(p.group, arr);
-      } else {
-        standalone.push(p);
-      }
-    }
-    const sortedGroups = [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-    standalone.sort((a, b) => a.name.localeCompare(b.name));
-
+    const entries = displayEntries(pkgs);
     const rowFor = (p: Package): string => {
       const safeName = escapeHtml(p.name);
       const safeDesc = escapeHtml(p.description);
@@ -175,12 +211,19 @@ async function servePage(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
       return `<tr><td>${name}</td><td>${safeDesc}</td></tr>`;
     };
 
-    for (const [g, members] of sortedGroups) {
-      members.sort((a, b) => a.name.localeCompare(b.name));
-      rows += `<tr class="group-row"><td colspan="2">${escapeHtml(g)}</td></tr>\n`;
-      for (const p of members) rows += rowFor(p) + '\n';
+    for (const e of entries) {
+      if (e.kind === 'pkg' && e.pkg) {
+        rows += rowFor(e.pkg) + '\n';
+      } else if (e.head && e.members) {
+        const n = e.members.length;
+        const meta = ` · ${n} ${n === 1 ? 'package' : 'packages'}`;
+        rows += `<tbody class="family-head">\n`;
+        rows += `<tr class="family-row"><td><button class="family-toggle" onclick="toggleFamily(this)" aria-expanded="false" aria-label="Toggle packages">▸</button> <a href="${escapeHtml(e.head.source)}" target="_blank" rel="noopener">${escapeHtml(e.name)}</a></td><td>${escapeHtml(e.head.description)}<span class="family-meta">${meta}</span></td></tr>\n`;
+        rows += `</tbody>\n<tbody class="family-members" hidden>\n`;
+        for (const m of e.members) rows += rowFor(m) + '\n';
+        rows += `</tbody>\n`;
+      }
     }
-    for (const p of standalone) rows += rowFor(p) + '\n';
   } else {
     rows = '<tr><td colspan="2">Failed to load package list</td></tr>';
   }
@@ -219,7 +262,13 @@ th,td{text-align:left;padding:.5rem;border-bottom:1px solid #333}
 .table-scroll::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
 td a{text-decoration:none;color:#58a6ff}
 td a:hover{text-decoration:underline}
-.group-row td{background:#161b22;color:#8b949e;font-weight:bold;text-transform:uppercase;font-size:.78rem;letter-spacing:.08em}
+tbody.family-head td{background:#161b22}
+.family-toggle{cursor:pointer;background:none;border:none;color:#8b949e;font-size:.8rem;padding:0 .25rem 0 0;line-height:1}
+.family-row td{font-weight:bold}
+.family-meta{color:#8b949e;font-weight:normal;font-size:.8rem}
+.family-members[hidden]{display:none}
+.family-members td{padding-left:2rem}
+.family-members td:first-child a{color:#8b949e}
 .code-wrap{position:relative}
 .copy-btn{position:absolute;top:4px;right:4px;background:none;border:none;cursor:pointer;color:#555;padding:4px;line-height:0}
 .copy-btn:hover{color:#8b949e}
@@ -310,6 +359,13 @@ ${rows}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js" crossorigin="anonymous"></script>
 <script>hljs.highlightAll();
+function toggleFamily(b){
+  var t = b.closest('tbody').nextElementSibling;
+  var hidden = t.hidden;
+  t.hidden = !hidden;
+  b.textContent = hidden ? '▾' : '▸';
+  b.setAttribute('aria-expanded', hidden ? 'true' : 'false');
+}
 function copy(b){let c=b.parentElement.querySelector('code');navigator.clipboard.writeText(c.textContent).then(()=>{b.classList.add('copied');setTimeout(()=>{b.classList.remove('copied')},2000)}).catch(()=>{})}</script>
 </body>
 </html>`;
