@@ -12,6 +12,7 @@ interface Package {
   name: string;
   description: string;
   source: string;
+  group?: string;
 }
 
 function repoOrigin(repo: string): string {
@@ -105,7 +106,7 @@ async function serveText(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
   let pkgLines: string[];
   if (pkgs && pkgs.length > 0) {
     const shown = pkgs.slice(0, 10);
-    pkgLines = shown.map(p => `#  ${p.name} - ${p.description}`);
+    pkgLines = shown.map(p => `#  ${p.group ? `[${p.group}] ` : ''}${p.name} - ${p.description}`);
     if (pkgs.length > 10) {
       pkgLines.push('#', `# And ${pkgs.length - 10} more ...`);
     }
@@ -151,14 +152,35 @@ async function servePage(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
 
   let rows = '';
   if (pkgs) {
-    rows = pkgs.map(p => {
+    const groups = new Map<string, Package[]>();
+    const standalone: Package[] = [];
+    for (const p of pkgs) {
+      if (p.group) {
+        const arr = groups.get(p.group) || [];
+        arr.push(p);
+        groups.set(p.group, arr);
+      } else {
+        standalone.push(p);
+      }
+    }
+    const sortedGroups = [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+    standalone.sort((a, b) => a.name.localeCompare(b.name));
+
+    const rowFor = (p: Package): string => {
       const safeName = escapeHtml(p.name);
       const safeDesc = escapeHtml(p.description);
       const name = p.source
         ? `<a href="${escapeHtml(p.source)}" target="_blank" rel="noopener">${safeName}</a>`
         : safeName;
       return `<tr><td>${name}</td><td>${safeDesc}</td></tr>`;
-    }).join('\n');
+    };
+
+    for (const [g, members] of sortedGroups) {
+      members.sort((a, b) => a.name.localeCompare(b.name));
+      rows += `<tr class="group-row"><td colspan="2">${escapeHtml(g)}</td></tr>\n`;
+      for (const p of members) rows += rowFor(p) + '\n';
+    }
+    for (const p of standalone) rows += rowFor(p) + '\n';
   } else {
     rows = '<tr><td colspan="2">Failed to load package list</td></tr>';
   }
@@ -197,6 +219,7 @@ th,td{text-align:left;padding:.5rem;border-bottom:1px solid #333}
 .table-scroll::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
 td a{text-decoration:none;color:#58a6ff}
 td a:hover{text-decoration:underline}
+.group-row td{background:#161b22;color:#8b949e;font-weight:bold;text-transform:uppercase;font-size:.78rem;letter-spacing:.08em}
 .code-wrap{position:relative}
 .copy-btn{position:absolute;top:4px;right:4px;background:none;border:none;cursor:pointer;color:#555;padding:4px;line-height:0}
 .copy-btn:hover{color:#8b949e}
