@@ -31,17 +31,20 @@
 ,{
   "name": "mc6",
   "description": "Midnight Commander with Plugins",
-  "source": "https://github.com/ilia-maslakov/mcdev"
+  "source": "https://github.com/ilia-maslakov/mcdev",
+  "group": "mc6"
 }
 ,{
   "name": "mc6-data",
   "description": "Midnight Commander with Plugins — data files",
-  "source": "https://github.com/ilia-maslakov/mcdev"
+  "source": "https://github.com/ilia-maslakov/mcdev",
+  "group": "mc6"
 }
 ,{
   "name": "mc6-plugins",
   "description": "Midnight Commander with Plugins — panel plugins (git, docker, k8s, s3, samba, mongo, ftp, sftp, systemd, shell links, arcmc)",
-  "source": "https://github.com/ilia-maslakov/mcdev"
+  "source": "https://github.com/ilia-maslakov/mcdev",
+  "group": "mc6"
 }
 ,{
   "name": "rclone",
@@ -81,6 +84,7 @@
 ,{
   "name": "wps-office-langpack-ru",
   "description": "Russian language pack for WPS Office",
-  "source": "https://github.com/DayDve/wps-office-langpack-ru"
+  "source": "https://github.com/DayDve/wps-office-langpack-ru",
+  "group": "wps-office"
 }
 ]
