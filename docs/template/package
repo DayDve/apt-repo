@@ -50,6 +50,9 @@
 #     Outputs commit list
 #   gh_release_body <owner/repo>
 #     Outputs latest release body
+#   gh_latest_release_with_asset <owner/repo> <asset-substring>
+#     Latest release whose assets contain <substring>; sets LATEST_TAG, RELEASE_BODY
+#     (use when upstream sometimes ships releases without the .deb, e.g. localsend)
 #
 # Universal helpers:
 #   fetch_url <url> [curl_args...]
@@ -67,6 +70,20 @@ DESCRIPTION="My awesome app"
 # }
 # get_version() {
 #   gh_latest_release OWNER/REPO
+#   version="${LATEST_TAG#v}"
+#   echo "$RELEASE_BODY"
+# }
+#
+# --- Example A2: release-based but some releases lack the .deb ---
+# (localsend: android/iOS-only releases ship no deb, so only consider
+# releases that actually contain the asset the Dockerfile downloads)
+# check_update() {
+#   gh_latest_release_with_asset OWNER/REPO "linux-x86-64.deb" || return 1
+#   version="${LATEST_TAG#v}"
+#   [ "$version" != "${1:-}" ]
+# }
+# get_version() {
+#   gh_latest_release_with_asset OWNER/REPO "linux-x86-64.deb" || return 1
 #   version="${LATEST_TAG#v}"
 #   echo "$RELEASE_BODY"
 # }

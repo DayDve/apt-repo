@@ -25,6 +25,27 @@ gh_latest_release() {
   RELEASE_BODY=$(echo "$json" | jq -r '.body')
 }
 
+# gh_latest_release_with_asset: Fetches the most recent release whose assets
+# include a name containing <substring>. Skips releases that don't ship the
+# expected artifact (e.g. android-only releases), so check_update/get_version
+# won't pick a version the Dockerfile can't download.
+# Usage: gh_latest_release_with_asset <owner/repo> <asset-substring>
+# Sets: LATEST_TAG, RELEASE_BODY; returns 1 if no release matches
+gh_latest_release_with_asset() {
+  local repo="$1" substring="$2" page=1 json count tag
+  while :; do
+    json=$(gh api "repos/$repo/releases?per_page=100&page=$page" 2>/dev/null) || return 1
+    count=$(printf '%s' "$json" | jq 'length')
+    tag=$(printf '%s' "$json" | jq -r --arg p "$substring" \
+      '[.[] | select(any(.assets[]; (.name | index($p)) != null)) | .tag_name] | .[0] // empty')
+    [ -n "$tag" ] && break
+    [ "$count" -lt 100 ] && return 1
+    page=$((page + 1))
+  done
+  LATEST_TAG="$tag"
+  RELEASE_BODY=$(gh api "repos/$repo/releases/tags/$tag" --jq '.body' 2>/dev/null || echo "")
+}
+
 # gh_tag_message: Gets annotated tag message
 # Usage: gh_tag_message <owner/repo> <tag>
 # Returns 1 if not an annotated tag

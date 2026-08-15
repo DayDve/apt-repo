@@ -7,14 +7,16 @@ DESCRIPTION="Cross-platform file sharing over local network"
 APPSTREAM_TYPE="desktop-application"
 APPSTREAM_CATEGORIES="Network;FileTransfer"
 
+# Some upstream releases are Android/iOS-only (no .deb assets) — skip them so
+# check_update doesn't pick a version whose deb the Dockerfile can't download.
 check_update() {
-  gh_latest_release localsend/localsend
+  gh_latest_release_with_asset localsend/localsend "linux-x86-64.deb" || return 1
   version="${LATEST_TAG#v}"
   [ "$version" != "${1:-}" ]
 }
 
 get_version() {
-  gh_latest_release localsend/localsend
+  gh_latest_release_with_asset localsend/localsend "linux-x86-64.deb" || return 1
   version="${LATEST_TAG#v}"
   echo "$RELEASE_BODY"
 }

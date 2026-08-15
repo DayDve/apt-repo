@@ -139,6 +139,7 @@ Screenshots are automatically included in AppStream metadata as GitHub raw URLs.
 | `gh_commits_between <owner/repo> <base> <head>` | Commits between refs | stdout |
 | `gh_release_body <owner/repo>` | Latest release body | stdout |
 | `gh_release_body_by_tag <owner/repo> <tag>` | Release body for tag | stdout |
+| `gh_latest_release_with_asset <owner/repo> <asset-substring>` | Latest release whose assets contain the substring (skips releases without the .deb, e.g. android-only) | `$LATEST_TAG`, `$RELEASE_BODY` |
 | `fetch_url <url> [curl_args...]` | HTTP GET with direct→proxy fallback | stdout |
 
 ---
