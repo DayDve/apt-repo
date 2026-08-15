@@ -1,0 +1,16 @@
+SOURCE_URL="https://github.com/DayDve/kio-stash"
+DESCRIPTION="Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6"
+APPSTREAM_TYPE="addon"
+APPSTREAM_CATEGORIES="System;Utility;KDE"
+
+check_update() {
+  gh_latest_release DayDve/kio-stash
+  version="${LATEST_TAG#v}"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  gh_latest_release DayDve/kio-stash
+  version="${LATEST_TAG#v}"
+  gh_release_body DayDve/kio-stash
+}
