@@ -185,6 +185,23 @@ SHA1: 6322dfbfeb33492f43d80c26e59b6653960093ee
 SHA256: 6897af6a4b5de995d251b7425926469b3bc7e58e7bbac80c1557d5a2ccf0f33c
 Description: A key remapping daemon for linux.
 
+Package: kio-stash
+Version: 1.0.0+daydve1
+Architecture: amd64
+Maintainer: daydve <daydve@smbit.pro>
+Depends: kf6-kio, libc6 (>= 2.38), libqt6core6t64, libqt6dbus6t64, libqt6gui6t64, libstdc++6 (>= 13)
+Recommends: dolphin
+Enhances: dolphin
+Filename: pool/noble/main/kio-stash_1.0.0+daydve1_noble_amd64.deb
+Size: 99904
+MD5sum: d1dafb169454add1a43e3627a4182bac
+SHA1: 6cf5a5516899ff19f297d9c517b25f7cb1331425
+SHA256: 7955c530d5519738d25094903634f5810095f7cd1119897dc8c1e65a277b920e
+Section: kde
+Priority: optional
+Description: Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6
+ Custom KF6 port built for KDE Neon / Noble.
+
 Package: localsend
 Version: 1.17.0+58
 Architecture: amd64
@@ -318,6 +335,23 @@ Size: 255149996
 MD5sum: ef7ce07189bd7f9ff761d7a9dbd16796
 SHA1: fad83b225bc2a08d815dde24aa9e8420c3c8f51f
 SHA256: d5d9b78d579c7dae026f1453538d2cbbdf72228702f93486cb53639a5a009903
+Section: utils
+Homepage: https://devolutions.net/remote-desktop-manager/
+Description: Centralize, Manage and Secure Remote Connections
+ Remote Desktop Manager (RDM) centralizes all remote connections on a single platform that is securely shared between users and across the entire team. With support for hundreds of integrated technologies — including multiple protocols and VPNs — along with built-in enterprise-grade password management tools, global and granular-level access controls, and robust mobile apps to complement desktop clients for Windows and Mac, RDM is a IT toolbox for remote access. RDM empowers IT departments to drive security, speed and productivity throughout the organization, while reducing inefficiency, cost and risk.
+
+Package: remotedesktopmanager
+Version: 2026.2.2.2
+Architecture: amd64
+Maintainer: Devolutions
+Depends: libwebkit2gtk-4.1-0 | libwebkit2gtk-4.0-37, ca-certificates, libsecret-1-0, xwayland
+Recommends: gnome-keyring, fuse3
+Suggests: libappindicator3-1, xdotool, lsof, libopenal1
+Filename: pool/noble/main/remotedesktopmanager_2026.2.2.2_noble_amd64.deb
+Size: 254836592
+MD5sum: e6c51f6a72b3914db5bd75dac77e9ebd
+SHA1: 4c83110fb60e8d48f3c0d24921cb33a90db448aa
+SHA256: 2a61be1e0357b3ff96e19ef32ebe696249a7427dc570e8da449cc52a5405cf4e
 Section: utils
 Homepage: https://devolutions.net/remote-desktop-manager/
 Description: Centralize, Manage and Secure Remote Connections

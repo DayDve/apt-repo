@@ -29,6 +29,11 @@
   "source": "https://github.com/rvaiya/keyd"
 }
 ,{
+  "name": "kio-stash",
+  "description": "Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6",
+  "source": "https://github.com/DayDve/kio-stash"
+}
+,{
   "name": "localsend",
   "description": "Cross-platform file sharing over local network",
   "source": "https://github.com/localsend/localsend"

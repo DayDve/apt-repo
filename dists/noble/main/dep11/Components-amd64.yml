@@ -115,6 +115,27 @@ Provides:
   binaries:
   - keyd
 ---
+Type: addon
+ID: io.github.daydve.apt.kio-stash
+Package: kio-stash
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: kio-stash
+Summary:
+  C: Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6
+Categories:
+- System
+- Utility
+- KDE
+Url:
+  homepage: https://github.com/DayDve/kio-stash
+Icon:
+  cached:
+  - name: kio-stash
+Provides:
+  binaries:
+  - kio-stash
+---
 Type: desktop-application
 ID: io.github.daydve.apt.localsend
 Package: localsend
