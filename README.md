@@ -1,6 +1,6 @@
 # apt-repo
 
-![Apps](https://img.shields.io/badge/apps-19-blue)
+![Apps](https://img.shields.io/badge/apps-20-blue)
 [![Website](https://img.shields.io/badge/website-apt.smbit.pro-4a9eff)](https://apt.smbit.pro)
 [![Telegram](https://img.shields.io/badge/channel-@ddaptrepo-26A5E4?logo=telegram)](https://t.me/ddaptrepo)
 
@@ -35,6 +35,7 @@ Packages that belong together are combined into a family (collapsible).
 | [fonts-noto-lite](https://github.com/DayDve/fonts-noto-lite) | Hide non-Latin/Cyrillic Noto fonts from font selection dialogs on Ubuntu/Debian |
 | [grub-btrfs](https://github.com/Antynea/grub-btrfs) | GRUB menu entries for btrfs snapshots |
 | [keyd](https://github.com/rvaiya/keyd) | Key remapping daemon |
+| [kio-stash](https://github.com/DayDve/kio-stash) | Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6 |
 | [localsend](https://github.com/localsend/localsend) | Cross-platform file sharing over local network |
 | [rclone](https://github.com/rclone/rclone) | rsync for cloud storage |
 | [remotedesktopmanager](https://devolutions.net/remote-desktop-manager/) | One application for every remote connection you'll ever open |
