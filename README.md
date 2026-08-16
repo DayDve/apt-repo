@@ -1,6 +1,6 @@
 # apt-repo
 
-![Apps](https://img.shields.io/badge/apps-20-blue)
+![Apps](https://img.shields.io/badge/apps-21-blue)
 [![Website](https://img.shields.io/badge/website-apt.smbit.pro-4a9eff)](https://apt.smbit.pro)
 [![Telegram](https://img.shields.io/badge/channel-@ddaptrepo-26A5E4?logo=telegram)](https://t.me/ddaptrepo)
 
@@ -33,6 +33,7 @@ Packages that belong together are combined into a family (collapsible).
 | [bees](https://github.com/Zygo/bees) | btrfs deduplication daemon |
 | [btrfs-assistant](https://gitlab.com/btrfs-assistant/btrfs-assistant) | GUI management tool for Btrfs filesystem |
 | [fonts-noto-lite](https://github.com/DayDve/fonts-noto-lite) | Hide non-Latin/Cyrillic Noto fonts from font selection dialogs on Ubuntu/Debian |
+| [glab](https://gitlab.com/gitlab-org/cli) | Official GitLab command-line tool |
 | [grub-btrfs](https://github.com/Antynea/grub-btrfs) | GRUB menu entries for btrfs snapshots |
 | [keyd](https://github.com/rvaiya/keyd) | Key remapping daemon |
 | [kio-stash](https://github.com/DayDve/kio-stash) | Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6 |
