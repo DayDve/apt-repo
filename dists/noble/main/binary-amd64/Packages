@@ -159,6 +159,22 @@ Description: Hides non-Latin/Cyrillic Noto fonts from font selection dialogs
  The fonts-noto-extra package (all non-Latin/Cyrillic weight variants) is
  removed automatically via Conflicts.
 
+Package: glab
+Version: 1.113.0
+Architecture: amd64
+Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
+Installed-Size: 51061
+Depends: git
+Filename: pool/noble/main/glab_1.113.0_linux_noble_amd64.deb
+Size: 18280988
+MD5sum: c2c291cbf74b99320b0310ffe0eb77e6
+SHA1: 79f45d8243841eb92c5bf1f87c73eea46a92ccba
+SHA256: 80928175a2d66c6262c8303aeee9dd5c5a67dafc03668c8b073a495110f9af02
+Priority: optional
+Homepage: https://gitlab.com/gitlab-org/cli
+Description: An open source GitLab CLI tool
+Architecture-Variant: amd64v1
+
 Package: grub-btrfs
 Version: 4.14
 Architecture: amd64
@@ -514,36 +530,6 @@ Description: WPS Office, is an office productivity suite.
  Welcome to our website: https://linux.wps.cn
 Name: wps-office
 Relocations: /opt/kingsoft
-
-Package: wps-office-langpack-ru
-Version: 12.3.1.0.2739-1
-Architecture: all
-Maintainer: DayDve <daydve@smbit.pro>
-Depends: wps-office (>= 12)
-Replaces: wps-office
-Filename: pool/noble/main/wps-office-langpack-ru_12.3.1.0.2739-1_noble_amd64.deb
-Size: 3400748
-MD5sum: cac1e2a711a344d5eefc0720963e7e4d
-SHA1: 53ab6eac362b42ebacc05f55e996a05664846923
-SHA256: 7d79c445964528920b94c99d777a064c1930685537d6e78255a0af7dde527afd
-Section: localization
-Priority: optional
-Description: Russian language pack, plugins and font metric fixes for WPS Office 12
-
-Package: wps-office-langpack-ru
-Version: 12.3.1.0.2754-1
-Architecture: all
-Maintainer: DayDve <daydve@smbit.pro>
-Depends: wps-office (>= 12)
-Replaces: wps-office
-Filename: pool/noble/main/wps-office-langpack-ru_12.3.1.0.2754-1_noble_amd64.deb
-Size: 3378796
-MD5sum: 081fcd59b5933498c7d36e968071065e
-SHA1: 59a88ec3009e7ca153c73ebac7bef0804ae64244
-SHA256: d430b6a42b16b949e390865ba2f3edbcae14eb28e1fa8e77778486e7023ce802
-Section: localization
-Priority: optional
-Description: Russian language pack, plugins and font metric fixes for WPS Office 12
 
 Package: wps-office-langpack-ru
 Version: 12.3.1.0.2821-1

@@ -82,6 +82,20 @@ Provides:
   - fonts-noto-lite
 ---
 Type: console-application
+ID: io.github.daydve.apt.glab
+Package: glab
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: glab
+Summary:
+  C: Official GitLab command-line tool
+Url:
+  homepage: https://gitlab.com/gitlab-org/cli
+Provides:
+  binaries:
+  - glab
+---
+Type: console-application
 ID: io.github.daydve.apt.grub-btrfs
 Package: grub-btrfs
 ProjectLicense: GPL-3.0-or-later

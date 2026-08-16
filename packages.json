@@ -19,6 +19,11 @@
   "source": "https://github.com/DayDve/fonts-noto-lite"
 }
 ,{
+  "name": "glab",
+  "description": "Official GitLab command-line tool",
+  "source": "https://gitlab.com/gitlab-org/cli"
+}
+,{
   "name": "grub-btrfs",
   "description": "GRUB menu entries for btrfs snapshots",
   "source": "https://github.com/Antynea/grub-btrfs"
