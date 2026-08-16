@@ -363,7 +363,7 @@ jobs:
           cp "$GITHUB_WORKSPACE/packages.json" /tmp/packages.json
           git fetch origin apps
           git checkout apps
-          python3 scripts/gen_readme.py
+          python3 .github/scripts/gen_readme.py
           git add README.md
           git diff --cached --quiet || (
             git -c user.name='github-actions' -c user.email='github-actions@github.com' commit -m "auto-update README from packages metadata"
@@ -448,6 +448,6 @@ jobs:
 
           # Apps declaring FAMILY="<main>" in their package file are sent as one
           # combined message (sendMediaGroup) together with the main app's deb.
-          python3 scripts/notify_tg.py
+          python3 .github/scripts/notify_tg.py
 
           docker kill telegram-bot-api || true
