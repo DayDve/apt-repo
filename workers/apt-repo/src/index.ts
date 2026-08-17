@@ -68,7 +68,7 @@ async function proxy(url: string): Promise<Response> {
       'content-type': resp.headers.get('content-type') || 'application/octet-stream',
       'content-length': resp.headers.get('content-length') || '',
       'last-modified': resp.headers.get('last-modified') || '',
-      'cache-control': 'public, max-age=0, must-revalidate',
+      'cache-control': 'no-store, no-cache, must-revalidate',
     },
   });
 }
