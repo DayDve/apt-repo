@@ -76,6 +76,21 @@ Description: GUI management tool for Btrfs filesystem
  A Qt6-based tool for managing Btrfs filesystems, including
  subvolumes, snapshots (Snapper/Timeshift), scrub, and balance operations.
 
+Package: btrfs-assistant
+Version: 2.3
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 852
+Depends: libc6, libbtrfsutil1t64, btrfs-progs, libqt6core6t64, libqt6gui6t64, libqt6widgets6t64, libqt6dbus6t64, libgl1, libegl1, libqt6svg6
+Filename: pool/noble/main/btrfs-assistant_2.3_noble_amd64.deb
+Size: 225190
+MD5sum: 96248b98f60beeb688f7a39d5dd9e629
+SHA1: 0abfb3cb75d6a26a99d494b05d54129b6315fccd
+SHA256: 641a5ef14e6c0553b53f48f5be45f658fc1fa4df2a51362f4ba2dee9aac4c4c2
+Description: GUI management tool for Btrfs filesystem
+ A Qt6-based tool for managing Btrfs filesystems, including
+ subvolumes, snapshots (Snapper/Timeshift), scrub, and balance operations.
+
 Package: fonts-noto-lite
 Version: 1.0
 Architecture: all
