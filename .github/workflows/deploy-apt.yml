@@ -312,19 +312,19 @@ jobs:
             seen="$seen $app"
             source_url=$(awk -F'|' -v a="$app" '$1==a{print $2}' /tmp/pkg-info)
             desc=$(awk -F'|' -v a="$app" '$1==a{print $3}' /tmp/pkg-info)
+            cats=$(awk -F'|' -v a="$app" '$1==a{print $5}' /tmp/pkg-info)
             group=$(awk -F'|' -v a="$app" '$1==a{print $8}' /tmp/pkg-info)
             if [ -z "$desc" ]; then
               desc=$(dpkg-deb -f "/tmp/pool/$distro/main/$deb_name" Description 2>/dev/null | head -1 || echo "")
             fi
             $first || echo -n ',' >> "$GITHUB_WORKSPACE/packages.json"
             first=false
-            if [ -n "$group" ]; then
-              jq -n --arg name "$app" --arg desc "$desc" --arg source "$source_url" --arg group "$group" \
-                '{name:$name,description:$desc,source:$source,group:$group}' >> "$GITHUB_WORKSPACE/packages.json"
-            else
-              jq -n --arg name "$app" --arg desc "$desc" --arg source "$source_url" \
-                '{name:$name,description:$desc,source:$source}' >> "$GITHUB_WORKSPACE/packages.json"
-            fi
+            jq -n --arg name "$app" --arg desc "$desc" --arg source "$source_url" \
+              --arg group "$group" --arg cats "$cats" \
+              '{name:$name,description:$desc,source:$source}
+               + (if $group != "" then {group:$group} else {} end)
+               + (if $cats != "" then {categories:($cats|split(";"))} else {} end)' \
+              >> "$GITHUB_WORKSPACE/packages.json"
           done < /tmp/tag-map
           echo -n ']' >> "$GITHUB_WORKSPACE/packages.json"
 
