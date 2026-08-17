@@ -7,17 +7,17 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # KDE Neon user-edition repo ships Qt 6.10+ needed for btrfs-assistant >= 2.3
 # (beginFilterChange/endFilterChange API). Ubuntu 24.04 stock Qt is 6.4.x.
-RUN install -d /etc/apt/keyrings && \
+RUN apt-get update && apt-get install -y -qq curl ca-certificates && \
+    install -d /etc/apt/keyrings && \
     curl -fsSL https://archive.neon.kde.org/public.key \
       -o /etc/apt/keyrings/neon-archive-keyring.asc && \
     echo "deb [signed-by=/etc/apt/keyrings/neon-archive-keyring.asc] \
       http://archive.neon.kde.org/user noble main" \
-      > /etc/apt/sources.list.d/neon.list
-
-RUN apt-get update && apt-get install -y -qq \
-    build-essential cmake git dpkg-dev \
-    qt6-base-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools \
-    libbtrfsutil-dev pkg-config && \
+      > /etc/apt/sources.list.d/neon.list && \
+    apt-get update && apt-get install -y -qq \
+      build-essential cmake git dpkg-dev \
+      qt6-base-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools \
+      libbtrfsutil-dev pkg-config && \
     rm -rf /var/lib/apt/lists/*
 
 RUN git clone --depth 1 --branch "${APP_VERSION}" \
