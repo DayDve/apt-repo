@@ -325,7 +325,7 @@ function catLabel(cat: string): string {
   return CAT_LABELS[cat] || cat;
 }
 
-function pkgCard(p: Package, aptOrigin: string, groupCats: string[], siblings: string[]): string {
+function pkgCard(p: Package, aptOrigin: string, groupCats: string[]): string {
   const safeName = escapeHtml(p.name);
   const safeDesc = escapeHtml(p.description);
   const safeSource = escapeHtml(p.source || '');
@@ -336,9 +336,6 @@ function pkgCard(p: Package, aptOrigin: string, groupCats: string[], siblings: s
 
   const installCmd = `sudo apt install ${p.name}`;
   const familyNote = p.group ? `<span class="family-note">Part of <strong>${escapeHtml(p.group)}</strong></span>` : '';
-  const seeAlso = siblings.length
-    ? `<div class="see-also">See also: ${siblings.map(s => `<a href="#card-${escapeHtml(s)}" class="see-also-link">${escapeHtml(s)}</a>`).join(', ')}</div>`
-    : '';
 
   return `<div class="card" id="card-${safeName}" data-cats="${escapeHtml(effectiveCats.join(','))}" data-name="${safeName}" data-family="${escapeHtml(p.group || '')}">
 <div class="card-header">
@@ -353,7 +350,6 @@ ${familyNote}
     <button class="copy-btn" onclick="copyCmd(this,'${escapeHtml(installCmd)}')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
   </div>
 </div>
-${seeAlso}
 </div>`;
 }
 
@@ -380,15 +376,6 @@ async function servePackages(url: URL, ctx: ExecutionContext, env: Env): Promise
 
   let cards = '';
 
-  const groupMembers = new Map<string, string[]>();
-  for (const p of pkgs || []) {
-    if (p.group) {
-      const arr = groupMembers.get(p.group) || [];
-      arr.push(p.name);
-      groupMembers.set(p.group, arr);
-    }
-  }
-
   const groupCats = new Map<string, string[]>();
   for (const p of pkgs || []) {
     if (p.group && !groupCats.has(p.group) && (p.categories || []).length > 0) {
@@ -398,8 +385,7 @@ async function servePackages(url: URL, ctx: ExecutionContext, env: Env): Promise
 
   for (const p of pkgs || []) {
     const gCats = p.group ? (groupCats.get(p.group) || []) : [];
-    const siblings = p.group ? (groupMembers.get(p.group) || []).filter(s => s !== p.name) : [];
-    cards += pkgCard(p, aptOrigin, gCats, siblings) + '\n';
+    cards += pkgCard(p, aptOrigin, gCats) + '\n';
   }
 
   const html = `<!DOCTYPE html>
@@ -447,8 +433,6 @@ a:hover{text-decoration:underline}
 .card-title a{color:#58a6ff}
 .family-note{font-size:.75rem;color:#8b949e;margin-bottom:.3rem}
 .family-note strong{color:#58a6ff}
-.see-also{font-size:.75rem;color:#8b949e;margin-top:.5rem;padding-top:.4rem;border-top:1px solid #21262d}
-.see-also-link{color:#58a6ff;margin-left:.3rem}
 .card-desc{color:#c9d1d9;font-size:.85rem;margin-bottom:.6rem;flex:1}
 .card-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.8rem}
 .tag{font-size:.7rem;padding:.15rem .5rem;background:#30363d;border-radius:12px;color:#8b949e}
