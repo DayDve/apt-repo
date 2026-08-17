@@ -12,6 +12,8 @@ interface Package {
   name: string;
   description: string;
   source: string;
+  longDescription?: string;
+  icon?: string;
   group?: string;
   categories?: string[];
 }
@@ -61,16 +63,20 @@ export default {
       return redirectPool(path, ctx, env);
     }
 
+    if (path.startsWith('/icons/')) {
+      return proxy(`${repoOrigin(env.REPO)}${path}`, 'image/png');
+    }
+
     return isBrowser ? servePage(url, ctx, env) : new Response('Not found', { status: 404 });
   },
 };
 
-async function proxy(url: string): Promise<Response> {
+async function proxy(url: string, contentType?: string): Promise<Response> {
   const resp = await fetch(url, { cf: { cacheTtl: -1 } });
   return new Response(resp.body, {
     status: resp.status,
     headers: {
-      'content-type': resp.headers.get('content-type') || 'application/octet-stream',
+      'content-type': contentType || resp.headers.get('content-type') || 'application/octet-stream',
       'content-length': resp.headers.get('content-length') || '',
       'last-modified': resp.headers.get('last-modified') || '',
       'cache-control': 'no-store, no-cache, must-revalidate',
@@ -336,13 +342,17 @@ function pkgCard(p: Package, aptOrigin: string, groupCats: string[]): string {
 
   const installCmd = `sudo apt install ${p.name}`;
   const familyNote = p.group ? `<span class="family-note">Part of <strong>${escapeHtml(p.group)}</strong></span>` : '';
+  const iconUrl = p.icon ? `${escapeHtml(aptOrigin)}${escapeHtml(p.icon)}` : '';
+  const iconHtml = iconUrl ? `<img class="card-icon" src="${iconUrl}" alt="${safeName}" width="48" height="48" loading="lazy">` : '';
+  const longDesc = p.longDescription ? escapeHtml(p.longDescription) : '';
 
   return `<div class="card" id="card-${safeName}" data-cats="${escapeHtml(effectiveCats.join(','))}" data-name="${safeName}" data-family="${escapeHtml(p.group || '')}">
 <div class="card-header">
+  ${iconHtml}
   <h3 class="card-title">${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</h3>
 </div>
 ${familyNote}
-<p class="card-desc">${safeDesc}</p>
+<p class="card-desc">${longDesc || safeDesc}</p>
 <div class="card-tags">${cats}</div>
 <div class="card-install">
   <div class="code-wrap">
@@ -428,7 +438,8 @@ a:hover{text-decoration:underline}
 .card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1.2rem;display:flex;flex-direction:column;transition:border-color .15s}
 .card:hover{border-color:#58a6ff}
 .card.hidden{display:none}
-.card-header{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.4rem}
+.card-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem}
+.card-icon{width:48px;height:48px;border-radius:8px;flex-shrink:0}
 .card-title{font-size:1rem;font-weight:bold}
 .card-title a{color:#58a6ff}
 .family-note{font-size:.75rem;color:#8b949e;margin-bottom:.3rem}
