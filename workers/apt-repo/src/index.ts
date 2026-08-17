@@ -361,6 +361,7 @@ async function servePackages(url: URL, ctx: ExecutionContext, env: Env): Promise
   const author = env.AUTHOR || '';
   const safeOrigin = escapeHtml(url.origin);
   const safeAptOrigin = escapeHtml(aptOrigin);
+  const pkgCount = pkgs ? pkgs.length : 0;
 
   const allCats = new Set<string>();
   for (const p of pkgs || []) {
