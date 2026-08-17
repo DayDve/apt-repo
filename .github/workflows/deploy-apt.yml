@@ -148,6 +148,8 @@ jobs:
             group=$(git show "$pkg_file" | awk -F'"' '/^GROUP=/{print $2}')
             [ -n "$url" ] && echo "$app|$url|$desc|$type|$cats|$icon_source|$icon_path|$group"
           done > /tmp/pkg-info
+          # Fetch descriptions.json for long descriptions
+          git show "origin/apps:apps/descriptions.json" > /tmp/descriptions.json 2>/dev/null || echo '{}' > /tmp/descriptions.json
 
       - name: Generate AppStream metadata
         run: |
@@ -301,6 +303,10 @@ jobs:
             done
           done
 
+          # Save individual 48x48 icons for the website
+          mkdir -p "$GITHUB_WORKSPACE/icons"
+          cp /tmp/icons-48/*.png "$GITHUB_WORKSPACE/icons/" 2>/dev/null || true
+
       - name: Generate packages.json
         run: |
           echo -n '[' > "$GITHUB_WORKSPACE/packages.json"
@@ -317,11 +323,19 @@ jobs:
             if [ -z "$desc" ]; then
               desc=$(dpkg-deb -f "/tmp/pool/$distro/main/$deb_name" Description 2>/dev/null | head -1 || echo "")
             fi
+            # Read long description from descriptions.json
+            long_desc=$(jq -r --arg k "$app" '.[$k] // empty' /tmp/descriptions.json 2>/dev/null || echo "")
+            # Check if icon exists
+            icon=""
+            [ -f "/tmp/icons-48/${app}.png" ] && icon="/icons/${app}.png"
             $first || echo -n ',' >> "$GITHUB_WORKSPACE/packages.json"
             first=false
             jq -n --arg name "$app" --arg desc "$desc" --arg source "$source_url" \
+              --arg long "$long_desc" --arg icon "$icon" \
               --arg group "$group" --arg cats "$cats" \
               '{name:$name,description:$desc,source:$source}
+               + (if $long != "" then {longDescription:$long} else {} end)
+               + (if $icon != "" then {icon:$icon} else {} end)
                + (if $group != "" then {group:$group} else {} end)
                + (if $cats != "" then {categories:($cats|split(";"))} else {} end)' \
               >> "$GITHUB_WORKSPACE/packages.json"
