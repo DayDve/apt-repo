@@ -2,10 +2,9 @@ name: Check updates
 
 on:
   push:
-    paths-ignore:
-      - 'apps/build.sh'
-      - 'apps/apt-key.asc'
-      - 'docs/**'
+    paths:
+      - 'apps/*/Dockerfile'
+      - 'apps/*/package'
     branches:
       - apps
   schedule:
