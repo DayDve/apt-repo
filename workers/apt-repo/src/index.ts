@@ -335,13 +335,20 @@ function familyCard(e: DisplayEntry, aptOrigin: string): string {
     `<span class="tag" data-cat="${escapeHtml(c)}">${escapeHtml(catLabel(c))}</span>`
   ).join('');
 
-  const related = members
-    .filter(m => m.name !== e.name)
-    .map(m => `<span class="related-name">${escapeHtml(m.name)}</span>`)
-    .join('');
-
   const installCmd = `sudo apt install ${e.name}`;
-  const installCmds = members.map(m => `sudo apt install ${m.name}`).join('\n');
+  const relatedPkgs = members
+    .filter(m => m.name !== e.name)
+    .map(m => {
+      const cmd = `sudo apt install ${m.name}`;
+      return `<div class="related-pkg">
+        <span class="related-name">${escapeHtml(m.name)}</span>
+        <div class="code-wrap">
+          <pre><code>${escapeHtml(cmd)}</code></pre>
+          <button class="copy-btn" onclick="copyCmd(this,'${escapeHtml(cmd)}')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+        </div>
+      </div>`;
+    })
+    .join('');
 
   return `<div class="card" data-cats="${escapeHtml((h.categories || []).join(','))}" data-name="${safeName}">
 <div class="card-header">
@@ -356,7 +363,7 @@ function familyCard(e: DisplayEntry, aptOrigin: string): string {
     <button class="copy-btn" onclick="copyCmd(this,'${escapeHtml(installCmd)}')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
   </div>
 </div>
-${related ? `<div class="card-related"><span class="related-label">Includes:</span> ${related}</div>` : ''}
+${relatedPkgs ? `<div class="card-related"><span class="related-label">Also available:</span>${relatedPkgs}</div>` : ''}
 </div>`;
 }
 
@@ -473,9 +480,12 @@ a:hover{text-decoration:underline}
 .copy-btn:hover{color:#8b949e}
 .copy-btn.copied svg{stroke:#3fb950}
 .card-related{margin-top:.6rem;padding-top:.5rem;border-top:1px solid #21262d;font-size:.8rem;color:#8b949e}
-.related-label{color:#484f58}
-.related-name{color:#8b949e;margin-right:.4rem}
-.related-name::before{content:'#';color:#30363d}
+.related-label{color:#484f58;display:block;margin-bottom:.4rem}
+.related-pkg{display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem}
+.related-pkg:last-child{margin-bottom:0}
+.related-name{color:#8b949e;white-space:nowrap}
+.related-pkg .code-wrap{flex:1;min-width:0}
+.related-pkg pre{padding:.3rem .5rem;font-size:.75rem;margin:0}
 
 .empty{text-align:center;padding:3rem;color:#484f58;font-size:.9rem}
 
