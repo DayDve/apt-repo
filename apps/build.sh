@@ -8,9 +8,10 @@ set -e
 # gh_api_retry: gh api with retries on transient failures (503, timeouts)
 # Usage: same as gh api — gh_api_retry repos/OWNER/REPO/tags
 gh_api_retry() {
-  local attempt=0 max=3 delay=2
+  local attempt=0 max=3 delay=2 result
   while (( attempt < max )); do
-    if gh api "$@" 2>/dev/null; then
+    if result=$(gh api "$@" 2>/dev/null); then
+      printf '%s' "$result"
       return 0
     fi
     attempt=$((attempt + 1))
