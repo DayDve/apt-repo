@@ -325,39 +325,6 @@ function catLabel(cat: string): string {
   return CAT_LABELS[cat] || cat;
 }
 
-function familyCard(e: DisplayEntry, aptOrigin: string): string {
-  const h = e.head!;
-  const members = e.members!;
-  const safeName = escapeHtml(e.name);
-  const safeDesc = escapeHtml(h.description);
-  const safeSource = escapeHtml(h.source || '');
-  const cats = (h.categories || []).map(c =>
-    `<span class="tag" data-cat="${escapeHtml(c)}">${escapeHtml(catLabel(c))}</span>`
-  ).join('');
-
-  const installCmd = `sudo apt install ${e.name}`;
-  const relatedChips = members
-    .filter(m => m.name !== e.name)
-    .map(m => `<button class="chip" onclick="copyCmd(this,'sudo apt install ${escapeHtml(m.name)}')" title="Click to copy install command">${escapeHtml(m.name)}</button>`)
-    .join(' ');
-
-  return `<div class="card" data-cats="${escapeHtml((h.categories || []).join(','))}" data-name="${safeName}">
-<div class="card-header">
-  <h3 class="card-title">${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</h3>
-  <span class="family-badge">${members.length} pkgs</span>
-</div>
-<p class="card-desc">${safeDesc}</p>
-<div class="card-tags">${cats}</div>
-<div class="card-install">
-  <div class="code-wrap">
-    <pre><code>${escapeHtml(installCmd)}</code></pre>
-    <button class="copy-btn" onclick="copyCmd(this,'${escapeHtml(installCmd)}')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-  </div>
-</div>
-${relatedChips ? `<div class="card-related"><span class="related-label">Also available:</span> ${relatedChips}</div>` : ''}
-</div>`;
-}
-
 function pkgCard(p: Package, aptOrigin: string): string {
   const safeName = escapeHtml(p.name);
   const safeDesc = escapeHtml(p.description);
@@ -367,11 +334,13 @@ function pkgCard(p: Package, aptOrigin: string): string {
   ).join('');
 
   const installCmd = `sudo apt install ${p.name}`;
+  const familyNote = p.group ? `<span class="family-note">Part of <strong>${escapeHtml(p.group)}</strong></span>` : '';
 
   return `<div class="card" data-cats="${escapeHtml((p.categories || []).join(','))}" data-name="${safeName}">
 <div class="card-header">
   <h3 class="card-title">${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</h3>
 </div>
+${familyNote}
 <p class="card-desc">${safeDesc}</p>
 <div class="card-tags">${cats}</div>
 <div class="card-install">
@@ -393,13 +362,9 @@ async function servePackages(url: URL, ctx: ExecutionContext, env: Env): Promise
   const safeOrigin = escapeHtml(url.origin);
   const safeAptOrigin = escapeHtml(aptOrigin);
 
-  const entries = pkgs ? displayEntries(pkgs) : [];
-  const pkgCount = pkgs ? pkgs.length : 0;
-
   const allCats = new Set<string>();
-  for (const e of entries) {
-    const cats = (e.kind === 'family' ? e.head?.categories : e.pkg?.categories) || [];
-    for (const c of cats) allCats.add(c);
+  for (const p of pkgs || []) {
+    for (const c of p.categories || []) allCats.add(c);
   }
   const sortedCats = [...allCats].sort();
 
@@ -408,12 +373,8 @@ async function servePackages(url: URL, ctx: ExecutionContext, env: Env): Promise
   ).join('');
 
   let cards = '';
-  for (const e of entries) {
-    if (e.kind === 'family') {
-      cards += familyCard(e, aptOrigin) + '\n';
-    } else if (e.pkg) {
-      cards += pkgCard(e.pkg, aptOrigin) + '\n';
-    }
+  for (const p of pkgs || []) {
+    cards += pkgCard(p, aptOrigin) + '\n';
   }
 
   const html = `<!DOCTYPE html>
@@ -459,7 +420,8 @@ a:hover{text-decoration:underline}
 .card-header{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.4rem}
 .card-title{font-size:1rem;font-weight:bold}
 .card-title a{color:#58a6ff}
-.family-badge{font-size:.7rem;background:#1f6feb22;color:#58a6ff;padding:.1rem .4rem;border-radius:10px;white-space:nowrap}
+.family-note{font-size:.75rem;color:#8b949e;margin-bottom:.3rem}
+.family-note strong{color:#58a6ff}
 .card-desc{color:#c9d1d9;font-size:.85rem;margin-bottom:.6rem;flex:1}
 .card-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.8rem}
 .tag{font-size:.7rem;padding:.15rem .5rem;background:#30363d;border-radius:12px;color:#8b949e}
@@ -470,12 +432,6 @@ a:hover{text-decoration:underline}
 .copy-btn{position:absolute;top:4px;right:4px;background:none;border:none;cursor:pointer;color:#484f58;padding:4px;line-height:0}
 .copy-btn:hover{color:#8b949e}
 .copy-btn.copied svg{stroke:#3fb950}
-.card-related{margin-top:.6rem;padding-top:.5rem;border-top:1px solid #21262d;font-size:.8rem;color:#8b949e}
-.related-label{color:#484f58}
-.chip{display:inline-block;padding:.15rem .5rem;background:#30363d;border:1px solid #30363d;border-radius:12px;color:#8b949e;font-family:inherit;font-size:.75rem;cursor:pointer;transition:all .15s}
-.chip:hover{border-color:#58a6ff;color:#58a6ff}
-.chip.copied{border-color:#3fb950;color:#3fb950}
-
 .empty{text-align:center;padding:3rem;color:#484f58;font-size:.9rem}
 
 .footer{text-align:center;padding:2rem 0 1rem;color:#484f58;font-size:.8rem}
