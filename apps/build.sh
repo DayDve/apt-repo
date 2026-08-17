@@ -5,14 +5,28 @@ set -e
 # Common helpers for package scripts (available when sourced)
 # ============================================================
 
+# gh_api_retry: gh api with retries on transient failures (503, timeouts)
+# Usage: same as gh api — gh_api_retry repos/OWNER/REPO/tags
+gh_api_retry() {
+  local attempt=0 max=3 delay=2
+  while (( attempt < max )); do
+    if gh api "$@" 2>/dev/null; then
+      return 0
+    fi
+    attempt=$((attempt + 1))
+    (( attempt < max )) && sleep "$delay" && delay=$((delay * 2))
+  done
+  return 1
+}
+
 # gh_tag_ahead: Fetches latest tag, HEAD SHA, and ahead count
 # Usage: gh_tag_ahead <owner/repo>
 # Sets: LATEST_TAG, HEAD_SHA, AHEAD_COUNT
 gh_tag_ahead() {
   local repo="$1"
-  LATEST_TAG=$(gh api "repos/$repo/tags" --jq '.[0].name' 2>/dev/null || echo "unknown")
-  HEAD_SHA=$(gh api "repos/$repo/commits/HEAD" --jq '.sha' 2>/dev/null || echo "")
-  AHEAD_COUNT=$(gh api "repos/$repo/compare/$LATEST_TAG...HEAD" --jq '.ahead_by' 2>/dev/null || echo "0")
+  LATEST_TAG=$(gh_api_retry "repos/$repo/tags" --jq '.[0].name' 2>/dev/null || echo "unknown")
+  HEAD_SHA=$(gh_api_retry "repos/$repo/commits/HEAD" --jq '.sha' 2>/dev/null || echo "")
+  AHEAD_COUNT=$(gh_api_retry "repos/$repo/compare/$LATEST_TAG...HEAD" --jq '.ahead_by' 2>/dev/null || echo "0")
 }
 
 # gh_latest_release: Fetches latest release info
@@ -20,7 +34,7 @@ gh_tag_ahead() {
 # Sets: LATEST_TAG, RELEASE_BODY
 gh_latest_release() {
   local repo="$1" json
-  json=$(gh api "repos/$repo/releases/latest" 2>/dev/null || echo '{"tag_name":"unknown","body":""}')
+  json=$(gh_api_retry "repos/$repo/releases/latest" 2>/dev/null || echo '{"tag_name":"unknown","body":""}')
   LATEST_TAG=$(echo "$json" | jq -r '.tag_name')
   RELEASE_BODY=$(echo "$json" | jq -r '.body')
 }
@@ -34,7 +48,7 @@ gh_latest_release() {
 gh_latest_release_with_asset() {
   local repo="$1" substring="$2" page=1 json count tag
   while :; do
-    json=$(gh api "repos/$repo/releases?per_page=100&page=$page" 2>/dev/null) || return 1
+    json=$(gh_api_retry "repos/$repo/releases?per_page=100&page=$page" 2>/dev/null) || return 1
     count=$(printf '%s' "$json" | jq 'length')
     tag=$(printf '%s' "$json" | jq -r --arg p "$substring" \
       '[.[] | select(any(.assets[]; (.name | index($p)) != null)) | .tag_name] | .[0] // empty')
@@ -43,7 +57,7 @@ gh_latest_release_with_asset() {
     page=$((page + 1))
   done
   LATEST_TAG="$tag"
-  RELEASE_BODY=$(gh api "repos/$repo/releases/tags/$tag" --jq '.body' 2>/dev/null || echo "")
+  RELEASE_BODY=$(gh_api_retry "repos/$repo/releases/tags/$tag" --jq '.body' 2>/dev/null || echo "")
 }
 
 # gh_tag_message: Gets annotated tag message
@@ -51,18 +65,18 @@ gh_latest_release_with_asset() {
 # Returns 1 if not an annotated tag
 gh_tag_message() {
   local repo="$1" tag="$2" ref type sha
-  ref=$(gh api "repos/$repo/git/refs/tags/$tag" --jq '.object' 2>/dev/null) || return 1
+  ref=$(gh_api_retry "repos/$repo/git/refs/tags/$tag" --jq '.object' 2>/dev/null) || return 1
   type=$(echo "$ref" | jq -r '.type')
   [ "$type" = "tag" ] || return 1
   sha=$(echo "$ref" | jq -r '.sha')
-  gh api "repos/$repo/git/tags/$sha" --jq '.message' 2>/dev/null || return 1
+  gh_api_retry "repos/$repo/git/tags/$sha" --jq '.message' 2>/dev/null || return 1
 }
 
 # gh_commits_between: Lists commits between two refs
 # Usage: gh_commits_between <owner/repo> <base> <head>
 gh_commits_between() {
   local repo="$1" base="$2" head="$3"
-  gh api "repos/$repo/compare/$base...$head" \
+  gh_api_retry "repos/$repo/compare/$base...$head" \
     --jq '.commits[] | "\(.sha[0:7]) \(.commit.message | split("\n")[0])"' 2>/dev/null || true
 }
 
@@ -70,14 +84,14 @@ gh_commits_between() {
 # Usage: gh_release_body <owner/repo>
 gh_release_body() {
   local repo="$1"
-  gh api "repos/$repo/releases" --jq '.[0].body // empty' 2>/dev/null || true
+  gh_api_retry "repos/$repo/releases" --jq '.[0].body // empty' 2>/dev/null || true
 }
 
 # gh_release_body_by_tag: Gets release body for a specific tag
 # Usage: gh_release_body_by_tag <owner/repo> <tag>
 gh_release_body_by_tag() {
   local repo="$1" tag="$2"
-  gh api "repos/$repo/releases" --jq ".[] | select(.tag_name == \"$tag\") | .body // empty" 2>/dev/null || true
+  gh_api_retry "repos/$repo/releases" --jq ".[] | select(.tag_name == \"$tag\") | .body // empty" 2>/dev/null || true
 }
 
 # pull_package_info: outputs package metadata header consumed by build.sh.
@@ -111,7 +125,7 @@ fetch_url() {
 # Uses gh api with GH_TOKEN, no curl/proxy needed.
 gh_fetch_raw() {
   local repo="$1" path="$2" ref="${3:-master}"
-  gh api "repos/$repo/contents/$path?ref=$ref" --jq '.content' 2>/dev/null | base64 -d 2>/dev/null
+  gh_api_retry "repos/$repo/contents/$path?ref=$ref" --jq '.content' 2>/dev/null | base64 -d 2>/dev/null
 }
 
 # ai_changelog: Generate a concise changelog from raw release notes via Gemini
@@ -215,7 +229,7 @@ pull_package_info > /tmp/version_info
 cat /tmp/changelog >> /tmp/version_info
 
 if [ -n "$GITHUB_ACTIONS" ]; then
-  owner_info="$(gh api users/"$GITHUB_REPOSITORY_OWNER")"
+  owner_info="$(gh_api_retry users/"$GITHUB_REPOSITORY_OWNER")"
   DEBFULLNAME="$(echo "$owner_info" | jq -r '.name // empty')"
   DEBEMAIL="$(echo "$owner_info" | jq -r '.email // empty')"
 fi
