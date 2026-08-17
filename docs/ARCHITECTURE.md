@@ -36,6 +36,9 @@ flowchart TD
   subgraph DEP[deploy-apt.yml]
     DP1["Checkout apt branch"]
     DP2["Import GPG key"]
+    DP2a["Prune old releases
+          (skip PINNED_VERSIONS
+           from apps branch)"]
     DP3["Download .deb files
          from changed releases only,
          merge with existing pool"]
@@ -59,7 +62,7 @@ flowchart TD
   CUK --> DETECT --> BUILD
   BUILD -- "at least one success" --> DEP
   BUILD -- "all failed" --> FAIL
-  DEP --> DP1 --> DP2 --> DP3 --> DP4 --> DP5 --> DP6 --> DP7 --> DP8
+  DEP --> DP1 --> DP2 --> DP2a --> DP3 --> DP4 --> DP5 --> DP6 --> DP7 --> DP8
   DP6 -- "push to apt" --> WK
 ```
 
@@ -169,6 +172,7 @@ flowchart TD
 | `get_version()` | Outputs changelog to stdout, sets `$version` |
 | `SOURCE_URL` | Project URL |
 | `DESCRIPTION` | Package description |
+| `PINNED_VERSIONS` | Comma-separated versions never pruned by deploy (optional) |
 
 Template for a new package: [`docs/template/`](template/).
 

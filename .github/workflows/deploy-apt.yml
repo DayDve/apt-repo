@@ -52,7 +52,22 @@ jobs:
             [ -z "$app" ] && continue
             mapfile -t versions < <(grep "^${app}-[0-9]" /tmp/release-tags | sort -V -r)
             [ "${#versions[@]}" -le "$keep" ] && continue
+
+            # Read PINNED_VERSIONS from apps branch (never prune these)
+            pinned_versions=""
+            pinned_raw=$(gh api "repos/${{ github.repository }}/contents/apps/${app}/package?ref=apps" \
+              --jq '.content' 2>/dev/null | base64 -d 2>/dev/null \
+              | grep '^PINNED_VERSIONS=' | head -1 | cut -d'"' -f2) || true
+            if [ -n "$pinned_raw" ]; then
+              pinned_versions=$(echo "$pinned_raw" | tr ',' '\n')
+            fi
+
             for old in "${versions[@]:$keep}"; do
+              ver="${old#${app}-}"
+              if echo "$pinned_versions" | grep -qxF "$ver"; then
+                echo "Skipping $old (pinned)"
+                continue
+              fi
               echo "Deleting $old"
               gh release delete "$old" --repo "$GITHUB_REPOSITORY" --yes
               pruned=$((pruned + 1))
