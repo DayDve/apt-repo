@@ -2,8 +2,10 @@ name: Check updates
 
 on:
   push:
-    paths:
-      - 'apps/**'
+    paths-ignore:
+      - 'apps/build.sh'
+      - 'apps/apt-key.asc'
+      - 'docs/**'
     branches:
       - apps
   schedule:
