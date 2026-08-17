@@ -405,6 +405,23 @@ Homepage: https://devolutions.net/remote-desktop-manager/
 Description: Centralize, Manage and Secure Remote Connections
  Remote Desktop Manager (RDM) centralizes all remote connections on a single platform that is securely shared between users and across the entire team. With support for hundreds of integrated technologies — including multiple protocols and VPNs — along with built-in enterprise-grade password management tools, global and granular-level access controls, and robust mobile apps to complement desktop clients for Windows and Mac, RDM is a IT toolbox for remote access. RDM empowers IT departments to drive security, speed and productivity throughout the organization, while reducing inefficiency, cost and risk.
 
+Package: remotedesktopmanager
+Version: 2026.2.2.2
+Architecture: amd64
+Maintainer: Devolutions
+Depends: libwebkit2gtk-4.1-0 | libwebkit2gtk-4.0-37, ca-certificates, libsecret-1-0, xwayland
+Recommends: gnome-keyring, fuse3
+Suggests: libappindicator3-1, xdotool, lsof, libopenal1
+Filename: pool/noble/main/remotedesktopmanager_2026.2.2.2_noble_amd64.deb
+Size: 254836592
+MD5sum: e6c51f6a72b3914db5bd75dac77e9ebd
+SHA1: 4c83110fb60e8d48f3c0d24921cb33a90db448aa
+SHA256: 2a61be1e0357b3ff96e19ef32ebe696249a7427dc570e8da449cc52a5405cf4e
+Section: utils
+Homepage: https://devolutions.net/remote-desktop-manager/
+Description: Centralize, Manage and Secure Remote Connections
+ Remote Desktop Manager (RDM) centralizes all remote connections on a single platform that is securely shared between users and across the entire team. With support for hundreds of integrated technologies — including multiple protocols and VPNs — along with built-in enterprise-grade password management tools, global and granular-level access controls, and robust mobile apps to complement desktop clients for Windows and Mac, RDM is a IT toolbox for remote access. RDM empowers IT departments to drive security, speed and productivity throughout the organization, while reducing inefficiency, cost and risk.
+
 Package: rustdesk
 Version: 1.4.9
 Architecture: amd64
