@@ -237,8 +237,8 @@ pre code{background:transparent!important;padding:0!important}
 .copy-btn.copied svg{stroke:#3fb950}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 .center{text-align:center}
-.browse-link{display:inline-block;margin:1.5rem 0;padding:.7rem 1.5rem;background:#1f6feb;color:#fff;border-radius:6px;font-size:1rem;text-decoration:none;font-weight:bold;transition:background .15s}
-.browse-link:hover{background:#388bfd;text-decoration:none}
+.browse-link{display:inline-block;margin:1.5rem 0;padding:.5rem 1.2rem;border:1px solid #30363d;color:#58a6ff;border-radius:4px;font-size:.9rem;text-decoration:none;transition:all .15s}
+.browse-link:hover{border-color:#58a6ff;background:#161b22;text-decoration:none}
 .ascii-wide{display:block}
 .ascii-narrow{display:none}
 @media(max-width:768px){.ascii-wide{display:none}.ascii-narrow{display:block}}
