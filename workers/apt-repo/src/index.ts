@@ -13,6 +13,7 @@ interface Package {
   description: string;
   source: string;
   group?: string;
+  categories?: string[];
 }
 
 function repoOrigin(repo: string): string {
@@ -42,6 +43,10 @@ export default {
 
     if (path === '/' || path === '') {
       return isBrowser ? servePage(url, ctx, env) : serveText(url, ctx, env);
+    }
+
+    if (path === '/packages' || path === '/packages/') {
+      return servePackages(url, ctx, env);
     }
 
     if (path === '/apt-key.asc') {
@@ -106,8 +111,6 @@ interface DisplayEntry {
   pkg?: Package;
 }
 
-// Related packages (declared via GROUP= in their package file) are collapsed
-// into one "family" row. A group with a single member is shown standalone.
 function displayEntries(pkgs: Package[]): DisplayEntry[] {
   const groups = new Map<string, Package[]>();
   const standalone: Package[] = [];
@@ -373,6 +376,263 @@ function toggleFamily(b){
 function copy(b){let c=b.parentElement.querySelector('code');navigator.clipboard.writeText(c.textContent).then(()=>{b.classList.add('copied');setTimeout(()=>{b.classList.remove('copied')},2000)}).catch(()=>{})}</script>
 </body>
 </html>`;
+  return new Response(html, {
+    headers: { 'content-type': 'text/html; charset=utf-8' },
+  });
+}
+
+const CAT_LABELS: Record<string, string> = {
+  System: 'System',
+  Network: 'Network',
+  InstantMessaging: 'Messaging',
+  Office: 'Office',
+  Fonts: 'Fonts',
+  Utility: 'Utility',
+  FileTransfer: 'File Transfer',
+  RemoteAccess: 'Remote Access',
+  FileTools: 'File Tools',
+  Boot: 'Boot',
+  Hardware: 'Hardware',
+  Emulator: 'Emulator',
+  Development: 'Development',
+  Filesystem: 'Filesystem',
+  Security: 'Security',
+};
+
+function catLabel(cat: string): string {
+  return CAT_LABELS[cat] || cat;
+}
+
+function familyCard(e: DisplayEntry, aptOrigin: string): string {
+  const h = e.head!;
+  const members = e.members!;
+  const safeName = escapeHtml(e.name);
+  const safeDesc = escapeHtml(h.description);
+  const safeSource = escapeHtml(h.source || '');
+  const cats = (h.categories || []).map(c =>
+    `<span class="tag" data-cat="${escapeHtml(c)}">${escapeHtml(catLabel(c))}</span>`
+  ).join('');
+
+  const related = members
+    .filter(m => m.name !== e.name)
+    .map(m => `<span class="related-name">${escapeHtml(m.name)}</span>`)
+    .join('');
+
+  const installCmd = `sudo apt install ${e.name}`;
+  const installCmds = members.map(m => `sudo apt install ${m.name}`).join('\n');
+
+  return `<div class="card" data-cats="${escapeHtml((h.categories || []).join(','))}" data-name="${safeName}">
+<div class="card-header">
+  <h3 class="card-title">${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</h3>
+  <span class="family-badge">${members.length} pkgs</span>
+</div>
+<p class="card-desc">${safeDesc}</p>
+<div class="card-tags">${cats}</div>
+<div class="card-install">
+  <div class="code-wrap">
+    <pre><code>${escapeHtml(installCmd)}</code></pre>
+    <button class="copy-btn" onclick="copyCmd(this,'${escapeHtml(installCmd)}')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+  </div>
+</div>
+${related ? `<div class="card-related"><span class="related-label">Includes:</span> ${related}</div>` : ''}
+</div>`;
+}
+
+function pkgCard(p: Package, aptOrigin: string): string {
+  const safeName = escapeHtml(p.name);
+  const safeDesc = escapeHtml(p.description);
+  const safeSource = escapeHtml(p.source || '');
+  const cats = (p.categories || []).map(c =>
+    `<span class="tag" data-cat="${escapeHtml(c)}">${escapeHtml(catLabel(c))}</span>`
+  ).join('');
+
+  const installCmd = `sudo apt install ${p.name}`;
+
+  return `<div class="card" data-cats="${escapeHtml((p.categories || []).join(','))}" data-name="${safeName}">
+<div class="card-header">
+  <h3 class="card-title">${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</h3>
+</div>
+<p class="card-desc">${safeDesc}</p>
+<div class="card-tags">${cats}</div>
+<div class="card-install">
+  <div class="code-wrap">
+    <pre><code>${escapeHtml(installCmd)}</code></pre>
+    <button class="copy-btn" onclick="copyCmd(this,'${escapeHtml(installCmd)}')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+  </div>
+</div>
+</div>`;
+}
+
+async function servePackages(url: URL, ctx: ExecutionContext, env: Env): Promise<Response> {
+  const packagesUrl = `${repoOrigin(env.REPO)}/packages.json`;
+  const pkgs = await fetchJSON(packagesUrl, 'https://_cache/packages-' + env.CACHE_BUST, ctx) as Package[] | null;
+
+  const aptOrigin = env.APT_ORIGIN || url.origin;
+  const siteName = env.SITE_NAME || '';
+  const author = env.AUTHOR || '';
+  const safeOrigin = escapeHtml(url.origin);
+  const safeAptOrigin = escapeHtml(aptOrigin);
+
+  const entries = pkgs ? displayEntries(pkgs) : [];
+  const pkgCount = pkgs ? pkgs.length : 0;
+
+  const allCats = new Set<string>();
+  for (const e of entries) {
+    const cats = (e.kind === 'family' ? e.head?.categories : e.pkg?.categories) || [];
+    for (const c of cats) allCats.add(c);
+  }
+  const sortedCats = [...allCats].sort();
+
+  const catButtons = sortedCats.map(c =>
+    `<button class="filter-btn" data-cat="${escapeHtml(c)}" onclick="filterCat('${escapeHtml(c)}')">${escapeHtml(catLabel(c))}</button>`
+  ).join('');
+
+  let cards = '';
+  for (const e of entries) {
+    if (e.kind === 'family') {
+      cards += familyCard(e, aptOrigin) + '\n';
+    } else if (e.pkg) {
+      cards += pkgCard(e.pkg, aptOrigin) + '\n';
+    }
+  }
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${siteName} — Packages</title>
+<meta name="description" content="Browse and install packages from ${siteName}. APT repository for Ubuntu with software unavailable in standard repos.">
+<meta property="og:title" content="${siteName} — Packages">
+<meta property="og:description" content="Browse and install packages from ${siteName}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="${safeOrigin}/packages">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Courier New',Courier,monospace;max-width:1100px;margin:0 auto;padding:1.5rem;line-height:1.6;color:#e6edf3;background:#0d1117}
+a{color:#58a6ff;text-decoration:none}
+a:hover{text-decoration:underline}
+
+.header{text-align:center;padding:1.5rem 0}
+.header h1{font-size:1.5rem;margin-bottom:.5rem}
+.header p{color:#8b949e;font-size:.9rem}
+.header .nav{margin-top:.75rem;font-size:.85rem}
+.header .nav a{color:#8b949e;margin:0 .5rem}
+.header .nav a:hover{color:#58a6ff}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin:1.5rem 0}
+.search{flex:1;min-width:200px;padding:.6rem .8rem;background:#161b22;border:1px solid #30363d;border-radius:6px;color:#e6edf3;font-family:inherit;font-size:.85rem;outline:none}
+.search:focus{border-color:#58a6ff}
+.search::placeholder{color:#484f58}
+
+.filters{display:flex;flex-wrap:wrap;gap:.4rem}
+.filter-btn{padding:.3rem .6rem;background:#161b22;border:1px solid #30363d;border-radius:20px;color:#8b949e;font-family:inherit;font-size:.75rem;cursor:pointer;transition:all .15s}
+.filter-btn:hover{border-color:#58a6ff;color:#58a6ff}
+.filter-btn.active{background:#1f6feb;border-color:#1f6feb;color:#fff}
+
+.count{color:#8b949e;font-size:.8rem;margin-left:auto;white-space:nowrap}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem;margin-top:1rem}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1.2rem;display:flex;flex-direction:column;transition:border-color .15s}
+.card:hover{border-color:#58a6ff}
+.card.hidden{display:none}
+.card-header{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.4rem}
+.card-title{font-size:1rem;font-weight:bold}
+.card-title a{color:#58a6ff}
+.family-badge{font-size:.7rem;background:#1f6feb22;color:#58a6ff;padding:.1rem .4rem;border-radius:10px;white-space:nowrap}
+.card-desc{color:#c9d1d9;font-size:.85rem;margin-bottom:.6rem;flex:1}
+.card-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.8rem}
+.tag{font-size:.7rem;padding:.15rem .5rem;background:#30363d;border-radius:12px;color:#8b949e}
+.card-install{margin-top:auto}
+.code-wrap{position:relative}
+.code-wrap pre{background:#0d1117;padding:.5rem .7rem;border-radius:4px;font-size:.8rem;overflow-x:auto;border:1px solid #21262d}
+.code-wrap code{color:#7ee787}
+.copy-btn{position:absolute;top:4px;right:4px;background:none;border:none;cursor:pointer;color:#484f58;padding:4px;line-height:0}
+.copy-btn:hover{color:#8b949e}
+.copy-btn.copied svg{stroke:#3fb950}
+.card-related{margin-top:.6rem;padding-top:.5rem;border-top:1px solid #21262d;font-size:.8rem;color:#8b949e}
+.related-label{color:#484f58}
+.related-name{color:#8b949e;margin-right:.4rem}
+.related-name::before{content:'#';color:#30363d}
+
+.empty{text-align:center;padding:3rem;color:#484f58;font-size:.9rem}
+
+.footer{text-align:center;padding:2rem 0 1rem;color:#484f58;font-size:.8rem}
+.footer a{color:#8b949e}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>${siteName || 'Packages'}</h1>
+  <p>${pkgCount} packages available for Ubuntu Noble</p>
+  <div class="nav">
+    <a href="${safeOrigin}">Home</a>
+    <a href="${safeOrigin}/packages">Packages</a>
+    <a href="https://github.com/${escapeHtml(env.REPO)}">GitHub</a>
+  </div>
+</div>
+
+<div class="toolbar">
+  <input type="text" class="search" placeholder="Search packages..." oninput="filterAll()" id="search">
+  <div class="filters">
+    <button class="filter-btn active" data-cat="all" onclick="filterCat('all')">All</button>
+    ${catButtons}
+  </div>
+  <span class="count" id="count">${pkgCount} packages</span>
+</div>
+
+<div class="grid" id="grid">
+${cards}
+</div>
+
+<div class="empty" id="empty" style="display:none">No packages match your search.</div>
+
+<div class="footer">
+  <p><a href="https://github.com/${escapeHtml(env.REPO)}">GitHub</a>${env.TELEGRAM ? ` · <a href="${escapeHtml(env.TELEGRAM)}">Telegram</a>` : ''}</p>
+  <p>Built for personal use</p>
+</div>
+
+<script>
+let activeCat = 'all';
+
+function filterCat(cat) {
+  activeCat = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.cat === cat);
+  });
+  filterAll();
+}
+
+function filterAll() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const cards = document.querySelectorAll('.card');
+  let visible = 0;
+  cards.forEach(c => {
+    const name = c.dataset.name || '';
+    const cats = (c.dataset.cats || '').split(',');
+    const text = c.textContent.toLowerCase();
+    const matchSearch = !q || text.includes(q);
+    const matchCat = activeCat === 'all' || cats.includes(activeCat);
+    const show = matchSearch && matchCat;
+    c.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+  document.getElementById('count').textContent = visible + ' package' + (visible !== 1 ? 's' : '');
+  document.getElementById('empty').style.display = visible === 0 ? 'block' : 'none';
+}
+
+function copyCmd(btn, cmd) {
+  navigator.clipboard.writeText(cmd).then(() => {
+    btn.classList.add('copied');
+    setTimeout(() => btn.classList.remove('copied'), 2000);
+  }).catch(() => {});
+}
+</script>
+
+</body>
+</html>`;
+
   return new Response(html, {
     headers: { 'content-type': 'text/html; charset=utf-8' },
   });
