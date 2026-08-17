@@ -267,12 +267,21 @@ if [ -n "$GITHUB_ACTIONS" ] && [ "$GITHUB_REF" = "refs/heads/apps" ]; then
     if gh release view "$app-$version" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
       echo "Release $app-$version already exists, skipping"
     else
-      gh release create \
-        "$app-$version" \
-        "/tmp/$deb_name" \
-        --title "$app $version" \
-        $notes_flag \
-        --repo "$GITHUB_REPOSITORY"
+      attempt=0 max=3 delay=2
+      while (( attempt < max )); do
+        gh release create \
+          "$app-$version" \
+          "/tmp/$deb_name" \
+          --title "$app $version" \
+          $notes_flag \
+          --repo "$GITHUB_REPOSITORY" && break
+        attempt=$((attempt + 1))
+        if (( attempt < max )); then
+          echo "gh release create failed, retrying in ${delay}s..."
+          sleep "$delay"
+          delay=$((delay * 2))
+        fi
+      done
     fi
 
   gh release delete-asset "$app-$version" "$app-$version.tar.gz" --repo "$GITHUB_REPOSITORY" --yes 2>/dev/null || true
