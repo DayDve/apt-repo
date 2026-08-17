@@ -1,22 +1,36 @@
 [{
   "name": "ayugram",
   "description": "Telegram client with enhanced features",
-  "source": "https://github.com/AyuGram/AyuGramDesktop"
+  "source": "https://github.com/AyuGram/AyuGramDesktop",
+  "categories": [
+    "InstantMessaging"
+  ]
 }
 ,{
   "name": "bees",
   "description": "btrfs deduplication daemon",
-  "source": "https://github.com/Zygo/bees"
+  "source": "https://github.com/Zygo/bees",
+  "categories": [
+    "System",
+    "Filesystem"
+  ]
 }
 ,{
   "name": "btrfs-assistant",
   "description": "GUI management tool for Btrfs filesystem",
-  "source": "https://gitlab.com/btrfs-assistant/btrfs-assistant"
+  "source": "https://gitlab.com/btrfs-assistant/btrfs-assistant",
+  "categories": [
+    "System",
+    "Filesystem"
+  ]
 }
 ,{
   "name": "fonts-noto-lite",
   "description": "Hide non-Latin/Cyrillic Noto fonts from font selection dialogs on Ubuntu/Debian",
-  "source": "https://github.com/DayDve/fonts-noto-lite"
+  "source": "https://github.com/DayDve/fonts-noto-lite",
+  "categories": [
+    "Fonts"
+  ]
 }
 ,{
   "name": "glab",
@@ -26,28 +40,49 @@
 ,{
   "name": "grub-btrfs",
   "description": "GRUB menu entries for btrfs snapshots",
-  "source": "https://github.com/Antynea/grub-btrfs"
+  "source": "https://github.com/Antynea/grub-btrfs",
+  "categories": [
+    "System",
+    "Boot"
+  ]
 }
 ,{
   "name": "keyd",
   "description": "Key remapping daemon",
-  "source": "https://github.com/rvaiya/keyd"
+  "source": "https://github.com/rvaiya/keyd",
+  "categories": [
+    "System",
+    "Hardware"
+  ]
 }
 ,{
   "name": "kio-stash",
   "description": "Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6",
-  "source": "https://github.com/DayDve/kio-stash"
+  "source": "https://github.com/DayDve/kio-stash",
+  "categories": [
+    "System",
+    "Utility",
+    "KDE"
+  ]
 }
 ,{
   "name": "localsend",
   "description": "Cross-platform file sharing over local network",
-  "source": "https://github.com/localsend/localsend"
+  "source": "https://github.com/localsend/localsend",
+  "categories": [
+    "Network",
+    "FileTransfer"
+  ]
 }
 ,{
   "name": "mc6",
   "description": "Midnight Commander with Plugins",
   "source": "https://github.com/ilia-maslakov/mcdev",
-  "group": "mc6"
+  "group": "mc6",
+  "categories": [
+    "System",
+    "FileTools"
+  ]
 }
 ,{
   "name": "mc6-data",
@@ -64,43 +99,76 @@
 ,{
   "name": "rclone",
   "description": "rsync for cloud storage",
-  "source": "https://github.com/rclone/rclone"
+  "source": "https://github.com/rclone/rclone",
+  "categories": [
+    "Utility",
+    "FileTransfer"
+  ]
 }
 ,{
   "name": "remotedesktopmanager",
   "description": "One application for every remote connection you'll ever open",
-  "source": "https://devolutions.net/remote-desktop-manager/"
+  "source": "https://devolutions.net/remote-desktop-manager/",
+  "categories": [
+    "Utility",
+    "Security",
+    "RemoteAccess"
+  ]
 }
 ,{
   "name": "rustdesk",
   "description": "Fast open-source remote desktop",
-  "source": "https://github.com/rustdesk/rustdesk"
+  "source": "https://github.com/rustdesk/rustdesk",
+  "categories": [
+    "Network",
+    "RemoteAccess"
+  ]
 }
 ,{
   "name": "scrcpy",
   "description": "Mirror and control Android devices via USB/TCP",
-  "source": "https://github.com/Genymobile/scrcpy"
+  "source": "https://github.com/Genymobile/scrcpy",
+  "categories": [
+    "Utility",
+    "Development"
+  ]
 }
 ,{
   "name": "viber",
   "description": "Free and secure calls and messages to anyone, anywhere",
-  "source": "https://www.viber.com"
+  "source": "https://www.viber.com",
+  "categories": [
+    "InstantMessaging",
+    "Network"
+  ]
 }
 ,{
   "name": "winegui",
   "description": "Wine prefix manager with a modern GUI",
-  "source": "https://github.com/winegui/WineGUI"
+  "source": "https://github.com/winegui/WineGUI",
+  "categories": [
+    "System",
+    "Emulator"
+  ]
 }
 ,{
   "name": "wlvncc",
   "description": "Wayland native VNC client",
-  "source": "https://github.com/any1/wlvncc"
+  "source": "https://github.com/any1/wlvncc",
+  "categories": [
+    "Network",
+    "RemoteAccess"
+  ]
 }
 ,{
   "name": "wps-office",
   "description": "WPS Office repack with patches",
   "source": "https://github.com/Rongronggg9/wps-office-repack",
-  "group": "wps-office"
+  "group": "wps-office",
+  "categories": [
+    "Office",
+    "WordProcessor"
+  ]
 }
 ,{
   "name": "wps-office-langpack-ru",
