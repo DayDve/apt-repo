@@ -61,7 +61,7 @@ export default {
 };
 
 async function proxy(url: string): Promise<Response> {
-  const resp = await fetch(url);
+  const resp = await fetch(url, { cf: { cacheTtl: -1 } });
   return new Response(resp.body, {
     status: resp.status,
     headers: {
