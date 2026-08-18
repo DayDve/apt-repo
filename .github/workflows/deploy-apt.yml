@@ -237,10 +237,10 @@ jobs:
                   ss_name=$(basename "$ss_file")
                   ss_url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/apt/screenshots/${app}/${ss_name}"
                   if $first_ss; then
-                    printf '  - default: true\n' >> "$yml_file"
+                    printf '%s\n' '  - default: true' >> "$yml_file"
                     first_ss=false
                   else
-                    printf '  - \n' >> "$yml_file"
+                    printf '%s\n' '  -' >> "$yml_file"
                   fi
                   printf '    Caption:\n      C: %s\n' "$app" >> "$yml_file"
                   printf '    Thumbnails:\n    - %s\n' "$ss_url" >> "$yml_file"
