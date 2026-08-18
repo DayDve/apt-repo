@@ -89,14 +89,12 @@ Screenshots:
   thumbnails: []
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/btrfs-assistant/0.png
-- default: true
-  caption:
+- caption:
     C: btrfs-assistant
   thumbnails: []
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/btrfs-assistant/1.png
-- default: true
-  caption:
+- caption:
     C: btrfs-assistant
   thumbnails: []
   source-image:
@@ -256,8 +254,7 @@ Screenshots:
   thumbnails: []
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/localsend/0.webp
-- default: true
-  caption:
+- caption:
     C: localsend
   thumbnails: []
   source-image:
@@ -388,8 +385,7 @@ Screenshots:
   thumbnails: []
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/rustdesk/0.png
-- default: true
-  caption:
+- caption:
     C: rustdesk
   thumbnails: []
   source-image:
@@ -466,8 +462,7 @@ Screenshots:
   thumbnails: []
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/viber/0.png
-- default: true
-  caption:
+- caption:
     C: viber
   thumbnails: []
   source-image:
@@ -507,8 +502,7 @@ Screenshots:
   thumbnails: []
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/winegui/0.png
-- default: true
-  caption:
+- caption:
     C: winegui
   thumbnails: []
   source-image:
@@ -592,14 +586,12 @@ Screenshots:
   thumbnails: []
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/wps-office/0.png
-- default: true
-  caption:
+- caption:
     C: wps-office
   thumbnails: []
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/wps-office/1.png
-- default: true
-  caption:
+- caption:
     C: wps-office
   thumbnails: []
   source-image:
