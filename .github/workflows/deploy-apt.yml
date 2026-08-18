@@ -190,7 +190,7 @@ jobs:
               [ "$type" = "none" ] && continue
 
               printf '\nComponents:\n' >> "$yml_file"
-              printf '- Type: %s\n' "$type" >> "$yml_file"
+              echo "- Type: $type" >> "$yml_file"
               printf '  ID: io.github.daydve.apt.%s\n' "$app" >> "$yml_file"
               printf '  Name:\n    C: %s\n' "$app" >> "$yml_file"
               printf '  Summary:\n    C: %s\n' "$desc" >> "$yml_file"
@@ -216,14 +216,15 @@ jobs:
                 printf '  Launchable:\n    desktop-id: %s.desktop\n' "$app" >> "$yml_file"
               fi
 
-              printf '  Provides:\n    Binaries:\n    - %s\n' "$app" >> "$yml_file"
+              printf '  Provides:\n    Binaries:\n' >> "$yml_file"
+              echo "    - $app" >> "$yml_file"
 
               # Categories
               if [ -n "$cats" ]; then
                 printf '  Categories:\n' >> "$yml_file"
                 IFS=';' read -ra CAT_ARRAY <<< "$cats"
                 for cat in "${CAT_ARRAY[@]}"; do
-                  printf '    - %s\n' "$cat" >> "$yml_file"
+                  echo "    - $cat" >> "$yml_file"
                 done
               fi
 
@@ -237,10 +238,10 @@ jobs:
                   ss_name=$(basename "$ss_file")
                   ss_url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/apt/screenshots/${app}/${ss_name}"
                   if $first_ss; then
-                    printf '%s\n' '  - default: true' >> "$yml_file"
+                    echo '  - default: true' >> "$yml_file"
                     first_ss=false
                   else
-                    printf '%s\n' '  -' >> "$yml_file"
+                    echo '  -' >> "$yml_file"
                   fi
                   printf '    Caption:\n      C: %s\n' "$app" >> "$yml_file"
                   printf '    Thumbnails:\n    - %s\n' "$ss_url" >> "$yml_file"
