@@ -174,17 +174,17 @@ jobs:
               # Long description from descriptions.json
               long_desc=$(jq -r --arg k "$app" '.[$k].description // empty' /tmp/descriptions.json 2>/dev/null || echo "")
               if [ -n "$long_desc" ]; then
-                printf '    <description><![CDATA[' >> "$xml_file"
-                echo "<p>${long_desc}</p>" >> "$xml_file"
-                printf ']]></description>\n' >> "$xml_file"
+                echo '    <description>' >> "$xml_file"
+                printf '      <p>%s</p>\n' "$long_desc" >> "$xml_file"
+                echo '    </description>' >> "$xml_file"
               fi
               # Screenshots from descriptions.json
               screenshots_json=$(jq -c --arg k "$app" '.[$k].screenshots // empty' /tmp/descriptions.json 2>/dev/null || echo "")
               if [ -n "$screenshots_json" ] && [ "$screenshots_json" != "" ]; then
                 echo '    <screenshots>' >> "$xml_file"
-                jq -r --arg i 0 '.[]' <<< "$screenshots_json" 2>/dev/null | while read -r img_url; do
+                jq -r '.[]' <<< "$screenshots_json" 2>/dev/null | while read -r img_url; do
                   [ -z "$img_url" ] && continue
-                  printf '      <screenshot>\n        <caption>%s</caption>\n        <image>%s</image>\n      </screenshot>\n' "$app" "$img_url" >> "$xml_file"
+                  printf '      <screenshot type="default">\n        <caption>%s</caption>\n        <image>%s</image>\n      </screenshot>\n' "$app" "$img_url" >> "$xml_file"
                 done
                 echo '    </screenshots>' >> "$xml_file"
               fi
