@@ -151,6 +151,24 @@ jobs:
           # Fetch descriptions.json for long descriptions
           git show "origin/apps:apps/descriptions.json" > /tmp/descriptions.json 2>/dev/null || echo '{}' > /tmp/descriptions.json
 
+      - name: Download screenshots
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/screenshots"
+          while IFS='|' read -r app url desc type cats icon_source icon_path; do
+            [ -z "$app" ] && continue
+            screenshots_json=$(jq -c --arg k "$app" '.[$k].screenshots // empty' /tmp/descriptions.json 2>/dev/null || echo "")
+            [ -z "$screenshots_json" ] || [ "$screenshots_json" = "" ] && continue
+            idx=0
+            jq -r '.[]' <<< "$screenshots_json" 2>/dev/null | while read -r img_url; do
+              [ -z "$img_url" ] && continue
+              ext="${img_url##*.}"
+              [ ${#ext} -gt 5 ] && ext="png"
+              mkdir -p "$GITHUB_WORKSPACE/screenshots/$app"
+              curl -fsSL -o "$GITHUB_WORKSPACE/screenshots/$app/${idx}.${ext}" "$img_url" 2>/dev/null || true
+              idx=$((idx + 1))
+            done
+          done < /tmp/pkg-info
+
       - name: Generate AppStream metadata
         run: |
           git fetch origin apps
@@ -180,11 +198,12 @@ jobs:
               fi
               # Screenshots from descriptions.json
               screenshots_json=$(jq -c --arg k "$app" '.[$k].screenshots // empty' /tmp/descriptions.json 2>/dev/null || echo "")
-              if [ -n "$screenshots_json" ] && [ "$screenshots_json" != "" ]; then
+              if [ -n "$screenshots_json" ] && [ "$screenshots_json" != "" ] && [ -d "$GITHUB_WORKSPACE/screenshots/$app" ]; then
                 echo '    <screenshots>' >> "$xml_file"
-                jq -r '.[]' <<< "$screenshots_json" 2>/dev/null | while read -r img_url; do
-                  [ -z "$img_url" ] && continue
-                  printf '      <screenshot type="default">\n        <caption>%s</caption>\n        <image>%s</image>\n      </screenshot>\n' "$app" "$img_url" >> "$xml_file"
+                for ss_file in "$GITHUB_WORKSPACE/screenshots/$app"/*; do
+                  [ -f "$ss_file" ] || continue
+                  ss_name=$(basename "$ss_file")
+                  printf '      <screenshot type="default">\n        <caption>%s</caption>\n        <image>https://raw.githubusercontent.com/%s/apt/screenshots/%s/%s</image>\n      </screenshot>\n' "$app" "$GITHUB_REPOSITORY" "$app" "$ss_name" >> "$xml_file"
                 done
                 echo '    </screenshots>' >> "$xml_file"
               fi
@@ -340,7 +359,19 @@ jobs:
             fi
             # Read long description and screenshots from descriptions.json
             long_desc=$(jq -r --arg k "$app" '.[$k].description // empty' /tmp/descriptions.json 2>/dev/null || echo "")
-            screenshots=$(jq -c --arg k "$app" '.[$k].screenshots // empty' /tmp/descriptions.json 2>/dev/null || echo "")
+            # Build local screenshot paths if downloaded
+            screenshots="null"
+            if [ -d "$GITHUB_WORKSPACE/screenshots/$app" ] && [ "$(ls "$GITHUB_WORKSPACE/screenshots/$app"/* 2>/dev/null | wc -l)" -gt 0 ]; then
+              screenshots="["
+              first_ss=true
+              for ss_file in "$GITHUB_WORKSPACE/screenshots/$app"/*; do
+                [ -f "$ss_file" ] || continue
+                $first_ss || screenshots+=","
+                first_ss=false
+                screenshots+="\"/screenshots/$app/$(basename "$ss_file")\""
+              done
+              screenshots+="]"
+            fi
             # Check if icon exists
             icon=""
             [ -f "/tmp/icons-48/${app}.png" ] && icon="/icons/${app}.png"
