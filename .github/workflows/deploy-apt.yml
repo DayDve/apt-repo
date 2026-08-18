@@ -200,10 +200,21 @@ jobs:
               screenshots_json=$(jq -c --arg k "$app" '.[$k].screenshots // empty' /tmp/descriptions.json 2>/dev/null || echo "")
               if [ -n "$screenshots_json" ] && [ "$screenshots_json" != "" ] && [ -d "$GITHUB_WORKSPACE/screenshots/$app" ]; then
                 echo '    <screenshots>' >> "$xml_file"
+                first_ss=true
                 for ss_file in "$GITHUB_WORKSPACE/screenshots/$app"/*; do
                   [ -f "$ss_file" ] || continue
                   ss_name=$(basename "$ss_file")
-                  printf '      <screenshot type="default">\n        <caption>%s</caption>\n        <image>https://raw.githubusercontent.com/%s/apt/screenshots/%s/%s</image>\n      </screenshot>\n' "$app" "$GITHUB_REPOSITORY" "$app" "$ss_name" >> "$xml_file"
+                  ss_url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/apt/screenshots/${app}/${ss_name}"
+                  if $first_ss; then
+                    printf '      <screenshot type="default">\n' >> "$xml_file"
+                    first_ss=false
+                  else
+                    printf '      <screenshot>\n' >> "$xml_file"
+                  fi
+                  printf '        <caption>%s</caption>\n' "$app" >> "$xml_file"
+                  printf '        <image type="thumbnail">%s</image>\n' "$ss_url" >> "$xml_file"
+                  printf '        <image type="source">%s</image>\n' "$ss_url" >> "$xml_file"
+                  echo '      </screenshot>' >> "$xml_file"
                 done
                 echo '    </screenshots>' >> "$xml_file"
               fi
