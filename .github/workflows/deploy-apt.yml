@@ -171,6 +171,23 @@ jobs:
               printf '    <id>io.github.daydve.apt.%s</id>\n' "$app" >> "$xml_file"
               printf '    <name>%s</name>\n' "$app" >> "$xml_file"
               printf '    <summary>%s</summary>\n' "$desc" >> "$xml_file"
+              # Long description from descriptions.json
+              long_desc=$(jq -r --arg k "$app" '.[$k].description // empty' /tmp/descriptions.json 2>/dev/null || echo "")
+              if [ -n "$long_desc" ]; then
+                printf '    <description><![CDATA[' >> "$xml_file"
+                echo "<p>${long_desc}</p>" >> "$xml_file"
+                printf ']]></description>\n' >> "$xml_file"
+              fi
+              # Screenshots from descriptions.json
+              screenshots_json=$(jq -c --arg k "$app" '.[$k].screenshots // empty' /tmp/descriptions.json 2>/dev/null || echo "")
+              if [ -n "$screenshots_json" ] && [ "$screenshots_json" != "" ]; then
+                echo '    <screenshots>' >> "$xml_file"
+                jq -r --arg i 0 '.[]' <<< "$screenshots_json" 2>/dev/null | while read -r img_url; do
+                  [ -z "$img_url" ] && continue
+                  printf '      <screenshot>\n        <caption>%s</caption>\n        <image>%s</image>\n      </screenshot>\n' "$app" "$img_url" >> "$xml_file"
+                done
+                echo '    </screenshots>' >> "$xml_file"
+              fi
               printf '    <metadata_license>CC0-1.0</metadata_license>\n' >> "$xml_file"
               printf '    <project_license>GPL-3.0-or-later</project_license>\n' >> "$xml_file"
               printf '    <pkgname>%s</pkgname>\n' "$app" >> "$xml_file"
@@ -321,8 +338,9 @@ jobs:
             if [ -z "$desc" ]; then
               desc=$(dpkg-deb -f "/tmp/pool/$distro/main/$deb_name" Description 2>/dev/null | head -1 || echo "")
             fi
-            # Read long description from descriptions.json
-            long_desc=$(jq -r --arg k "$app" '.[$k] // empty' /tmp/descriptions.json 2>/dev/null || echo "")
+            # Read long description and screenshots from descriptions.json
+            long_desc=$(jq -r --arg k "$app" '.[$k].description // empty' /tmp/descriptions.json 2>/dev/null || echo "")
+            screenshots=$(jq -c --arg k "$app" '.[$k].screenshots // empty' /tmp/descriptions.json 2>/dev/null || echo "")
             # Check if icon exists
             icon=""
             [ -f "/tmp/icons-48/${app}.png" ] && icon="/icons/${app}.png"
@@ -331,9 +349,11 @@ jobs:
             jq -n --arg name "$app" --arg desc "$desc" --arg source "$source_url" \
               --arg long "$long_desc" --arg icon "$icon" \
               --arg group "$group" --arg cats "$cats" \
+              --argjson screenshots "${screenshots:-null}" \
               '{name:$name,description:$desc,source:$source}
                + (if $long != "" then {longDescription:$long} else {} end)
                + (if $icon != "" then {icon:$icon} else {} end)
+               + (if $screenshots != null then {screenshots:$screenshots} else {} end)
                + (if $group != "" then {group:$group} else {} end)
                + (if $cats != "" then {categories:($cats|split(";"))} else {} end)' \
               >> "$GITHUB_WORKSPACE/packages.json"
