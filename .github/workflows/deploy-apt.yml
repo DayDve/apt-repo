@@ -221,8 +221,6 @@ jobs:
               [ -z "$app" ] && continue
 
               type=$(awk -F'|' -v a="$app" '$1==a{print $4}' /tmp/pkg-info)
-              [ "$type" != "desktop-application" ] && [ "$type" != "addon" ] && continue
-
               icon_source=$(awk -F'|' -v a="$app" '$1==a{print $6}' /tmp/pkg-info)
               icon_path=$(awk -F'|' -v a="$app" '$1==a{print $7}' /tmp/pkg-info)
               [ -z "$icon_source" ] && icon_source="deb"
