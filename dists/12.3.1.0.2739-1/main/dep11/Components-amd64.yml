@@ -89,6 +89,9 @@ Name:
   C: glab
 Summary:
   C: Official GitLab command-line tool
+Categories:
+- Utility
+- Development
 Url:
   homepage: https://gitlab.com/gitlab-org/cli
 Provides:
