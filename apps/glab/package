@@ -1,6 +1,8 @@
 SOURCE_URL="https://gitlab.com/gitlab-org/cli"
 DESCRIPTION="Official GitLab command-line tool"
 CHANGELOG_URL="https://gitlab.com/gitlab-org/cli/-/releases"
+APPSTREAM_TYPE="console-application"
+APPSTREAM_CATEGORIES="Utility;Development"
 ICON_SOURCE="url"
 ICON_PATH="https://gitlab.com/gitlab-org/cli/-/raw/main/docs/source/img/glab-logo.png"
 
