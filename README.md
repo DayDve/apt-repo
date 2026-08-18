@@ -21,7 +21,7 @@ Or one-liner: `curl -sL https://apt.smbit.pro | bash`
 
 ## Browse packages
 
-**[View all 21 packages on the website](https://apt.smbit.pro/packages)**
+**[Browse all packages on the website](https://apt.smbit.pro/packages)**
 
 ## Want to add a package?
 
