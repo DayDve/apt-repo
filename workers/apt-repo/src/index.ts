@@ -676,7 +676,13 @@ ${sharedStyles()}
 .install-block .code-wrap pre{background:#0d1117;border:1px solid #21262d;border-radius:4px}
 .install-block .code-wrap code{color:#7ee787;font-size:.85rem}
 .screenshots{display:flex;gap:.8rem;overflow-x:auto;padding:.5rem 0}
-.screenshots img{max-height:300px;border-radius:8px;border:1px solid #30363d}
+.screenshots img{max-height:300px;border-radius:8px;border:1px solid #30363d;cursor:pointer;transition:opacity .15s}
+.screenshots img:hover{opacity:.85}
+.lightbox{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.9);align-items:center;justify-content:center;cursor:zoom-out}
+.lightbox.open{display:flex}
+.lightbox img{max-width:92vw;max-height:92vh;border-radius:8px;box-shadow:0 0 40px rgba(0,0,0,.5)}
+.lightbox-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:#8b949e;font-size:2rem;cursor:pointer;line-height:1;padding:.2rem .5rem}
+.lightbox-close:hover{color:#e6edf3}
 .footer{text-align:center;padding:2rem 0 1rem;color:#484f58;font-size:.8rem}
 .footer a{color:#8b949e}
 @media(max-width:600px){.detail-top{flex-direction:column;align-items:center;text-align:center}.detail-icon{width:72px;height:72px}.detail-links{justify-content:center}}
@@ -698,9 +704,14 @@ ${sharedStyles()}
 ${screenshots.length > 0 ? `
 <div class="detail-section">
   <div class="screenshots">
-    ${screenshots.map(s => `<img src="${escapeHtml(s)}" alt="${safeName} screenshot" loading="lazy">`).join('\n    ')}
+    ${screenshots.map(s => `<img src="${escapeHtml(s)}" alt="${safeName} screenshot" loading="lazy" onclick="openLb(this.src)">`).join('\n    ')}
   </div>
 </div>` : ''}
+
+<div class="lightbox" id="lb" onclick="closeLb()">
+  <button class="lightbox-close">&times;</button>
+  <img id="lb-img" src="" alt="">
+</div>
 
 <div class="detail-section">
   <h2>About</h2>
@@ -725,7 +736,11 @@ ${screenshots.length > 0 ? `
   <p><a href="https://github.com/${escapeHtml(env.REPO)}">GitHub</a>${env.TELEGRAM ? ` · <a href="${escapeHtml(env.TELEGRAM)}">Telegram</a>` : ''}</p>
 </div>
 
-<script>${sharedScript()}</script>
+<script>${sharedScript()}
+function openLb(src){const lb=document.getElementById('lb');document.getElementById('lb-img').src=src;lb.classList.add('open');document.body.style.overflow='hidden'}
+function closeLb(){document.getElementById('lb').classList.remove('open');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb()});
+</script>
 </body>
 </html>`;
 
