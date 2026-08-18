@@ -28,8 +28,6 @@ Components:
     - ayugram
   Categories:
     - InstantMessaging
-
-Components:
 - Type: console-application
   ID: io.github.daydve.apt.bees
   Name:
@@ -50,8 +48,6 @@ Components:
   Categories:
     - System
     - Filesystem
-
-Components:
 - Type: desktop-application
   ID: io.github.daydve.apt.btrfs-assistant
   Name:
@@ -100,8 +96,6 @@ Components:
     - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/btrfs-assistant/2.png
     SourceImage:
       URL: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/btrfs-assistant/2.png
-
-Components:
 - Type: font
   ID: io.github.daydve.apt.fonts-noto-lite
   Name:
@@ -121,8 +115,6 @@ Components:
     - fonts-noto-lite
   Categories:
     - Fonts
-
-Components:
 - Type: console-application
   ID: io.github.daydve.apt.glab
   Name:
@@ -143,8 +135,6 @@ Components:
   Categories:
     - Utility
     - Development
-
-Components:
 - Type: console-application
   ID: io.github.daydve.apt.grub-btrfs
   Name:
@@ -165,8 +155,6 @@ Components:
   Categories:
     - System
     - Boot
-
-Components:
 - Type: console-application
   ID: io.github.daydve.apt.keyd
   Name:
@@ -187,8 +175,6 @@ Components:
   Categories:
     - System
     - Hardware
-
-Components:
 - Type: addon
   ID: io.github.daydve.apt.kio-stash
   Name:
@@ -214,8 +200,6 @@ Components:
     - System
     - Utility
     - KDE
-
-Components:
 - Type: desktop-application
   ID: io.github.daydve.apt.localsend
   Name:
@@ -257,8 +241,6 @@ Components:
     - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/localsend/1.webp
     SourceImage:
       URL: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/localsend/1.webp
-
-Components:
 - Type: desktop-application
   ID: io.github.daydve.apt.mc6
   Name:
@@ -293,8 +275,6 @@ Components:
     - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/mc6/0.png
     SourceImage:
       URL: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/mc6/0.png
-
-Components:
 - Type: console-application
   ID: io.github.daydve.apt.rclone
   Name:
@@ -315,8 +295,6 @@ Components:
   Categories:
     - Utility
     - FileTransfer
-
-Components:
 - Type: desktop-application
   ID: io.github.daydve.apt.remotedesktopmanager
   Name:
@@ -344,8 +322,6 @@ Components:
     - Utility
     - Security
     - RemoteAccess
-
-Components:
 - Type: desktop-application
   ID: io.github.daydve.apt.rustdesk
   Name:
@@ -387,8 +363,6 @@ Components:
     - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/rustdesk/1.png
     SourceImage:
       URL: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/rustdesk/1.png
-
-Components:
 - Type: desktop-application
   ID: io.github.daydve.apt.scrcpy
   Name:
@@ -423,8 +397,6 @@ Components:
     - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/scrcpy/0.jpg
     SourceImage:
       URL: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/scrcpy/0.jpg
-
-Components:
 - Type: desktop-application
   ID: io.github.daydve.apt.viber
   Name:
@@ -466,8 +438,6 @@ Components:
     - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/viber/1.png
     SourceImage:
       URL: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/viber/1.png
-
-Components:
 - Type: desktop-application
   ID: io.github.daydve.apt.winegui
   Name:
@@ -509,8 +479,6 @@ Components:
     - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/winegui/1.png
     SourceImage:
       URL: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/winegui/1.png
-
-Components:
 - Type: console-application
   ID: io.github.daydve.apt.wlvncc
   Name:
@@ -531,8 +499,6 @@ Components:
   Categories:
     - Network
     - RemoteAccess
-
-Components:
 - Type: addon
   ID: io.github.daydve.apt.wps-office-langpack-ru
   Name:
@@ -554,8 +520,6 @@ Components:
   Provides:
     Binaries:
     - wps-office-langpack-ru
-
-Components:
 - Type: desktop-application
   ID: io.github.daydve.apt.wps-office
   Name:
