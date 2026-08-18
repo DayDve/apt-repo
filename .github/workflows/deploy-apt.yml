@@ -183,13 +183,14 @@ jobs:
             echo '---' > "$yml_file"
             echo 'File: Components-amd64.yml' >> "$yml_file"
             echo 'Media-Type: application/x-yaml' >> "$yml_file"
+            echo '' >> "$yml_file"
+            echo 'Components:' >> "$yml_file"
 
             while IFS='|' read -r app url desc type cats icon_source icon_path; do
               [ -z "$app" ] && continue
               [ -z "$type" ] && type="console-application"
               [ "$type" = "none" ] && continue
 
-              printf '\nComponents:\n' >> "$yml_file"
               echo "- Type: $type" >> "$yml_file"
               printf '  ID: io.github.daydve.apt.%s\n' "$app" >> "$yml_file"
               printf '  Name:\n    C: %s\n' "$app" >> "$yml_file"
