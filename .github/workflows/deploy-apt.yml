@@ -178,72 +178,80 @@ jobs:
             # Remove old dep-11 path; use dep11 (without dash) to match APT's 50appstream
             rm -rf "dists/$distro/main/dep-11"
             mkdir -p "dists/$distro/main/dep11"
-            xml_file="dists/$distro/main/dep11/Components-amd64.xml"
-            echo '<?xml version="1.0" encoding="UTF-8"?>' > "$xml_file"
-            echo '<components origin="daydve-apt">' >> "$xml_file"
+            yml_file="dists/$distro/main/dep11/Components-amd64.yml"
+
+            cat > "$yml_file" <<'YAMLHDR'
+---
+File: Components-amd64.yml
+Media-Type: application/x-yaml
+YAMLHDR
+
             while IFS='|' read -r app url desc type cats icon_source icon_path; do
               [ -z "$app" ] && continue
               [ -z "$type" ] && type="console-application"
               [ "$type" = "none" ] && continue
-              printf '  <component type="%s">\n' "$type" >> "$xml_file"
-              printf '    <id>io.github.daydve.apt.%s</id>\n' "$app" >> "$xml_file"
-              printf '    <name>%s</name>\n' "$app" >> "$xml_file"
-              printf '    <summary>%s</summary>\n' "$desc" >> "$xml_file"
-              # Long description from descriptions.json
+
+              printf '\nComponents:\n' >> "$yml_file"
+              printf '- Type: %s\n' "$type" >> "$yml_file"
+              printf '  ID: io.github.daydve.apt.%s\n' "$app" >> "$yml_file"
+              printf '  Name:\n    C: %s\n' "$app" >> "$yml_file"
+              printf '  Summary:\n    C: %s\n' "$desc" >> "$yml_file"
+
+              # Long description
               long_desc=$(jq -r --arg k "$app" '.[$k].description // empty' /tmp/descriptions.json 2>/dev/null || echo "")
               if [ -n "$long_desc" ]; then
-                echo '    <description>' >> "$xml_file"
-                printf '      <p>%s</p>\n' "$long_desc" >> "$xml_file"
-                echo '    </description>' >> "$xml_file"
+                printf '  Description:\n    C: >-\n      <p>%s</p>\n' "$long_desc" >> "$yml_file"
               fi
-              # Screenshots from descriptions.json
+
+              printf '  MetadataLicense: CC0-1.0\n' >> "$yml_file"
+              printf '  ProjectLicense: GPL-3.0-or-later\n' >> "$yml_file"
+              printf '  Package: %s\n' "$app" >> "$yml_file"
+              printf '  Url:\n    Homepage: %s\n' "$url" >> "$yml_file"
+
+              # Icon
+              if [ "$type" = "desktop-application" ] || [ "$type" = "addon" ]; then
+                printf '  Icon:\n    Cache: %s\n    Theme: hicolor\n    Size: 48\n' "$app" >> "$yml_file"
+              fi
+
+              # Launchable
+              if [ "$type" = "desktop-application" ]; then
+                printf '  Launchable:\n    desktop-id: %s.desktop\n' "$app" >> "$yml_file"
+              fi
+
+              printf '  Provides:\n    Binaries:\n    - %s\n' "$app" >> "$yml_file"
+
+              # Categories
+              if [ -n "$cats" ]; then
+                printf '  Categories:\n' >> "$yml_file"
+                IFS=';' read -ra CAT_ARRAY <<< "$cats"
+                for cat in "${CAT_ARRAY[@]}"; do
+                  printf '    - %s\n' "$cat" >> "$yml_file"
+                done
+              fi
+
+              # Screenshots (with thumbnails)
               screenshots_json=$(jq -c --arg k "$app" '.[$k].screenshots // empty' /tmp/descriptions.json 2>/dev/null || echo "")
               if [ -n "$screenshots_json" ] && [ "$screenshots_json" != "" ] && [ -d "$GITHUB_WORKSPACE/screenshots/$app" ]; then
-                echo '    <screenshots>' >> "$xml_file"
+                printf '  Screenshots:\n' >> "$yml_file"
                 first_ss=true
                 for ss_file in "$GITHUB_WORKSPACE/screenshots/$app"/*; do
                   [ -f "$ss_file" ] || continue
                   ss_name=$(basename "$ss_file")
                   ss_url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/apt/screenshots/${app}/${ss_name}"
                   if $first_ss; then
-                    printf '      <screenshot type="default">\n' >> "$xml_file"
+                    printf '  - default: true\n' >> "$yml_file"
                     first_ss=false
                   else
-                    printf '      <screenshot>\n' >> "$xml_file"
+                    printf '  - \n' >> "$yml_file"
                   fi
-                  printf '        <caption>%s</caption>\n' "$app" >> "$xml_file"
-                  printf '        <image type="thumbnail">%s</image>\n' "$ss_url" >> "$xml_file"
-                  printf '        <image type="source">%s</image>\n' "$ss_url" >> "$xml_file"
-                  echo '      </screenshot>' >> "$xml_file"
+                  printf '    Caption:\n      C: %s\n' "$app" >> "$yml_file"
+                  printf '    Thumbnails:\n    - %s\n' "$ss_url" >> "$yml_file"
+                  printf '    SourceImage:\n      URL: %s\n' "$ss_url" >> "$yml_file"
                 done
-                echo '    </screenshots>' >> "$xml_file"
               fi
-              printf '    <metadata_license>CC0-1.0</metadata_license>\n' >> "$xml_file"
-              printf '    <project_license>GPL-3.0-or-later</project_license>\n' >> "$xml_file"
-              printf '    <pkgname>%s</pkgname>\n' "$app" >> "$xml_file"
-              printf '    <url type="homepage">%s</url>\n' "$url" >> "$xml_file"
-              if [ "$type" = "desktop-application" ] || [ "$type" = "addon" ]; then
-                printf '    <icon type="cached">%s</icon>\n' "$app" >> "$xml_file"
-              fi
-              if [ "$type" = "desktop-application" ]; then
-                printf '    <launchable type="desktop-id">%s.desktop</launchable>\n' "$app" >> "$xml_file"
-              fi
-              printf '    <provides>\n      <binary>%s</binary>\n    </provides>\n' "$app" >> "$xml_file"
-              if [ -n "$cats" ]; then
-                echo '    <categories>' >> "$xml_file"
-                IFS=';' read -ra CAT_ARRAY <<< "$cats"
-                for cat in "${CAT_ARRAY[@]}"; do
-                  printf '      <category>%s</category>\n' "$cat" >> "$xml_file"
-                done
-                echo '    </categories>' >> "$xml_file"
-              fi
-              echo '  </component>' >> "$xml_file"
             done < /tmp/pkg-info
-            echo '</components>' >> "$xml_file"
-            yml_plain="dists/$distro/main/dep11/Components-amd64.yml"
-            appstreamcli convert "$xml_file" "$yml_plain" --format yaml
-            gzip -9kf "$yml_plain"
-            rm -f "$xml_file"
+
+            gzip -9kf "$yml_file"
           done
 
       - name: Generate icon tarballs
