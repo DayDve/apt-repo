@@ -180,11 +180,9 @@ jobs:
             mkdir -p "dists/$distro/main/dep11"
             yml_file="dists/$distro/main/dep11/Components-amd64.yml"
 
-            cat > "$yml_file" <<'YAMLHDR'
----
-File: Components-amd64.yml
-Media-Type: application/x-yaml
-YAMLHDR
+            echo '---' > "$yml_file"
+            echo 'File: Components-amd64.yml' >> "$yml_file"
+            echo 'Media-Type: application/x-yaml' >> "$yml_file"
 
             while IFS='|' read -r app url desc type cats icon_source icon_path; do
               [ -z "$app" ] && continue
