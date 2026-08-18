@@ -42,7 +42,8 @@
   "name": "glab",
   "description": "Official GitLab command-line tool",
   "source": "https://gitlab.com/gitlab-org/cli",
-  "longDescription": "`glab` is a command-line tool that lets you manage GitLab repositories, issues, merge requests, and CI/CD pipelines directly from your terminal. You can create and review merge requests, check build pipeline statuses, manage project issues, and publish releases without opening a web browser. It works with both GitLab.com and self-hosted GitLab instances."
+  "longDescription": "`glab` is a command-line tool that lets you manage GitLab repositories, issues, merge requests, and CI/CD pipelines directly from your terminal. You can create and review merge requests, check build pipeline statuses, manage project issues, and publish releases without opening a web browser. It works with both GitLab.com and self-hosted GitLab instances.",
+  "icon": "/icons/glab.png"
 }
 ,{
   "name": "grub-btrfs",
@@ -117,6 +118,7 @@
   "description": "rsync for cloud storage",
   "source": "https://github.com/rclone/rclone",
   "longDescription": "Rclone is a command-line utility that synchronizes, transfers, and manages files between your local system and cloud storage services. Acting like rsync for the cloud, it supports dozens of storage backends including Amazon S3, Backblaze B2, Box, Google Drive, and S3-compatible providers. It is ideal for scripting automated offsite backups, migrating data between different cloud hosts, or mounting remote storage directly onto your local file system.",
+  "icon": "/icons/rclone.png",
   "categories": [
     "Utility",
     "FileTransfer"
