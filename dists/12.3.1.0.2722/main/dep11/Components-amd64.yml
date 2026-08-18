@@ -11,6 +11,7 @@ Name:
   C: ayugram
 Summary:
   C: Telegram client with enhanced features
+Description: {}
 Categories:
 - InstantMessaging
 Url:
@@ -33,6 +34,7 @@ Name:
   C: bees
 Summary:
   C: btrfs deduplication daemon
+Description: {}
 Categories:
 - System
 - Filesystem
@@ -50,6 +52,7 @@ Name:
   C: btrfs-assistant
 Summary:
   C: GUI management tool for Btrfs filesystem
+Description: {}
 Categories:
 - System
 - Filesystem
@@ -64,6 +67,22 @@ Launchable:
 Provides:
   binaries:
   - btrfs-assistant
+Screenshots:
+- caption:
+    C: btrfs-assistant
+  thumbnails: []
+  source-image:
+    url: https://gitlab.com/btrfs-assistant/btrfs-assistant/uploads/21da59577c3e8a101347cf0d59569c09/image.png
+- caption:
+    C: btrfs-assistant
+  thumbnails: []
+  source-image:
+    url: https://gitlab.com/btrfs-assistant/btrfs-assistant/uploads/41aa431b6a0de85bc70b84d90da392ea/image.png
+- caption:
+    C: btrfs-assistant
+  thumbnails: []
+  source-image:
+    url: https://gitlab.com/btrfs-assistant/btrfs-assistant/uploads/65b6004c3257d66154828259a0fed47d/image.png
 ---
 Type: font
 ID: io.github.daydve.apt.fonts-noto-lite
@@ -73,6 +92,7 @@ Name:
   C: fonts-noto-lite
 Summary:
   C: Hide non-Latin/Cyrillic Noto fonts from font selection dialogs on Ubuntu/Debian
+Description: {}
 Categories:
 - Fonts
 Url:
@@ -89,6 +109,7 @@ Name:
   C: glab
 Summary:
   C: Official GitLab command-line tool
+Description: {}
 Categories:
 - Utility
 - Development
@@ -106,6 +127,7 @@ Name:
   C: grub-btrfs
 Summary:
   C: GRUB menu entries for btrfs snapshots
+Description: {}
 Categories:
 - System
 - Boot
@@ -123,6 +145,7 @@ Name:
   C: keyd
 Summary:
   C: Key remapping daemon
+Description: {}
 Categories:
 - System
 - Hardware
@@ -140,6 +163,7 @@ Name:
   C: kio-stash
 Summary:
   C: Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6
+Description: {}
 Categories:
 - System
 - Utility
@@ -161,6 +185,7 @@ Name:
   C: localsend
 Summary:
   C: Cross-platform file sharing over local network
+Description: {}
 Categories:
 - Network
 - FileTransfer
@@ -175,6 +200,17 @@ Launchable:
 Provides:
   binaries:
   - localsend
+Screenshots:
+- caption:
+    C: localsend
+  thumbnails: []
+  source-image:
+    url: https://localsend.org/img/screenshot-pc.webp
+- caption:
+    C: localsend
+  thumbnails: []
+  source-image:
+    url: https://localsend.org/img/screenshot-iphone.webp
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.mc6
@@ -184,6 +220,7 @@ Name:
   C: mc6
 Summary:
   C: Midnight Commander with Plugins
+Description: {}
 Categories:
 - System
 - FileTools
@@ -198,6 +235,12 @@ Launchable:
 Provides:
   binaries:
   - mc6
+Screenshots:
+- caption:
+    C: mc6
+  thumbnails: []
+  source-image:
+    url: https://midnight-commander.org/img/mc-screenshot-cropped.png
 ---
 Type: console-application
 ID: io.github.daydve.apt.rclone
@@ -207,6 +250,7 @@ Name:
   C: rclone
 Summary:
   C: rsync for cloud storage
+Description: {}
 Categories:
 - Utility
 - FileTransfer
@@ -224,6 +268,7 @@ Name:
   C: remotedesktopmanager
 Summary:
   C: One application for every remote connection you'll ever open
+Description: {}
 Categories:
 - Utility
 - Security
@@ -248,6 +293,7 @@ Name:
   C: rustdesk
 Summary:
   C: Fast open-source remote desktop
+Description: {}
 Categories:
 - Network
 - RemoteAccess
@@ -262,6 +308,17 @@ Launchable:
 Provides:
   binaries:
   - rustdesk
+Screenshots:
+- caption:
+    C: rustdesk
+  thumbnails: []
+  source-image:
+    url: https://github.com/rustdesk/rustdesk/assets/28412477/db82d4e7-c4bc-4823-8e6f-6af7eadf7651
+- caption:
+    C: rustdesk
+  thumbnails: []
+  source-image:
+    url: https://github.com/rustdesk/rustdesk/assets/28412477/9baa91e9-3362-4d06-aa1a-7518edcbd7ea
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.scrcpy
@@ -271,6 +328,7 @@ Name:
   C: scrcpy
 Summary:
   C: Mirror and control Android devices via USB/TCP
+Description: {}
 Categories:
 - Utility
 - Development
@@ -285,6 +343,12 @@ Launchable:
 Provides:
   binaries:
   - scrcpy
+Screenshots:
+- caption:
+    C: scrcpy
+  thumbnails: []
+  source-image:
+    url: https://raw.githubusercontent.com/Genymobile/scrcpy/master/assets/screenshot-debian-600.jpg
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.viber
@@ -294,6 +358,7 @@ Name:
   C: viber
 Summary:
   C: Free and secure calls and messages to anyone, anywhere
+Description: {}
 Categories:
 - InstantMessaging
 - Network
@@ -308,6 +373,17 @@ Launchable:
 Provides:
   binaries:
   - viber
+Screenshots:
+- caption:
+    C: viber
+  thumbnails: []
+  source-image:
+    url: https://www.viber.com/app/uploads/2_desktop_1X-1.png
+- caption:
+    C: viber
+  thumbnails: []
+  source-image:
+    url: https://www.viber.com/app/uploads/2_desktop_mobile-version_1X.png
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.winegui
@@ -317,6 +393,7 @@ Name:
   C: winegui
 Summary:
   C: Wine prefix manager with a modern GUI
+Description: {}
 Categories:
 - System
 - Emulator
@@ -331,6 +408,17 @@ Launchable:
 Provides:
   binaries:
   - winegui
+Screenshots:
+- caption:
+    C: winegui
+  thumbnails: []
+  source-image:
+    url: https://raw.githubusercontent.com/winegui/WineGUI/main/misc/screenshots/winegui_screenshot0.png
+- caption:
+    C: winegui
+  thumbnails: []
+  source-image:
+    url: https://raw.githubusercontent.com/winegui/WineGUI/main/misc/screenshots/winegui_screenshot1.png
 ---
 Type: console-application
 ID: io.github.daydve.apt.wlvncc
@@ -340,6 +428,7 @@ Name:
   C: wlvncc
 Summary:
   C: Wayland native VNC client
+Description: {}
 Categories:
 - Network
 - RemoteAccess
@@ -357,6 +446,7 @@ Name:
   C: wps-office-langpack-ru
 Summary:
   C: Russian language pack for WPS Office
+Description: {}
 Url:
   homepage: https://github.com/DayDve/wps-office-langpack-ru
 Icon:
@@ -374,6 +464,7 @@ Name:
   C: wps-office
 Summary:
   C: WPS Office repack with patches
+Description: {}
 Categories:
 - Office
 - WordProcessor
@@ -388,3 +479,19 @@ Launchable:
 Provides:
   binaries:
   - wps-office
+Screenshots:
+- caption:
+    C: wps-office
+  thumbnails: []
+  source-image:
+    url: https://global-static.wpscdn.com/cms/official-website/v2/_nuxt/slider_1.CT7DeCES.png
+- caption:
+    C: wps-office
+  thumbnails: []
+  source-image:
+    url: https://global-static.wpscdn.com/cms/official-website/v2/_nuxt/slider_2.Bwen-lyS.png
+- caption:
+    C: wps-office
+  thumbnails: []
+  source-image:
+    url: https://global-static.wpscdn.com/cms/official-website/v2/_nuxt/slider_3.CpBdGt_T.png

@@ -24,6 +24,11 @@
   "source": "https://gitlab.com/btrfs-assistant/btrfs-assistant",
   "longDescription": "Btrfs Assistant provides a graphical interface for managing Btrfs subvolumes, filesystem settings, and maintenance routines. It integrates directly with Snapper to let you browse, create, and restore system snapshots directly from the GUI. You can also use it to monitor subvolume space usage and schedule or manually run routine operations like scrubs, balances, and defragmentation.",
   "icon": "/icons/btrfs-assistant.png",
+  "screenshots": [
+    "https://gitlab.com/btrfs-assistant/btrfs-assistant/uploads/21da59577c3e8a101347cf0d59569c09/image.png",
+    "https://gitlab.com/btrfs-assistant/btrfs-assistant/uploads/41aa431b6a0de85bc70b84d90da392ea/image.png",
+    "https://gitlab.com/btrfs-assistant/btrfs-assistant/uploads/65b6004c3257d66154828259a0fed47d/image.png"
+  ],
   "categories": [
     "System",
     "Filesystem"
@@ -86,6 +91,10 @@
   "source": "https://github.com/localsend/localsend",
   "longDescription": "LocalSend transfers files and text messages directly between devices on your local network without requiring an internet connection or third-party servers. It automatically detects nearby devices running the app, allowing you to quickly share documents, media, and clipboard content across Linux, Android, iOS, Windows, and macOS. Because all traffic stays within your local Wi-Fi or Ethernet connection, transfers are fast, private, and use zero internet bandwidth.",
   "icon": "/icons/localsend.png",
+  "screenshots": [
+    "https://localsend.org/img/screenshot-pc.webp",
+    "https://localsend.org/img/screenshot-iphone.webp"
+  ],
   "categories": [
     "Network",
     "FileTransfer"
@@ -97,6 +106,9 @@
   "source": "https://github.com/ilia-maslakov/mcdev",
   "longDescription": "mc6 is an enhanced fork of GNU Midnight Commander, providing a dual-panel text-mode file manager for terminal and SSH environments. It extends the classic interface with dynamic plugins that let you browse Git repositories, Docker containers, Kubernetes clusters, and S3 buckets directly within file panels. It also includes an integrated archive manager, structured tree views for JSON and YAML, live viewer filtering, and an embedded shell terminal.",
   "icon": "/icons/mc6.png",
+  "screenshots": [
+    "https://midnight-commander.org/img/mc-screenshot-cropped.png"
+  ],
   "group": "mc6",
   "categories": [
     "System",
@@ -146,6 +158,10 @@
   "source": "https://github.com/rustdesk/rustdesk",
   "longDescription": "RustDesk is an open-source remote desktop client that lets you remotely control a computer, share screen sessions, and transfer files. It works out of the box using default connection servers, but also allows you to set up your own self-hosted relay server for full control over your privacy and traffic. Featuring a multi-language graphical interface, it is a practical tool for remote system administration and desktop technical support.",
   "icon": "/icons/rustdesk.png",
+  "screenshots": [
+    "https://github.com/rustdesk/rustdesk/assets/28412477/db82d4e7-c4bc-4823-8e6f-6af7eadf7651",
+    "https://github.com/rustdesk/rustdesk/assets/28412477/9baa91e9-3362-4d06-aa1a-7518edcbd7ea"
+  ],
   "categories": [
     "Network",
     "RemoteAccess"
@@ -157,6 +173,9 @@
   "source": "https://github.com/Genymobile/scrcpy",
   "longDescription": "scrcpy mirrors your Android device's screen and audio to your desktop over USB or Wi-Fi, allowing you to fully control your phone using your computer's keyboard and mouse. It requires no root access or installed mobile apps, delivering low-latency performance with support for frame rates up to 120 FPS. Key features include screen recording, seamless two-way copy-pasting, mirroring while the phone screen remains off, and using your device's camera as a Linux webcam via V4L2.",
   "icon": "/icons/scrcpy.png",
+  "screenshots": [
+    "https://raw.githubusercontent.com/Genymobile/scrcpy/master/assets/screenshot-debian-600.jpg"
+  ],
   "categories": [
     "Utility",
     "Development"
@@ -168,6 +187,10 @@
   "source": "https://www.viber.com",
   "longDescription": "Viber is a messaging and VoIP client that lets you make voice and video calls, send text messages, and share files with other users. The desktop application syncs with your mobile account using your phone number, allowing you to seamlessly transfer active calls between devices and manage message histories from your Linux PC. Key features include end-to-end encrypted chats, group video conferencing, screen sharing, and calling non-Viber phone numbers via Viber Out.",
   "icon": "/icons/viber.png",
+  "screenshots": [
+    "https://www.viber.com/app/uploads/2_desktop_1X-1.png",
+    "https://www.viber.com/app/uploads/2_desktop_mobile-version_1X.png"
+  ],
   "categories": [
     "InstantMessaging",
     "Network"
@@ -179,6 +202,10 @@
   "source": "https://github.com/winegui/WineGUI",
   "longDescription": "WineGUI provides a clean GTK graphical interface for managing Wine prefixes and launching Windows applications on Linux. It simplifies creating, configuring, and organizing isolated Wine environments so you don't have to manage them through the terminal. Note that it requires Wine v9 or higher to be installed on your host system.",
   "icon": "/icons/winegui.png",
+  "screenshots": [
+    "https://raw.githubusercontent.com/winegui/WineGUI/main/misc/screenshots/winegui_screenshot0.png",
+    "https://raw.githubusercontent.com/winegui/WineGUI/main/misc/screenshots/winegui_screenshot1.png"
+  ],
   "categories": [
     "System",
     "Emulator"
@@ -200,6 +227,11 @@
   "source": "https://github.com/Rongronggg9/wps-office-repack",
   "longDescription": "A comprehensive office suite compatible with Microsoft Word, Excel, and PowerPoint formats. This is a community patched repack with fixes and improvements over the stock package, including removed telemetry and better Linux desktop integration. Includes Writer, Presentation, and Spreadsheets.",
   "icon": "/icons/wps-office.png",
+  "screenshots": [
+    "https://global-static.wpscdn.com/cms/official-website/v2/_nuxt/slider_1.CT7DeCES.png",
+    "https://global-static.wpscdn.com/cms/official-website/v2/_nuxt/slider_2.Bwen-lyS.png",
+    "https://global-static.wpscdn.com/cms/official-website/v2/_nuxt/slider_3.CpBdGt_T.png"
+  ],
   "group": "wps-office",
   "categories": [
     "Office",
