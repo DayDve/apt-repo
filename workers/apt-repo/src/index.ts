@@ -73,6 +73,10 @@ export default {
       return proxy(`${repoOrigin(env.REPO)}${path}`, 'image/png');
     }
 
+    if (path.startsWith('/screenshots/')) {
+      return proxy(`${repoOrigin(env.REPO)}${path}`);
+    }
+
     return isBrowser ? serveHome(url, ctx, env) : new Response('Not found', { status: 404 });
   },
 };
@@ -707,7 +711,7 @@ ${screenshots.length > 0 ? `
   <h2>Install</h2>
   <div class="detail-links">
     <a href="${escapeHtml(aptLink)}" class="apt-link">Install via package manager</a>
-    ${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">Source code</a>` : ''}
+    ${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">Homepage</a>` : ''}
   </div>
   <div class="install-block">
     <div class="code-wrap">
