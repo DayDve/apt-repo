@@ -343,7 +343,10 @@ function pkgCard(p: Package, aptOrigin: string, groupCats: string[]): string {
   const installCmd = `sudo apt install ${p.name}`;
   const familyNote = p.group ? `<span class="family-note">Part of <strong>${escapeHtml(p.group)}</strong></span>` : '';
   const iconUrl = p.icon ? `${escapeHtml(aptOrigin)}${escapeHtml(p.icon)}` : '';
-  const iconHtml = iconUrl ? `<img class="card-icon" src="${iconUrl}" alt="${safeName}" width="48" height="48" loading="lazy">` : '';
+  const fallbackIcon = `<svg class="card-icon fallback-icon" viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="36" height="36" rx="8"/><path d="M18 16h12M18 24h12M18 32h8"/></svg>`;
+  const iconHtml = iconUrl
+    ? `<img class="card-icon" src="${iconUrl}" alt="${safeName}" width="48" height="48" loading="lazy" onerror="this.outerHTML=this.dataset.fallback" data-fallback='${fallbackIcon}'>`
+    : fallbackIcon;
   const longDesc = p.longDescription ? escapeHtml(p.longDescription) : '';
 
   return `<div class="card" id="card-${safeName}" data-cats="${escapeHtml(effectiveCats.join(','))}" data-name="${safeName}" data-family="${escapeHtml(p.group || '')}">
@@ -440,6 +443,7 @@ a:hover{text-decoration:underline}
 .card.hidden{display:none}
 .card-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem}
 .card-icon{width:48px;height:48px;border-radius:8px;flex-shrink:0}
+.fallback-icon{background:#1a1a2e;border:1px solid #333}
 .card-title{font-size:1rem;font-weight:bold}
 .card-title a{color:#58a6ff}
 .family-note{font-size:.75rem;color:#8b949e;margin-bottom:.3rem}
