@@ -1,6 +1,8 @@
 SOURCE_URL="https://gitlab.com/gitlab-org/cli"
 DESCRIPTION="Official GitLab command-line tool"
 CHANGELOG_URL="https://gitlab.com/gitlab-org/cli/-/releases"
+ICON_SOURCE="url"
+ICON_PATH="https://gitlab.com/gitlab-org/cli/-/raw/main/docs/source/img/glab-logo.png"
 
 check_update() {
   local current="${1:-}" tag

@@ -2,6 +2,8 @@ SOURCE_URL="https://github.com/rclone/rclone"
 DESCRIPTION="rsync for cloud storage"
 APPSTREAM_TYPE="console-application"
 APPSTREAM_CATEGORIES="Utility;FileTransfer"
+ICON_SOURCE="url"
+ICON_PATH="https://raw.githubusercontent.com/rclone/rclone/master/graphics/logo/logo_on_light/logo_symbol_on_light_mono_256px.png"
 
 check_update() {
   gh_latest_release rclone/rclone
