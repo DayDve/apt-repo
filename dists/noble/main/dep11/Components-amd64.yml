@@ -88,19 +88,19 @@ Screenshots:
     C: btrfs-assistant
   thumbnails: []
   source-image:
-    url: https://gitlab.com/btrfs-assistant/btrfs-assistant/uploads/21da59577c3e8a101347cf0d59569c09/image.png
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/btrfs-assistant/0.png
 - default: true
   caption:
     C: btrfs-assistant
   thumbnails: []
   source-image:
-    url: https://gitlab.com/btrfs-assistant/btrfs-assistant/uploads/41aa431b6a0de85bc70b84d90da392ea/image.png
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/btrfs-assistant/1.png
 - default: true
   caption:
     C: btrfs-assistant
   thumbnails: []
   source-image:
-    url: https://gitlab.com/btrfs-assistant/btrfs-assistant/uploads/65b6004c3257d66154828259a0fed47d/image.png
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/btrfs-assistant/2.png
 ---
 Type: font
 ID: io.github.daydve.apt.fonts-noto-lite
@@ -255,13 +255,13 @@ Screenshots:
     C: localsend
   thumbnails: []
   source-image:
-    url: https://localsend.org/img/screenshot-pc.webp
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/localsend/0.webp
 - default: true
   caption:
     C: localsend
   thumbnails: []
   source-image:
-    url: https://localsend.org/img/screenshot-iphone.webp
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/localsend/1.webp
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.mc6
@@ -297,7 +297,7 @@ Screenshots:
     C: mc6
   thumbnails: []
   source-image:
-    url: https://midnight-commander.org/img/mc-screenshot-cropped.png
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/mc6/0.png
 ---
 Type: console-application
 ID: io.github.daydve.apt.rclone
@@ -387,13 +387,13 @@ Screenshots:
     C: rustdesk
   thumbnails: []
   source-image:
-    url: https://github.com/rustdesk/rustdesk/assets/28412477/db82d4e7-c4bc-4823-8e6f-6af7eadf7651
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/rustdesk/0.png
 - default: true
   caption:
     C: rustdesk
   thumbnails: []
   source-image:
-    url: https://github.com/rustdesk/rustdesk/assets/28412477/9baa91e9-3362-4d06-aa1a-7518edcbd7ea
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/rustdesk/1.png
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.scrcpy
@@ -429,7 +429,7 @@ Screenshots:
     C: scrcpy
   thumbnails: []
   source-image:
-    url: https://raw.githubusercontent.com/Genymobile/scrcpy/master/assets/screenshot-debian-600.jpg
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/scrcpy/0.jpg
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.viber
@@ -465,13 +465,13 @@ Screenshots:
     C: viber
   thumbnails: []
   source-image:
-    url: https://www.viber.com/app/uploads/2_desktop_1X-1.png
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/viber/0.png
 - default: true
   caption:
     C: viber
   thumbnails: []
   source-image:
-    url: https://www.viber.com/app/uploads/2_desktop_mobile-version_1X.png
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/viber/1.png
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.winegui
@@ -506,13 +506,13 @@ Screenshots:
     C: winegui
   thumbnails: []
   source-image:
-    url: https://raw.githubusercontent.com/winegui/WineGUI/main/misc/screenshots/winegui_screenshot0.png
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/winegui/0.png
 - default: true
   caption:
     C: winegui
   thumbnails: []
   source-image:
-    url: https://raw.githubusercontent.com/winegui/WineGUI/main/misc/screenshots/winegui_screenshot1.png
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/winegui/1.png
 ---
 Type: console-application
 ID: io.github.daydve.apt.wlvncc
@@ -591,16 +591,16 @@ Screenshots:
     C: wps-office
   thumbnails: []
   source-image:
-    url: https://global-static.wpscdn.com/cms/official-website/v2/_nuxt/slider_1.CT7DeCES.png
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/wps-office/0.png
 - default: true
   caption:
     C: wps-office
   thumbnails: []
   source-image:
-    url: https://global-static.wpscdn.com/cms/official-website/v2/_nuxt/slider_2.Bwen-lyS.png
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/wps-office/1.png
 - default: true
   caption:
     C: wps-office
   thumbnails: []
   source-image:
-    url: https://global-static.wpscdn.com/cms/official-website/v2/_nuxt/slider_3.CpBdGt_T.png
+    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/wps-office/2.png
