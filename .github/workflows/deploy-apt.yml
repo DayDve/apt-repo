@@ -213,11 +213,41 @@ jobs:
                 done
                 echo '    </categories>' >> "$xml_file"
               fi
+
+              # Screenshots
+              screenshots_json=$(jq -r --arg k "$app" '.[$k].screenshots // empty' /tmp/descriptions.json 2>/dev/null || echo "")
+              if [ -n "$screenshots_json" ] && [ -d "$GITHUB_WORKSPACE/screenshots/$app" ]; then
+                echo '    <screenshots>' >> "$xml_file"
+                echo '      <screenshot type="default">' >> "$xml_file"
+                echo "        <caption>${app}</caption>" >> "$xml_file"
+                for ss_file in "$GITHUB_WORKSPACE/screenshots/$app"/*; do
+                  [ -f "$ss_file" ] || continue
+                  ss_name=$(basename "$ss_file")
+                  printf '        <image>%s</image>\n' "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/apt/screenshots/${app}/${ss_name}" >> "$xml_file"
+                done
+                echo '      </screenshot>' >> "$xml_file"
+                echo '    </screenshots>' >> "$xml_file"
+              fi
+
               echo '  </component>' >> "$xml_file"
             done < /tmp/pkg-info
             echo '</components>' >> "$xml_file"
             yml_plain="dists/$distro/main/dep11/Components-amd64.yml"
             appstreamcli convert "$xml_file" "$yml_plain" --format yaml
+            # Inject Thumbnails into screenshots (appstreamcli drops them)
+            for app_dir in "$GITHUB_WORKSPACE/screenshots"/*/; do
+              [ -d "$app_dir" ] || continue
+              pkg=$(basename "$app_dir")
+              for ss_file in "$app_dir"/*; do
+                [ -f "$ss_file" ] || continue
+                ss_name=$(basename "$ss_file")
+                ss_url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/apt/screenshots/${pkg}/${ss_name}"
+                # Insert Thumbnails after the first matching Image line
+                if grep -q "URL: $ss_url" "$yml_plain" 2>/dev/null; then
+                  sed -i "/URL: ${ss_url}/a\\    Thumbnails:\n    - ${ss_url}" "$yml_plain"
+                fi
+              done
+            done
             gzip -9kf "$yml_plain"
             rm -f "$xml_file"
           done
