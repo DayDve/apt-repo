@@ -86,7 +86,9 @@ Screenshots:
 - default: true
   caption:
     C: btrfs-assistant
-  thumbnails: []
+  thumbnails:
+    - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/btrfs-assistant/2.png
+
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/btrfs-assistant/2.png
 ---
@@ -241,7 +243,9 @@ Screenshots:
 - default: true
   caption:
     C: localsend
-  thumbnails: []
+  thumbnails:
+    - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/localsend/1.webp
+
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/localsend/1.webp
 ---
@@ -277,7 +281,9 @@ Screenshots:
 - default: true
   caption:
     C: mc6
-  thumbnails: []
+  thumbnails:
+    - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/mc6/0.png
+
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/mc6/0.png
 ---
@@ -367,7 +373,9 @@ Screenshots:
 - default: true
   caption:
     C: rustdesk
-  thumbnails: []
+  thumbnails:
+    - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/rustdesk/1.png
+
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/rustdesk/1.png
 ---
@@ -403,7 +411,9 @@ Screenshots:
 - default: true
   caption:
     C: scrcpy
-  thumbnails: []
+  thumbnails:
+    - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/scrcpy/0.jpg
+
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/scrcpy/0.jpg
 ---
@@ -439,7 +449,9 @@ Screenshots:
 - default: true
   caption:
     C: viber
-  thumbnails: []
+  thumbnails:
+    - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/viber/1.png
+
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/viber/1.png
 ---
@@ -474,7 +486,9 @@ Screenshots:
 - default: true
   caption:
     C: winegui
-  thumbnails: []
+  thumbnails:
+    - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/winegui/1.png
+
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/winegui/1.png
 ---
@@ -553,6 +567,8 @@ Screenshots:
 - default: true
   caption:
     C: wps-office
-  thumbnails: []
+  thumbnails:
+    - https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/wps-office/2.png
+
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/wps-office/2.png
