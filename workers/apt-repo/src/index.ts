@@ -675,22 +675,26 @@ ${sharedStyles()}
 .install-block{margin:.8rem 0}
 .install-block .code-wrap pre{background:#0d1117;border:1px solid #21262d;border-radius:4px}
 .install-block .code-wrap code{color:#7ee787;font-size:.85rem}
-.screenshots{position:relative;overflow:hidden;border-radius:8px}
+.screenshots{position:relative;overflow:hidden}
 .screenshots-track{display:flex;transition:transform .3s ease}
-.screenshots-track img{width:100%;flex-shrink:0;border-radius:8px;border:1px solid #30363d;cursor:pointer;transition:opacity .15s;object-fit:contain;max-height:400px}
+.screenshots-track img{width:100%;flex-shrink:0;cursor:pointer;transition:opacity .15s;object-fit:contain;max-height:400px}
 .screenshots-track img:hover{opacity:.85}
-.ss-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);border:none;color:#e6edf3;font-size:1.5rem;cursor:pointer;padding:.4rem .8rem;border-radius:4px;z-index:2;transition:background .15s}
-.ss-nav:hover{background:rgba(0,0,0,.8)}
+.ss-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);border:none;color:#8b949e;font-size:1.5rem;cursor:pointer;padding:.4rem .8rem;border-radius:4px;z-index:2;transition:color .15s;font-family:inherit}
+.ss-nav:hover{color:#e6edf3}
 .ss-prev{left:.5rem}
 .ss-next{right:.5rem}
 .ss-dots{display:flex;justify-content:center;gap:.4rem;margin-top:.5rem}
 .ss-dot{width:8px;height:8px;border-radius:50%;background:#30363d;border:none;cursor:pointer;transition:background .15s;padding:0}
 .ss-dot.active{background:#58a6ff}
-.lightbox{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.9);align-items:center;justify-content:center;cursor:zoom-out}
+.lightbox{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.92);align-items:center;justify-content:center}
 .lightbox.open{display:flex}
-.lightbox img{max-width:92vw;max-height:92vh;border-radius:8px;box-shadow:0 0 40px rgba(0,0,0,.5)}
+.lightbox img{max-width:85vw;max-height:85vh;border-radius:4px;object-fit:contain;cursor:pointer}
 .lightbox-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:#8b949e;font-size:2rem;cursor:pointer;line-height:1;padding:.2rem .5rem}
 .lightbox-close:hover{color:#e6edf3}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:none;border:none;color:#8b949e;font-size:2.5rem;cursor:pointer;padding:.5rem 1rem;z-index:2;transition:color .15s;font-family:inherit}
+.lb-nav:hover{color:#e6edf3}
+.lb-prev{left:.5rem}
+.lb-next{right:.5rem}
 .footer{text-align:center;padding:2rem 0 1rem;color:#484f58;font-size:.8rem}
 .footer a{color:#8b949e}
 @media(max-width:600px){.detail-top{flex-direction:column;align-items:center;text-align:center}.detail-icon{width:72px;height:72px}.detail-links{justify-content:center}}
@@ -722,8 +726,9 @@ ${screenshots.length > 0 ? `
 </div>` : ''}
 
 <div class="lightbox" id="lb" onclick="closeLb()">
-  <button class="lightbox-close">&times;</button>
-  <img id="lb-img" src="" alt="">
+  <button class="lightbox-close" onclick="closeLb()">&times;</button>
+  ${screenshots.length > 1 ? '<button class="lb-nav lb-prev" onclick="event.stopPropagation();lbSlide(-1)">&#8249;</button><button class="lb-nav lb-next" onclick="event.stopPropagation();lbSlide(1)">&#8250;</button>' : ''}
+  <img id="lb-img" src="" alt="" onclick="event.stopPropagation()">
 </div>
 
 <div class="detail-section">
@@ -751,11 +756,13 @@ ${screenshots.length > 0 ? `
 
 <script>${sharedScript()}
 let ssIdx=0;const ssTotal=${screenshots.length};
-function ssGo(i){ssIdx=Math.max(0,Math.min(i,ssTotal-1));document.getElementById('ss-track').style.transform='translateX(-'+ssIdx*100+'%)';document.querySelectorAll('.ss-dot').forEach((d,j)=>d.classList.toggle('active',j===ssIdx))}
+function ssGo(i){ssIdx=((i%ssTotal)+ssTotal)%ssTotal;document.getElementById('ss-track').style.transform='translateX(-'+ssIdx*100+'%)';document.querySelectorAll('.ss-dot').forEach((d,j)=>d.classList.toggle('active',j===ssIdx))}
 function ssSlide(d){ssGo(ssIdx+d)}
-function openLb(src){const lb=document.getElementById('lb');document.getElementById('lb-img').src=src;lb.classList.add('open');document.body.style.overflow='hidden'}
+let lbIdx=0;
+function openLb(src){const imgs=document.querySelectorAll('.screenshots-track img');lbIdx=[...imgs].findIndex(i=>i.src===src);const lb=document.getElementById('lb');document.getElementById('lb-img').src=src;lb.classList.add('open');document.body.style.overflow='hidden'}
 function closeLb(){document.getElementById('lb').classList.remove('open');document.body.style.overflow=''}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb();if(e.key==='ArrowLeft'&&document.getElementById('lb').classList.contains('open')==false)ssSlide(-1);if(e.key==='ArrowRight'&&document.getElementById('lb').classList.contains('open')==false)ssSlide(1)});
+function lbSlide(d){const imgs=document.querySelectorAll('.screenshots-track img');lbIdx=((lbIdx+d)%imgs.length+imgs.length)%imgs.length;document.getElementById('lb-img').src=imgs[lbIdx].src}
+document.addEventListener('keydown',e=>{const lb=document.getElementById('lb').classList.contains('open');if(e.key==='Escape')closeLb();if(e.key==='ArrowLeft'){lb?lbSlide(-1):ssSlide(-1)}if(e.key==='ArrowRight'){lb?lbSlide(1):ssSlide(1)}});
 </script>
 </body>
 </html>`;
