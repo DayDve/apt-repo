@@ -88,6 +88,26 @@ Screenshots:
   caption:
     C: btrfs-assistant
   thumbnails:
+    - url: screenshots/btrfs-assistant/0.png
+      width: 943
+      height: 738
+  source-image:
+    url: screenshots/btrfs-assistant/0.png
+    width: 943
+    height: 738
+- caption:
+    C: btrfs-assistant
+  thumbnails:
+    - url: screenshots/btrfs-assistant/1.png
+      width: 941
+      height: 745
+  source-image:
+    url: screenshots/btrfs-assistant/1.png
+    width: 941
+    height: 745
+- caption:
+    C: btrfs-assistant
+  thumbnails:
     - url: screenshots/btrfs-assistant/2.png
       width: 945
       height: 747
@@ -248,6 +268,12 @@ Screenshots:
   caption:
     C: localsend
   thumbnails:
+    - url: screenshots/localsend/0.webp
+  source-image:
+    url: screenshots/localsend/0.webp
+- caption:
+    C: localsend
+  thumbnails:
     - url: screenshots/localsend/1.webp
   source-image:
     url: screenshots/localsend/1.webp
@@ -380,6 +406,16 @@ Screenshots:
   caption:
     C: rustdesk
   thumbnails:
+    - url: screenshots/rustdesk/0.png
+      width: 930
+      height: 605
+  source-image:
+    url: screenshots/rustdesk/0.png
+    width: 930
+    height: 605
+- caption:
+    C: rustdesk
+  thumbnails:
     - url: screenshots/rustdesk/1.png
       width: 1305
       height: 850
@@ -462,6 +498,16 @@ Screenshots:
   caption:
     C: viber
   thumbnails:
+    - url: screenshots/viber/0.png
+      width: 730
+      height: 411
+  source-image:
+    url: screenshots/viber/0.png
+    width: 730
+    height: 411
+- caption:
+    C: viber
+  thumbnails:
     - url: screenshots/viber/1.png
       width: 584
       height: 434
@@ -500,6 +546,16 @@ Provides:
 Screenshots:
 - default: true
   caption:
+    C: winegui
+  thumbnails:
+    - url: screenshots/winegui/0.png
+      width: 1204
+      height: 620
+  source-image:
+    url: screenshots/winegui/0.png
+    width: 1204
+    height: 620
+- caption:
     C: winegui
   thumbnails:
     - url: screenshots/winegui/1.png
@@ -584,6 +640,26 @@ Provides:
 Screenshots:
 - default: true
   caption:
+    C: wps-office
+  thumbnails:
+    - url: screenshots/wps-office/0.png
+      width: 1647
+      height: 946
+  source-image:
+    url: screenshots/wps-office/0.png
+    width: 1647
+    height: 946
+- caption:
+    C: wps-office
+  thumbnails:
+    - url: screenshots/wps-office/1.png
+      width: 1649
+      height: 946
+  source-image:
+    url: screenshots/wps-office/1.png
+    width: 1649
+    height: 946
+- caption:
     C: wps-office
   thumbnails:
     - url: screenshots/wps-office/2.png
