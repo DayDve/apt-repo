@@ -675,9 +675,17 @@ ${sharedStyles()}
 .install-block{margin:.8rem 0}
 .install-block .code-wrap pre{background:#0d1117;border:1px solid #21262d;border-radius:4px}
 .install-block .code-wrap code{color:#7ee787;font-size:.85rem}
-.screenshots{display:flex;gap:.8rem;overflow-x:auto;padding:.5rem 0}
-.screenshots img{max-height:300px;border-radius:8px;border:1px solid #30363d;cursor:pointer;transition:opacity .15s}
-.screenshots img:hover{opacity:.85}
+.screenshots{position:relative;overflow:hidden;border-radius:8px}
+.screenshots-track{display:flex;transition:transform .3s ease}
+.screenshots-track img{width:100%;flex-shrink:0;border-radius:8px;border:1px solid #30363d;cursor:pointer;transition:opacity .15s;object-fit:contain;max-height:400px}
+.screenshots-track img:hover{opacity:.85}
+.ss-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);border:none;color:#e6edf3;font-size:1.5rem;cursor:pointer;padding:.4rem .8rem;border-radius:4px;z-index:2;transition:background .15s}
+.ss-nav:hover{background:rgba(0,0,0,.8)}
+.ss-prev{left:.5rem}
+.ss-next{right:.5rem}
+.ss-dots{display:flex;justify-content:center;gap:.4rem;margin-top:.5rem}
+.ss-dot{width:8px;height:8px;border-radius:50%;background:#30363d;border:none;cursor:pointer;transition:background .15s;padding:0}
+.ss-dot.active{background:#58a6ff}
 .lightbox{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.9);align-items:center;justify-content:center;cursor:zoom-out}
 .lightbox.open{display:flex}
 .lightbox img{max-width:92vw;max-height:92vh;border-radius:8px;box-shadow:0 0 40px rgba(0,0,0,.5)}
@@ -704,8 +712,13 @@ ${sharedStyles()}
 ${screenshots.length > 0 ? `
 <div class="detail-section">
   <div class="screenshots">
-    ${screenshots.map(s => `<img src="${escapeHtml(s)}" alt="${safeName} screenshot" loading="lazy" onclick="openLb(this.src)">`).join('\n    ')}
+    ${screenshots.length > 1 ? '<button class="ss-nav ss-prev" onclick="ssSlide(-1)">&#8249;</button>' : ''}
+    <div class="screenshots-track" id="ss-track">
+      ${screenshots.map(s => `<img src="${escapeHtml(s)}" alt="${safeName} screenshot" loading="lazy" onclick="openLb(this.src)">`).join('\n      ')}
+    </div>
+    ${screenshots.length > 1 ? '<button class="ss-nav ss-next" onclick="ssSlide(1)">&#8250;</button>' : ''}
   </div>
+  ${screenshots.length > 1 ? `<div class="ss-dots" id="ss-dots">${screenshots.map((_, i) => `<button class="ss-dot${i === 0 ? ' active' : ''}" onclick="ssGo(${i})"></button>`).join('')}</div>` : ''}
 </div>` : ''}
 
 <div class="lightbox" id="lb" onclick="closeLb()">
@@ -737,9 +750,12 @@ ${screenshots.length > 0 ? `
 </div>
 
 <script>${sharedScript()}
+let ssIdx=0;const ssTotal=${screenshots.length};
+function ssGo(i){ssIdx=Math.max(0,Math.min(i,ssTotal-1));document.getElementById('ss-track').style.transform='translateX(-'+ssIdx*100+'%)';document.querySelectorAll('.ss-dot').forEach((d,j)=>d.classList.toggle('active',j===ssIdx))}
+function ssSlide(d){ssGo(ssIdx+d)}
 function openLb(src){const lb=document.getElementById('lb');document.getElementById('lb-img').src=src;lb.classList.add('open');document.body.style.overflow='hidden'}
 function closeLb(){document.getElementById('lb').classList.remove('open');document.body.style.overflow=''}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLb();if(e.key==='ArrowLeft'&&document.getElementById('lb').classList.contains('open')==false)ssSlide(-1);if(e.key==='ArrowRight'&&document.getElementById('lb').classList.contains('open')==false)ssSlide(1)});
 </script>
 </body>
 </html>`;
