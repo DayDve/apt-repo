@@ -52,14 +52,18 @@ for app_dir in glob.glob(os.path.join(ss_dir, '*')):
         ss_url = f"https://raw.githubusercontent.com/{repo}/apt/screenshots/{pkg}/{ss_name}"
         w, h = get_image_size(ss_file)
         for i, line in enumerate(lines):
+            rel_path = f"screenshots/{pkg}/{ss_name}"
             if f'url: {ss_url}' in line and i >= 2 and 'source-image:' in lines[i-1] and 'thumbnails: []' in lines[i-2]:
                 indent = '    '
-                thumb_entry = f"thumbnails:\n{indent}- url: {ss_url}"
+                thumb_entry = f"thumbnails:\n{indent}- url: {rel_path}"
                 if w and h:
                     thumb_entry += f"\n{indent}  width: {w}\n{indent}  height: {h}"
                 lines[i-2] = lines[i-2].replace('thumbnails: []', thumb_entry)
-            if f'url: {ss_url}' in line and 'source-image:' in lines[i-1] and w and h:
-                lines[i] = line.replace(f'url: {ss_url}', f'url: {ss_url}\n    width: {w}\n    height: {h}')
+            if f'url: {ss_url}' in line and 'source-image:' in lines[i-1]:
+                replacement = f'url: {rel_path}'
+                if w and h:
+                    replacement += f'\n    width: {w}\n    height: {h}'
+                lines[i] = line.replace(f'url: {ss_url}', replacement)
 
 with open(yml_path, 'w') as f:
     f.writelines(lines)

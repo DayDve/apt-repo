@@ -234,9 +234,10 @@ jobs:
             echo '</components>' >> "$xml_file"
             yml_plain="dists/$distro/main/dep11/Components-amd64.yml"
             appstreamcli convert "$xml_file" "$yml_plain" --format yaml
+            # Add MediaBaseUrl so Discover resolves relative screenshot paths
+            sed -i '/^Origin: daydve-apt$/a MediaBaseUrl: https://raw.githubusercontent.com/DayDve/apt-repo/apt/' "$yml_plain"
             # Inject Thumbnails into screenshots (appstreamcli generates thumbnails: [])
             git show origin/apps:.github/scripts/inject_thumbnails.py > /tmp/inject_thumbnails.py
-            python3 /tmp/inject_thumbnails.py "$yml_plain" "$GITHUB_WORKSPACE/screenshots" "$GITHUB_REPOSITORY"
             python3 /tmp/inject_thumbnails.py "$yml_plain" "$GITHUB_WORKSPACE/screenshots" "$GITHUB_REPOSITORY"
             gzip -9kf "$yml_plain"
             rm -f "$xml_file"
