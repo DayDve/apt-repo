@@ -2,6 +2,7 @@
 File: DEP-11
 Version: '1.0'
 Origin: daydve-apt
+MediaBaseUrl: https://raw.githubusercontent.com/DayDve/apt-repo/apt/
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.ayugram
@@ -87,13 +88,11 @@ Screenshots:
   caption:
     C: btrfs-assistant
   thumbnails:
-    - url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/btrfs-assistant/2.png
+    - url: screenshots/btrfs-assistant/2.png
       width: 945
       height: 747
   source-image:
-    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/btrfs-assistant/2.png
-    width: 945
-    height: 747
+    url: screenshots/btrfs-assistant/2.png
     width: 945
     height: 747
 ---
@@ -249,9 +248,9 @@ Screenshots:
   caption:
     C: localsend
   thumbnails:
-    - url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/localsend/1.webp
+    - url: screenshots/localsend/1.webp
   source-image:
-    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/localsend/1.webp
+    url: screenshots/localsend/1.webp
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.mc6
@@ -286,13 +285,11 @@ Screenshots:
   caption:
     C: mc6
   thumbnails:
-    - url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/mc6/0.png
+    - url: screenshots/mc6/0.png
       width: 1268
       height: 1086
   source-image:
-    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/mc6/0.png
-    width: 1268
-    height: 1086
+    url: screenshots/mc6/0.png
     width: 1268
     height: 1086
 ---
@@ -383,13 +380,11 @@ Screenshots:
   caption:
     C: rustdesk
   thumbnails:
-    - url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/rustdesk/1.png
+    - url: screenshots/rustdesk/1.png
       width: 1305
       height: 850
   source-image:
-    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/rustdesk/1.png
-    width: 1305
-    height: 850
+    url: screenshots/rustdesk/1.png
     width: 1305
     height: 850
 ---
@@ -426,13 +421,11 @@ Screenshots:
   caption:
     C: scrcpy
   thumbnails:
-    - url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/scrcpy/0.jpg
+    - url: screenshots/scrcpy/0.jpg
       width: 427
       height: 600
   source-image:
-    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/scrcpy/0.jpg
-    width: 427
-    height: 600
+    url: screenshots/scrcpy/0.jpg
     width: 427
     height: 600
 ---
@@ -469,13 +462,11 @@ Screenshots:
   caption:
     C: viber
   thumbnails:
-    - url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/viber/1.png
+    - url: screenshots/viber/1.png
       width: 584
       height: 434
   source-image:
-    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/viber/1.png
-    width: 584
-    height: 434
+    url: screenshots/viber/1.png
     width: 584
     height: 434
 ---
@@ -511,13 +502,11 @@ Screenshots:
   caption:
     C: winegui
   thumbnails:
-    - url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/winegui/1.png
+    - url: screenshots/winegui/1.png
       width: 1204
       height: 620
   source-image:
-    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/winegui/1.png
-    width: 1204
-    height: 620
+    url: screenshots/winegui/1.png
     width: 1204
     height: 620
 ---
@@ -597,12 +586,10 @@ Screenshots:
   caption:
     C: wps-office
   thumbnails:
-    - url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/wps-office/2.png
+    - url: screenshots/wps-office/2.png
       width: 1647
       height: 946
   source-image:
-    url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/wps-office/2.png
-    width: 1647
-    height: 946
+    url: screenshots/wps-office/2.png
     width: 1647
     height: 946
