@@ -218,14 +218,20 @@ jobs:
               screenshots_json=$(jq -r --arg k "$app" '.[$k].screenshots // empty' /tmp/descriptions.json 2>/dev/null || echo "")
               if [ -n "$screenshots_json" ] && [ -d "$GITHUB_WORKSPACE/screenshots/$app" ]; then
                 echo '    <screenshots>' >> "$xml_file"
-                echo '      <screenshot type="default">' >> "$xml_file"
-                echo "        <caption>${app}</caption>" >> "$xml_file"
+                first_ss=true
                 for ss_file in "$GITHUB_WORKSPACE/screenshots/$app"/*; do
                   [ -f "$ss_file" ] || continue
                   ss_name=$(basename "$ss_file")
+                  if $first_ss; then
+                    echo '      <screenshot type="default">' >> "$xml_file"
+                    first_ss=false
+                  else
+                    echo '      <screenshot>' >> "$xml_file"
+                  fi
+                  printf '        <caption>%s</caption>\n' "$app" >> "$xml_file"
                   printf '        <image>%s</image>\n' "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/apt/screenshots/${app}/${ss_name}" >> "$xml_file"
+                  echo '      </screenshot>' >> "$xml_file"
                 done
-                echo '      </screenshot>' >> "$xml_file"
                 echo '    </screenshots>' >> "$xml_file"
               fi
 
