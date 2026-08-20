@@ -53,10 +53,10 @@ for app_dir in glob.glob(os.path.join(ss_dir, '*')):
         w, h = get_image_size(ss_file)
         for i, line in enumerate(lines):
             if f'url: {ss_url}' in line and i >= 2 and 'source-image:' in lines[i-1] and 'thumbnails: []' in lines[i-2]:
-                thumb_entry = f"thumbnails:\n      - url: {ss_url}"
+                indent = '    '
+                thumb_entry = f"thumbnails:\n{indent}- url: {ss_url}"
                 if w and h:
-                    thumb_entry += f"\n        width: {w}\n        height: {h}"
-                thumb_entry += "\n"
+                    thumb_entry += f"\n{indent}  width: {w}\n{indent}  height: {h}"
                 lines[i-2] = lines[i-2].replace('thumbnails: []', thumb_entry)
 
 with open(yml_path, 'w') as f:
