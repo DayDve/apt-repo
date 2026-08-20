@@ -92,6 +92,10 @@ Screenshots:
       height: 747
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/btrfs-assistant/2.png
+    width: 945
+    height: 747
+    width: 945
+    height: 747
 ---
 Type: font
 ID: io.github.daydve.apt.fonts-noto-lite
@@ -287,6 +291,10 @@ Screenshots:
       height: 1086
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/mc6/0.png
+    width: 1268
+    height: 1086
+    width: 1268
+    height: 1086
 ---
 Type: console-application
 ID: io.github.daydve.apt.rclone
@@ -380,6 +388,10 @@ Screenshots:
       height: 850
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/rustdesk/1.png
+    width: 1305
+    height: 850
+    width: 1305
+    height: 850
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.scrcpy
@@ -419,6 +431,10 @@ Screenshots:
       height: 600
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/scrcpy/0.jpg
+    width: 427
+    height: 600
+    width: 427
+    height: 600
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.viber
@@ -458,6 +474,10 @@ Screenshots:
       height: 434
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/viber/1.png
+    width: 584
+    height: 434
+    width: 584
+    height: 434
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.winegui
@@ -496,6 +516,10 @@ Screenshots:
       height: 620
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/winegui/1.png
+    width: 1204
+    height: 620
+    width: 1204
+    height: 620
 ---
 Type: console-application
 ID: io.github.daydve.apt.wlvncc
@@ -578,3 +602,7 @@ Screenshots:
       height: 946
   source-image:
     url: https://raw.githubusercontent.com/DayDve/apt-repo/apt/screenshots/wps-office/2.png
+    width: 1647
+    height: 946
+    width: 1647
+    height: 946
