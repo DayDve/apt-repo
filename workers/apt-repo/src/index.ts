@@ -193,17 +193,22 @@ function catLabel(cat: string): string {
 function sharedStyles(): string {
   return `
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Courier New',Courier,monospace;max-width:1000px;margin:0 auto;padding:1.5rem;line-height:1.6;color:#e6edf3;background:#0d1117}
-a{color:#58a6ff;text-decoration:none}
-a:hover{text-decoration:underline}
-pre{background:#161b22;padding:1rem;overflow-x:auto;font-size:.85rem;margin:0;border:0!important}
+body{font-family:'Courier New',Courier,monospace;max-width:800px;margin:0 auto;padding:0;line-height:1.6;color:#c8d6e5;background:#0a0e14}
+a{color:#7ec8e3;text-decoration:none}
+a:hover{color:#fff}
+pre{background:#0d1117;padding:.8rem 1rem;overflow-x:auto;font-size:.82rem;margin:0;border:0!important;border-left:2px solid #2d3748}
 pre code{background:transparent!important;padding:0!important}
 .code-wrap{position:relative}
-.copy-btn{position:absolute;top:4px;right:4px;background:none;border:none;cursor:pointer;color:#555;padding:4px;line-height:0}
-.copy-btn:hover{color:#8b949e}
-.copy-btn.copied svg{stroke:#3fb950}
+.copy-btn{position:absolute;top:4px;right:4px;background:none;border:none;cursor:pointer;color:#3a4a5c;padding:4px;line-height:0}
+.copy-btn:hover{color:#7ec8e3}
+.copy-btn.copied svg{stroke:#5dde8b}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-.center{text-align:center}`;
+.center{text-align:center}
+.tui-box{border:1px solid #2d3748;margin:1rem 0;padding:1.2rem;position:relative}
+.tui-box::before{content:attr(data-title);position:absolute;top:-.6rem;left:1rem;background:#0a0e14;padding:0 .5rem;font-size:.7rem;color:#5dde8b;text-transform:uppercase;letter-spacing:.05em}
+.tui-label{color:#5dde8b}
+.tui-key{display:inline-block;background:#1a2332;border:1px solid #2d3748;border-radius:2px;padding:.05rem .35rem;font-size:.75rem;color:#7ec8e3;min-width:1.2rem;text-align:center}
+.tui-hr{border:none;border-top:1px solid #1e2a3a;margin:.8rem 0}`;
 }
 
 function sharedScript(): string {
@@ -310,20 +315,23 @@ sudo apt update`;
 <meta property="og:url" content="${safeOrigin}">
 <style>
 ${sharedStyles()}
-.tab-group{margin:1.5rem 0}
-.tab-headers{display:flex;gap:0;border-bottom:1px solid #30363d;margin-bottom:0}
-.tab-header{padding:.5rem 1rem;background:none;border:1px solid #30363d;border-bottom:none;border-radius:6px 6px 0 0;color:#8b949e;font-family:inherit;font-size:.8rem;cursor:pointer;transition:all .15s;margin-bottom:-1px}
-.tab-header:hover{color:#58a6ff}
-.tab-header.active{background:#161b22;color:#58a6ff;border-color:#30363d}
-.tab-content{background:#161b22;border:1px solid #30363d;border-radius:0 6px 6px 6px;padding:1rem;display:none}
+.tui-status{position:fixed;bottom:0;left:0;right:0;background:#0d1117;border-top:1px solid #2d3748;padding:.3rem 1rem;display:flex;justify-content:space-between;font-size:.7rem;color:#3a4a5c;z-index:10}
+.tui-status a{color:#3a4a5c}.tui-status a:hover{color:#7ec8e3}
+.tab-headers{display:flex;gap:0;margin-bottom:0}
+.tab-header{padding:.3rem .8rem;background:none;border:1px solid #2d3748;border-bottom:none;color:#5a6a7c;font-family:inherit;font-size:.78rem;cursor:pointer;transition:all .15s}
+.tab-header:hover{color:#7ec8e3}
+.tab-header.active{background:#0d1117;color:#5dde8b;border-bottom-color:#0d1117}
+.tab-content{border:1px solid #2d3748;padding:1rem;display:none;margin-top:-1px}
 .tab-content.active{display:block}
-.tab-content h3{font-size:.85rem;color:#8b949e;margin-bottom:.5rem;font-weight:normal}
-.tab-content .code-wrap{margin:.5rem 0}
-.tab-content .code-wrap pre{background:#0d1117;border:1px solid #21262d;border-radius:4px}
-.tab-content .code-wrap code{color:#7ee787;font-size:.8rem}
-.tab-content .note{color:#8b949e;font-size:.75rem;margin-top:.5rem}
-.browse-link{display:inline-block;margin:1.5rem 0;padding:.5rem 1.2rem;border:1px solid #30363d;color:#58a6ff;border-radius:4px;font-size:.9rem;text-decoration:none;transition:all .15s}
-.browse-link:hover{border-color:#58a6ff;background:#161b22;text-decoration:none}
+.tab-content h3{font-size:.8rem;color:#5dde8b;margin-bottom:.4rem;font-weight:normal}
+.tab-content h3::before{content:'> ';color:#3a4a5c}
+.tab-content .code-wrap{margin:.4rem 0}
+.tab-content .code-wrap pre{background:#0d1117;border-left:2px solid #2d3748}
+.tab-content .code-wrap code{color:#5dde8b;font-size:.78rem}
+.tab-content .note{color:#3a4a5c;font-size:.72rem;margin-top:.4rem}
+.browse-link{display:inline-block;margin:1rem 0;padding:.4rem 1rem;border:1px solid #2d3748;color:#7ec8e3;font-size:.85rem;text-decoration:none;transition:all .15s}
+.browse-link:hover{border-color:#5dde8b;color:#5dde8b;text-decoration:none}
+.browse-link::before{content:'[ '}.browse-link::after{content:' ]'}
 .ascii-wide{display:block}
 .ascii-narrow{display:none}
 @media(max-width:768px){.ascii-wide{display:none}.ascii-narrow{display:block}}
@@ -331,7 +339,7 @@ ${sharedStyles()}
 </head>
 <body>
 <h1 class="sr-only">${siteName}</h1>
-<div class="center ascii-wide"><div style="white-space:pre;line-height:1.2">
+<div class="center ascii-wide"><div style="white-space:pre;line-height:1.2;color:#3a4a5c">
 ###############################################################################
 #                     _   ___ _____   ___                                     #
 #                    /_\\ | _ \\_   _| | _ \\___ _ __  ___                       #
@@ -345,7 +353,7 @@ ${asciiLine(45, author, 30)}
 #                                                                             #
 ###############################################################################
 </div></div>
-<div class="center ascii-narrow"><div style="white-space:pre;line-height:1.2">
+<div class="center ascii-narrow"><div style="white-space:pre;line-height:1.2;color:#3a4a5c">
 ##########################################
 #    _   ___ _____   ___                 #
 #   /_\\ | _ \\_   _| | _ \\___ _ __  ___   #
@@ -360,58 +368,60 @@ ${asciiLine(28, author, 10)}
 ##########################################
 </div></div>
 
-<div class="center">
-<p style="color:#8b949e;font-size:.9rem;margin-top:1rem">${pkgCount} packages available for Ubuntu Noble</p>
-<a href="${safeOrigin}/packages" class="browse-link">Browse packages</a>
+<div class="tui-box" data-title="packages">
+  <div class="center">
+    <span class="tui-label">${pkgCount}</span> packages available for Ubuntu Noble
+    <br>
+    <a href="${safeOrigin}/packages" class="browse-link">Browse packages</a>
+  </div>
 </div>
 
-<h2>Add repository</h2>
-<div class="tab-group">
-<div class="tab-headers">
-  <button class="tab-header active" onclick="showTab(this,'tab-curl')">curl | bash</button>
-  <button class="tab-header" onclick="showTab(this,'tab-manual')">Manual</button>
-</div>
-<div class="tab-content active" id="tab-curl">
-  <h3>One-liner (recommended)</h3>
-  <div class="code-wrap">
-    <pre><code>curl -fsSL ${safeAptOrigin} | sudo bash</code></pre>
-    <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL ${safeAptOrigin} | sudo bash')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+<div class="tui-box" data-title="setup">
+  <div class="tab-group">
+    <div class="tab-headers">
+      <button class="tab-header active" onclick="showTab(this,'tab-curl')">[1] curl | bash</button>
+      <button class="tab-header" onclick="showTab(this,'tab-manual')">[2] manual</button>
+    </div>
+    <div class="tab-content active" id="tab-curl">
+      <h3>One-liner</h3>
+      <div class="code-wrap">
+        <pre><code>curl -fsSL ${safeAptOrigin} | sudo bash</code></pre>
+        <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL ${safeAptOrigin} | sudo bash')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+      <p class="note">Failsafe: <code style="color:#7ec8e3;font-size:.72rem">${safeFallback}</code></p>
+    </div>
+    <div class="tab-content" id="tab-manual">
+      <h3>Add GPG key</h3>
+      <div class="code-wrap">
+        <pre><code>${keyCmd}</code></pre>
+        <button class="copy-btn" onclick="copyCmd(this,'${keyCmd.replace(/'/g, "\\'")}')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+      <h3>Add repository</h3>
+      <div class="code-wrap">
+        <pre><code>echo "${sourcesLine}" | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list</code></pre>
+        <button class="copy-btn" onclick="copyCmd(this,'echo \\'${sourcesLine}\\' | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+      <h3>Update package lists</h3>
+      <div class="code-wrap">
+        <pre><code>sudo apt update</code></pre>
+        <button class="copy-btn" onclick="copyCmd(this,'sudo apt update')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </div>
+    </div>
   </div>
-  <p class="note">If ${safeAptOrigin} is unavailable, use the fallback:</p>
-  <div class="code-wrap">
-    <pre><code>curl -fsSL ${safeFallback} | sudo bash</code></pre>
-    <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL ${safeFallback} | sudo bash')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-  </div>
-</div>
-<div class="tab-content" id="tab-manual">
-  <h3>Add GPG key</h3>
-  <div class="code-wrap">
-    <pre><code>${keyCmd}</code></pre>
-    <button class="copy-btn" onclick="copyCmd(this,'${keyCmd.replace(/'/g, "\\'")}')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-  </div>
-  <h3>Add repository</h3>
-  <div class="code-wrap">
-    <pre><code>echo "${sourcesLine}" | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list</code></pre>
-    <button class="copy-btn" onclick="copyCmd(this,'echo \\'${sourcesLine}\\' | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-  </div>
-  <h3>Update package lists</h3>
-  <div class="code-wrap">
-    <pre><code>sudo apt update</code></pre>
-    <button class="copy-btn" onclick="copyCmd(this,'sudo apt update')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-  </div>
-</div>
 </div>
 
-<h2>Install packages</h2>
-<p style="margin:.5rem 0">Via terminal:</p>
-<div class="code-wrap">
-  <pre><code>sudo apt install &lt;package-name&gt;</code></pre>
-  <button class="copy-btn" onclick="copyCmd(this,'sudo apt install ')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+<div class="tui-box" data-title="install">
+  <div class="code-wrap">
+    <pre><code>sudo apt install <span style="color:#f5a962">&lt;package-name&gt;</span></code></pre>
+    <button class="copy-btn" onclick="copyCmd(this,'sudo apt install ')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+  </div>
+  <p style="font-size:.78rem;color:#3a4a5c;margin-top:.5rem">Browse <a href="${safeOrigin}/packages">packages</a> for apt:// links</p>
 </div>
-<p style="margin:.5rem 0">Or via package manager — browse packages for apt:// links:</p>
-<p class="center"><a href="${safeOrigin}/packages" class="browse-link">Browse packages</a></p>
 
-<p class="center" style="color:#8b949e;font-size:.85rem;margin-top:2rem"><a href="https://github.com/${env.REPO}">GitHub</a>${env.TELEGRAM ? ` · <a href="${env.TELEGRAM}">Telegram</a>` : ''} · Built for personal use</p>
+<div class="tui-status">
+  <span><a href="${safeOrigin}">home</a> | <a href="${safeOrigin}/packages">packages</a> | <a href="https://github.com/${env.REPO}">github</a>${env.TELEGRAM ? ` | <a href="${env.TELEGRAM}">telegram</a>` : ''}</span>
+  <span>built for personal use</span>
+</div>
 
 <script>
 ${sharedScript()}
@@ -437,21 +447,19 @@ function pkgListRow(p: Package, aptOrigin: string, groupCats: string[]): string 
   const effectiveCats = p.group ? [...new Set([...(p.categories || []), ...groupCats])] : (p.categories || []);
   const cats = effectiveCats.map(c =>
     `<span class="tag" data-cat="${escapeHtml(c)}">${escapeHtml(catLabel(c))}</span>`
-  ).join('');
+  ).join(' ');
   const iconUrl = p.icon ? `${escapeHtml(aptOrigin)}${escapeHtml(p.icon)}` : '';
-  const fallbackIcon = `<svg class="row-icon fallback-icon" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="24" height="24" rx="4"/><path d="M12 11h8M12 16h8M12 21h5"/></svg>`;
+  const fallbackIcon = `<span style="color:#3a4a5c">[ ]</span>`;
   const iconHtml = iconUrl
-    ? `<img class="row-icon" src="${iconUrl}" alt="${safeName}" width="32" height="32" loading="lazy" onerror="this.outerHTML=this.dataset.fallback" data-fallback='${fallbackIcon}'>`
+    ? `<img class="row-icon" src="${iconUrl}" alt="${safeName}" width="20" height="20" loading="lazy" onerror="this.outerHTML=this.dataset.fallback" data-fallback='${fallbackIcon}'>`
     : fallbackIcon;
-  const familyLabel = p.group ? `<span class="row-family">${escapeHtml(p.group)}</span>` : '';
+  const familyLabel = p.group ? `<span class="row-family">(${escapeHtml(p.group)})</span>` : '';
 
   return `<a class="pkg-row" href="/packages/${safeName}" data-cats="${escapeHtml(effectiveCats.join(','))}" data-name="${safeName}">
-  <div class="row-icon-wrap">${iconHtml}</div>
-  <div class="row-info">
-    <div class="row-name">${safeName}${familyLabel}</div>
-    <div class="row-desc">${safeDesc}</div>
-  </div>
-  <div class="row-tags">${cats}</div>
+  <span class="row-icon-wrap">${iconHtml}</span>
+  <span class="row-name"><span class="row-arrow">&gt;</span> ${safeName}${familyLabel}</span>
+  <span class="row-desc">${safeDesc}</span>
+  <span class="row-tags">${cats}</span>
 </a>`;
 }
 
@@ -472,7 +480,7 @@ async function servePackageList(url: URL, ctx: ExecutionContext, env: Env): Prom
 
   const catButtons = sortedCats.map(c =>
     `<button class="filter-btn" data-cat="${escapeHtml(c)}" onclick="filterCat('${escapeHtml(c)}')">${escapeHtml(catLabel(c))}</button>`
-  ).join('');
+  ).join(' ');
 
   let rows = '';
   const groupCats = new Map<string, string[]>();
@@ -495,38 +503,39 @@ async function servePackageList(url: URL, ctx: ExecutionContext, env: Env): Prom
 <meta name="description" content="Browse and install packages from ${siteName}.">
 <style>
 ${sharedStyles()}
-.pkg-row{display:flex;align-items:center;gap:1rem;padding:.8rem 1rem;border:1px solid #21262d;border-radius:6px;text-decoration:none;color:#e6edf3;transition:all .15s}
-.pkg-row:hover{border-color:#58a6ff;background:#161b22;text-decoration:none}
+.pkg-row{display:flex;align-items:center;gap:.6rem;padding:.4rem .8rem;text-decoration:none;color:#c8d6e5;transition:all .1s;font-size:.85rem}
+.pkg-row:hover{background:#111922;text-decoration:none}
 .pkg-row.hidden{display:none}
-.row-icon-wrap{flex-shrink:0}
-.row-icon{width:32px;height:32px;border-radius:6px}
-.fallback-icon{background:#1a1a2e;border:1px solid #333}
-.row-info{flex:1;min-width:0}
-.row-name{font-weight:bold;font-size:.9rem;color:#e6edf3;display:flex;align-items:center;gap:.5rem}
-.row-family{font-size:.7rem;color:#58a6ff;font-weight:normal}
-.row-desc{font-size:.8rem;color:#8b949e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-icon-wrap{flex-shrink:0;width:20px;text-align:center}
+.row-icon{width:20px;height:20px;border-radius:2px;vertical-align:middle}
+.row-arrow{color:#3a4a5c;font-size:.8rem;transition:color .1s}
+.pkg-row:hover .row-arrow{color:#5dde8b}
+.row-name{font-weight:bold;color:#7ec8e3;white-space:nowrap;flex-shrink:0}
+.row-family{font-size:.72rem;color:#5a6a7c;font-weight:normal}
+.row-desc{flex:1;min-width:0;color:#5a6a7c;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row-tags{display:flex;flex-wrap:wrap;gap:.3rem;flex-shrink:0}
-.tag{font-size:.65rem;padding:.1rem .4rem;background:#30363d;border-radius:10px;color:#8b949e}
-.list{display:flex;flex-direction:column;gap:.4rem;margin-top:1rem}
-.toolbar{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin:1.5rem 0}
-.search{flex:1;min-width:200px;padding:.6rem .8rem;background:#161b22;border:1px solid #30363d;border-radius:6px;color:#e6edf3;font-family:inherit;font-size:.85rem;outline:none}
-.search:focus{border-color:#58a6ff}
-.search::placeholder{color:#484f58}
-.filters{display:flex;flex-wrap:wrap;gap:.4rem}
-.filter-btn{padding:.3rem .6rem;background:#161b22;border:1px solid #30363d;border-radius:20px;color:#8b949e;font-family:inherit;font-size:.75rem;cursor:pointer;transition:all .15s}
-.filter-btn:hover{border-color:#58a6ff;color:#58a6ff}
-.filter-btn.active{background:#1f6feb;border-color:#1f6feb;color:#fff}
-.count{color:#8b949e;font-size:.8rem;margin-left:auto;white-space:nowrap}
-.header{text-align:center;padding:1.5rem 0}
-.header h1{font-size:1.5rem;margin-bottom:.5rem}
-.header p{color:#8b949e;font-size:.9rem}
-.header .nav{margin-top:.75rem;font-size:.85rem}
-.header .nav a{color:#8b949e;margin:0 .5rem}
-.header .nav a:hover{color:#58a6ff}
-.empty{text-align:center;padding:3rem;color:#484f58;font-size:.9rem}
-.footer{text-align:center;padding:2rem 0 1rem;color:#484f58;font-size:.8rem}
-.footer a{color:#8b949e}
-@media(max-width:768px){.row-tags{display:none}.pkg-row{gap:.7rem;padding:.6rem .8rem}}
+.tag{font-size:.65rem;padding:.05rem .35rem;background:#111922;border:1px solid #1e2a3a;color:#5a6a7c}
+.list{margin-top:.5rem}
+.toolbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.search{flex:1;min-width:200px;padding:.4rem .6rem;background:#0d1117;border:1px solid #2d3748;color:#c8d6e5;font-family:inherit;font-size:.82rem;outline:none}
+.search:focus{border-color:#7ec8e3}
+.search::placeholder{color:#3a4a5c}
+.filters{display:flex;flex-wrap:wrap;gap:.3rem}
+.filter-btn{padding:.15rem .4rem;background:none;border:1px solid #2d3748;color:#5a6a7c;font-family:inherit;font-size:.72rem;cursor:pointer;transition:all .1s}
+.filter-btn:hover{border-color:#7ec8e3;color:#7ec8e3}
+.filter-btn.active{background:#1a2332;border-color:#5dde8b;color:#5dde8b}
+.count{color:#3a4a5c;font-size:.75rem;margin-left:auto;white-space:nowrap}
+.header{padding:1rem 0 .5rem}
+.header h1{font-size:1.1rem;color:#5dde8b;font-weight:normal}
+.header h1::before{content:'$ ';color:#3a4a5c}
+.header p{color:#5a6a7c;font-size:.8rem}
+.header .nav{margin-top:.4rem;font-size:.78rem}
+.header .nav a{color:#5a6a7c;margin:0 .4rem}
+.header .nav a:hover{color:#7ec8e3}
+.empty{text-align:center;padding:2rem;color:#3a4a5c;font-size:.85rem}
+.tui-status{position:fixed;bottom:0;left:0;right:0;background:#0d1117;border-top:1px solid #2d3748;padding:.3rem 1rem;display:flex;justify-content:space-between;font-size:.7rem;color:#3a4a5c;z-index:10}
+.tui-status a{color:#3a4a5c}.tui-status a:hover{color:#7ec8e3}
+@media(max-width:768px){.row-tags{display:none}.pkg-row{gap:.4rem;padding:.3rem .6rem}.row-desc{display:none}}
 </style>
 </head>
 <body>
@@ -534,30 +543,28 @@ ${sharedStyles()}
 <div class="header">
   <h1>${siteName || 'Packages'}</h1>
   <p>${pkgCount} packages available for Ubuntu Noble</p>
-  <div class="nav">
-    <a href="${safeOrigin}">Home</a>
-    <a href="${safeOrigin}/packages">Packages</a>
-    <a href="https://github.com/${escapeHtml(env.REPO)}">GitHub</a>
-  </div>
 </div>
 
-<div class="toolbar">
-  <input type="text" class="search" placeholder="Search packages..." oninput="filterAll()" id="search">
-  <div class="filters">
-    <button class="filter-btn active" data-cat="all" onclick="filterCat('all')">All</button>
-    ${catButtons}
+<div class="tui-box" data-title="filter">
+  <div class="toolbar">
+    <input type="text" class="search" placeholder="Type to filter..." oninput="filterAll()" id="search">
+    <div class="filters">
+      <button class="filter-btn active" data-cat="all" onclick="filterCat('all')">all</button>
+      ${catButtons}
+    </div>
+    <span class="count" id="count">${pkgCount}</span>
   </div>
-  <span class="count" id="count">${pkgCount} packages</span>
 </div>
 
 <div class="list" id="list">
 ${rows}
 </div>
 
-<div class="empty" id="empty" style="display:none">No packages match your search.</div>
+<div class="empty" id="empty" style="display:none">No packages match.</div>
 
-<div class="footer">
-  <p><a href="https://github.com/${escapeHtml(env.REPO)}">GitHub</a>${env.TELEGRAM ? ` · <a href="${escapeHtml(env.TELEGRAM)}">Telegram</a>` : ''}</p>
+<div class="tui-status">
+  <span><a href="${safeOrigin}">home</a> | <a href="${safeOrigin}/packages">packages</a> | <a href="https://github.com/${escapeHtml(env.REPO)}">github</a></span>
+  <span id="status-count">${pkgCount} packages</span>
 </div>
 
 <script>
@@ -576,7 +583,6 @@ function filterAll() {
   const rows = document.querySelectorAll('.pkg-row');
   let visible = 0;
   rows.forEach(r => {
-    const name = r.dataset.name || '';
     const cats = (r.dataset.cats || '').split(',');
     const text = r.textContent.toLowerCase();
     const matchSearch = !q || text.includes(q);
@@ -585,7 +591,8 @@ function filterAll() {
     r.classList.toggle('hidden', !show);
     if (show) visible++;
   });
-  document.getElementById('count').textContent = visible + ' package' + (visible !== 1 ? 's' : '');
+  document.getElementById('count').textContent = visible + '';
+  document.getElementById('status-count').textContent = visible + ' packages';
   document.getElementById('empty').style.display = visible === 0 ? 'block' : 'none';
 }
 </script>
@@ -624,9 +631,9 @@ async function servePackageDetail(name: string, url: URL, ctx: ExecutionContext,
   const longDesc = pkg.longDescription ? escapeHtml(pkg.longDescription) : safeDesc;
 
   const iconUrl = pkg.icon ? `${escapeHtml(aptOrigin)}${escapeHtml(pkg.icon)}` : '';
-  const fallbackIcon = `<svg class="detail-icon fallback-icon" viewBox="0 0 96 96" width="96" height="96" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="80" height="80" rx="16"/><path d="M32 30h32M32 48h32M32 66h20"/></svg>`;
+  const fallbackIcon = `<span style="color:#3a4a5c;font-size:2rem">[ ]</span>`;
   const iconHtml = iconUrl
-    ? `<img class="detail-icon" src="${iconUrl}" alt="${safeName}" width="96" height="96" onerror="this.outerHTML=this.dataset.fallback" data-fallback='${fallbackIcon}'>`
+    ? `<img class="detail-icon" src="${iconUrl}" alt="${safeName}" width="48" height="48" onerror="this.outerHTML=this.dataset.fallback" data-fallback='${fallbackIcon}'>`
     : fallbackIcon;
 
   let familyHtml = '';
@@ -636,9 +643,9 @@ async function servePackageDetail(name: string, url: URL, ctx: ExecutionContext,
       const memberLinks = members
         .filter(m => m.name !== pkg.name)
         .map(m => `<a href="/packages/${escapeHtml(m.name)}">${escapeHtml(m.name)}</a>`)
-        .join(' · ');
+        .join(' | ');
       if (memberLinks) {
-        familyHtml = `<div class="detail-family">Part of <strong>${escapeHtml(pkg.group)}</strong>: ${memberLinks}</div>`;
+        familyHtml = `<div class="detail-family">family: <span class="tui-label">${escapeHtml(pkg.group)}</span> &mdash; ${memberLinks}</div>`;
       }
     }
   }
@@ -654,67 +661,71 @@ async function servePackageDetail(name: string, url: URL, ctx: ExecutionContext,
 <meta name="description" content="${safeDesc}">
 <style>
 ${sharedStyles()}
-.back{display:inline-flex;align-items:center;gap:.3rem;color:#8b949e;font-size:.85rem;margin-bottom:1.5rem}
-.back:hover{color:#58a6ff}
-.detail-top{display:flex;align-items:flex-start;gap:1.2rem;margin-bottom:1.5rem}
-.detail-icon{width:96px;height:96px;border-radius:16px;flex-shrink:0}
-.fallback-icon{background:#1a1a2e;border:1px solid #333}
-.detail-title{font-size:1.5rem;font-weight:bold;margin-bottom:.3rem}
-.detail-title a{color:#58a6ff}
-.detail-desc{color:#8b949e;font-size:.9rem}
-.detail-family{font-size:.8rem;color:#58a6ff;margin-top:.3rem}
-.detail-family strong{font-weight:bold}
-.detail-section{margin:1.5rem 0}
-.detail-section h2{font-size:1rem;color:#e6edf3;margin-bottom:.5rem;font-weight:bold}
-.detail-long{color:#c9d1d9;font-size:.9rem;line-height:1.8}
-.detail-links{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0}
-.detail-links a{padding:.4rem .8rem;border:1px solid #30363d;border-radius:4px;font-size:.8rem;color:#58a6ff;transition:all .15s}
-.detail-links a:hover{border-color:#58a6ff;background:#161b22;text-decoration:none}
-.detail-links a.apt-link{background:#1f6feb;border-color:#1f6feb;color:#fff}
-.detail-links a.apt-link:hover{background:#388bfd;border-color:#388bfd}
-.install-block{margin:.8rem 0}
-.install-block .code-wrap pre{background:#0d1117;border:1px solid #21262d;border-radius:4px}
-.install-block .code-wrap code{color:#7ee787;font-size:.85rem}
+.back{display:inline-flex;align-items:center;gap:.3rem;color:#5a6a7c;font-size:.8rem;margin-bottom:1rem}
+.back:hover{color:#7ec8e3}
+.back::before{content:'< '}
+.detail-top{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+.detail-icon{width:48px;height:48px;border-radius:4px;flex-shrink:0}
+.detail-title{font-size:1.2rem;font-weight:bold;color:#7ec8e3}
+.detail-title a{color:#7ec8e3}
+.detail-title a:hover{color:#fff}
+.detail-title::before{content:'$ ';color:#3a4a5c}
+.detail-desc{color:#5a6a7c;font-size:.85rem}
+.detail-family{font-size:.78rem;color:#5a6a7c;margin-top:.3rem}
+.detail-section{margin:1rem 0}
+.detail-section h2{font-size:.85rem;color:#5dde8b;margin-bottom:.4rem;font-weight:normal}
+.detail-section h2::before{content:'## '}
+.detail-long{color:#c8d6e5;font-size:.85rem;line-height:1.8}
+.detail-links{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+.detail-links a{padding:.3rem .6rem;border:1px solid #2d3748;font-size:.8rem;color:#7ec8e3;transition:all .1s}
+.detail-links a:hover{border-color:#5dde8b;color:#5dde8b;text-decoration:none}
+.detail-links a.apt-link{background:#1a2332;border-color:#5dde8b;color:#5dde8b}
+.detail-links a.apt-link:hover{background:#243344}
+.install-block{margin:.5rem 0}
+.install-block .code-wrap pre{border-left:2px solid #5dde8b}
+.install-block .code-wrap code{color:#5dde8b;font-size:.82rem}
 .screenshots{position:relative;overflow:hidden}
 .screenshots-track{display:flex;transition:transform .3s ease}
 .screenshots-track img{width:100%;flex-shrink:0;cursor:pointer;transition:opacity .15s;object-fit:contain;max-height:400px}
 .screenshots-track img:hover{opacity:.85}
-.ss-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);border:none;color:#8b949e;font-size:1.5rem;cursor:pointer;padding:.4rem .8rem;border-radius:4px;z-index:2;transition:color .15s;font-family:inherit}
-.ss-nav:hover{color:#e6edf3}
+.ss-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(10,14,20,.7);border:1px solid #2d3748;color:#5a6a7c;font-size:1.2rem;cursor:pointer;padding:.3rem .6rem;z-index:2;transition:color .15s;font-family:inherit}
+.ss-nav:hover{color:#7ec8e3}
 .ss-prev{left:.5rem}
 .ss-next{right:.5rem}
-.ss-dots{display:flex;justify-content:center;gap:.4rem;margin-top:.5rem}
-.ss-dot{width:8px;height:8px;border-radius:50%;background:#30363d;border:none;cursor:pointer;transition:background .15s;padding:0}
-.ss-dot.active{background:#58a6ff}
-.lightbox{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.92);align-items:center;justify-content:center}
+.ss-dots{display:flex;justify-content:center;gap:.3rem;margin-top:.4rem}
+.ss-dot{width:6px;height:6px;background:#2d3748;border:none;cursor:pointer;transition:background .15s;padding:0}
+.ss-dot.active{background:#5dde8b}
+.lightbox{display:none;position:fixed;inset:0;z-index:100;background:rgba(10,14,20,.95);align-items:center;justify-content:center}
 .lightbox.open{display:flex}
-.lightbox img{max-width:85vw;max-height:85vh;border-radius:4px;object-fit:contain;cursor:pointer}
-.lightbox-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:#8b949e;font-size:2rem;cursor:pointer;line-height:1;padding:.2rem .5rem}
-.lightbox-close:hover{color:#e6edf3}
-.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:none;border:none;color:#8b949e;font-size:2.5rem;cursor:pointer;padding:.5rem 1rem;z-index:2;transition:color .15s;font-family:inherit}
-.lb-nav:hover{color:#e6edf3}
+.lightbox img{max-width:85vw;max-height:85vh;object-fit:contain;cursor:pointer}
+.lightbox-close{position:absolute;top:.8rem;right:1rem;background:none;border:none;color:#5a6a7c;font-size:1.5rem;cursor:pointer;padding:.2rem .5rem}
+.lightbox-close:hover{color:#c8d6e5}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:none;border:1px solid #2d3748;color:#5a6a7c;font-size:1.5rem;cursor:pointer;padding:.3rem .8rem;z-index:2;transition:color .15s;font-family:inherit}
+.lb-nav:hover{color:#7ec8e3}
 .lb-prev{left:.5rem}
 .lb-next{right:.5rem}
-.footer{text-align:center;padding:2rem 0 1rem;color:#484f58;font-size:.8rem}
-.footer a{color:#8b949e}
-@media(max-width:600px){.detail-top{flex-direction:column;align-items:center;text-align:center}.detail-icon{width:72px;height:72px}.detail-links{justify-content:center}}
+.tui-status{position:fixed;bottom:0;left:0;right:0;background:#0d1117;border-top:1px solid #2d3748;padding:.3rem 1rem;display:flex;justify-content:space-between;font-size:.7rem;color:#3a4a5c;z-index:10}
+.tui-status a{color:#3a4a5c}.tui-status a:hover{color:#7ec8e3}
+@media(max-width:600px){.detail-top{flex-direction:column;align-items:flex-start}.detail-links{flex-direction:column}.detail-links a{width:100%;text-align:center}}
 </style>
 </head>
 <body>
 
-<a href="/packages" class="back">&larr; All packages</a>
+<a href="/packages" class="back">All packages</a>
 
-<div class="detail-top">
-  ${iconHtml}
-  <div>
-    <h1 class="detail-title">${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</h1>
-    <p class="detail-desc">${safeDesc}</p>
-    ${familyHtml}
+<div class="tui-box" data-title="${safeName}">
+  <div class="detail-top">
+    ${iconHtml}
+    <div>
+      <h1 class="detail-title">${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</h1>
+      <p class="detail-desc">${safeDesc}</p>
+      ${familyHtml}
+    </div>
   </div>
 </div>
 
 ${screenshots.length > 0 ? `
-<div class="detail-section">
+<div class="tui-box" data-title="screenshots">
   <div class="screenshots">
     ${screenshots.length > 1 ? '<button class="ss-nav ss-prev" onclick="ssSlide(-1)">&#8249;</button>' : ''}
     <div class="screenshots-track" id="ss-track">
@@ -731,16 +742,14 @@ ${screenshots.length > 0 ? `
   <img id="lb-img" src="" alt="" onclick="event.stopPropagation()">
 </div>
 
-<div class="detail-section">
-  <h2>About</h2>
+<div class="tui-box" data-title="about">
   <div class="detail-long">${longDesc.replace(/\n/g, '<br>')}</div>
 </div>
 
-<div class="detail-section">
-  <h2>Install</h2>
+<div class="tui-box" data-title="install">
   <div class="detail-links">
-    <a href="${escapeHtml(aptLink)}" class="apt-link">Install via package manager</a>
-    ${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">Homepage</a>` : ''}
+    <a href="${escapeHtml(aptLink)}" class="apt-link">apt:// install</a>
+    ${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">homepage</a>` : ''}
   </div>
   <div class="install-block">
     <div class="code-wrap">
@@ -750,8 +759,9 @@ ${screenshots.length > 0 ? `
   </div>
 </div>
 
-<div class="footer">
-  <p><a href="https://github.com/${escapeHtml(env.REPO)}">GitHub</a>${env.TELEGRAM ? ` · <a href="${escapeHtml(env.TELEGRAM)}">Telegram</a>` : ''}</p>
+<div class="tui-status">
+  <span><a href="${safeOrigin}">home</a> | <a href="${safeOrigin}/packages">packages</a> | <a href="https://github.com/${escapeHtml(env.REPO)}">github</a></span>
+  <span>${safeName}</span>
 </div>
 
 <script>${sharedScript()}
