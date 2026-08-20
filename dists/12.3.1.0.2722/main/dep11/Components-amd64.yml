@@ -609,6 +609,28 @@ Icon:
 Provides:
   binaries:
   - wps-office-langpack-ru
+Screenshots:
+- default: true
+  caption:
+    C: wps-office-langpack-ru
+  thumbnails:
+    - url: screenshots/wps-office-langpack-ru/0.png
+      width: 1706
+      height: 1030
+  source-image:
+    url: screenshots/wps-office-langpack-ru/0.png
+    width: 1706
+    height: 1030
+- caption:
+    C: wps-office-langpack-ru
+  thumbnails:
+    - url: screenshots/wps-office-langpack-ru/1.png
+      width: 1706
+      height: 1030
+  source-image:
+    url: screenshots/wps-office-langpack-ru/1.png
+    width: 1706
+    height: 1030
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.wps-office
