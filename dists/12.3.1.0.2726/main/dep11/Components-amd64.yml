@@ -31,6 +31,58 @@ Launchable:
 Provides:
   binaries:
   - ayugram
+Screenshots:
+- default: true
+  caption:
+    C: ayugram
+  thumbnails:
+    - url: screenshots/ayugram/0.png
+      width: 1398
+      height: 800
+  source-image:
+    url: screenshots/ayugram/0.png
+    width: 1398
+    height: 800
+- caption:
+    C: ayugram
+  thumbnails:
+    - url: screenshots/ayugram/1.png
+      width: 802
+      height: 626
+  source-image:
+    url: screenshots/ayugram/1.png
+    width: 802
+    height: 626
+- caption:
+    C: ayugram
+  thumbnails:
+    - url: screenshots/ayugram/2.png
+      width: 1398
+      height: 800
+  source-image:
+    url: screenshots/ayugram/2.png
+    width: 1398
+    height: 800
+- caption:
+    C: ayugram
+  thumbnails:
+    - url: screenshots/ayugram/3.png
+      width: 802
+      height: 626
+  source-image:
+    url: screenshots/ayugram/3.png
+    width: 802
+    height: 626
+- caption:
+    C: ayugram
+  thumbnails:
+    - url: screenshots/ayugram/4.png
+      width: 802
+      height: 626
+  source-image:
+    url: screenshots/ayugram/4.png
+    width: 802
+    height: 626
 ---
 Type: console-application
 ID: io.github.daydve.apt.bees

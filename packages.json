@@ -4,6 +4,13 @@
   "source": "https://github.com/AyuGram/AyuGramDesktop",
   "longDescription": "AyuGram is a modified Telegram Desktop client that adds advanced privacy controls and expanded messaging features to the standard Telegram interface. It includes a flexible ghost mode to hide your online status and read receipts, as well as anti-recall functionality that saves deleted and edited message history locally. Additionally, it offers font and theme customization, built-in message translation, streamer mode, and local Telegram Premium options.",
   "icon": "/icons/ayugram.png",
+  "screenshots": [
+    "/screenshots/ayugram/0.png",
+    "/screenshots/ayugram/1.png",
+    "/screenshots/ayugram/2.png",
+    "/screenshots/ayugram/3.png",
+    "/screenshots/ayugram/4.png"
+  ],
   "categories": [
     "InstantMessaging"
   ]
