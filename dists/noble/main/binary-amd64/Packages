@@ -91,6 +91,21 @@ Description: GUI management tool for Btrfs filesystem
  A Qt6-based tool for managing Btrfs filesystems, including
  subvolumes, snapshots (Snapper/Timeshift), scrub, and balance operations.
 
+Package: btrfs-assistant
+Version: 2.3.1
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 920
+Depends: libc6, libbtrfsutil1t64, btrfs-progs, libqt6core6t64, libqt6gui6t64, libqt6widgets6t64, libqt6dbus6t64, libgl1, libegl1, libqt6svg6
+Filename: pool/noble/main/btrfs-assistant_2.3.1_noble_amd64.deb
+Size: 236424
+MD5sum: 4c415cb95d660d1bbd90378353a443df
+SHA1: c19db79ed92669865f9334a8e3d8d03c64003cab
+SHA256: e986ad5e0ab9274ea45d9f4a0c3133371615aea2ae9cc8135b26f4234b96d715
+Description: GUI management tool for Btrfs filesystem
+ A Qt6-based tool for managing Btrfs filesystems, including
+ subvolumes, snapshots (Snapper/Timeshift), scrub, and balance operations.
+
 Package: fonts-noto-lite
 Version: 1.0
 Architecture: all
@@ -314,6 +329,25 @@ Size: 24582872
 MD5sum: 46d773feaab71e310883bbe58605a0dd
 SHA1: d8ac6613151e72e941832c0f09f0bec4c81c70ef
 SHA256: dae68192ad43a59a68df06454eb5fa4e9a9f86a343fe430165efd8b18863d0f4
+Section: x11
+Priority: optional
+Homepage: https://localsend.org/
+Description: An open source cross-platform alternative to AirDrop
+Uploaders: TheGB0077 <gb.lima.dev@gmail.com>
+
+Package: localsend
+Version: 1.18.2+64
+Architecture: amd64
+Essential: no
+Maintainer: Tienisto <dev.tien.donam@gmail.com>
+Installed-Size: 30600
+Pre-Depends: libc6 (>= 2.31)
+Depends: libappindicator3-1 | libayatana-appindicator3-1, gir1.2-appindicator3-0.1 | gir1.2-ayatanaappindicator3-0.1, libayatana-ido3-0.4-0, xdg-user-dirs
+Filename: pool/noble/main/localsend_1.18.2_noble_amd64.deb
+Size: 24665458
+MD5sum: a410fa2d461a583b07dc7994e4207db5
+SHA1: a22fbc5c01e4f10215e0e15253e91c3769f888ba
+SHA256: cc42a4f3eacdcb25ec31f0016b1272acb003145ab30484db8965450e20c72cd2
 Section: x11
 Priority: optional
 Homepage: https://localsend.org/
