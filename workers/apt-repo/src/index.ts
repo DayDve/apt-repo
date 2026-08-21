@@ -1,3 +1,8 @@
+interface ExecutionContext {
+  waitUntil(promise: Promise<any>): void;
+  passThroughOnException(): void;
+}
+
 interface Env {
   REPO: string;
   PAGES_ORIGIN: string;
@@ -30,11 +35,6 @@ function escapeHtml(s: string): string {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
-}
-
-function asciiLine(pipePos: number, author: string, rightPad: number): string {
-  const beforeBy = Math.max(0, pipePos - 4 - author.length);
-  return `#${' '.repeat(beforeBy)}by ${author}|_|${' '.repeat(rightPad)}#`;
 }
 
 export default {
@@ -82,7 +82,7 @@ export default {
 };
 
 async function proxy(url: string, contentType?: string): Promise<Response> {
-  const resp = await fetch(url, { cf: { cacheTtl: -1 } });
+  const resp = await fetch(url, { cf: { cacheTtl: -1 } } as any);
   return new Response(resp.body, {
     status: resp.status,
     headers: {
@@ -95,7 +95,7 @@ async function proxy(url: string, contentType?: string): Promise<Response> {
 }
 
 async function fetchJSON(url: string, cacheKey: string, ctx: ExecutionContext): Promise<any> {
-  const cache = caches.default;
+  const cache = (caches as any).default;
   const req = new Request(cacheKey);
   const cached = await cache.match(req);
   const headers = { 'cache-control': 'public, max-age=0, must-revalidate' };
@@ -119,102 +119,228 @@ async function redirectPool(path: string, ctx: ExecutionContext, env: Env): Prom
   );
 }
 
-interface DisplayEntry {
-  kind: 'family' | 'pkg';
-  name: string;
-  head?: Package;
-  members?: Package[];
-  pkg?: Package;
+// ── Origins ──
+
+function getOrigins(env: Env): { aptOrigin: string; fallbackOrigin: string } {
+  const aptOrigin = (env.APT_ORIGIN && !env.APT_ORIGIN.includes('workers.dev'))
+    ? env.APT_ORIGIN
+    : 'https://apt.smbit.pro';
+  const fallbackOrigin = (env.APT_ORIGIN && env.APT_ORIGIN.includes('workers.dev'))
+    ? env.APT_ORIGIN
+    : (env.AUTHOR ? `https://apt-repo.${env.AUTHOR.toLowerCase()}.workers.dev` : 'https://apt-repo.daydve.workers.dev');
+  return { aptOrigin, fallbackOrigin };
 }
 
-function displayEntries(pkgs: Package[]): DisplayEntry[] {
-  const groups = new Map<string, Package[]>();
-  const standalone: Package[] = [];
-  for (const p of pkgs) {
-    if (p.group) {
-      const arr = groups.get(p.group) || [];
-      arr.push(p);
-      groups.set(p.group, arr);
-    } else {
-      standalone.push(p);
-    }
-  }
-  const entries: DisplayEntry[] = [];
-  for (const [g, members] of groups.entries()) {
-    members.sort((a, b) => a.name.localeCompare(b.name));
-    if (members.length < 2) {
-      standalone.push(members[0]);
-      continue;
-    }
-    const head = members.find(m => m.name === g) || members[0];
-    entries.push({ kind: 'family', name: g, head, members });
-  }
-  for (const p of standalone) entries.push({ kind: 'pkg', name: p.name, pkg: p });
-  entries.sort((a, b) => {
-    if (a.kind !== b.kind) return a.kind === 'family' ? -1 : 1;
-    return a.name.localeCompare(b.name);
-  });
-  return entries;
-}
-
-function pkgLine(e: DisplayEntry): string {
-  if (e.kind === 'pkg' && e.pkg) {
-    return `#  ${e.pkg.name} - ${e.pkg.description}`;
-  }
-  if (e.head && e.members) {
-    const names = e.members.map(m => m.name).join(', ');
-    return `#  ${e.name} - ${e.head.description} (packages: ${names})`;
-  }
-  return '';
-}
+// ── Shared design & icons ──
 
 const CAT_LABELS: Record<string, string> = {
-  System: 'System',
-  Network: 'Network',
-  InstantMessaging: 'Messaging',
-  Office: 'Office',
-  Fonts: 'Fonts',
-  Utility: 'Utility',
-  FileTransfer: 'File Transfer',
-  RemoteAccess: 'Remote Access',
-  FileTools: 'File Tools',
-  Boot: 'Boot',
-  Hardware: 'Hardware',
-  Emulator: 'Emulator',
-  Development: 'Development',
-  Filesystem: 'Filesystem',
-  Security: 'Security',
+  System: 'System', Network: 'Network', InstantMessaging: 'Messaging',
+  Office: 'Office', Fonts: 'Fonts', Utility: 'Utility',
+  FileTransfer: 'File Transfer', RemoteAccess: 'Remote Access',
+  FileTools: 'File Tools', Boot: 'Boot', Hardware: 'Hardware',
+  Emulator: 'Emulator', Development: 'Development',
+  Filesystem: 'Filesystem', Security: 'Security',
 };
 
-function catLabel(cat: string): string {
-  return CAT_LABELS[cat] || cat;
+function catLabel(c: string): string { return CAT_LABELS[c] || c; }
+
+function iconPackage(size = 18): string {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>`;
 }
 
-function sharedStyles(): string {
-  return `
+function iconCopy(size = 14): string {
+  return `<svg class="icon-copy" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+}
+
+function iconCheck(size = 14): string {
+  return `<svg class="icon-check" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+}
+
+function iconChevronLeft(size = 20): string {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>`;
+}
+
+function iconChevronRight(size = 20): string {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`;
+}
+
+function iconClose(size = 20): string {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+}
+
+function sharedHead(title: string, desc: string, extraCss: string = ''): string {
+  return `<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title}</title>
+<meta name="description" content="${desc}">
+<meta name="theme-color" content="#0d1117">
+<style>
+:root {
+  --bg-body: #0d1117;
+  --bg-surface: #161b22;
+  --bg-surface-hover: #1f242c;
+  --bg-code: #090d13;
+  --bg-code-header: #121720;
+  --bg-tag: rgba(56, 139, 253, 0.1);
+  --border: #30363d;
+  --border-muted: #21262d;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted: #6e7681;
+  --accent: #58a6ff;
+  --accent-btn: #1f6feb;
+  --accent-btn-hover: #388bfd;
+  --success: #3fb950;
+  --syn-cmd: #79c0ff;
+  --syn-arg: #a5d6ff;
+  --syn-flag: #d2a8ff;
+  --syn-str: #7ee787;
+  --syn-opt: #ffa657;
+  --syn-pipe: #8b949e;
+  --syn-path: #a5d6ff;
+  --syn-comment: #8b949e;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-full: 20px;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  --transition: 120ms ease;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Courier New',Courier,monospace;max-width:1000px;margin:0 auto;padding:1.5rem;line-height:1.6;color:#e6edf3;background:#0d1117}
-a{color:#58a6ff;text-decoration:none}
+html{background-color:var(--bg-body);color-scheme:dark}
+body{font-family:var(--font-sans);max-width:860px;margin:0 auto;padding:1.5rem 1.25rem 3rem;line-height:1.6;color:var(--text-primary);background:var(--bg-body);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none;transition:color var(--transition)}
 a:hover{text-decoration:underline}
-pre{background:#161b22;padding:1rem;overflow-x:auto;font-size:.85rem;margin:0;border:0!important}
-pre code{background:transparent!important;padding:0!important}
-.code-wrap{position:relative}
-.copy-btn{position:absolute;top:4px;right:4px;background:none;border:none;cursor:pointer;color:#555;padding:4px;line-height:0}
-.copy-btn:hover{color:#8b949e}
-.copy-btn.copied svg{stroke:#3fb950}
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-.center{text-align:center}`;
+pre,code{font-family:var(--font-mono)}
+code{font-size:.85em}
+
+/* Terminal & Code Blocks */
+.term-box{background:var(--bg-code);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;margin:0.4rem 0}
+.term-header{display:flex;align-items:center;justify-content:space-between;padding:0.35rem 0.75rem;background:var(--bg-code-header);border-bottom:1px solid var(--border-muted);font-size:0.75rem;color:var(--text-secondary)}
+.term-title{font-family:var(--font-mono);font-size:0.75rem;color:var(--text-secondary)}
+.term-body{position:relative}
+.term-body pre{padding:0.75rem 0.9rem;overflow-x:auto;font-size:0.84rem;line-height:1.5;background:transparent;margin:0}
+.term-body pre code{color:var(--text-primary);background:transparent;padding:0}
+
+/* Syntax Highlighting */
+.hl-cmd{color:var(--syn-cmd);font-weight:600}
+.hl-flag{color:var(--syn-flag)}
+.hl-str{color:var(--syn-str)}
+.hl-arg{color:var(--syn-arg)}
+.hl-opt{color:var(--syn-opt)}
+.hl-pipe{color:var(--syn-pipe);font-weight:600}
+.hl-path{color:var(--syn-path)}
+.hl-comment{color:var(--syn-comment);font-style:italic}
+
+/* Copy Button */
+.copy-btn{display:inline-flex;align-items:center;gap:0.35rem;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-secondary);padding:0.2rem 0.5rem;font-size:0.75rem;font-family:inherit;cursor:pointer;transition:all var(--transition)}
+.copy-btn:hover{background:var(--bg-surface-hover);border-color:var(--accent);color:var(--text-primary);text-decoration:none}
+.copy-btn .icon-check{display:none}
+.copy-btn.copied{border-color:var(--success);color:var(--success);background:rgba(63,185,80,0.1)}
+.copy-btn.copied .icon-copy{display:none}
+.copy-btn.copied .icon-check{display:inline-block}
+
+/* Header */
+.site-header{text-align:center;padding:1rem 0 1.25rem;border-bottom:1px solid var(--border-muted);margin-bottom:1.5rem}
+.brand-title{font-size:1.35rem;font-weight:700;margin-bottom:0.25rem;color:var(--text-primary)}
+.brand-sub{color:var(--text-secondary);font-size:0.88rem}
+.site-nav{margin-top:0.6rem;font-size:0.85rem;display:flex;justify-content:center;gap:0.85rem}
+.nav-link{color:var(--text-secondary);transition:color var(--transition)}
+.nav-link:hover{color:var(--accent);text-decoration:underline}
+.nav-link.active{color:var(--text-primary);font-weight:600}
+
+/* Footer */
+.site-footer{text-align:center;padding:1.5rem 0 0.5rem;border-top:1px solid var(--border-muted);margin-top:2.5rem;font-size:0.8rem}
+.site-footer a{color:var(--text-secondary);margin:0 0.35rem}
+.site-footer a:hover{color:var(--accent);text-decoration:underline}
+.footer-note{color:var(--text-muted);font-size:0.78rem;margin-top:0.35rem}
+
+/* Section Headings */
+.sec{margin-bottom:1.75rem}
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.6rem}
+.sec-title{font-size:0.95rem;font-weight:600;color:var(--text-primary);display:flex;align-items:center;gap:0.4rem}
+.sec-badge{display:inline-flex;align-items:center;font-size:0.75rem;font-weight:600;padding:0.1rem 0.45rem;border-radius:var(--radius-full);background:var(--bg-surface);color:var(--text-secondary);border:1px solid var(--border)}
+
+/* Badges & Tags */
+.tag{display:inline-flex;align-items:center;font-size:0.7rem;padding:0.15rem 0.5rem;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-full);color:var(--text-secondary);white-space:nowrap}
+.family-badge{display:inline-flex;align-items:center;font-size:0.72rem;padding:0.1rem 0.45rem;background:var(--bg-tag);border:1px solid rgba(88,166,255,0.3);border-radius:var(--radius-sm);color:var(--accent);font-weight:500}
+
+/* Tabs */
+.tab-h{display:flex;align-items:center;border-bottom:1px solid var(--border-muted);margin-bottom:0.6rem}
+.tab-b{padding:0.4rem 0.85rem;background:none;border:none;border-bottom:2px solid transparent;color:var(--text-secondary);font-family:inherit;font-size:0.85rem;cursor:pointer;transition:all var(--transition)}
+.tab-b:hover{color:var(--text-primary)}
+.tab-b.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+
+.note{font-size:0.8rem;color:var(--text-secondary);margin:0.6rem 0 0.25rem}
+
+/* Buttons */
+.btn-primary{display:inline-flex;align-items:center;gap:0.45rem;padding:0.45rem 0.9rem;background:var(--accent-btn);border:1px solid rgba(240,246,252,0.1);border-radius:var(--radius-md);color:#fff;font-family:inherit;font-size:0.85rem;font-weight:600;cursor:pointer;text-decoration:none;transition:background var(--transition)}
+.btn-primary:hover{background:var(--accent-btn-hover);color:#fff;text-decoration:none}
+.btn-secondary{display:inline-flex;align-items:center;gap:0.45rem;padding:0.45rem 0.9rem;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);color:var(--accent);font-family:inherit;font-size:0.85rem;cursor:pointer;text-decoration:none;transition:all var(--transition)}
+.btn-secondary:hover{background:var(--bg-surface-hover);border-color:var(--accent);text-decoration:none}
+
+${extraCss}</style>`;
+}
+
+function sharedHeader(siteName: string, repo: string, activePage: 'home' | 'packages' = 'home', telegram?: string): string {
+  const safeSite = escapeHtml(siteName || 'DayDve APT Repository');
+  const homeActive = activePage === 'home' ? ' active' : '';
+  const pkgsActive = activePage === 'packages' ? ' active' : '';
+
+  return `<header class="site-header">
+<h1 class="brand-title">${safeSite}</h1>
+<p class="brand-sub">Software unavailable or outdated in standard repos</p>
+<nav class="site-nav">
+<a href="/" class="nav-link${homeActive}">Home</a>
+<a href="/packages" class="nav-link${pkgsActive}">Packages</a>
+<a href="https://github.com/${escapeHtml(repo)}" target="_blank" rel="noopener" class="nav-link">GitHub</a>
+${telegram ? `<a href="${escapeHtml(telegram)}" target="_blank" rel="noopener" class="nav-link">Telegram</a>` : ''}
+</nav>
+</header>`;
+}
+
+function sharedFooter(repo: string, telegram?: string): string {
+  return `<footer class="site-footer">
+<div>
+<a href="https://github.com/${escapeHtml(repo)}" target="_blank" rel="noopener">GitHub</a>
+${telegram ? `· <a href="${escapeHtml(telegram)}" target="_blank" rel="noopener">Telegram</a>` : ''}
+</div>
+<div class="footer-note">Built for personal use</div>
+</footer>`;
 }
 
 function sharedScript(): string {
-  return `
-function copyCmd(btn,cmd){navigator.clipboard.writeText(cmd).then(()=>{btn.classList.add('copied');setTimeout(()=>btn.classList.remove('copied'),2000)}).catch(()=>{})}`;
+  return `function copyCmd(b,t){navigator.clipboard.writeText(t).then(()=>{b.classList.add('copied');const l=b.querySelector('.copy-text');if(l)l.textContent='Copied!';setTimeout(()=>{b.classList.remove('copied');if(l)l.textContent='Copy'},2000)}).catch(()=>{})}`;
 }
 
 // ── Text endpoint (for curl | bash) ──
 
+function displayEntries(pkgs: Package[]): { kind: 'family'|'pkg'; name: string; head?: Package; members?: Package[]; pkg?: Package }[] {
+  const groups = new Map<string, Package[]>();
+  const standalone: Package[] = [];
+  for (const p of pkgs) {
+    if (p.group) { const a = groups.get(p.group) || []; a.push(p); groups.set(p.group, a); }
+    else standalone.push(p);
+  }
+  const entries: { kind: 'family'|'pkg'; name: string; head?: Package; members?: Package[]; pkg?: Package }[] = [];
+  for (const [g, members] of groups.entries()) {
+    members.sort((a, b) => a.name.localeCompare(b.name));
+    if (members.length < 1) { standalone.push(members[0]); continue; }
+    entries.push({ kind: 'family', name: g, head: members.find(m => m.name === g) || members[0], members });
+  }
+  for (const p of standalone) entries.push({ kind: 'pkg', name: p.name, pkg: p });
+  entries.sort((a, b) => a.kind !== b.kind ? (a.kind === 'family' ? -1 : 1) : a.name.localeCompare(b.name));
+  return entries;
+}
+
+function pkgLine(e: { kind: string; name: string; head?: Package; members?: Package[]; pkg?: Package }): string {
+  if (e.kind === 'pkg' && e.pkg) return `#  ${e.pkg.name} - ${e.pkg.description}`;
+  if (e.head && e.members) return `#  ${e.name} - ${e.head.description} (packages: ${e.members.map(m => m.name).join(', ')})`;
+  return '';
+}
+
 async function serveText(url: URL, ctx: ExecutionContext, env: Env): Promise<Response> {
-  const aptOrigin = env.APT_ORIGIN || url.origin;
+  const { fallbackOrigin } = getOrigins(env);
   const author = env.AUTHOR || '';
   const packagesUrl = `${repoOrigin(env.REPO)}/packages.json`;
   const pkgs = await fetchJSON(packagesUrl, 'https://_cache/packages-' + env.CACHE_BUST, ctx) as Package[] | null;
@@ -224,43 +350,36 @@ async function serveText(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
     const entries = displayEntries(pkgs);
     const shown = entries.slice(0, 10);
     pkgLines = shown.map(pkgLine);
-    if (entries.length > 10) {
-      pkgLines.push('#', `# And ${entries.length - 10} more ...`);
-    }
+    if (entries.length > 10) pkgLines.push('#', `# And ${entries.length - 10} more ...`);
   } else {
     pkgLines = ['# (failed to load package list)'];
   }
+
   const text = [
     '######################################################################',
     '#                 _   ___ _____   ___                                #',
     '#                /_\\ | _ \\_   _| | _ \\___ _ __  ___                  #',
     '#               / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\                 #',
     '#              /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/                 #',
-    asciiLine(41, author, 25),
+    `#                by ${author}|_|${' '.repeat(Math.max(0, 29 - author.length))}#`,
     '#                                                                    #',
     '#               Personal APT repository for software                 #',
     '#                    unavailable or outdated in                      #',
-    '#                   standard Ubuntu/Debian repos                     #',
+    '#                   standard Ubuntu repos                            #',
     '#                                                                    #',
     '######################################################################',
-    '#',
-    '# Apps already in this repo:',
-    '#',
+    '#', '# Apps already in this repo:', '#',
     ...pkgLines,
-    '#',
-    '# If you want to use this repo, just add it to your APT sources:',
-    '#',
-    `sudo curl -fsSL ${aptOrigin}/apt-key.asc \\`,
+    '#', '# If you want to use this repo, just add it to your APT sources:', '#',
+    `sudo curl -fsSL ${fallbackOrigin}/apt-key.asc \\`,
     '  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\',
     'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\',
-    `  ${aptOrigin} noble main" \\`,
+    `  ${fallbackOrigin} noble main" \\`,
     '  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\',
-    'sudo apt update',
-    '',
+    'sudo apt update', '',
   ].join('\n');
-  return new Response(text, {
-    headers: { 'content-type': 'text/plain; charset=utf-8' },
-  });
+
+  return new Response(text, { headers: { 'content-type': 'text/plain; charset=utf-8' } });
 }
 
 // ── Homepage ──
@@ -268,334 +387,253 @@ async function serveText(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
 async function serveHome(url: URL, ctx: ExecutionContext, env: Env): Promise<Response> {
   const packagesUrl = `${repoOrigin(env.REPO)}/packages.json`;
   const pkgs = await fetchJSON(packagesUrl, 'https://_cache/packages-' + env.CACHE_BUST, ctx) as Package[] | null;
-
+  const { aptOrigin, fallbackOrigin } = getOrigins(env);
   const pkgCount = pkgs ? pkgs.length : 0;
-  const safeOrigin = escapeHtml(url.origin);
-  const aptOrigin = env.APT_ORIGIN || url.origin;
+
   const safeAptOrigin = escapeHtml(aptOrigin);
-  const siteName = env.SITE_NAME || '';
-  const author = env.AUTHOR || '';
-  const fallbackOrigin = 'https://apt-repo.daydve.workers.dev';
   const safeFallback = escapeHtml(fallbackOrigin);
 
-  const setupCmd = `sudo curl -fsSL ${safeAptOrigin}/apt-key.asc \\
-  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\
-  ${safeAptOrigin} noble main" \\
-  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\
-sudo apt update`;
-
-  const setupCmdFallback = `sudo curl -fsSL ${safeFallback}/apt-key.asc \\
+  const manualPrimary = `sudo curl -fsSL ${safeFallback}/apt-key.asc \\
   -o /etc/apt/keyrings/daydve-apt-repo.asc && \\
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\
   ${safeFallback} noble main" \\
   | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\
 sudo apt update`;
 
-  const keyCmd = `sudo curl -fsSL ${safeAptOrigin}/apt-key.asc \\
-  -o /etc/apt/keyrings/daydve-apt-repo.asc`;
+  const pkgCards = (pkgs || []).slice(0, 12).map(p => {
+    const safeName = escapeHtml(p.name);
+    const safeDesc = escapeHtml(p.description);
+    const iconUrl = p.icon ? `${safeAptOrigin}${escapeHtml(p.icon)}` : '';
+    const iconHtml = iconUrl
+      ? `<img class="store-icon" src="${iconUrl}" alt="${safeName}" width="44" height="44" loading="lazy" onerror="this.style.display='none'">`
+      : `<div class="store-ph">${iconPackage(20)}</div>`;
+    const familyTag = p.group ? ` <span class="family-badge">${escapeHtml(p.group)}</span>` : '';
 
-  const sourcesLine = `deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] ${safeAptOrigin} noble main`;
+    return `<a href="/packages/${safeName}" class="store-card">
+  <div class="store-icon-wrap">${iconHtml}</div>
+  <div class="store-info">
+    <div class="store-name">${safeName}${familyTag}</div>
+    <div class="store-desc">${safeDesc}</div>
+  </div>
+</a>`;
+  }).join('');
 
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${siteName}</title>
-<meta name="description" content="${siteName} for Ubuntu with packages unavailable in standard repos. Install via ${url.origin}.">
-<meta property="og:title" content="${siteName}">
-<meta property="og:description" content="${siteName} for Ubuntu — ${pkgCount} packages available">
-<meta property="og:type" content="website">
-<meta property="og:url" content="${safeOrigin}">
-<style>
-${sharedStyles()}
-.tab-group{margin:1.5rem 0}
-.tab-headers{display:flex;gap:0;border-bottom:1px solid #30363d;margin-bottom:0}
-.tab-header{padding:.5rem 1rem;background:none;border:1px solid #30363d;border-bottom:none;border-radius:6px 6px 0 0;color:#8b949e;font-family:inherit;font-size:.8rem;cursor:pointer;transition:all .15s;margin-bottom:-1px}
-.tab-header:hover{color:#58a6ff}
-.tab-header.active{background:#161b22;color:#58a6ff;border-color:#30363d}
-.tab-content{background:#161b22;border:1px solid #30363d;border-radius:0 6px 6px 6px;padding:1rem;display:none}
-.tab-content.active{display:block}
-.tab-content h3{font-size:.85rem;color:#8b949e;margin-bottom:.5rem;font-weight:normal}
-.tab-content .code-wrap{margin:.5rem 0}
-.tab-content .code-wrap pre{background:#0d1117;border:1px solid #21262d;border-radius:4px}
-.tab-content .code-wrap code{color:#7ee787;font-size:.8rem}
-.tab-content .note{color:#8b949e;font-size:.75rem;margin-top:.5rem}
-.browse-link{display:inline-block;margin:1.5rem 0;padding:.5rem 1.2rem;border:1px solid #30363d;color:#58a6ff;border-radius:4px;font-size:.9rem;text-decoration:none;transition:all .15s}
-.browse-link:hover{border-color:#58a6ff;background:#161b22;text-decoration:none}
-.ascii-wide{display:block}
-.ascii-narrow{display:none}
-@media(max-width:768px){.ascii-wide{display:none}.ascii-narrow{display:block}}
-</style>
+${sharedHead(env.SITE_NAME || 'apt-repo', `${env.SITE_NAME || 'apt-repo'} for Ubuntu — ${pkgCount} packages`, `
+.store-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));gap:0.65rem}
+.store-card{display:flex;align-items:center;gap:0.75rem;padding:0.65rem 0.8rem;background:var(--bg-surface);border:1px solid var(--border-muted);border-radius:var(--radius-md);text-decoration:none;color:var(--text-primary);transition:all var(--transition)}
+.store-card:hover{border-color:var(--accent);background:var(--bg-surface-hover);text-decoration:none}
+.store-icon-wrap{flex-shrink:0;width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.store-icon{width:44px;height:44px;border-radius:var(--radius-md);object-fit:contain;background:var(--bg-body);border:1px solid var(--border-muted);display:block}
+.store-ph{width:44px;height:44px;border-radius:var(--radius-md);background:var(--bg-surface);border:1px solid var(--border-muted);display:flex;align-items:center;justify-content:center;color:var(--text-secondary)}
+.store-info{flex:1;min-width:0}
+.store-name{font-weight:600;font-size:0.9rem;line-height:1.3;margin-bottom:0.1rem}
+.store-desc{font-size:0.78rem;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tab-p{display:none}
+.tab-p.active{display:block}
+.browse-btn{display:inline-flex;align-items:center;gap:0.4rem;margin-top:0.85rem;color:var(--accent);font-size:0.88rem}
+.browse-btn:hover{text-decoration:underline}
+`)}
 </head>
 <body>
-<h1 class="sr-only">${siteName}</h1>
-<div class="center ascii-wide"><div style="white-space:pre;line-height:1.2">
-###############################################################################
-#                     _   ___ _____   ___                                     #
-#                    /_\\ | _ \\_   _| | _ \\___ _ __  ___                       #
-#                   / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\                      #
-#                  /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/                      #
-${asciiLine(45, author, 30)}
-#                                                                             #
-#                   Personal APT repository for software                      #
-#                        unavailable or outdated in                           #
-#                       standard Ubuntu/Debian repos                          #
-#                                                                             #
-###############################################################################
-</div></div>
-<div class="center ascii-narrow"><div style="white-space:pre;line-height:1.2">
-##########################################
-#    _   ___ _____   ___                 #
-#   /_\\ | _ \\_   _| | _ \\___ _ __  ___   #
-#  / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\  #
-# /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/  #
-${asciiLine(28, author, 10)}
-#                                        #
-#  Personal APT repository for software  #
-#       unavailable or outdated in       #
-#      standard Ubuntu/Debian repos      #
-#                                        #
-##########################################
-</div></div>
+${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'home', env.TELEGRAM)}
 
-<div class="center">
-<p style="color:#8b949e;font-size:.9rem;margin-top:1rem">${pkgCount} packages available for Ubuntu Noble</p>
-<a href="${safeOrigin}/packages" class="browse-link">Browse packages</a>
-</div>
+<main>
+  <section class="sec">
+    <div class="sec-head">
+      <div class="sec-title">Add repository</div>
+    </div>
 
-<h2>Add repository</h2>
-<div class="tab-group">
-<div class="tab-headers">
-  <button class="tab-header active" onclick="showTab(this,'tab-curl')">curl | bash</button>
-  <button class="tab-header" onclick="showTab(this,'tab-manual')">Manual</button>
-</div>
-<div class="tab-content active" id="tab-curl">
-  <h3>One-liner (recommended)</h3>
-  <div class="code-wrap">
-    <pre><code>curl -fsSL ${safeAptOrigin} | sudo bash</code></pre>
-    <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL ${safeAptOrigin} | sudo bash')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-  </div>
-  <p class="note">If ${safeAptOrigin} is unavailable, use the fallback:</p>
-  <div class="code-wrap">
-    <pre><code>curl -fsSL ${safeFallback} | sudo bash</code></pre>
-    <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL ${safeFallback} | sudo bash')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-  </div>
-</div>
-<div class="tab-content" id="tab-manual">
-  <h3>Add GPG key</h3>
-  <div class="code-wrap">
-    <pre><code>${keyCmd}</code></pre>
-    <button class="copy-btn" onclick="copyCmd(this,'${keyCmd.replace(/'/g, "\\'")}')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-  </div>
-  <h3>Add repository</h3>
-  <div class="code-wrap">
-    <pre><code>echo "${sourcesLine}" | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list</code></pre>
-    <button class="copy-btn" onclick="copyCmd(this,'echo \\'${sourcesLine}\\' | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-  </div>
-  <h3>Update package lists</h3>
-  <div class="code-wrap">
-    <pre><code>sudo apt update</code></pre>
-    <button class="copy-btn" onclick="copyCmd(this,'sudo apt update')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-  </div>
-</div>
-</div>
+    <div class="tab-h">
+      <button class="tab-b active" onclick="showTab(this,'t1')">curl | bash</button>
+      <button class="tab-b" onclick="showTab(this,'t2')">Manual</button>
+    </div>
 
-<h2>Install packages</h2>
-<p style="margin:.5rem 0">Via terminal:</p>
-<div class="code-wrap">
-  <pre><code>sudo apt install &lt;package-name&gt;</code></pre>
-  <button class="copy-btn" onclick="copyCmd(this,'sudo apt install ')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-</div>
-<p style="margin:.5rem 0">Or via package manager — browse packages for apt:// links:</p>
-<p class="center"><a href="${safeOrigin}/packages" class="browse-link">Browse packages</a></p>
+    <div class="tab-p active" id="t1">
+      <div class="term-box">
+        <div class="term-header">
+          <div class="term-title">bash</div>
+          <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL ${safeAptOrigin} | sudo bash')" aria-label="Copy command">
+            ${iconCopy(13)}${iconCheck(13)}<span class="copy-text">Copy</span>
+          </button>
+        </div>
+        <div class="term-body">
+          <pre><code><span class="hl-cmd">curl</span> <span class="hl-flag">-fsSL</span> <span class="hl-str">${safeAptOrigin}</span> <span class="hl-pipe">|</span> <span class="hl-cmd">sudo bash</span></code></pre>
+        </div>
+      </div>
 
-<p class="center" style="color:#8b949e;font-size:.85rem;margin-top:2rem"><a href="https://github.com/${env.REPO}">GitHub</a>${env.TELEGRAM ? ` · <a href="${env.TELEGRAM}">Telegram</a>` : ''} · Built for personal use</p>
+      <div class="note">If <code style="color:var(--text-primary)">${safeAptOrigin}</code> triggers a Cloudflare captcha in terminal, use the fallback mirror:</div>
+      <div class="term-box">
+        <div class="term-header">
+          <div class="term-title">bash (fallback)</div>
+          <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL ${safeFallback} | sudo bash')" aria-label="Copy fallback command">
+            ${iconCopy(13)}${iconCheck(13)}<span class="copy-text">Copy</span>
+          </button>
+        </div>
+        <div class="term-body">
+          <pre><code><span class="hl-cmd">curl</span> <span class="hl-flag">-fsSL</span> <span class="hl-str">${safeFallback}</span> <span class="hl-pipe">|</span> <span class="hl-cmd">sudo bash</span></code></pre>
+        </div>
+      </div>
+    </div>
 
+    <div class="tab-p" id="t2">
+      <div class="term-box">
+        <div class="term-header">
+          <div class="term-title">bash</div>
+          <button class="copy-btn" onclick="copyCmd(this,'${manualPrimary.replace(/'/g, "\\'").replace(/\n/g, '\\n')}')" aria-label="Copy manual steps">
+            ${iconCopy(13)}${iconCheck(13)}<span class="copy-text">Copy</span>
+          </button>
+        </div>
+        <div class="term-body">
+          <pre><code><span class="hl-cmd">sudo curl</span> <span class="hl-flag">-fsSL</span> <span class="hl-str">${safeFallback}/apt-key.asc</span> <span class="hl-pipe">\\</span>
+  <span class="hl-flag">-o</span> <span class="hl-path">/etc/apt/keyrings/daydve-apt-repo.asc</span> <span class="hl-pipe">&amp;&amp; \\</span>
+<span class="hl-cmd">echo</span> <span class="hl-str">&quot;deb <span class="hl-opt">[arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc]</span> \\
+  ${safeFallback} noble main&quot;</span> <span class="hl-pipe">\\</span>
+  <span class="hl-pipe">|</span> <span class="hl-cmd">sudo tee</span> <span class="hl-path">/etc/apt/sources.list.d/daydve-apt-repo.list</span> <span class="hl-pipe">&amp;&amp; \\</span>
+<span class="hl-cmd">sudo apt</span> <span class="hl-arg">update</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head">
+      <div class="sec-title">Packages <span class="sec-badge">${pkgCount}</span></div>
+    </div>
+    <div class="store-grid">${pkgCards}</div>
+    <div>
+      <a href="/packages" class="browse-btn">View all ${pkgCount} packages →</a>
+    </div>
+  </section>
+</main>
+
+${sharedFooter(env.REPO, env.TELEGRAM)}
 <script>
 ${sharedScript()}
 function showTab(btn,id){
-  document.querySelectorAll('.tab-header').forEach(h=>h.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.tab-b').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-p').forEach(p=>p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById(id).classList.add('active');
 }
 </script>
 </body>
 </html>`;
-  return new Response(html, {
-    headers: { 'content-type': 'text/html; charset=utf-8' },
-  });
+
+  return new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8' } });
 }
 
 // ── Package list ──
 
-function pkgListRow(p: Package, aptOrigin: string, groupCats: string[]): string {
-  const safeName = escapeHtml(p.name);
-  const safeDesc = escapeHtml(p.description);
-  const effectiveCats = p.group ? [...new Set([...(p.categories || []), ...groupCats])] : (p.categories || []);
-  const cats = effectiveCats.map(c =>
-    `<span class="tag" data-cat="${escapeHtml(c)}">${escapeHtml(catLabel(c))}</span>`
-  ).join('');
-  const iconUrl = p.icon ? `${escapeHtml(aptOrigin)}${escapeHtml(p.icon)}` : '';
-  const fallbackIcon = `<svg class="row-icon fallback-icon" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="24" height="24" rx="4"/><path d="M12 11h8M12 16h8M12 21h5"/></svg>`;
-  const iconHtml = iconUrl
-    ? `<img class="row-icon" src="${iconUrl}" alt="${safeName}" width="32" height="32" loading="lazy" onerror="this.outerHTML=this.dataset.fallback" data-fallback='${fallbackIcon}'>`
-    : fallbackIcon;
-  const familyLabel = p.group ? `<span class="row-family">${escapeHtml(p.group)}</span>` : '';
-
-  return `<a class="pkg-row" href="/packages/${safeName}" data-cats="${escapeHtml(effectiveCats.join(','))}" data-name="${safeName}">
-  <div class="row-icon-wrap">${iconHtml}</div>
-  <div class="row-info">
-    <div class="row-name">${safeName}${familyLabel}</div>
-    <div class="row-desc">${safeDesc}</div>
-  </div>
-  <div class="row-tags">${cats}</div>
-</a>`;
-}
-
 async function servePackageList(url: URL, ctx: ExecutionContext, env: Env): Promise<Response> {
   const packagesUrl = `${repoOrigin(env.REPO)}/packages.json`;
   const pkgs = await fetchJSON(packagesUrl, 'https://_cache/packages-' + env.CACHE_BUST, ctx) as Package[] | null;
-
-  const aptOrigin = env.APT_ORIGIN || url.origin;
-  const siteName = env.SITE_NAME || '';
-  const safeOrigin = escapeHtml(url.origin);
+  const { aptOrigin } = getOrigins(env);
   const pkgCount = pkgs ? pkgs.length : 0;
 
   const allCats = new Set<string>();
-  for (const p of pkgs || []) {
-    for (const c of p.categories || []) allCats.add(c);
-  }
+  for (const p of pkgs || []) for (const c of p.categories || []) allCats.add(c);
   const sortedCats = [...allCats].sort();
+  const catBtns = sortedCats.map(c => `<button class="filter-pill" data-cat="${escapeHtml(c)}" onclick="filterCat('${escapeHtml(c)}')">${escapeHtml(catLabel(c))}</button>`).join('');
 
-  const catButtons = sortedCats.map(c =>
-    `<button class="filter-btn" data-cat="${escapeHtml(c)}" onclick="filterCat('${escapeHtml(c)}')">${escapeHtml(catLabel(c))}</button>`
-  ).join('');
-
-  let rows = '';
   const groupCats = new Map<string, string[]>();
   for (const p of pkgs || []) {
-    if (p.group && !groupCats.has(p.group) && (p.categories || []).length > 0) {
-      groupCats.set(p.group, p.categories || []);
-    }
+    if (p.group && !groupCats.has(p.group) && (p.categories || []).length > 0) groupCats.set(p.group, p.categories || []);
   }
-  for (const p of pkgs || []) {
-    const gCats = p.group ? (groupCats.get(p.group) || []) : [];
-    rows += pkgListRow(p, aptOrigin, gCats) + '\n';
-  }
+
+  const rows = (pkgs || []).map(p => {
+    const safeName = escapeHtml(p.name);
+    const safeDesc = escapeHtml(p.description);
+    const effectiveCats = p.group ? [...new Set([...(p.categories || []), ...(groupCats.get(p.group) || [])])] : (p.categories || []);
+    const catsHtml = effectiveCats.map(c => `<span class="tag">${escapeHtml(catLabel(c))}</span>`).join(' ');
+    const iconUrl = p.icon ? `${aptOrigin}${escapeHtml(p.icon)}` : '';
+    const iconHtml = iconUrl
+      ? `<img class="prow-icon" src="${iconUrl}" alt="${safeName}" width="34" height="34" loading="lazy" onerror="this.style.display='none'">`
+      : `<div class="prow-ph">${iconPackage(18)}</div>`;
+    const familyTag = p.group ? ` <span style="font-size:0.75rem;color:var(--accent)">${escapeHtml(p.group)}</span>` : '';
+
+    return `<a class="prow" href="/packages/${safeName}" data-cats="${escapeHtml(effectiveCats.join(','))}">
+  <div class="prow-icon-wrap">${iconHtml}</div>
+  <div class="prow-main">
+    <div class="prow-name">${safeName}${familyTag}</div>
+    <div class="prow-desc">${safeDesc}</div>
+  </div>
+  <div class="prow-tags">${catsHtml}</div>
+</a>`;
+  }).join('');
 
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${siteName} — Packages</title>
-<meta name="description" content="Browse and install packages from ${siteName}.">
-<style>
-${sharedStyles()}
-.pkg-row{display:flex;align-items:center;gap:1rem;padding:.8rem 1rem;border:1px solid #21262d;border-radius:6px;text-decoration:none;color:#e6edf3;transition:all .15s}
-.pkg-row:hover{border-color:#58a6ff;background:#161b22;text-decoration:none}
-.pkg-row.hidden{display:none}
-.row-icon-wrap{flex-shrink:0}
-.row-icon{width:32px;height:32px;border-radius:6px}
-.fallback-icon{background:#1a1a2e;border:1px solid #333}
-.row-info{flex:1;min-width:0}
-.row-name{font-weight:bold;font-size:.9rem;color:#e6edf3;display:flex;align-items:center;gap:.5rem}
-.row-family{font-size:.7rem;color:#58a6ff;font-weight:normal}
-.row-desc{font-size:.8rem;color:#8b949e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.row-tags{display:flex;flex-wrap:wrap;gap:.3rem;flex-shrink:0}
-.tag{font-size:.65rem;padding:.1rem .4rem;background:#30363d;border-radius:10px;color:#8b949e}
-.list{display:flex;flex-direction:column;gap:.4rem;margin-top:1rem}
-.toolbar{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin:1.5rem 0}
-.search{flex:1;min-width:200px;padding:.6rem .8rem;background:#161b22;border:1px solid #30363d;border-radius:6px;color:#e6edf3;font-family:inherit;font-size:.85rem;outline:none}
-.search:focus{border-color:#58a6ff}
-.search::placeholder{color:#484f58}
-.filters{display:flex;flex-wrap:wrap;gap:.4rem}
-.filter-btn{padding:.3rem .6rem;background:#161b22;border:1px solid #30363d;border-radius:20px;color:#8b949e;font-family:inherit;font-size:.75rem;cursor:pointer;transition:all .15s}
-.filter-btn:hover{border-color:#58a6ff;color:#58a6ff}
-.filter-btn.active{background:#1f6feb;border-color:#1f6feb;color:#fff}
-.count{color:#8b949e;font-size:.8rem;margin-left:auto;white-space:nowrap}
-.header{text-align:center;padding:1.5rem 0}
-.header h1{font-size:1.5rem;margin-bottom:.5rem}
-.header p{color:#8b949e;font-size:.9rem}
-.header .nav{margin-top:.75rem;font-size:.85rem}
-.header .nav a{color:#8b949e;margin:0 .5rem}
-.header .nav a:hover{color:#58a6ff}
-.empty{text-align:center;padding:3rem;color:#484f58;font-size:.9rem}
-.footer{text-align:center;padding:2rem 0 1rem;color:#484f58;font-size:.8rem}
-.footer a{color:#8b949e}
-@media(max-width:768px){.row-tags{display:none}.pkg-row{gap:.7rem;padding:.6rem .8rem}}
-</style>
+${sharedHead(`${env.SITE_NAME || 'apt-repo'} — Packages`, `Browse ${pkgCount} packages available in the repository`, `
+.prow{display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.75rem;border:1px solid transparent;border-radius:var(--radius-md);text-decoration:none;color:var(--text-primary);transition:border-color var(--transition)}
+.prow:hover{border-color:var(--border);background:var(--bg-surface);text-decoration:none}
+.prow.hidden{display:none}
+.prow-icon-wrap{flex-shrink:0;width:34px;height:34px;display:flex;align-items:center;justify-content:center}
+.prow-icon{width:34px;height:34px;border-radius:var(--radius-md);object-fit:contain;background:var(--bg-body);border:1px solid var(--border-muted);display:block}
+.prow-ph{width:34px;height:34px;border-radius:var(--radius-md);background:var(--bg-surface);border:1px solid var(--border-muted);display:flex;align-items:center;justify-content:center;color:var(--text-secondary)}
+.prow-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:0.1rem}
+.prow-name{font-weight:600;font-size:0.88rem}
+.prow-desc{font-size:0.78rem;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow-tags{display:flex;flex-wrap:wrap;gap:0.3rem;flex-shrink:0}
+.plist{display:flex;flex-direction:column;gap:0.15rem}
+.toolbar{display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:0.8rem}
+.search-input{flex:1;min-width:180px;padding:0.45rem 0.65rem;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);color:var(--text-primary);font-family:inherit;font-size:0.85rem;outline:none}
+.search-input:focus{border-color:var(--accent)}
+.search-input::placeholder{color:var(--text-muted)}
+.filter-pill{padding:0.2rem 0.55rem;background:none;border:1px solid var(--border);border-radius:var(--radius-full);color:var(--text-secondary);font-family:inherit;font-size:0.75rem;cursor:pointer;transition:all var(--transition)}
+.filter-pill:hover{border-color:var(--accent);color:var(--accent)}
+.filter-pill.active{background:var(--accent-btn);border-color:var(--accent-btn);color:#fff}
+.count{color:var(--text-secondary);font-size:0.8rem;margin-left:auto}
+.empty-state{text-align:center;padding:2rem;color:var(--text-secondary);font-size:0.9rem}
+@media(max-width:600px){.prow-tags{display:none}}
+`)}
 </head>
 <body>
+${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'packages', env.TELEGRAM)}
 
-<div class="header">
-  <h1>${siteName || 'Packages'}</h1>
-  <p>${pkgCount} packages available for Ubuntu Noble</p>
-  <div class="nav">
-    <a href="${safeOrigin}">Home</a>
-    <a href="${safeOrigin}/packages">Packages</a>
-    <a href="https://github.com/${escapeHtml(env.REPO)}">GitHub</a>
+<main>
+  <div class="toolbar">
+    <input type="text" class="search-input" placeholder="Search packages..." oninput="filterAll()" id="search" autocomplete="off" spellcheck="false">
+    <button class="filter-pill active" data-cat="all" onclick="filterCat('all')">All</button>
+    ${catBtns}
+    <span class="count" id="count">${pkgCount}</span>
   </div>
-</div>
 
-<div class="toolbar">
-  <input type="text" class="search" placeholder="Search packages..." oninput="filterAll()" id="search">
-  <div class="filters">
-    <button class="filter-btn active" data-cat="all" onclick="filterCat('all')">All</button>
-    ${catButtons}
-  </div>
-  <span class="count" id="count">${pkgCount} packages</span>
-</div>
+  <div class="plist" id="plist">${rows}</div>
+  <div class="empty-state" id="empty" style="display:none">No packages match.</div>
+</main>
 
-<div class="list" id="list">
-${rows}
-</div>
-
-<div class="empty" id="empty" style="display:none">No packages match your search.</div>
-
-<div class="footer">
-  <p><a href="https://github.com/${escapeHtml(env.REPO)}">GitHub</a>${env.TELEGRAM ? ` · <a href="${escapeHtml(env.TELEGRAM)}">Telegram</a>` : ''}</p>
-</div>
-
+${sharedFooter(env.REPO, env.TELEGRAM)}
 <script>
 let activeCat = 'all';
-
-function filterCat(cat) {
-  activeCat = cat;
-  document.querySelectorAll('.filter-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.cat === cat);
-  });
+function filterCat(c){
+  activeCat = c;
+  document.querySelectorAll('.filter-pill').forEach(b => b.classList.toggle('active', b.dataset.cat === c));
   filterAll();
 }
-
-function filterAll() {
-  const q = document.getElementById('search').value.toLowerCase();
-  const rows = document.querySelectorAll('.pkg-row');
-  let visible = 0;
-  rows.forEach(r => {
-    const name = r.dataset.name || '';
+function filterAll(){
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  let v = 0;
+  document.querySelectorAll('.prow').forEach(r => {
     const cats = (r.dataset.cats || '').split(',');
     const text = r.textContent.toLowerCase();
-    const matchSearch = !q || text.includes(q);
+    const matchQuery = !q || text.includes(q);
     const matchCat = activeCat === 'all' || cats.includes(activeCat);
-    const show = matchSearch && matchCat;
-    r.classList.toggle('hidden', !show);
-    if (show) visible++;
+    const visible = matchQuery && matchCat;
+    r.classList.toggle('hidden', !visible);
+    if(visible) v++;
   });
-  document.getElementById('count').textContent = visible + ' package' + (visible !== 1 ? 's' : '');
-  document.getElementById('empty').style.display = visible === 0 ? 'block' : 'none';
+  document.getElementById('count').textContent = v + '';
+  document.getElementById('empty').style.display = v === 0 ? 'block' : 'none';
 }
 </script>
-
 </body>
 </html>`;
 
-  return new Response(html, {
-    headers: { 'content-type': 'text/html; charset=utf-8' },
-  });
+  return new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8' } });
 }
 
 // ── Package detail ──
@@ -603,19 +641,12 @@ function filterAll() {
 async function servePackageDetail(name: string, url: URL, ctx: ExecutionContext, env: Env): Promise<Response> {
   const packagesUrl = `${repoOrigin(env.REPO)}/packages.json`;
   const pkgs = await fetchJSON(packagesUrl, 'https://_cache/packages-' + env.CACHE_BUST, ctx) as Package[] | null;
-
-  if (!pkgs) {
-    return new Response('Package data unavailable', { status: 502 });
-  }
+  if (!pkgs) return new Response('Package data unavailable', { status: 502 });
 
   const pkg = pkgs.find(p => p.name === name);
-  if (!pkg) {
-    return new Response('Package not found', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8' } });
-  }
+  if (!pkg) return new Response('Not found', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8' } });
 
-  const aptOrigin = env.APT_ORIGIN || url.origin;
-  const siteName = env.SITE_NAME || '';
-  const safeOrigin = escapeHtml(url.origin);
+  const { aptOrigin } = getOrigins(env);
   const safeName = escapeHtml(pkg.name);
   const safeDesc = escapeHtml(pkg.description);
   const safeSource = escapeHtml(pkg.source || '');
@@ -623,151 +654,171 @@ async function servePackageDetail(name: string, url: URL, ctx: ExecutionContext,
   const aptLink = `apt://${pkg.name}`;
   const longDesc = pkg.longDescription ? escapeHtml(pkg.longDescription) : safeDesc;
 
-  const iconUrl = pkg.icon ? `${escapeHtml(aptOrigin)}${escapeHtml(pkg.icon)}` : '';
-  const fallbackIcon = `<svg class="detail-icon fallback-icon" viewBox="0 0 96 96" width="96" height="96" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="80" height="80" rx="16"/><path d="M32 30h32M32 48h32M32 66h20"/></svg>`;
+  const iconUrl = pkg.icon ? `${aptOrigin}${escapeHtml(pkg.icon)}` : '';
   const iconHtml = iconUrl
-    ? `<img class="detail-icon" src="${iconUrl}" alt="${safeName}" width="96" height="96" onerror="this.outerHTML=this.dataset.fallback" data-fallback='${fallbackIcon}'>`
-    : fallbackIcon;
+    ? `<img class="detail-icon" src="${iconUrl}" alt="${safeName}" width="72" height="72" onerror="this.style.display='none'">`
+    : `<div class="detail-ph">${iconPackage(32)}</div>`;
 
   let familyHtml = '';
   if (pkg.group) {
     const members = pkgs.filter(p => p.group === pkg.group);
     if (members.length > 1) {
-      const memberLinks = members
-        .filter(m => m.name !== pkg.name)
-        .map(m => `<a href="/packages/${escapeHtml(m.name)}">${escapeHtml(m.name)}</a>`)
-        .join(' · ');
-      if (memberLinks) {
-        familyHtml = `<div class="detail-family">Part of <strong>${escapeHtml(pkg.group)}</strong>: ${memberLinks}</div>`;
-      }
+      const links = members.filter(m => m.name !== pkg.name).map(m => `<a href="/packages/${escapeHtml(m.name)}">${escapeHtml(m.name)}</a>`).join(' · ');
+      if (links) familyHtml = `<div style="font-size:0.8rem;color:var(--accent);margin-top:0.3rem">Part of <strong>${escapeHtml(pkg.group)}</strong>: ${links}</div>`;
     }
   }
 
   const screenshots = pkg.screenshots || [];
+  const ssHtml = screenshots.length > 1 ? `
+<div class="sec">
+  <div class="gallery">
+    <button class="gallery-nav prev" onclick="ssSlide(-1)" aria-label="Previous screenshot">${iconChevronLeft(20)}</button>
+    <div class="gallery-track" id="ss-track">
+      ${screenshots.map(s => `<div class="gallery-slide"><img src="${escapeHtml(s)}" alt="${safeName} screenshot" loading="lazy" onclick="openLb(this.src)"></div>`).join('')}
+    </div>
+    <button class="gallery-nav next" onclick="ssSlide(1)" aria-label="Next screenshot">${iconChevronRight(20)}</button>
+  </div>
+  <div class="gallery-dots" id="ss-dots">${screenshots.map((_, i) => `<button class="gallery-dot${i === 0 ? ' active' : ''}" onclick="ssGo(${i})" aria-label="Slide ${i + 1}"></button>`).join('')}</div>
+</div>` : screenshots.length === 1 ? `
+<div class="sec">
+  <div class="single-screenshot">
+    <img src="${escapeHtml(screenshots[0])}" alt="${safeName} screenshot" onclick="openLb(this.src)">
+  </div>
+</div>` : '';
 
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${safeName} — ${siteName}</title>
-<meta name="description" content="${safeDesc}">
-<style>
-${sharedStyles()}
-.back{display:inline-flex;align-items:center;gap:.3rem;color:#8b949e;font-size:.85rem;margin-bottom:1.5rem}
-.back:hover{color:#58a6ff}
-.detail-top{display:flex;align-items:flex-start;gap:1.2rem;margin-bottom:1.5rem}
-.detail-icon{width:96px;height:96px;border-radius:16px;flex-shrink:0}
-.fallback-icon{background:#1a1a2e;border:1px solid #333}
-.detail-title{font-size:1.5rem;font-weight:bold;margin-bottom:.3rem}
-.detail-title a{color:#58a6ff}
-.detail-desc{color:#8b949e;font-size:.9rem}
-.detail-family{font-size:.8rem;color:#58a6ff;margin-top:.3rem}
-.detail-family strong{font-weight:bold}
-.detail-section{margin:1.5rem 0}
-.detail-section h2{font-size:1rem;color:#e6edf3;margin-bottom:.5rem;font-weight:bold}
-.detail-long{color:#c9d1d9;font-size:.9rem;line-height:1.8}
-.detail-links{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0}
-.detail-links a{padding:.4rem .8rem;border:1px solid #30363d;border-radius:4px;font-size:.8rem;color:#58a6ff;transition:all .15s}
-.detail-links a:hover{border-color:#58a6ff;background:#161b22;text-decoration:none}
-.detail-links a.apt-link{background:#1f6feb;border-color:#1f6feb;color:#fff}
-.detail-links a.apt-link:hover{background:#388bfd;border-color:#388bfd}
-.install-block{margin:.8rem 0}
-.install-block .code-wrap pre{background:#0d1117;border:1px solid #21262d;border-radius:4px}
-.install-block .code-wrap code{color:#7ee787;font-size:.85rem}
-.screenshots{position:relative;overflow:hidden}
-.screenshots-track{display:flex;transition:transform .3s ease}
-.screenshots-track img{width:100%;flex-shrink:0;cursor:pointer;transition:opacity .15s;object-fit:contain;max-height:400px}
-.screenshots-track img:hover{opacity:.85}
-.ss-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);border:none;color:#8b949e;font-size:1.5rem;cursor:pointer;padding:.4rem .8rem;border-radius:4px;z-index:2;transition:color .15s;font-family:inherit}
-.ss-nav:hover{color:#e6edf3}
-.ss-prev{left:.5rem}
-.ss-next{right:.5rem}
-.ss-dots{display:flex;justify-content:center;gap:.4rem;margin-top:.5rem}
-.ss-dot{width:8px;height:8px;border-radius:50%;background:#30363d;border:none;cursor:pointer;transition:background .15s;padding:0}
-.ss-dot.active{background:#58a6ff}
-.lightbox{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.92);align-items:center;justify-content:center}
-.lightbox.open{display:flex}
-.lightbox img{max-width:85vw;max-height:85vh;border-radius:4px;object-fit:contain;cursor:pointer}
-.lightbox-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:#8b949e;font-size:2rem;cursor:pointer;line-height:1;padding:.2rem .5rem}
-.lightbox-close:hover{color:#e6edf3}
-.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:none;border:none;color:#8b949e;font-size:2.5rem;cursor:pointer;padding:.5rem 1rem;z-index:2;transition:color .15s;font-family:inherit}
-.lb-nav:hover{color:#e6edf3}
-.lb-prev{left:.5rem}
-.lb-next{right:.5rem}
-.footer{text-align:center;padding:2rem 0 1rem;color:#484f58;font-size:.8rem}
-.footer a{color:#8b949e}
-@media(max-width:600px){.detail-top{flex-direction:column;align-items:center;text-align:center}.detail-icon{width:72px;height:72px}.detail-links{justify-content:center}}
-</style>
+${sharedHead(`${pkg.name} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
+.back-link{display:inline-block;margin-bottom:1rem;color:var(--text-secondary);font-size:0.85rem}
+.back-link:hover{color:var(--accent);text-decoration:underline}
+.dtop{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.2rem}
+.detail-icon-wrap{flex-shrink:0;width:72px;height:72px;display:flex;align-items:center;justify-content:center}
+.detail-icon{width:72px;height:72px;border-radius:var(--radius-md);object-fit:contain;background:var(--bg-body);border:1px solid var(--border-muted);display:block}
+.detail-ph{width:72px;height:72px;border-radius:var(--radius-md);background:var(--bg-surface);border:1px solid var(--border-muted);display:flex;align-items:center;justify-content:center;color:var(--text-secondary)}
+.dtop h1{font-size:1.3rem;font-weight:700}
+.ddesc{color:var(--text-secondary);font-size:0.9rem}
+.dlong{color:var(--text-primary);font-size:0.9rem;line-height:1.8}
+.dlinks{display:flex;flex-wrap:wrap;gap:0.5rem;margin:0.6rem 0}
+.dlinks a{padding:0.35rem 0.7rem;border:1px solid var(--border);border-radius:var(--radius-md);font-size:0.82rem;color:var(--accent);transition:all var(--transition)}
+.dlinks a:hover{border-color:var(--accent);background:var(--bg-surface);text-decoration:none}
+.dlinks a.primary{background:var(--accent-btn);border-color:var(--accent-btn);color:#fff}
+.gallery{position:relative;overflow:hidden;border-radius:var(--radius-md)}
+.gallery-track{display:flex;transition:transform 0.25s ease}
+.gallery-slide{min-width:100%;display:flex;align-items:center;justify-content:center}
+.gallery-slide img{width:100%;max-height:400px;object-fit:contain;border-radius:var(--radius-md);cursor:pointer}
+.single-screenshot{display:flex;align-items:center;justify-content:center}
+.single-screenshot img{width:100%;max-height:400px;object-fit:contain;border-radius:var(--radius-md);cursor:pointer}
+.gallery-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(22,27,34,0.85);border:1px solid var(--border);color:var(--text-primary);width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition);z-index:2}
+.gallery-nav:hover{background:var(--bg-surface-hover);border-color:var(--accent)}
+.gallery-nav.prev{left:0.5rem}
+.gallery-nav.next{right:0.5rem}
+.gallery-dots{display:flex;justify-content:center;gap:0.35rem;margin-top:0.5rem}
+.gallery-dot{width:8px;height:8px;border-radius:50%;background:var(--border);border:none;cursor:pointer;padding:0;transition:all var(--transition)}
+.gallery-dot.active{background:var(--accent)}
+.lb{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.9);align-items:center;justify-content:center;padding:1rem}
+.lb.open{display:flex}
+.lb img{max-width:90vw;max-height:88vh;object-fit:contain;border-radius:var(--radius-sm)}
+.lb-btn{position:absolute;background:rgba(22,27,34,0.85);border:1px solid var(--border);color:var(--text-primary);border-radius:var(--radius-sm);width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition)}
+.lb-btn:hover{background:var(--accent-btn);border-color:var(--accent-btn)}
+.lb-close{top:1rem;right:1rem}
+.lb-prev{left:1rem;top:50%;transform:translateY(-50%)}
+.lb-next{right:1rem;top:50%;transform:translateY(-50%)}
+@media(max-width:600px){
+  .dtop{flex-direction:column;align-items:center;text-align:center}
+  .dlinks{justify-content:center}
+}
+`)}
 </head>
 <body>
+<a href="/packages" class="back-link">&larr; All packages</a>
 
-<a href="/packages" class="back">&larr; All packages</a>
-
-<div class="detail-top">
-  ${iconHtml}
-  <div>
-    <h1 class="detail-title">${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</h1>
-    <p class="detail-desc">${safeDesc}</p>
-    ${familyHtml}
-  </div>
-</div>
-
-${screenshots.length > 0 ? `
-<div class="detail-section">
-  <div class="screenshots">
-    ${screenshots.length > 1 ? '<button class="ss-nav ss-prev" onclick="ssSlide(-1)">&#8249;</button>' : ''}
-    <div class="screenshots-track" id="ss-track">
-      ${screenshots.map(s => `<img src="${escapeHtml(s)}" alt="${safeName} screenshot" loading="lazy" onclick="openLb(this.src)">`).join('\n      ')}
-    </div>
-    ${screenshots.length > 1 ? '<button class="ss-nav ss-next" onclick="ssSlide(1)">&#8250;</button>' : ''}
-  </div>
-  ${screenshots.length > 1 ? `<div class="ss-dots" id="ss-dots">${screenshots.map((_, i) => `<button class="ss-dot${i === 0 ? ' active' : ''}" onclick="ssGo(${i})"></button>`).join('')}</div>` : ''}
-</div>` : ''}
-
-<div class="lightbox" id="lb" onclick="closeLb()">
-  <button class="lightbox-close" onclick="closeLb()">&times;</button>
-  ${screenshots.length > 1 ? '<button class="lb-nav lb-prev" onclick="event.stopPropagation();lbSlide(-1)">&#8249;</button><button class="lb-nav lb-next" onclick="event.stopPropagation();lbSlide(1)">&#8250;</button>' : ''}
-  <img id="lb-img" src="" alt="" onclick="event.stopPropagation()">
-</div>
-
-<div class="detail-section">
-  <h2>About</h2>
-  <div class="detail-long">${longDesc.replace(/\n/g, '<br>')}</div>
-</div>
-
-<div class="detail-section">
-  <h2>Install</h2>
-  <div class="detail-links">
-    <a href="${escapeHtml(aptLink)}" class="apt-link">Install via package manager</a>
-    ${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">Homepage</a>` : ''}
-  </div>
-  <div class="install-block">
-    <div class="code-wrap">
-      <pre><code>${escapeHtml(installCmd)}</code></pre>
-      <button class="copy-btn" onclick="copyCmd(this,'${escapeHtml(installCmd)}')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+<main>
+  <div class="dtop">
+    <div class="detail-icon-wrap">${iconHtml}</div>
+    <div>
+      <h1>${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</h1>
+      <p class="ddesc">${safeDesc}</p>
+      ${familyHtml}
     </div>
   </div>
+
+  ${ssHtml}
+
+  <div class="sec">
+    <div class="sec-title">About</div>
+    <div class="dlong">${longDesc.replace(/\n/g, '<br>')}</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Install</div>
+    <div class="dlinks">
+      <a href="${escapeHtml(aptLink)}" class="primary">Install via package manager</a>
+      ${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">Homepage</a>` : ''}
+    </div>
+    <div class="term-box">
+      <div class="term-header">
+        <div class="term-title">apt install</div>
+        <button class="copy-btn" onclick="copyCmd(this,'${escapeHtml(installCmd)}')" aria-label="Copy install command">
+          ${iconCopy(13)}${iconCheck(13)}<span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <div class="term-body">
+        <pre><code><span class="hl-cmd">sudo apt</span> <span class="hl-arg">install</span> <span class="hl-str">${safeName}</span></code></pre>
+      </div>
+    </div>
+  </div>
+</main>
+
+${sharedFooter(env.REPO, env.TELEGRAM)}
+
+<div class="lb" id="lb" onclick="closeLb()">
+  <button class="lb-btn lb-close" onclick="closeLb()" aria-label="Close">${iconClose(20)}</button>
+  <button class="lb-btn lb-prev" onclick="event.stopPropagation();lbSlide(-1)" aria-label="Previous">${iconChevronLeft(20)}</button>
+  <button class="lb-btn lb-next" onclick="event.stopPropagation();lbSlide(1)" aria-label="Next">${iconChevronRight(20)}</button>
+  <img id="lb-img" src="" alt="Screenshot preview" onclick="event.stopPropagation()">
 </div>
 
-<div class="footer">
-  <p><a href="https://github.com/${escapeHtml(env.REPO)}">GitHub</a>${env.TELEGRAM ? ` · <a href="${escapeHtml(env.TELEGRAM)}">Telegram</a>` : ''}</p>
-</div>
-
-<script>${sharedScript()}
-let ssIdx=0;const ssTotal=${screenshots.length};
-function ssGo(i){ssIdx=((i%ssTotal)+ssTotal)%ssTotal;document.getElementById('ss-track').style.transform='translateX(-'+ssIdx*100+'%)';document.querySelectorAll('.ss-dot').forEach((d,j)=>d.classList.toggle('active',j===ssIdx))}
-function ssSlide(d){ssGo(ssIdx+d)}
-let lbIdx=0;
-function openLb(src){const imgs=document.querySelectorAll('.screenshots-track img');lbIdx=[...imgs].findIndex(i=>i.src===src);const lb=document.getElementById('lb');document.getElementById('lb-img').src=src;lb.classList.add('open');document.body.style.overflow='hidden'}
-function closeLb(){document.getElementById('lb').classList.remove('open');document.body.style.overflow=''}
-function lbSlide(d){const imgs=document.querySelectorAll('.screenshots-track img');lbIdx=((lbIdx+d)%imgs.length+imgs.length)%imgs.length;document.getElementById('lb-img').src=imgs[lbIdx].src}
-document.addEventListener('keydown',e=>{const lb=document.getElementById('lb').classList.contains('open');if(e.key==='Escape')closeLb();if(e.key==='ArrowLeft'){lb?lbSlide(-1):ssSlide(-1)}if(e.key==='ArrowRight'){lb?lbSlide(1):ssSlide(1)}});
+<script>
+${sharedScript()}
+let ssIdx = 0;
+const ssTotal = ${screenshots.length};
+function ssGo(i){
+  if(ssTotal <= 1) return;
+  ssIdx = ((i % ssTotal) + ssTotal) % ssTotal;
+  const track = document.getElementById('ss-track');
+  if(track) track.style.transform = 'translateX(-' + (ssIdx * 100) + '%)';
+  document.querySelectorAll('.gallery-dot').forEach((d, j) => d.classList.toggle('active', j === ssIdx));
+}
+function ssSlide(d){ ssGo(ssIdx + d); }
+function openLb(src){
+  const imgs = document.querySelectorAll('.gallery-slide img, .single-screenshot img');
+  ssIdx = [...imgs].findIndex(i => i.src === src);
+  if(ssIdx === -1) ssIdx = 0;
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lb').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLb(){
+  document.getElementById('lb').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function lbSlide(d){
+  const imgs = document.querySelectorAll('.gallery-slide img, .single-screenshot img');
+  if(imgs.length === 0) return;
+  ssIdx = ((ssIdx + d) % imgs.length + imgs.length) % imgs.length;
+  document.getElementById('lb-img').src = imgs[ssIdx].src;
+}
+document.addEventListener('keydown', e => {
+  const open = document.getElementById('lb').classList.contains('open');
+  if(!open) return;
+  if(e.key === 'Escape') closeLb();
+  if(e.key === 'ArrowLeft') lbSlide(-1);
+  if(e.key === 'ArrowRight') lbSlide(1);
+});
 </script>
 </body>
 </html>`;
 
-  return new Response(html, {
-    headers: { 'content-type': 'text/html; charset=utf-8' },
-  });
+  return new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8' } });
 }
