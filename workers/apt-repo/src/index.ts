@@ -193,22 +193,23 @@ function catLabel(cat: string): string {
 function sharedStyles(): string {
   return `
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Courier New',Courier,monospace;max-width:800px;margin:0 auto;padding:0;line-height:1.6;color:#c8d6e5;background:#0a0e14}
+body{font-family:'Courier New',Courier,monospace;font-size:15px;max-width:860px;margin:0 auto;padding:1.5rem 1.5rem 3rem;line-height:1.7;color:#c8d6e5;background:#0a0e14}
 a{color:#7ec8e3;text-decoration:none}
-a:hover{color:#fff}
-pre{background:#0d1117;padding:.8rem 1rem;overflow-x:auto;font-size:.82rem;margin:0;border:0!important;border-left:2px solid #2d3748}
+a:hover{color:#fff;text-decoration:underline}
+pre{background:#111820;padding:1rem;overflow-x:auto;font-size:.9rem;margin:0;border-left:3px solid #2d3748}
 pre code{background:transparent!important;padding:0!important}
+.cm{color:#5a6a7c}.kw{color:#f5a962}.st{color:#5dde8b}.op{color:#7ec8e3}
 .code-wrap{position:relative}
-.copy-btn{position:absolute;top:4px;right:4px;background:none;border:none;cursor:pointer;color:#3a4a5c;padding:4px;line-height:0}
+.copy-btn{position:absolute;top:6px;right:6px;background:none;border:none;cursor:pointer;color:#3a4a5c;padding:4px;line-height:0}
 .copy-btn:hover{color:#7ec8e3}
 .copy-btn.copied svg{stroke:#5dde8b}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 .center{text-align:center}
-.tui-box{border:1px solid #2d3748;margin:1rem 0;padding:1.2rem;position:relative}
-.tui-box::before{content:attr(data-title);position:absolute;top:-.6rem;left:1rem;background:#0a0e14;padding:0 .5rem;font-size:.7rem;color:#5dde8b;text-transform:uppercase;letter-spacing:.05em}
-.tui-label{color:#5dde8b}
-.tui-key{display:inline-block;background:#1a2332;border:1px solid #2d3748;border-radius:2px;padding:.05rem .35rem;font-size:.75rem;color:#7ec8e3;min-width:1.2rem;text-align:center}
-.tui-hr{border:none;border-top:1px solid #1e2a3a;margin:.8rem 0}`;
+.tui-box{border:1px solid #2d3748;margin:1.2rem 0;padding:1.2rem 1.5rem;position:relative}
+.tui-box::before{content:'── ' attr(data-title) ' ──';position:absolute;top:-.7rem;left:1rem;background:#0a0e14;padding:0 .5rem;font-size:.8rem;color:#5a6a7c}
+.nav{margin-bottom:1.5rem;font-size:.9rem}
+.nav a{color:#5a6a7c}
+.nav a:hover{color:#7ec8e3;text-decoration:none}`;
 }
 
 function sharedScript(): string {
@@ -283,20 +284,6 @@ async function serveHome(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
   const fallbackOrigin = 'https://apt-repo.daydve.workers.dev';
   const safeFallback = escapeHtml(fallbackOrigin);
 
-  const setupCmd = `sudo curl -fsSL ${safeAptOrigin}/apt-key.asc \\
-  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\
-  ${safeAptOrigin} noble main" \\
-  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\
-sudo apt update`;
-
-  const setupCmdFallback = `sudo curl -fsSL ${safeFallback}/apt-key.asc \\
-  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\
-  ${safeFallback} noble main" \\
-  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\
-sudo apt update`;
-
   const keyCmd = `sudo curl -fsSL ${safeAptOrigin}/apt-key.asc \\
   -o /etc/apt/keyrings/daydve-apt-repo.asc`;
 
@@ -315,22 +302,18 @@ sudo apt update`;
 <meta property="og:url" content="${safeOrigin}">
 <style>
 ${sharedStyles()}
-.tui-status{position:fixed;bottom:0;left:0;right:0;background:#0d1117;border-top:1px solid #2d3748;padding:.3rem 1rem;display:flex;justify-content:space-between;font-size:.7rem;color:#3a4a5c;z-index:10}
-.tui-status a{color:#3a4a5c}.tui-status a:hover{color:#7ec8e3}
-.tab-headers{display:flex;gap:0;margin-bottom:0}
-.tab-header{padding:.3rem .8rem;background:none;border:1px solid #2d3748;border-bottom:none;color:#5a6a7c;font-family:inherit;font-size:.78rem;cursor:pointer;transition:all .15s}
-.tab-header:hover{color:#7ec8e3}
-.tab-header.active{background:#0d1117;color:#5dde8b;border-bottom-color:#0d1117}
-.tab-content{border:1px solid #2d3748;padding:1rem;display:none;margin-top:-1px}
-.tab-content.active{display:block}
-.tab-content h3{font-size:.8rem;color:#5dde8b;margin-bottom:.4rem;font-weight:normal}
-.tab-content h3::before{content:'> ';color:#3a4a5c}
-.tab-content .code-wrap{margin:.4rem 0}
-.tab-content .code-wrap pre{background:#0d1117;border-left:2px solid #2d3748}
-.tab-content .code-wrap code{color:#5dde8b;font-size:.78rem}
-.tab-content .note{color:#3a4a5c;font-size:.72rem;margin-top:.4rem}
-.browse-link{display:inline-block;margin:1rem 0;padding:.4rem 1rem;border:1px solid #2d3748;color:#7ec8e3;font-size:.85rem;text-decoration:none;transition:all .15s}
-.browse-link:hover{border-color:#5dde8b;color:#5dde8b;text-decoration:none}
+.tui-tabs{display:flex;gap:0;margin-bottom:0}
+.tui-tab{padding:.4rem 1rem;background:none;border:none;color:#5a6a7c;font-family:inherit;font-size:.95rem;cursor:pointer;transition:color .1s}
+.tui-tab:hover{color:#7ec8e3}
+.tui-tab.active{color:#5dde8b}
+.tui-tab-content{border:1px solid #2d3748;padding:1.2rem 1.5rem;display:none;margin-top:-1px}
+.tui-tab-content.active{display:block}
+.tui-tab-content .step{margin-bottom:1.2rem}
+.tui-tab-content .step:last-child{margin-bottom:0}
+.step-title{color:#5a6a7c;font-size:.85rem;margin-bottom:.3rem}
+.step-title::before{content:'# '}
+.browse-link{display:inline-block;margin:1rem 0;padding:.3rem .8rem;color:#7ec8e3;font-size:1rem;text-decoration:none}
+.browse-link:hover{text-decoration:underline;color:#fff}
 .browse-link::before{content:'[ '}.browse-link::after{content:' ]'}
 .ascii-wide{display:block}
 .ascii-narrow{display:none}
@@ -370,40 +353,43 @@ ${asciiLine(28, author, 10)}
 
 <div class="tui-box" data-title="packages">
   <div class="center">
-    <span class="tui-label">${pkgCount}</span> packages available for Ubuntu Noble
+    <span style="color:#5dde8b">${pkgCount}</span> packages available for Ubuntu Noble
     <br>
     <a href="${safeOrigin}/packages" class="browse-link">Browse packages</a>
   </div>
 </div>
 
 <div class="tui-box" data-title="setup">
-  <div class="tab-group">
-    <div class="tab-headers">
-      <button class="tab-header active" onclick="showTab(this,'tab-curl')">[1] curl | bash</button>
-      <button class="tab-header" onclick="showTab(this,'tab-manual')">[2] manual</button>
+  <div class="tui-tabs">
+    <button class="tui-tab active" onclick="showTab(this,'tab-curl')">[1] curl | bash</button>
+    <button class="tui-tab" onclick="showTab(this,'tab-manual')">[2] manual</button>
+  </div>
+  <div class="tui-tab-content active" id="tab-curl">
+    <div class="code-wrap">
+      <pre><code><span class="op">curl</span> -fsSL ${safeAptOrigin} <span class="op">| sudo bash</span></code></pre>
+      <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL ${safeAptOrigin} | sudo bash')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
     </div>
-    <div class="tab-content active" id="tab-curl">
-      <h3>One-liner</h3>
+  </div>
+  <div class="tui-tab-content" id="tab-manual">
+    <div class="step">
+      <div class="step-title">Add GPG key</div>
       <div class="code-wrap">
-        <pre><code>curl -fsSL ${safeAptOrigin} | sudo bash</code></pre>
-        <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL ${safeAptOrigin} | sudo bash')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
-      </div>
-      <p class="note">Failsafe: <code style="color:#7ec8e3;font-size:.72rem">${safeFallback}</code></p>
-    </div>
-    <div class="tab-content" id="tab-manual">
-      <h3>Add GPG key</h3>
-      <div class="code-wrap">
-        <pre><code>${keyCmd}</code></pre>
+        <pre><code><span class="kw">sudo</span> <span class="op">curl</span> -fsSL ${safeAptOrigin}/apt-key.asc \\
+  -o /etc/apt/keyrings/daydve-apt-repo.asc</code></pre>
         <button class="copy-btn" onclick="copyCmd(this,'${keyCmd.replace(/'/g, "\\'")}')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
       </div>
-      <h3>Add repository</h3>
+    </div>
+    <div class="step">
+      <div class="step-title">Add repository</div>
       <div class="code-wrap">
-        <pre><code>echo "${sourcesLine}" | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list</code></pre>
+        <pre><code><span class="op">echo</span> <span class="st">"${sourcesLine}"</span> | <span class="kw">sudo</span> <span class="op">tee</span> /etc/apt/sources.list.d/daydve-apt-repo.list</code></pre>
         <button class="copy-btn" onclick="copyCmd(this,'echo \\'${sourcesLine}\\' | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
       </div>
-      <h3>Update package lists</h3>
+    </div>
+    <div class="step">
+      <div class="step-title">Update package lists</div>
       <div class="code-wrap">
-        <pre><code>sudo apt update</code></pre>
+        <pre><code><span class="kw">sudo</span> <span class="op">apt</span> update</code></pre>
         <button class="copy-btn" onclick="copyCmd(this,'sudo apt update')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
       </div>
     </div>
@@ -412,22 +398,20 @@ ${asciiLine(28, author, 10)}
 
 <div class="tui-box" data-title="install">
   <div class="code-wrap">
-    <pre><code>sudo apt install <span style="color:#f5a962">&lt;package-name&gt;</span></code></pre>
+    <pre><code><span class="kw">sudo</span> <span class="op">apt install</span> <span class="st">&lt;package-name&gt;</span></code></pre>
     <button class="copy-btn" onclick="copyCmd(this,'sudo apt install ')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
   </div>
-  <p style="font-size:.78rem;color:#3a4a5c;margin-top:.5rem">Browse <a href="${safeOrigin}/packages">packages</a> for apt:// links</p>
 </div>
 
-<div class="tui-status">
-  <span><a href="${safeOrigin}">home</a> | <a href="${safeOrigin}/packages">packages</a> | <a href="https://github.com/${env.REPO}">github</a>${env.TELEGRAM ? ` | <a href="${env.TELEGRAM}">telegram</a>` : ''}</span>
-  <span>built for personal use</span>
+<div class="nav">
+  <a href="${safeOrigin}">home</a> · <a href="${safeOrigin}/packages">packages</a> · <a href="https://github.com/${env.REPO}">github</a>${env.TELEGRAM ? ` · <a href="${env.TELEGRAM}">telegram</a>` : ''}
 </div>
 
 <script>
 ${sharedScript()}
 function showTab(btn,id){
-  document.querySelectorAll('.tab-header').forEach(h=>h.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.tui-tab').forEach(h=>h.classList.remove('active'));
+  document.querySelectorAll('.tui-tab-content').forEach(c=>c.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById(id).classList.add('active');
 }
@@ -449,15 +433,15 @@ function pkgListRow(p: Package, aptOrigin: string, groupCats: string[]): string 
     `<span class="tag" data-cat="${escapeHtml(c)}">${escapeHtml(catLabel(c))}</span>`
   ).join(' ');
   const iconUrl = p.icon ? `${escapeHtml(aptOrigin)}${escapeHtml(p.icon)}` : '';
-  const fallbackIcon = `<span style="color:#3a4a5c">[ ]</span>`;
+  const fallbackIcon = `<span style="color:#3a4a5c"> · </span>`;
   const iconHtml = iconUrl
     ? `<img class="row-icon" src="${iconUrl}" alt="${safeName}" width="20" height="20" loading="lazy" onerror="this.outerHTML=this.dataset.fallback" data-fallback='${fallbackIcon}'>`
     : fallbackIcon;
-  const familyLabel = p.group ? `<span class="row-family">(${escapeHtml(p.group)})</span>` : '';
+  const familyLabel = p.group ? ` <span class="row-family">(${escapeHtml(p.group)})</span>` : '';
 
   return `<a class="pkg-row" href="/packages/${safeName}" data-cats="${escapeHtml(effectiveCats.join(','))}" data-name="${safeName}">
   <span class="row-icon-wrap">${iconHtml}</span>
-  <span class="row-name"><span class="row-arrow">&gt;</span> ${safeName}${familyLabel}</span>
+  <span class="row-name">${safeName}${familyLabel}</span>
   <span class="row-desc">${safeDesc}</span>
   <span class="row-tags">${cats}</span>
 </a>`;
@@ -503,46 +487,33 @@ async function servePackageList(url: URL, ctx: ExecutionContext, env: Env): Prom
 <meta name="description" content="Browse and install packages from ${siteName}.">
 <style>
 ${sharedStyles()}
-.pkg-row{display:flex;align-items:center;gap:.6rem;padding:.4rem .8rem;text-decoration:none;color:#c8d6e5;transition:all .1s;font-size:.85rem}
-.pkg-row:hover{background:#111922;text-decoration:none}
+.pkg-row{display:flex;align-items:center;gap:.6rem;padding:.5rem .8rem;text-decoration:none;color:#c8d6e5;transition:all .1s}
+.pkg-row:hover{background:#111820;text-decoration:none;color:#fff}
 .pkg-row.hidden{display:none}
 .row-icon-wrap{flex-shrink:0;width:20px;text-align:center}
 .row-icon{width:20px;height:20px;border-radius:2px;vertical-align:middle}
-.row-arrow{color:#3a4a5c;font-size:.8rem;transition:color .1s}
-.pkg-row:hover .row-arrow{color:#5dde8b}
 .row-name{font-weight:bold;color:#7ec8e3;white-space:nowrap;flex-shrink:0}
-.row-family{font-size:.72rem;color:#5a6a7c;font-weight:normal}
-.row-desc{flex:1;min-width:0;color:#5a6a7c;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-family{font-size:.8rem;color:#5a6a7c;font-weight:normal}
+.row-desc{flex:1;min-width:0;color:#5a6a7c;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row-tags{display:flex;flex-wrap:wrap;gap:.3rem;flex-shrink:0}
-.tag{font-size:.65rem;padding:.05rem .35rem;background:#111922;border:1px solid #1e2a3a;color:#5a6a7c}
+.tag{font-size:.75rem;padding:.05rem .4rem;background:#111820;border:1px solid #1e2a3a;color:#5a6a7c}
 .list{margin-top:.5rem}
-.toolbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
-.search{flex:1;min-width:200px;padding:.4rem .6rem;background:#0d1117;border:1px solid #2d3748;color:#c8d6e5;font-family:inherit;font-size:.82rem;outline:none}
+.toolbar{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.search{flex:1;min-width:200px;padding:.5rem .8rem;background:#0d1117;border:1px solid #2d3748;color:#c8d6e5;font-family:inherit;font-size:.9rem;outline:none}
 .search:focus{border-color:#7ec8e3}
 .search::placeholder{color:#3a4a5c}
 .filters{display:flex;flex-wrap:wrap;gap:.3rem}
-.filter-btn{padding:.15rem .4rem;background:none;border:1px solid #2d3748;color:#5a6a7c;font-family:inherit;font-size:.72rem;cursor:pointer;transition:all .1s}
+.filter-btn{padding:.2rem .5rem;background:none;border:1px solid #2d3748;color:#5a6a7c;font-family:inherit;font-size:.8rem;cursor:pointer;transition:all .1s}
 .filter-btn:hover{border-color:#7ec8e3;color:#7ec8e3}
 .filter-btn.active{background:#1a2332;border-color:#5dde8b;color:#5dde8b}
-.count{color:#3a4a5c;font-size:.75rem;margin-left:auto;white-space:nowrap}
-.header{padding:1rem 0 .5rem}
-.header h1{font-size:1.1rem;color:#5dde8b;font-weight:normal}
-.header h1::before{content:'$ ';color:#3a4a5c}
-.header p{color:#5a6a7c;font-size:.8rem}
-.header .nav{margin-top:.4rem;font-size:.78rem}
-.header .nav a{color:#5a6a7c;margin:0 .4rem}
-.header .nav a:hover{color:#7ec8e3}
-.empty{text-align:center;padding:2rem;color:#3a4a5c;font-size:.85rem}
-.tui-status{position:fixed;bottom:0;left:0;right:0;background:#0d1117;border-top:1px solid #2d3748;padding:.3rem 1rem;display:flex;justify-content:space-between;font-size:.7rem;color:#3a4a5c;z-index:10}
-.tui-status a{color:#3a4a5c}.tui-status a:hover{color:#7ec8e3}
-@media(max-width:768px){.row-tags{display:none}.pkg-row{gap:.4rem;padding:.3rem .6rem}.row-desc{display:none}}
+.count{color:#3a4a5c;font-size:.85rem;margin-left:auto;white-space:nowrap}
+.empty{text-align:center;padding:2rem;color:#3a4a5c;font-size:.9rem}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>${siteName || 'Packages'}</h1>
-  <p>${pkgCount} packages available for Ubuntu Noble</p>
+<div class="nav">
+  <a href="${safeOrigin}">home</a> · <a href="${safeOrigin}/packages">packages</a> · <a href="https://github.com/${escapeHtml(env.REPO)}">github</a>
 </div>
 
 <div class="tui-box" data-title="filter">
@@ -561,11 +532,6 @@ ${rows}
 </div>
 
 <div class="empty" id="empty" style="display:none">No packages match.</div>
-
-<div class="tui-status">
-  <span><a href="${safeOrigin}">home</a> | <a href="${safeOrigin}/packages">packages</a> | <a href="https://github.com/${escapeHtml(env.REPO)}">github</a></span>
-  <span id="status-count">${pkgCount} packages</span>
-</div>
 
 <script>
 let activeCat = 'all';
@@ -592,7 +558,6 @@ function filterAll() {
     if (show) visible++;
   });
   document.getElementById('count').textContent = visible + '';
-  document.getElementById('status-count').textContent = visible + ' packages';
   document.getElementById('empty').style.display = visible === 0 ? 'block' : 'none';
 }
 </script>
@@ -627,11 +592,10 @@ async function servePackageDetail(name: string, url: URL, ctx: ExecutionContext,
   const safeDesc = escapeHtml(pkg.description);
   const safeSource = escapeHtml(pkg.source || '');
   const installCmd = `sudo apt install ${pkg.name}`;
-  const aptLink = `apt://${pkg.name}`;
   const longDesc = pkg.longDescription ? escapeHtml(pkg.longDescription) : safeDesc;
 
   const iconUrl = pkg.icon ? `${escapeHtml(aptOrigin)}${escapeHtml(pkg.icon)}` : '';
-  const fallbackIcon = `<span style="color:#3a4a5c;font-size:2rem">[ ]</span>`;
+  const fallbackIcon = `<span style="color:#3a4a5c"> · </span>`;
   const iconHtml = iconUrl
     ? `<img class="detail-icon" src="${iconUrl}" alt="${safeName}" width="48" height="48" onerror="this.outerHTML=this.dataset.fallback" data-fallback='${fallbackIcon}'>`
     : fallbackIcon;
@@ -643,9 +607,9 @@ async function servePackageDetail(name: string, url: URL, ctx: ExecutionContext,
       const memberLinks = members
         .filter(m => m.name !== pkg.name)
         .map(m => `<a href="/packages/${escapeHtml(m.name)}">${escapeHtml(m.name)}</a>`)
-        .join(' | ');
+        .join(' · ');
       if (memberLinks) {
-        familyHtml = `<div class="detail-family">family: <span class="tui-label">${escapeHtml(pkg.group)}</span> &mdash; ${memberLinks}</div>`;
+        familyHtml = `<div class="detail-family">family: <span style="color:#5dde8b">${escapeHtml(pkg.group)}</span> — ${memberLinks}</div>`;
       }
     }
   }
@@ -661,29 +625,26 @@ async function servePackageDetail(name: string, url: URL, ctx: ExecutionContext,
 <meta name="description" content="${safeDesc}">
 <style>
 ${sharedStyles()}
-.back{display:inline-flex;align-items:center;gap:.3rem;color:#5a6a7c;font-size:.8rem;margin-bottom:1rem}
-.back:hover{color:#7ec8e3}
-.back::before{content:'< '}
-.detail-top{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+.detail-top{display:flex;align-items:center;gap:1rem;margin-bottom:.5rem}
 .detail-icon{width:48px;height:48px;border-radius:4px;flex-shrink:0}
-.detail-title{font-size:1.2rem;font-weight:bold;color:#7ec8e3}
+.detail-title{font-size:1.4rem;font-weight:bold;color:#7ec8e3}
 .detail-title a{color:#7ec8e3}
 .detail-title a:hover{color:#fff}
 .detail-title::before{content:'$ ';color:#3a4a5c}
-.detail-desc{color:#5a6a7c;font-size:.85rem}
-.detail-family{font-size:.78rem;color:#5a6a7c;margin-top:.3rem}
-.detail-section{margin:1rem 0}
-.detail-section h2{font-size:.85rem;color:#5dde8b;margin-bottom:.4rem;font-weight:normal}
-.detail-section h2::before{content:'## '}
-.detail-long{color:#c8d6e5;font-size:.85rem;line-height:1.8}
-.detail-links{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
-.detail-links a{padding:.3rem .6rem;border:1px solid #2d3748;font-size:.8rem;color:#7ec8e3;transition:all .1s}
+.detail-desc{color:#8b949e;font-size:.95rem;margin-top:.3rem}
+.detail-family{font-size:.85rem;color:#5a6a7c;margin-top:.3rem}
+.detail-section{margin:1.2rem 0}
+.detail-section h2{font-size:1rem;color:#5a6a7c;margin-bottom:.5rem;font-weight:normal}
+.detail-section h2::before{content:'# '}
+.detail-long{color:#c8d6e5;font-size:.95rem;line-height:1.8}
+.detail-links{display:flex;flex-wrap:wrap;gap:.6rem;margin:.6rem 0}
+.detail-links a{padding:.35rem .7rem;border:1px solid #2d3748;font-size:.9rem;color:#7ec8e3;transition:all .1s}
 .detail-links a:hover{border-color:#5dde8b;color:#5dde8b;text-decoration:none}
-.detail-links a.apt-link{background:#1a2332;border-color:#5dde8b;color:#5dde8b}
-.detail-links a.apt-link:hover{background:#243344}
-.install-block{margin:.5rem 0}
-.install-block .code-wrap pre{border-left:2px solid #5dde8b}
-.install-block .code-wrap code{color:#5dde8b;font-size:.82rem}
+.detail-links a.primary{background:#1a2332;border-color:#5dde8b;color:#5dde8b}
+.detail-links a.primary:hover{background:#243344}
+.install-block{margin:.6rem 0}
+.install-block .code-wrap pre{border-left:3px solid #5dde8b}
+.install-block .code-wrap code{color:#5dde8b;font-size:.9rem}
 .screenshots{position:relative;overflow:hidden}
 .screenshots-track{display:flex;transition:transform .3s ease}
 .screenshots-track img{width:100%;flex-shrink:0;cursor:pointer;transition:opacity .15s;object-fit:contain;max-height:400px}
@@ -692,26 +653,26 @@ ${sharedStyles()}
 .ss-nav:hover{color:#7ec8e3}
 .ss-prev{left:.5rem}
 .ss-next{right:.5rem}
-.ss-dots{display:flex;justify-content:center;gap:.3rem;margin-top:.4rem}
+.ss-dots{display:flex;justify-content:center;gap:.4rem;margin-top:.5rem}
 .ss-dot{width:6px;height:6px;background:#2d3748;border:none;cursor:pointer;transition:background .15s;padding:0}
 .ss-dot.active{background:#5dde8b}
 .lightbox{display:none;position:fixed;inset:0;z-index:100;background:rgba(10,14,20,.95);align-items:center;justify-content:center}
 .lightbox.open{display:flex}
 .lightbox img{max-width:85vw;max-height:85vh;object-fit:contain;cursor:pointer}
-.lightbox-close{position:absolute;top:.8rem;right:1rem;background:none;border:none;color:#5a6a7c;font-size:1.5rem;cursor:pointer;padding:.2rem .5rem}
+.lightbox-close{position:absolute;top:1rem;right:1.5rem;background:none;border:none;color:#5a6a7c;font-size:2rem;cursor:pointer;padding:.2rem .5rem}
 .lightbox-close:hover{color:#c8d6e5}
-.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:none;border:1px solid #2d3748;color:#5a6a7c;font-size:1.5rem;cursor:pointer;padding:.3rem .8rem;z-index:2;transition:color .15s;font-family:inherit}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:none;border:1px solid #2d3748;color:#5a6a7c;font-size:1.5rem;cursor:pointer;padding:.4rem 1rem;z-index:2;transition:color .15s;font-family:inherit}
 .lb-nav:hover{color:#7ec8e3}
-.lb-prev{left:.5rem}
-.lb-next{right:.5rem}
-.tui-status{position:fixed;bottom:0;left:0;right:0;background:#0d1117;border-top:1px solid #2d3748;padding:.3rem 1rem;display:flex;justify-content:space-between;font-size:.7rem;color:#3a4a5c;z-index:10}
-.tui-status a{color:#3a4a5c}.tui-status a:hover{color:#7ec8e3}
+.lb-prev{left:1rem}
+.lb-next{right:1rem}
 @media(max-width:600px){.detail-top{flex-direction:column;align-items:flex-start}.detail-links{flex-direction:column}.detail-links a{width:100%;text-align:center}}
 </style>
 </head>
 <body>
 
-<a href="/packages" class="back">All packages</a>
+<div class="nav">
+  <a href="${safeOrigin}">home</a> · <a href="${safeOrigin}/packages">packages</a> · <a href="https://github.com/${escapeHtml(env.REPO)}">github</a>
+</div>
 
 <div class="tui-box" data-title="${safeName}">
   <div class="detail-top">
@@ -748,20 +709,14 @@ ${screenshots.length > 0 ? `
 
 <div class="tui-box" data-title="install">
   <div class="detail-links">
-    <a href="${escapeHtml(aptLink)}" class="apt-link">apt:// install</a>
     ${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">homepage</a>` : ''}
   </div>
   <div class="install-block">
     <div class="code-wrap">
-      <pre><code>${escapeHtml(installCmd)}</code></pre>
+      <pre><code><span class="kw">sudo</span> <span class="op">apt install</span> ${safeName}</code></pre>
       <button class="copy-btn" onclick="copyCmd(this,'${escapeHtml(installCmd)}')" aria-label="Copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
     </div>
   </div>
-</div>
-
-<div class="tui-status">
-  <span><a href="${safeOrigin}">home</a> | <a href="${safeOrigin}/packages">packages</a> | <a href="https://github.com/${escapeHtml(env.REPO)}">github</a></span>
-  <span>${safeName}</span>
 </div>
 
 <script>${sharedScript()}
