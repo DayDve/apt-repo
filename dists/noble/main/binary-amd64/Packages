@@ -573,6 +573,31 @@ Description: WineGUI is a user-friendly WINE graphical interface
  .
  Code archive at: https://gitlab.melroy.org/melroy/winegui.
 
+Package: winegui
+Version: 4.3.0
+Architecture: amd64
+Maintainer: Melroy van den Berg <melroy@melroy.org>
+Installed-Size: 14673
+Depends: libgtkmm-4.0-0, cabextract, unzip, p7zip, wget, zenity, xz-utils, python3 (>= 3.10)
+Suggests: libvulkan1, libvulkan1:i386, mesa-vulkan-drivers, mesa-vulkan-drivers:i386
+Filename: pool/noble/main/winegui_4.3.0_noble_amd64.deb
+Size: 5884036
+MD5sum: 88653cc1f9d24a4c77da0a7f0695ec9d
+SHA1: 73a58c498cc32af550c172aba0cc45c0f897c5d2
+SHA256: d442b4b3ef56fda33920cb93643432263bf7594b47915f3465b4836baf968ed9
+Section: utils
+Priority: optional
+Homepage: https://winegui.melroy.org
+Description: WineGUI is a user-friendly WINE graphical interface
+ WineGUI is a friendly interface for Wine. Allowing you to easily manage your Wine machines/bottles.
+ .
+ WineGUI contains many features and conveniences, including but not limited to:
+ easy step-by-step wizard for creating a new machine, built-in application list, editing machines and configure your machine with a single click.
+ .
+ Plus so much more!
+ .
+ Code archive at: https://gitlab.melroy.org/melroy/winegui.
+
 Package: wlvncc
 Version: 0.1.0-150-gcc0abf8
 Architecture: amd64
