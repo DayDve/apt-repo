@@ -115,7 +115,7 @@ jobs:
             --form-string "chat_id=$TG_OWNER_ID" \
             --form-string "text=$TEXT" \
             --form-string "parse_mode=HTML" \
-            "https://api.telegram.org/bot$TG_TOKEN/sendMessage" | grep -v '"ok":true'
+            "https://api.telegram.org/bot$TG_TOKEN/sendMessage" | grep -v '"ok":true' || true
 
   deploy:
     needs: build

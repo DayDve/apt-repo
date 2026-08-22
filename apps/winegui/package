@@ -16,9 +16,15 @@ check_update() {
 get_version() {
   gh_latest_release winegui/WineGUI
   version="${LATEST_TAG#v}"
-  local releases_url="https://gitlab.melroy.org/melroy/winegui/-/releases"
-  local desc
-  desc=$(fetch_url "$releases_url" -H "Accept: application/json" \
-    | jq -r '.[0].description // empty' 2>/dev/null)
-  [ -n "$desc" ] && printf '%s' "$desc" || printf 'Подробный лог: %s' "$releases_url"
+  local current="${1:-}" releases_url="https://gitlab.melroy.org/melroy/winegui/-/releases" raw
+  # gitlab.melroy.org sits behind an anti-bot challenge (HTTP and git both 403),
+  # so changelog comes from commits between tags on the GitHub mirror.
+  if [ -n "$current" ]; then
+    raw=$(gh_commits_between winegui/WineGUI "v$current" "$LATEST_TAG")
+    if [ -n "$raw" ]; then
+      ai_changelog "winegui" "$raw"
+      return
+    fi
+  fi
+  printf '%s' "${RELEASE_BODY:-Подробный лог: $releases_url}"
 }
