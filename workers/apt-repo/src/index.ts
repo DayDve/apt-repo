@@ -109,12 +109,15 @@ async function fetchJSON(url: string, cacheKey: string, ctx: ExecutionContext): 
 }
 
 async function redirectPool(path: string, ctx: ExecutionContext, env: Env): Promise<Response> {
-  const filename = path.split('/').pop()!;
+  let filename = path.split('/').pop()!;
+  try {
+    filename = decodeURIComponent(filename);
+  } catch {}
   const poolMapUrl = `${repoOrigin(env.REPO)}/pool-map.json`;
   const map = await fetchJSON(poolMapUrl, 'https://_cache/pool-map-' + env.CACHE_BUST, ctx) as Record<string, string> | null;
   if (!map || !map[filename]) return new Response('Not found', { status: 404 });
   return Response.redirect(
-    `https://github.com/${env.REPO}/releases/download/${map[filename]}/${filename}`,
+    `https://github.com/${env.REPO}/releases/download/${encodeURIComponent(map[filename])}/${encodeURIComponent(filename)}`,
     302,
   );
 }
