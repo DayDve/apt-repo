@@ -57,7 +57,17 @@ jobs:
             echo "version=SKIP" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          tag=$(echo "$tags" | grep "^${{ matrix.app }}-[0-9]" | sort -V | tail -1)
+          # A tag belongs to the longest app name it is prefixed by
+          # (so "foo" never claims tags of "foo-2bar", and vice versa):
+          # drop candidate tags claimed by strictly longer app names
+          others=$(ls -d apps/*/ | sed 's|apps/||;s|/||' \
+            | awk -v a="${{ matrix.app }}" 'length($0) > length(a)' \
+            | sed 's/[][\.*^$()+?{}|\/]/\\&/g' | paste -sd'|')
+          cand=$(echo "$tags" | grep -E "^${{ matrix.app }}-[0-9]")
+          if [ -n "$others" ]; then
+            cand=$(echo "$cand" | grep -Ev "^(${others})-")
+          fi
+          tag=$(echo "$cand" | sort -V | tail -1)
           if [ -n "$tag" ]; then
             echo "version=$(echo "$tag" | sed "s/^${{ matrix.app }}-//")" >> "$GITHUB_OUTPUT"
           else

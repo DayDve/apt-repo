@@ -62,6 +62,9 @@
 # Universal helpers:
 #   fetch_url <url> [curl_args...]
 #     HTTP GET with direct → proxy fallback
+#   fetch_to_file <url> <dest> [curl_args...]
+#     Binary-safe download to <dest>, direct → proxy fallback.
+#     Use for tarballs/binaries; fetch_url is for text/JSON only.
 # ============================================================
 
 SOURCE_URL="https://example.com/OWNER/REPO"

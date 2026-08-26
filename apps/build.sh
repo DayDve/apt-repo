@@ -121,6 +121,28 @@ fetch_url() {
   return 1
 }
 
+# fetch_to_file: Downloads URL to <dest> (binary-safe, unlike fetch_url).
+# Usage: fetch_to_file <url> <dest> [curl_args...]
+# Direct curl first (fails on HTTP errors via -f), proxy fallback second.
+# Returns non-zero if both paths fail; dest may be left partial on
+# mid-transfer failure — check the exit code before using it.
+fetch_to_file() {
+  local url="$1" dest="$2"; shift 2
+  if curl -fsSL --connect-timeout 10 --max-time 300 -o "$dest" "$@" "$url" 2>/dev/null; then
+    return 0
+  fi
+  rm -f "$dest"
+  if [ -n "${PROXY_URL:-}" ] && [ -n "${PROXY_TOKEN:-}" ]; then
+    local encoded
+    encoded=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1],safe=''))" "$url")
+    curl -fsSL --connect-timeout 10 --max-time 300 \
+      -H "X-Proxy-Token: ${PROXY_TOKEN}" \
+      -o "$dest" "$@" "${PROXY_URL}?url=${encoded}" 2>/dev/null
+  else
+    return 1
+  fi
+}
+
 # gh_fetch_raw: Fetches a raw file from a GitHub repo using the API
 # Usage: gh_fetch_raw <owner/repo> <path> [branch]
 # Uses gh api with GH_TOKEN, no curl/proxy needed.
@@ -177,10 +199,12 @@ $raw_text"
     generationConfig: {temperature: 0.2}
   }')
 
+  # flash-latest = alias for the newest stable Flash; explicit models are
+  # fallbacks (gemini-2.5-flash reaches EOL 2026-10-16).
   local endpoints=(
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
     "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent"
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent"
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
   )
 
   local result=""
@@ -284,6 +308,8 @@ if [ -n "$GITHUB_ACTIONS" ] && [ "$GITHUB_REF" = "refs/heads/apps" ]; then
       done
     fi
 
+  # Drop GitHub's auto-generated source archives (<tag>.tar.gz / <tag>.zip)
+  # so the release page ships only the .deb (added in edaf605).
   gh release delete-asset "$app-$version" "$app-$version.tar.gz" --repo "$GITHUB_REPOSITORY" --yes 2>/dev/null || true
   gh release delete-asset "$app-$version" "$app-$version.zip" --repo "$GITHUB_REPOSITORY" --yes 2>/dev/null || true
 fi

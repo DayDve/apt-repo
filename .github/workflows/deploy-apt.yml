@@ -47,10 +47,24 @@ jobs:
           keep="${KEEP:-3}"
           gh release list --repo "$GITHUB_REPOSITORY" --limit 1000 --json tagName --jq '.[].tagName' \
             | sort > /tmp/release-tags
+          # App names come from the apps branch (not parsed out of tags) —
+          # parsing collides when one app name extends another (foo vs foo-2bar),
+          # mixing their release pools and pruning the wrong releases
+          gh api "repos/${{ github.repository }}/contents/apps?ref=apps" \
+            --jq '.[] | select(.type == "dir") | .name' | sort > /tmp/app-names
           pruned=0
           while read -r app; do
             [ -z "$app" ] && continue
-            mapfile -t versions < <(grep "^${app}-[0-9]" /tmp/release-tags | sort -V -r)
+            # a tag belongs to the longest app name it is prefixed by,
+            # so only strictly longer names can steal this app's tags
+            others=$(awk -v a="$app" 'length($0) > length(a)' /tmp/app-names \
+              | sed 's/[][\.*^$()+?{}|\/]/\\&/g' | paste -sd'|')
+            cand=$(grep -E "^${app}-[0-9]" /tmp/release-tags)
+            [ -z "$cand" ] && continue
+            if [ -n "$others" ]; then
+              cand=$(echo "$cand" | grep -Ev "^(${others})-")
+            fi
+            mapfile -t versions < <(echo "$cand" | sort -V -r)
             [ "${#versions[@]}" -le "$keep" ] && continue
 
             # Read PINNED_VERSIONS from apps branch (never prune these)
