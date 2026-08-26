@@ -788,7 +788,7 @@ ${sharedHead(`${pkg.name} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
 
   <div class="sec">
     <div class="sec-title">Install</div>
-    <div class="note" style="margin-bottom:0.6rem">Needs this repo in your apt sources first &mdash; one-line setup on the <a href="/" style="color:var(--accent)">home page</a>.</div>
+    <div class="note" style="margin-bottom:0.6rem">First-time setup required &mdash; add this repo to your apt sources. <a href="/" style="color:var(--accent)">Setup instructions</a></div>
     <div class="dlinks">
       <a href="${escapeHtml(aptLink)}" class="primary">Install via package manager</a>
       ${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">Homepage</a>` : ''}
