@@ -394,13 +394,14 @@ jobs:
             # Check if icon exists
             icon=""
             [ -f "/tmp/icons-48/${app}.png" ] && icon="/icons/${app}.png"
+            version="${tag#${app}-}"
             $first || echo -n ',' >> "$GITHUB_WORKSPACE/packages.json"
             first=false
             jq -n --arg name "$app" --arg desc "$desc" --arg source "$source_url" \
               --arg long "$long_desc" --arg icon "$icon" \
-              --arg group "$group" --arg cats "$cats" \
+              --arg group "$group" --arg cats "$cats" --arg version "$version" \
               --argjson screenshots "${screenshots:-null}" \
-              '{name:$name,description:$desc,source:$source}
+              '{name:$name,description:$desc,source:$source,version:$version}
                + (if $long != "" then {longDescription:$long} else {} end)
                + (if $icon != "" then {icon:$icon} else {} end)
                + (if $screenshots != null then {screenshots:$screenshots} else {} end)
