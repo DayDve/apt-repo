@@ -220,6 +220,21 @@ Priority: optional
 Homepage: https://gitlab.com/gitlab-org/cli
 Description: An open source GitLab CLI tool
 
+Package: glab
+Version: 1.115.0
+Architecture: amd64
+Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
+Installed-Size: 49905
+Depends: git
+Filename: pool/noble/main/glab_1.115.0_linux_noble_amd64.deb
+Size: 18174476
+MD5sum: 1590abe4a406f82f9bb622918683ff57
+SHA1: a0c5d815fe88a5ded1643048bcf1d9bc803fc4d5
+SHA256: 268d6874de7ac342c2964525b17a3dae229df4e35e411c8a3de5444a94d567db
+Priority: optional
+Homepage: https://gitlab.com/gitlab-org/cli
+Description: An open source GitLab CLI tool
+
 Package: grub-btrfs
 Version: 4.14
 Architecture: amd64
