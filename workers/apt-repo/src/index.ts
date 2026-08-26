@@ -20,6 +20,7 @@ interface Package {
   name: string;
   description: string;
   source: string;
+  version?: string;
   longDescription?: string;
   icon?: string;
   group?: string;
@@ -55,6 +56,10 @@ export default {
       return servePackageList(ctx, env);
     }
 
+    if (path === '/about') {
+      return serveAbout(env);
+    }
+
     const pkgMatch = path.match(/^\/packages\/([^/]+)$/);
     if (pkgMatch) {
       return servePackageDetail(pkgMatch[1], ctx, env);
@@ -80,7 +85,7 @@ export default {
       return proxy(`${repoOrigin(env.REPO)}${path}`, { cache: true });
     }
 
-    return isBrowser ? serveHome(ctx, env) : new Response('Not found', { status: 404 });
+    return isBrowser ? serveNotFound(env) : new Response('Not found', { status: 404 });
   },
 };
 
@@ -164,19 +169,31 @@ const ICON_PATHS: Record<string, string> = {
   check: '<polyline points="20 6 9 17 4 12"/>',
   chevronLeft: '<path d="m15 18-6-6 6-6"/>',
   chevronRight: '<path d="m9 18 6-6-6-6"/>',
+  chevronDown: '<polyline points="6 9 12 15 18 9"/>',
   close: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
 };
+
+// Inline SVG favicon — white cat on dark background, provided by repo author
+const FAVICON = "data:image/svg+xml,%3Csvg%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2032%2032%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%230d1117%22%2F%3E%3Cg%20transform%3D%22matrix%28.98992%200%200%20.98992%20-.14983%20.16241%29%22%20stroke-width%3D%22.090439%22%3E%3Cpath%20d%3D%22m12.198%201.3055e-5c-1.0585%200.2578-1.4794%202.1527-2.0163%203.2393-1.4879%203.4579-3.58%206.709-6.471%209.1563-2.672%203.2132-1.8733%208.8868%201.925%2010.886%201.9981%201.082%204.4854%200.45728%206.4263%201.728%201.3979%200.64937%201.4993%202.3039%202.3545%203.4023%201.7401%202.1824%204.5269%203.4961%207.3032%203.5866%201.4248%200.27069%202.006-1.4171%200.5191-1.8043-1.3248-1.5312-3.8379-1.2321-4.9847-2.9702-0.54139-1.2242-1.685-3.1862-1.7811-3.9383%201.4818-0.17487%203.2469-0.90594%204.5463%200.12845%200.81086%200.44965%202.9992-0.91331%204.0822%200.10666%200.7527%200.46214%201.2664%200.08986%202.0413%200.19423%200.0476-0.78099%201.2598-0.56258%200.9904-1.5451%201.1303-0.34336%203.3673-0.28737%203.3193-1.7361-0.21264-1.3714-2.6939-0.6793-3.8758-0.62718-1.4453%200.58111-2.9513%200.27572-3.4841-1.3364-1.8068-3.13-1.6574-7.0652-3.8162-10.019-1.7925-2.2798-5.1349-2.4937-7.72-1.8401%200.34207-0.6968%201.2233-2.4295%201.7866-3.4724%200.84311-1.0364%200.61812-2.7946-0.69425-2.7746%200.006889-0.10435-0.19874-0.40674-0.4508-0.36475zm0.48701%206.4574c-0.96582%200.09636-0.62882%200.043798%200%200z%22%20fill%3D%22%23fff%22%2F%3E%3Cpath%20d%3D%22m12.275-0.16406c-1.543%200.3203-1.6355%202.3216-2.335%203.4936-1.4698%203.3861-3.5423%206.5555-6.374%208.9551-2.7494%203.296-1.9081%209.1113%201.9892%2011.157%202.0487%201.1168%204.6317%200.4528%206.5907%201.8327%201.3659%200.7779%201.3255%202.5635%202.4019%203.5955%201.8731%202.0584%204.6784%203.3556%207.4736%203.2892%200.6832-0.06659%201.5582-0.5497%201.3211-1.3309-1.0117-0.84733-2.039-1.8173-3.3811-2.1208-1.2085-0.40284-2.5424-1.0064-2.9517-2.3287-0.23053-0.94738-1.3424-2.4057-1.2633-2.9601%201.2611-0.2318%202.6848-0.56055%203.8763-0.16522%201.569%201.0127%203.533-0.50178%204.8867%200.68745%200.65738-0.19422%202.2258%200.7077%202.1074-0.62891%200.83271-0.30444%200.57945-1.5132%201.7754-1.2324%201.4905%200.26941%203.349-1.8587%201.5192-2.5554-1.7017-0.26102-3.4584%200.09118-5.1285%200.4441-1.3262-0.52421-1.769-2.1238-2.3216-3.3286-1.1393-2.8987-1.237-6.334-3.4216-8.7316-1.8657-1.7308-4.6659-1.9646-7.0831-1.6584%200.63365-1.6051%201.8148-2.9978%202.1504-4.7109-0.15208-1.018-1.1048-1.2434-1.832-1.7031zm-0.07227%200.51074c0.79609%200.26585%201.7075%201.0135%201.0212%201.9338-0.62156%201.4175-1.6372%202.7837-1.7135%204.3563%201.1214-0.00744%202.3911-0.1054%203.5554%200.098251%201.663%200.17656%203.451%200.81523%204.2349%202.416%201.8647%203.1244%201.3346%207.2061%203.7167%2010.074-1.5655-0.48768-2.9857-1.6907-3.2317-3.2693-0.82184%201.6232%201.2938%203.1328%202.7246%203.6079%201.4245%200.76473%203.5734%200.94144%204.2481%202.6152%200.28298%200.82607-0.79596%200.78668-0.82496%201.431-1.0308-0.12481-2.008-0.34319-2.7053-1.3287-2.032-1.9282-5.2366-1.9544-7.0818-4.1556%201.3389-0.48429%202.6265-1.8326%202.7016-3.4031-0.32332-0.94657%201.4828-2.3986%200.34918-3.0071-0.70517%200.42512-2.5909-1.5917-1.7452-0.02206%200.62924%200.76899%202.2395%200.12812%201.2549%201.4439-0.38682%200.50447-2.5496%201.4195-1.0469%201.8379%200.53806-0.42228%200.86195-1.6203%200.68276-0.23917-0.40771%201.8135-2.1659%202.8857-3.8214%203.4071-0.67008%200.6861-3.1383%200.92951-1.9277-0.48833-0.51222-0.24661-2.4988-1.4804-1.4766-0.05269%200.82429%200.09127%200.80918%200.5148%200.59766%201.0801-1.4273-0.61262-1.7149-2.3284-2.3888-3.6131-0.26752-1.1036-0.10461-2.3531%200.40621-3.3401-0.15785-1.3402%200.40503-3.0076%200.23047-4.1249-0.86945%200.75867-0.6697%202.1235-0.64843%203.1758%200.20339%201.4354-1.1821%202.7283-0.58551%204.2418%200.052373%201.2621%201.5226%201.8277%201.3754%203.0919%200.41553%200.93734%201.7363%200.63668%200.86994%201.7829%200.19408%201.2746%201.7204%200.52747%202.2835%201.4401%201.343%200.28086%201.4766-1.6081%200.58398-2.2324%200.89176-0.3458%202.01-1.5683%202.4916-0.10724%201.4642%201.4175%203.6885%201.4463%205.2516%202.7314%200.70005%200.51474%202.0874%201.3584%200.42225%201.2824-0.74338%200.12024-2.0261%200.21655-2.3783-0.20738-1.5123-0.58458-3.3821%200.12052-4.674-0.06628-0.98125-1.0432-3.1031-2.579-4.2909-1.9236%201.7201%200.49955%203.3531%201.5218%204.2453%203.1333%201.0272%201.712%201.5661%203.8805%203.442%204.9149%201.3268%200.97235%203.0021%201.2698%204.3811%202.1214-0.23554%201.254-2.4444%200.3434-3.3516-0.01754-2.2021-0.84467-4.8309-1.9205-5.6229-4.3626-0.54504-1.7165-2.2274-2.8476-4.0061-2.8475-1.7975-0.003585-3.8499-0.15106-5.0586-1.6788-1.5227-1.9938-2.0219-4.6912-1.6875-7.1465%200.18009-1.4817%201.1568-2.6764%202.3446-3.5045%203.1559-2.7448%204.8338-6.6902%206.2332-10.53%200.14235-0.23438%200.31891-0.50932%200.61948-0.54813zm-0.76172%2010.849c-0.30305%200.24595-1.4035%201.5647-0.55079%201.4277%201.1172-1.6543%201.7558%200.4518%201.386%201.3821%201.9067-0.73831%200.50437-2.5012-0.83524-2.8098zm1.7734%207.8535c0.99521%200.36599%200.56428%202.5565-0.59191%201.289-1.2861%200.38218-1.4007-1.7263-0.13477-0.95898%200.26977-0.0078%200.57232-0.07951%200.72668-0.33zm-3.6641%200.50488c-0.58371%200.31615-0.097035%201.2854%200.45117%200.73538%200.29873-0.24358-0.16507-0.71602-0.45117-0.73538zm19.449%200.41504c1.543-0.23863%201.2255%201.7607-0.12659%201.5384-0.98593%200.1731-1.685%200.54012-2.1531-0.46127-0.5832-0.46613-1.8201-0.85187-0.38634-0.86324%200.88299-0.121%201.7727-0.23946%202.666-0.21392z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E";
 
 function icon(name: keyof typeof ICON_PATHS, size = 16, sw = 2, cls = ''): string {
   const c = cls ? ` class="${cls}"` : '';
   return `<svg${c} width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${ICON_PATHS[name]}</svg>`;
 }
 
-function sharedHead(title: string, desc: string, extraCss: string = ''): string {
+function sharedHead(title: string, desc: string, extraCss: string = '', ogImage?: string): string {
+  const ogImageTags = ogImage
+    ? `<meta property="og:image" content="${escapeHtml(ogImage)}">
+<meta name="twitter:card" content="summary_large_image">`
+    : '<meta name="twitter:card" content="summary">';
   return `<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${title}</title>
 <meta name="description" content="${desc}">
+<link rel="icon" href="${FAVICON}">
+<meta property="og:title" content="${title}">
+<meta property="og:description" content="${desc}">
+${ogImageTags}
 <meta name="theme-color" content="#0d1117">
 <style>
 :root {
@@ -190,7 +207,7 @@ function sharedHead(title: string, desc: string, extraCss: string = ''): string 
   --border-muted: #21262d;
   --text-primary: #e6edf3;
   --text-secondary: #8b949e;
-  --text-muted: #6e7681;
+  --text-muted: #7d8590;
   --accent: #58a6ff;
   --accent-btn: #1f6feb;
   --accent-btn-hover: #388bfd;
@@ -286,17 +303,17 @@ code{font-size:.85em}
 ${extraCss}</style>`;
 }
 
-function sharedHeader(siteName: string, repo: string, activePage: 'home' | 'packages' = 'home', telegram?: string): string {
+function sharedHeader(siteName: string, repo: string, activePage: 'home' | 'packages' | 'about' = 'home', telegram?: string): string {
   const safeSite = escapeHtml(siteName || 'DayDve APT Repository');
-  const homeActive = activePage === 'home' ? ' active' : '';
-  const pkgsActive = activePage === 'packages' ? ' active' : '';
+  const isActive = (p: string) => activePage === p ? ' active' : '';
 
   return `<header class="site-header">
 <h1 class="brand-title">${safeSite}</h1>
 <p class="brand-sub">Software unavailable or outdated in standard repos</p>
-<nav class="site-nav">
-<a href="/" class="nav-link${homeActive}">Home</a>
-<a href="/packages" class="nav-link${pkgsActive}">Packages</a>
+<nav class="site-nav" aria-label="Main">
+<a href="/" class="nav-link${isActive('home')}">Home</a>
+<a href="/packages" class="nav-link${isActive('packages')}">Packages</a>
+<a href="/about" class="nav-link${isActive('about')}">About</a>
 <a href="https://github.com/${escapeHtml(repo)}" target="_blank" rel="noopener" class="nav-link">GitHub</a>
 ${telegram ? `<a href="${escapeHtml(telegram)}" target="_blank" rel="noopener" class="nav-link">Telegram</a>` : ''}
 </nav>
@@ -313,8 +330,20 @@ ${telegram ? `· <a href="${escapeHtml(telegram)}" target="_blank" rel="noopener
 </footer>`;
 }
 
+// Delegated handlers shared by every page (no inline JS attributes):
+// - hide broken <img> (capture phase: 'error' does not bubble)
+// - [data-copy] triggers copy-to-clipboard with Copied! feedback
 function sharedScript(): string {
-  return `function copyCmd(b,t){navigator.clipboard.writeText(t).then(()=>{b.classList.add('copied');const l=b.querySelector('.copy-text');if(l)l.textContent='Copied!';setTimeout(()=>{b.classList.remove('copied');if(l)l.textContent='Copy'},2000)}).catch(()=>{})}`;
+  return `document.addEventListener('error',e=>{if(e.target instanceof HTMLImageElement)e.target.style.display='none'},true);
+document.addEventListener('click',e=>{
+  const t=e.target instanceof Element?e.target:null;if(!t)return;
+  const c=t.closest('[data-copy]');if(!c)return;
+  navigator.clipboard.writeText(c.dataset.copy||'').then(()=>{
+    c.classList.add('copied');const l=c.querySelector('.copy-text');
+    if(l)l.textContent='Copied!';
+    setTimeout(()=>{c.classList.remove('copied');if(l)l.textContent='Copy'},2000);
+  }).catch(()=>{});
+});`;
 }
 
 // ── Text endpoint (for curl | bash) ──
@@ -447,16 +476,16 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'home', env.TELEGRAM)}
       <div class="sec-title">Add repository</div>
     </div>
 
-    <div class="tab-h">
-      <button class="tab-b active" onclick="showTab(this,'t1')">curl | bash</button>
-      <button class="tab-b" onclick="showTab(this,'t2')">Manual</button>
+    <div class="tab-h" role="tablist" aria-label="Setup method">
+      <button class="tab-b active" role="tab" aria-selected="true" data-tab="t1">curl | bash</button>
+      <button class="tab-b" role="tab" aria-selected="false" data-tab="t2">Manual</button>
     </div>
 
-    <div class="tab-p active" id="t1">
+    <div class="tab-p active" id="t1" role="tabpanel">
       <div class="term-box">
         <div class="term-header">
           <div class="term-title">bash</div>
-          <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL ${safeAptOrigin} | sudo bash')" aria-label="Copy command">
+          <button class="copy-btn" data-copy="curl -fsSL ${safeAptOrigin} | sudo bash" aria-label="Copy command">
             ${icon('copy', 13, 2, 'icon-copy')}${icon('check', 13, 2.5, 'icon-check')}<span class="copy-text">Copy</span>
           </button>
         </div>
@@ -469,7 +498,7 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'home', env.TELEGRAM)}
       <div class="term-box">
         <div class="term-header">
           <div class="term-title">bash (fallback)</div>
-          <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL ${safeFallback} | sudo bash')" aria-label="Copy fallback command">
+          <button class="copy-btn" data-copy="curl -fsSL ${safeFallback} | sudo bash" aria-label="Copy fallback command">
             ${icon('copy', 13, 2, 'icon-copy')}${icon('check', 13, 2.5, 'icon-check')}<span class="copy-text">Copy</span>
           </button>
         </div>
@@ -479,11 +508,11 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'home', env.TELEGRAM)}
       </div>
     </div>
 
-    <div class="tab-p" id="t2">
+    <div class="tab-p" id="t2" role="tabpanel">
       <div class="term-box">
         <div class="term-header">
           <div class="term-title">bash</div>
-          <button class="copy-btn" onclick="copyCmd(this,'${manualPrimary.replace(/'/g, "\\'").replace(/\n/g, '\\n')}')" aria-label="Copy manual steps">
+          <button class="copy-btn" data-copy="${escapeHtml(manualPrimary)}" aria-label="Copy manual steps">
             ${icon('copy', 13, 2, 'icon-copy')}${icon('check', 13, 2.5, 'icon-check')}<span class="copy-text">Copy</span>
           </button>
         </div>
@@ -515,12 +544,11 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'home', env.TELEGRAM)}
 ${sharedFooter(env.REPO, env.TELEGRAM)}
 <script>
 ${sharedScript()}
-function showTab(btn,id){
-  document.querySelectorAll('.tab-b').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-p').forEach(p=>p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById(id).classList.add('active');
-}
+document.addEventListener('click',e=>{
+  const b=e.target instanceof Element?e.target.closest('.tab-b'):null;if(!b)return;
+  document.querySelectorAll('.tab-b').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-selected',x===b?'true':'false')});
+  document.querySelectorAll('.tab-p').forEach(p=>p.classList.toggle('active',p.id===b.dataset.tab));
+});
 </script>
 </body>
 </html>`;
@@ -538,7 +566,7 @@ async function servePackageList(ctx: ExecutionContext, env: Env): Promise<Respon
   const allCats = new Set<string>();
   for (const p of pkgs || []) for (const c of p.categories || []) allCats.add(c);
   const sortedCats = [...allCats].sort();
-  const catBtns = sortedCats.map(c => `<button class="filter-pill" data-cat="${escapeHtml(c)}" onclick="filterCat('${escapeHtml(c)}')">${escapeHtml(catLabel(c))}</button>`).join('');
+  const catBtns = sortedCats.map(c => `<button class="filter-pill" data-cat="${escapeHtml(c)}" aria-pressed="false">${escapeHtml(catLabel(c))}</button>`).join('');
 
   const groupCats = new Map<string, string[]>();
   for (const p of pkgs || []) {
@@ -559,7 +587,7 @@ async function servePackageList(ctx: ExecutionContext, env: Env): Promise<Respon
     return `<a class="prow" href="/packages/${safeName}" data-cats="${escapeHtml(effectiveCats.join(','))}">
   <div class="prow-icon-wrap">${iconHtml}</div>
   <div class="prow-main">
-    <div class="prow-name">${safeName}${familyTag}</div>
+    <div class="prow-name">${safeName}${familyTag}${p.version ? ` <span class="prow-ver">${escapeHtml(p.version)}</span>` : ''}</div>
     <div class="prow-desc">${safeDesc}</div>
   </div>
   <div class="prow-tags">${catsHtml}</div>
@@ -577,7 +605,9 @@ ${sharedHead(`${env.SITE_NAME || 'apt-repo'} — Packages`, `Browse ${pkgCount} 
 .prow-icon{width:34px;height:34px;border-radius:var(--radius-md);object-fit:contain;background:var(--bg-body);border:1px solid var(--border-muted);display:block}
 .prow-ph{width:34px;height:34px;border-radius:var(--radius-md);background:var(--bg-surface);border:1px solid var(--border-muted);display:flex;align-items:center;justify-content:center;color:var(--text-secondary)}
 .prow-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:0.1rem}
-.prow-name{font-weight:600;font-size:0.88rem}
+.prow-name{font-weight:600;font-size:0.88rem;display:flex;align-items:baseline;gap:0.4rem;min-width:0}
+.prow-name > span:first-child{overflow:hidden;text-overflow:ellipsis}
+.prow-ver{flex-shrink:1;font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .prow-desc{font-size:0.78rem;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .prow-tags{display:flex;flex-wrap:wrap;gap:0.3rem;flex-shrink:0}
 .plist{display:flex;flex-direction:column;gap:0.15rem}
@@ -588,6 +618,9 @@ ${sharedHead(`${env.SITE_NAME || 'apt-repo'} — Packages`, `Browse ${pkgCount} 
 .filter-pill{padding:0.2rem 0.55rem;background:none;border:1px solid var(--border);border-radius:var(--radius-full);color:var(--text-secondary);font-family:inherit;font-size:0.75rem;cursor:pointer;transition:all var(--transition)}
 .filter-pill:hover{border-color:var(--accent);color:var(--accent)}
 .filter-pill.active{background:var(--accent-btn);border-color:var(--accent-btn);color:#fff}
+.filter-toggle svg{transition:transform var(--transition)}
+.filter-toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
+.toolbar.filter-more{margin:-0.35rem 0 0.8rem}
 .count{color:var(--text-secondary);font-size:0.8rem;margin-left:auto}
 .empty-state{text-align:center;padding:2rem;color:var(--text-secondary);font-size:0.9rem}
 @media(max-width:600px){.prow-tags{display:none}}
@@ -598,10 +631,13 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'packages', env.TELEGRAM)}
 
 <main>
   <div class="toolbar">
-    <input type="text" class="search-input" placeholder="Search packages..." oninput="filterAll()" id="search" autocomplete="off" spellcheck="false">
-    <button class="filter-pill active" data-cat="all" onclick="filterCat('all')">All</button>
-    ${catBtns}
+    <input type="search" class="search-input" id="search" placeholder="Search packages..." aria-label="Search packages" autocomplete="off" spellcheck="false">
+    <button class="filter-pill active" data-cat="all" aria-pressed="true">All</button>
+    <button class="filter-pill filter-toggle" id="filter-toggle" aria-expanded="false" aria-controls="filter-more">Filters ${icon('chevronDown', 12)}</button>
     <span class="count" id="count">${pkgCount}</span>
+  </div>
+  <div class="toolbar filter-more" id="filter-more" hidden>
+    ${catBtns}
   </div>
 
   <div class="plist" id="plist">${rows}</div>
@@ -610,12 +646,8 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'packages', env.TELEGRAM)}
 
 ${sharedFooter(env.REPO, env.TELEGRAM)}
 <script>
+${sharedScript()}
 let activeCat = 'all';
-function filterCat(c){
-  activeCat = c;
-  document.querySelectorAll('.filter-pill').forEach(b => b.classList.toggle('active', b.dataset.cat === c));
-  filterAll();
-}
 function filterAll(){
   const q = document.getElementById('search').value.toLowerCase().trim();
   let v = 0;
@@ -631,6 +663,24 @@ function filterAll(){
   document.getElementById('count').textContent = v + '';
   document.getElementById('empty').style.display = v === 0 ? 'block' : 'none';
 }
+document.getElementById('search').addEventListener('input', filterAll);
+document.addEventListener('click', e => {
+  const t = e.target instanceof Element ? e.target : null; if(!t) return;
+  if(t.closest('#filter-toggle')){
+    const m = document.getElementById('filter-more');
+    m.hidden = !m.hidden;
+    document.getElementById('filter-toggle').setAttribute('aria-expanded', String(!m.hidden));
+    return;
+  }
+  const pill = t.closest('[data-cat]'); if(!pill) return;
+  activeCat = pill.dataset.cat;
+  document.querySelectorAll('[data-cat]').forEach(b => {
+    const on = b === pill;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-pressed', String(on));
+  });
+  filterAll();
+});
 </script>
 </body>
 </html>`;
@@ -657,7 +707,7 @@ async function servePackageDetail(name: string, ctx: ExecutionContext, env: Env)
 
   const iconUrl = pkg.icon ? `${aptOrigin}${escapeHtml(pkg.icon)}` : '';
   const iconHtml = iconUrl
-    ? `<img class="detail-icon" src="${iconUrl}" alt="${safeName}" width="72" height="72" onerror="this.style.display='none'">`
+    ? `<img class="detail-icon" src="${iconUrl}" alt="${safeName}" width="72" height="72">`
     : `<div class="detail-ph">${icon('package', 32)}</div>`;
 
   let familyHtml = '';
@@ -670,20 +720,21 @@ async function servePackageDetail(name: string, ctx: ExecutionContext, env: Env)
   }
 
   const screenshots = pkg.screenshots || [];
+  const ogImage = screenshots.length ? `${aptOrigin}${screenshots[0]}` : '';
   const ssHtml = screenshots.length > 1 ? `
 <div class="sec">
   <div class="gallery">
-    <button class="gallery-nav prev" onclick="ssSlide(-1)" aria-label="Previous screenshot">${icon('chevronLeft', 20, 2.5)}</button>
+    <button class="gallery-nav prev" data-action="ss-prev" aria-label="Previous screenshot">${icon('chevronLeft', 20, 2.5)}</button>
     <div class="gallery-track" id="ss-track">
-      ${screenshots.map(s => `<div class="gallery-slide"><img src="${escapeHtml(s)}" alt="${safeName} screenshot" loading="lazy" onclick="openLb(this.src)"></div>`).join('')}
+      ${screenshots.map(s => `<div class="gallery-slide"><img class="ss-img" src="${escapeHtml(s)}" alt="${safeName} screenshot" loading="lazy"></div>`).join('')}
     </div>
-    <button class="gallery-nav next" onclick="ssSlide(1)" aria-label="Next screenshot">${icon('chevronRight', 20, 2.5)}</button>
+    <button class="gallery-nav next" data-action="ss-next" aria-label="Next screenshot">${icon('chevronRight', 20, 2.5)}</button>
   </div>
-  <div class="gallery-dots" id="ss-dots">${screenshots.map((_, i) => `<button class="gallery-dot${i === 0 ? ' active' : ''}" onclick="ssGo(${i})" aria-label="Slide ${i + 1}"></button>`).join('')}</div>
+  <div class="gallery-dots" id="ss-dots">${screenshots.map((_, i) => `<button class="gallery-dot${i === 0 ? ' active' : ''}" data-action="ss-go" data-index="${i}" aria-label="Slide ${i + 1}"></button>`).join('')}</div>
 </div>` : screenshots.length === 1 ? `
 <div class="sec">
   <div class="single-screenshot">
-    <img src="${escapeHtml(screenshots[0])}" alt="${safeName} screenshot" onclick="openLb(this.src)">
+    <img class="ss-img" src="${escapeHtml(screenshots[0])}" alt="${safeName} screenshot">
   </div>
 </div>` : '';
 
@@ -698,6 +749,7 @@ ${sharedHead(`${pkg.name} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
 .detail-icon{width:72px;height:72px;border-radius:var(--radius-md);object-fit:contain;background:var(--bg-body);border:1px solid var(--border-muted);display:block}
 .detail-ph{width:72px;height:72px;border-radius:var(--radius-md);background:var(--bg-surface);border:1px solid var(--border-muted);display:flex;align-items:center;justify-content:center;color:var(--text-secondary)}
 .dtop h1{font-size:1.3rem;font-weight:700}
+.dver{font-family:var(--font-mono);font-size:0.78rem;color:var(--text-secondary);margin:0.1rem 0 0.15rem}
 .ddesc{color:var(--text-secondary);font-size:0.9rem}
 .dlong{color:var(--text-primary);font-size:0.9rem;line-height:1.8}
 .dlinks{display:flex;flex-wrap:wrap;gap:0.5rem;margin:0.6rem 0}
@@ -710,6 +762,7 @@ ${sharedHead(`${pkg.name} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
 .gallery-slide img{width:100%;max-height:400px;object-fit:contain;border-radius:var(--radius-md);cursor:pointer}
 .single-screenshot{display:flex;align-items:center;justify-content:center}
 .single-screenshot img{width:100%;max-height:400px;object-fit:contain;border-radius:var(--radius-md);cursor:pointer}
+.ss-img{cursor:pointer}
 .gallery-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(22,27,34,0.85);border:1px solid var(--border);color:var(--text-primary);width:34px;height:34px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition);z-index:2}
 .gallery-nav:hover{background:var(--bg-surface-hover);border-color:var(--accent)}
 .gallery-nav.prev{left:0.5rem}
@@ -729,7 +782,7 @@ ${sharedHead(`${pkg.name} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
   .dtop{flex-direction:column;align-items:center;text-align:center}
   .dlinks{justify-content:center}
 }
-`)}
+`, ogImage)}
 </head>
 <body>
 <a href="/packages" class="back-link">&larr; All packages</a>
@@ -739,6 +792,7 @@ ${sharedHead(`${pkg.name} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
     <div class="detail-icon-wrap">${iconHtml}</div>
     <div>
       <h1>${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">${safeName}</a>` : safeName}</h1>
+      ${pkg.version ? `<div class="dver">${escapeHtml(pkg.version)}</div>` : ''}
       <p class="ddesc">${safeDesc}</p>
       ${familyHtml}
     </div>
@@ -753,6 +807,7 @@ ${sharedHead(`${pkg.name} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
 
   <div class="sec">
     <div class="sec-title">Install</div>
+    <div class="note" style="margin-bottom:0.6rem">Needs this repo in your apt sources first &mdash; one-line setup on the <a href="/" style="color:var(--accent)">home page</a>.</div>
     <div class="dlinks">
       <a href="${escapeHtml(aptLink)}" class="primary">Install via package manager</a>
       ${safeSource ? `<a href="${safeSource}" target="_blank" rel="noopener">Homepage</a>` : ''}
@@ -760,7 +815,7 @@ ${sharedHead(`${pkg.name} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
     <div class="term-box">
       <div class="term-header">
         <div class="term-title">apt install</div>
-        <button class="copy-btn" onclick="copyCmd(this,'${escapeHtml(installCmd)}')" aria-label="Copy install command">
+        <button class="copy-btn" data-copy="${escapeHtml(installCmd)}" aria-label="Copy install command">
           ${icon('copy', 13, 2, 'icon-copy')}${icon('check', 13, 2.5, 'icon-check')}<span class="copy-text">Copy</span>
         </button>
       </div>
@@ -773,17 +828,19 @@ ${sharedHead(`${pkg.name} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
 
 ${sharedFooter(env.REPO, env.TELEGRAM)}
 
-<div class="lb" id="lb" onclick="closeLb()">
-  <button class="lb-btn lb-close" onclick="closeLb()" aria-label="Close">${icon('close', 20, 2.5)}</button>
-  <button class="lb-btn lb-prev" onclick="event.stopPropagation();lbSlide(-1)" aria-label="Previous">${icon('chevronLeft', 20, 2.5)}</button>
-  <button class="lb-btn lb-next" onclick="event.stopPropagation();lbSlide(1)" aria-label="Next">${icon('chevronRight', 20, 2.5)}</button>
-  <img id="lb-img" src="" alt="Screenshot preview" onclick="event.stopPropagation()">
+<div class="lb" id="lb">
+  <button class="lb-btn lb-close" data-action="lb-close" aria-label="Close">${icon('close', 20, 2.5)}</button>
+  <button class="lb-btn lb-prev" data-action="lb-prev" aria-label="Previous">${icon('chevronLeft', 20, 2.5)}</button>
+  <button class="lb-btn lb-next" data-action="lb-next" aria-label="Next">${icon('chevronRight', 20, 2.5)}</button>
+  <img id="lb-img" src="" alt="Screenshot preview">
 </div>
 
 <script>
 ${sharedScript()}
 let ssIdx = 0;
 const ssTotal = ${screenshots.length};
+const lb = document.getElementById('lb');
+
 function ssGo(i){
   if(ssTotal <= 1) return;
   ssIdx = ((i % ssTotal) + ssTotal) % ssTotal;
@@ -791,28 +848,44 @@ function ssGo(i){
   if(track) track.style.transform = 'translateX(-' + (ssIdx * 100) + '%)';
   document.querySelectorAll('.gallery-dot').forEach((d, j) => d.classList.toggle('active', j === ssIdx));
 }
-function ssSlide(d){ ssGo(ssIdx + d); }
 function openLb(src){
-  const imgs = document.querySelectorAll('.gallery-slide img, .single-screenshot img');
+  const imgs = document.querySelectorAll('.ss-img');
   ssIdx = [...imgs].findIndex(i => i.src === src);
   if(ssIdx === -1) ssIdx = 0;
   document.getElementById('lb-img').src = src;
-  document.getElementById('lb').classList.add('open');
+  lb.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 function closeLb(){
-  document.getElementById('lb').classList.remove('open');
+  lb.classList.remove('open');
   document.body.style.overflow = '';
 }
 function lbSlide(d){
-  const imgs = document.querySelectorAll('.gallery-slide img, .single-screenshot img');
-  if(imgs.length === 0) return;
+  const imgs = document.querySelectorAll('.ss-img');
+  if(!imgs.length) return;
   ssIdx = ((ssIdx + d) % imgs.length + imgs.length) % imgs.length;
   document.getElementById('lb-img').src = imgs[ssIdx].src;
 }
+
+document.addEventListener('click', e => {
+  const t = e.target instanceof Element ? e.target : null; if(!t) return;
+  const act = t.closest('[data-action]');
+  if(!act) return;
+  const a = act.dataset.action;
+  if(a === 'ss-prev') ssGo(ssIdx - 1);
+  else if(a === 'ss-next') ssGo(ssIdx + 1);
+  else if(a === 'ss-go') ssGo(+act.dataset.index);
+  else if(a === 'lb-close') closeLb();
+  else if(a === 'lb-prev') lbSlide(-1);
+  else if(a === 'lb-next') lbSlide(1);
+});
+document.addEventListener('click', e => {
+  const img = e.target.closest('.ss-img');
+  if(img) openLb(img.src);
+});
+lb.addEventListener('click', e => { if(e.target === lb) closeLb(); });
 document.addEventListener('keydown', e => {
-  const open = document.getElementById('lb').classList.contains('open');
-  if(!open) return;
+  if(!lb.classList.contains('open')) return;
   if(e.key === 'Escape') closeLb();
   if(e.key === 'ArrowLeft') lbSlide(-1);
   if(e.key === 'ArrowRight') lbSlide(1);
@@ -822,4 +895,92 @@ document.addEventListener('keydown', e => {
 </html>`;
 
   return new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8' } });
+}
+
+function serveAbout(env: Env): Response {
+  const { aptOrigin } = getOrigins(env);
+  const safeOrigin = escapeHtml(aptOrigin);
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+${sharedHead('About — ' + (env.SITE_NAME || 'apt-repo'), 'How this APT repository came to be, what it offers, and how you can help.')}
+<style>
+  .about h2{font-size:1.05rem;margin:1.6rem 0 .5rem;color:var(--text-primary)}
+  .about p,.about li{color:var(--text-secondary);font-size:.92rem;line-height:1.7}
+  .about strong{color:var(--text-primary)}
+  .about .lead{font-size:1rem;color:var(--text-primary);line-height:1.6}
+  .about ol{padding-left:1.2rem;display:flex;flex-direction:column;gap:.45rem;list-style:decimal}
+  .about ul{padding-left:1.2rem;display:flex;flex-direction:column;gap:.3rem;list-style:disc}
+  .about a{color:var(--accent)}
+  .about a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'about', env.TELEGRAM)}
+<main class="sec about">
+  <h2>What is this?</h2>
+  <p class="lead">A personal APT repository I keep for the software I use on my own machines. No advertising, no popups, no tracking &mdash; just packages that I install daily.</p>
+
+  <h2>Where did it come from?</h2>
+  <p>Many Linux projects ship only Snap, Flatpak, AppImage or their own bundle format. I wanted clean <code style="color:var(--text-primary)">deb</code> packages that integrate with the native package manager, so I built this repo to build and host them.</p>
+  <p>Today it covers everything I personally run:</p>
+  <ul>
+    <li><strong>wine-staging</strong> with patches I need for my workflow</li>
+    <li><strong>Docker</strong> (versioned releases, not the distro default)</li>
+    <li><strong>miCONVERTER</strong>, <strong>Avidemux</strong>, <strong>GPA</strong></li>
+    <li><strong>TeamViewer</strong>, <strong>VK Music</strong>, <strong>Blanket</strong></li>
+    <li>and more &mdash; see the <a href="/packages">packages list</a></li>
+  </ul>
+  <p>Everything here builds reproducibly and is served through Cloudflare + GitHub Pages with GPG-signed indices.</p>
+
+  <h2>How does it work?</h2>
+  <p>The pipeline is fully automated:</p>
+  <ol>
+    <li>A scheduled GitHub Actions workflow checks upstream releases for new versions</li>
+    <li>When a new version is found, a reproducible Docker build produces a <code style="color:var(--text-primary)">.deb</code></li>
+    <li>The release is published to GitHub Releases, and the APT index is regenerated</li>
+    <li>A Cloudflare Worker serves the website and proxies package downloads</li>
+  </ol>
+  <p>Everything &mdash; the build system, the worker, the website &mdash; lives in one repo and is public.</p>
+
+  <h2>How can I use it?</h2>
+  <p>Add this repo once and install any package from it like any other APT source:</p>
+  <pre style="margin:.5rem 0;padding:.5rem;background:var(--bg-surface);border:1px solid var(--border-muted);border-radius:var(--radius-sm);font-size:.82rem;color:var(--text-primary)"><code>${safeOrigin}</code></pre>
+  <p>Or see the <a href="/">home page</a> for the one-liner and manual instructions.</p>
+
+  <h2>Open to contributions</h2>
+  <p>If you use these packages and want to fix something or add a new one, contributions are welcome. Open a PR or an issue in the <a href="https://github.com/${escapeHtml(env.REPO || '')}" target="_blank" rel="noopener">GitHub repo</a> &mdash; I review everything and merge reasonably quickly.</p>
+</main>
+${sharedFooter(env.REPO, env.TELEGRAM)}
+</body>
+</html>`;
+
+  return new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8' } });
+}
+
+function serveNotFound(env: Env): Response {
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+${sharedHead('404 — ' + (env.SITE_NAME || 'apt-repo'), 'Page not found.')}
+<style>
+  .notfound{text-align:center;padding:4rem 1rem 3rem}
+  .notfound h1{font-size:3.5rem;font-weight:800;color:var(--accent);margin:0 0 .5rem}
+  .notfound p{font-size:1rem;color:var(--text-secondary);margin:0 0 1.5rem}
+  .notfound a{color:var(--accent);text-decoration:underline}
+</style>
+</head>
+<body>
+${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, undefined, env.TELEGRAM)}
+<main class="sec notfound">
+  <h1>404</h1>
+  <p>Page not found.</p>
+  <p><a href="/">Home</a> &middot; <a href="/packages">Packages</a></p>
+</main>
+${sharedFooter(env.REPO, env.TELEGRAM)}
+</body>
+</html>`;
+
+  return new Response(html, { status: 404, headers: { 'content-type': 'text/html; charset=utf-8' } });
 }
