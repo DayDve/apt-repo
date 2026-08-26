@@ -2,6 +2,20 @@ interface Env {
   PROXY_TOKEN: string;
 }
 
+/** Constant-time string comparison (hash both sides first to normalize length) */
+async function tokensEqual(a: string, b: string): Promise<boolean> {
+  const enc = new TextEncoder();
+  const [da, db] = await Promise.all([
+    crypto.subtle.digest('SHA-256', enc.encode(a)),
+    crypto.subtle.digest('SHA-256', enc.encode(b)),
+  ]);
+  const ua = new Uint8Array(da);
+  const ub = new Uint8Array(db);
+  let diff = 0;
+  for (let i = 0; i < ua.length; i++) diff |= ua[i] ^ ub[i];
+  return diff === 0;
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -10,8 +24,11 @@ export default {
       return new Response('Not found', { status: 404 });
     }
 
-    const token = request.headers.get('X-Proxy-Token');
-    if (token !== env.PROXY_TOKEN) {
+    if (request.method !== 'GET' && request.method !== 'HEAD') {
+      return new Response('Method not allowed', { status: 405 });
+    }
+
+    if (!(await tokensEqual(request.headers.get('X-Proxy-Token') ?? '', env.PROXY_TOKEN))) {
       return new Response('Forbidden', { status: 403 });
     }
 

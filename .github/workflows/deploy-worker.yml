@@ -25,6 +25,7 @@ jobs:
           [ -n "$AUTHOR" ] && args+=(--var "AUTHOR:$AUTHOR")
           [ -n "$TELEGRAM" ] && args+=(--var "TELEGRAM:$TELEGRAM")
           [ -n "$APT_ORIGIN" ] && args+=(--var "APT_ORIGIN:$APT_ORIGIN")
+          [ -n "$APT_FALLBACK" ] && args+=(--var "APT_FALLBACK:$APT_FALLBACK")
           npx wrangler deploy "${args[@]}"
         working-directory: workers/apt-repo
         env:
@@ -36,6 +37,7 @@ jobs:
           AUTHOR: ${{ vars.AUTHOR }}
           TELEGRAM: ${{ vars.TELEGRAM }}
           APT_ORIGIN: ${{ vars.APT_ORIGIN }}
+          APT_FALLBACK: ${{ vars.APT_FALLBACK }}
 
       - name: Deploy gha-proxy
         run: npx wrangler deploy

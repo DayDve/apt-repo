@@ -10,7 +10,10 @@ interface Env {
   SITE_NAME?: string;
   AUTHOR?: string;
   TELEGRAM?: string;
+  /** Custom domain serving the repo, e.g. https://apt.example.com */
   APT_ORIGIN?: string;
+  /** Fallback mirror on *.workers.dev; derived from AUTHOR when unset */
+  APT_FALLBACK?: string;
 }
 
 interface Package {
@@ -45,16 +48,16 @@ export default {
     const isBrowser = /mozilla|chrome|safari|firefox|edge/.test(ua);
 
     if (path === '/' || path === '') {
-      return isBrowser ? serveHome(url, ctx, env) : serveText(url, ctx, env);
+      return isBrowser ? serveHome(ctx, env) : serveText(ctx, env);
     }
 
     if (path === '/packages' || path === '/packages/') {
-      return servePackageList(url, ctx, env);
+      return servePackageList(ctx, env);
     }
 
     const pkgMatch = path.match(/^\/packages\/([^/]+)$/);
     if (pkgMatch) {
-      return servePackageDetail(pkgMatch[1], url, ctx, env);
+      return servePackageDetail(pkgMatch[1], ctx, env);
     }
 
     if (path === '/apt-key.asc') {
@@ -70,28 +73,31 @@ export default {
     }
 
     if (path.startsWith('/icons/')) {
-      return proxy(`${repoOrigin(env.REPO)}${path}`, 'image/png');
+      return proxy(`${repoOrigin(env.REPO)}${path}`, { contentType: 'image/png', cache: true });
     }
 
     if (path.startsWith('/screenshots/')) {
-      return proxy(`${repoOrigin(env.REPO)}${path}`);
+      return proxy(`${repoOrigin(env.REPO)}${path}`, { cache: true });
     }
 
-    return isBrowser ? serveHome(url, ctx, env) : new Response('Not found', { status: 404 });
+    return isBrowser ? serveHome(ctx, env) : new Response('Not found', { status: 404 });
   },
 };
 
-async function proxy(url: string, contentType?: string): Promise<Response> {
-  const resp = await fetch(url, { cf: { cacheTtl: -1 } } as any);
-  return new Response(resp.body, {
-    status: resp.status,
-    headers: {
-      'content-type': contentType || resp.headers.get('content-type') || 'application/octet-stream',
-      'content-length': resp.headers.get('content-length') || '',
-      'last-modified': resp.headers.get('last-modified') || '',
-      'cache-control': 'no-store, no-cache, must-revalidate',
-    },
-  });
+async function proxy(url: string, opts: { contentType?: string; cache?: boolean } = {}): Promise<Response> {
+  const cf: Record<string, unknown> = opts.cache
+    ? { cacheTtl: 604800, cacheEverything: true } // icons/screenshots are immutable per filename
+    : { cacheTtl: -1 }; // apt metadata must stay fresh
+  const resp = await fetch(url, { cf } as any);
+  const headers: Record<string, string> = {
+    'content-type': opts.contentType || resp.headers.get('content-type') || 'application/octet-stream',
+    'cache-control': opts.cache ? 'public, max-age=604800' : 'no-store, no-cache, must-revalidate',
+  };
+  if (!opts.cache) {
+    headers['content-length'] = resp.headers.get('content-length') || '';
+    headers['last-modified'] = resp.headers.get('last-modified') || '';
+  }
+  return new Response(resp.body, { status: resp.status, headers });
 }
 
 async function fetchJSON(url: string, cacheKey: string, ctx: ExecutionContext): Promise<any> {
@@ -106,6 +112,14 @@ async function fetchJSON(url: string, cacheKey: string, ctx: ExecutionContext): 
   const data = await resp.json();
   ctx.waitUntil(cache.put(req, new Response(JSON.stringify(data), { headers })));
   return data;
+}
+
+async function loadPackages(env: Env, ctx: ExecutionContext): Promise<Package[] | null> {
+  return fetchJSON(
+    `${repoOrigin(env.REPO)}/packages.json`,
+    'https://_cache/packages-' + env.CACHE_BUST,
+    ctx,
+  ) as Promise<Package[] | null>;
 }
 
 async function redirectPool(path: string, ctx: ExecutionContext, env: Env): Promise<Response> {
@@ -125,12 +139,9 @@ async function redirectPool(path: string, ctx: ExecutionContext, env: Env): Prom
 // ── Origins ──
 
 function getOrigins(env: Env): { aptOrigin: string; fallbackOrigin: string } {
-  const aptOrigin = (env.APT_ORIGIN && !env.APT_ORIGIN.includes('workers.dev'))
-    ? env.APT_ORIGIN
-    : 'https://apt.smbit.pro';
-  const fallbackOrigin = (env.APT_ORIGIN && env.APT_ORIGIN.includes('workers.dev'))
-    ? env.APT_ORIGIN
-    : (env.AUTHOR ? `https://apt-repo.${env.AUTHOR.toLowerCase()}.workers.dev` : 'https://apt-repo.daydve.workers.dev');
+  const fallbackOrigin = env.APT_FALLBACK
+    || (env.AUTHOR ? `https://apt-repo.${env.AUTHOR.toLowerCase()}.workers.dev` : '');
+  const aptOrigin = env.APT_ORIGIN || fallbackOrigin;
   return { aptOrigin, fallbackOrigin };
 }
 
@@ -147,28 +158,18 @@ const CAT_LABELS: Record<string, string> = {
 
 function catLabel(c: string): string { return CAT_LABELS[c] || c; }
 
-function iconPackage(size = 18): string {
-  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>`;
-}
+const ICON_PATHS: Record<string, string> = {
+  package: '<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',
+  copy: '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  check: '<polyline points="20 6 9 17 4 12"/>',
+  chevronLeft: '<path d="m15 18-6-6 6-6"/>',
+  chevronRight: '<path d="m9 18 6-6-6-6"/>',
+  close: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+};
 
-function iconCopy(size = 14): string {
-  return `<svg class="icon-copy" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
-}
-
-function iconCheck(size = 14): string {
-  return `<svg class="icon-check" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-}
-
-function iconChevronLeft(size = 20): string {
-  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>`;
-}
-
-function iconChevronRight(size = 20): string {
-  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>`;
-}
-
-function iconClose(size = 20): string {
-  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+function icon(name: keyof typeof ICON_PATHS, size = 16, sw = 2, cls = ''): string {
+  const c = cls ? ` class="${cls}"` : '';
+  return `<svg${c} width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${ICON_PATHS[name]}</svg>`;
 }
 
 function sharedHead(title: string, desc: string, extraCss: string = ''): string {
@@ -328,7 +329,6 @@ function displayEntries(pkgs: Package[]): { kind: 'family'|'pkg'; name: string; 
   const entries: { kind: 'family'|'pkg'; name: string; head?: Package; members?: Package[]; pkg?: Package }[] = [];
   for (const [g, members] of groups.entries()) {
     members.sort((a, b) => a.name.localeCompare(b.name));
-    if (members.length < 1) { standalone.push(members[0]); continue; }
     entries.push({ kind: 'family', name: g, head: members.find(m => m.name === g) || members[0], members });
   }
   for (const p of standalone) entries.push({ kind: 'pkg', name: p.name, pkg: p });
@@ -342,11 +342,10 @@ function pkgLine(e: { kind: string; name: string; head?: Package; members?: Pack
   return '';
 }
 
-async function serveText(url: URL, ctx: ExecutionContext, env: Env): Promise<Response> {
+async function serveText(ctx: ExecutionContext, env: Env): Promise<Response> {
   const { fallbackOrigin } = getOrigins(env);
   const author = env.AUTHOR || '';
-  const packagesUrl = `${repoOrigin(env.REPO)}/packages.json`;
-  const pkgs = await fetchJSON(packagesUrl, 'https://_cache/packages-' + env.CACHE_BUST, ctx) as Package[] | null;
+  const pkgs = await loadPackages(env, ctx);
 
   let pkgLines: string[];
   if (pkgs && pkgs.length > 0) {
@@ -387,9 +386,8 @@ async function serveText(url: URL, ctx: ExecutionContext, env: Env): Promise<Res
 
 // ── Homepage ──
 
-async function serveHome(url: URL, ctx: ExecutionContext, env: Env): Promise<Response> {
-  const packagesUrl = `${repoOrigin(env.REPO)}/packages.json`;
-  const pkgs = await fetchJSON(packagesUrl, 'https://_cache/packages-' + env.CACHE_BUST, ctx) as Package[] | null;
+async function serveHome(ctx: ExecutionContext, env: Env): Promise<Response> {
+  const pkgs = await loadPackages(env, ctx);
   const { aptOrigin, fallbackOrigin } = getOrigins(env);
   const pkgCount = pkgs ? pkgs.length : 0;
 
@@ -409,7 +407,7 @@ sudo apt update`;
     const iconUrl = p.icon ? `${safeAptOrigin}${escapeHtml(p.icon)}` : '';
     const iconHtml = iconUrl
       ? `<img class="store-icon" src="${iconUrl}" alt="${safeName}" width="44" height="44" loading="lazy" onerror="this.style.display='none'">`
-      : `<div class="store-ph">${iconPackage(20)}</div>`;
+      : `<div class="store-ph">${icon('package', 20)}</div>`;
     const familyTag = p.group ? ` <span class="family-badge">${escapeHtml(p.group)}</span>` : '';
 
     return `<a href="/packages/${safeName}" class="store-card">
@@ -459,7 +457,7 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'home', env.TELEGRAM)}
         <div class="term-header">
           <div class="term-title">bash</div>
           <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL ${safeAptOrigin} | sudo bash')" aria-label="Copy command">
-            ${iconCopy(13)}${iconCheck(13)}<span class="copy-text">Copy</span>
+            ${icon('copy', 13, 2, 'icon-copy')}${icon('check', 13, 2.5, 'icon-check')}<span class="copy-text">Copy</span>
           </button>
         </div>
         <div class="term-body">
@@ -472,7 +470,7 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'home', env.TELEGRAM)}
         <div class="term-header">
           <div class="term-title">bash (fallback)</div>
           <button class="copy-btn" onclick="copyCmd(this,'curl -fsSL ${safeFallback} | sudo bash')" aria-label="Copy fallback command">
-            ${iconCopy(13)}${iconCheck(13)}<span class="copy-text">Copy</span>
+            ${icon('copy', 13, 2, 'icon-copy')}${icon('check', 13, 2.5, 'icon-check')}<span class="copy-text">Copy</span>
           </button>
         </div>
         <div class="term-body">
@@ -486,7 +484,7 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'home', env.TELEGRAM)}
         <div class="term-header">
           <div class="term-title">bash</div>
           <button class="copy-btn" onclick="copyCmd(this,'${manualPrimary.replace(/'/g, "\\'").replace(/\n/g, '\\n')}')" aria-label="Copy manual steps">
-            ${iconCopy(13)}${iconCheck(13)}<span class="copy-text">Copy</span>
+            ${icon('copy', 13, 2, 'icon-copy')}${icon('check', 13, 2.5, 'icon-check')}<span class="copy-text">Copy</span>
           </button>
         </div>
         <div class="term-body">
@@ -506,9 +504,11 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'home', env.TELEGRAM)}
       <div class="sec-title">Packages <span class="sec-badge">${pkgCount}</span></div>
     </div>
     <div class="store-grid">${pkgCards}</div>
+    ${pkgCount > 0 ? `
     <div>
       <a href="/packages" class="browse-btn">View all ${pkgCount} packages →</a>
-    </div>
+    </div>` : pkgs === null ? `
+    <div class="note">Package list is temporarily unavailable.</div>` : ''}
   </section>
 </main>
 
@@ -530,9 +530,8 @@ function showTab(btn,id){
 
 // ── Package list ──
 
-async function servePackageList(url: URL, ctx: ExecutionContext, env: Env): Promise<Response> {
-  const packagesUrl = `${repoOrigin(env.REPO)}/packages.json`;
-  const pkgs = await fetchJSON(packagesUrl, 'https://_cache/packages-' + env.CACHE_BUST, ctx) as Package[] | null;
+async function servePackageList(ctx: ExecutionContext, env: Env): Promise<Response> {
+  const pkgs = await loadPackages(env, ctx);
   const { aptOrigin } = getOrigins(env);
   const pkgCount = pkgs ? pkgs.length : 0;
 
@@ -554,7 +553,7 @@ async function servePackageList(url: URL, ctx: ExecutionContext, env: Env): Prom
     const iconUrl = p.icon ? `${aptOrigin}${escapeHtml(p.icon)}` : '';
     const iconHtml = iconUrl
       ? `<img class="prow-icon" src="${iconUrl}" alt="${safeName}" width="34" height="34" loading="lazy" onerror="this.style.display='none'">`
-      : `<div class="prow-ph">${iconPackage(18)}</div>`;
+      : `<div class="prow-ph">${icon('package', 18)}</div>`;
     const familyTag = p.group ? ` <span style="font-size:0.75rem;color:var(--accent)">${escapeHtml(p.group)}</span>` : '';
 
     return `<a class="prow" href="/packages/${safeName}" data-cats="${escapeHtml(effectiveCats.join(','))}">
@@ -606,7 +605,7 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'packages', env.TELEGRAM)}
   </div>
 
   <div class="plist" id="plist">${rows}</div>
-  <div class="empty-state" id="empty" style="display:none">No packages match.</div>
+  <div class="empty-state" id="empty" style="display:${pkgs === null ? 'block' : 'none'}">${pkgs === null ? 'Package list is temporarily unavailable.' : 'No packages match.'}</div>
 </main>
 
 ${sharedFooter(env.REPO, env.TELEGRAM)}
@@ -641,9 +640,8 @@ function filterAll(){
 
 // ── Package detail ──
 
-async function servePackageDetail(name: string, url: URL, ctx: ExecutionContext, env: Env): Promise<Response> {
-  const packagesUrl = `${repoOrigin(env.REPO)}/packages.json`;
-  const pkgs = await fetchJSON(packagesUrl, 'https://_cache/packages-' + env.CACHE_BUST, ctx) as Package[] | null;
+async function servePackageDetail(name: string, ctx: ExecutionContext, env: Env): Promise<Response> {
+  const pkgs = await loadPackages(env, ctx);
   if (!pkgs) return new Response('Package data unavailable', { status: 502 });
 
   const pkg = pkgs.find(p => p.name === name);
@@ -660,7 +658,7 @@ async function servePackageDetail(name: string, url: URL, ctx: ExecutionContext,
   const iconUrl = pkg.icon ? `${aptOrigin}${escapeHtml(pkg.icon)}` : '';
   const iconHtml = iconUrl
     ? `<img class="detail-icon" src="${iconUrl}" alt="${safeName}" width="72" height="72" onerror="this.style.display='none'">`
-    : `<div class="detail-ph">${iconPackage(32)}</div>`;
+    : `<div class="detail-ph">${icon('package', 32)}</div>`;
 
   let familyHtml = '';
   if (pkg.group) {
@@ -675,11 +673,11 @@ async function servePackageDetail(name: string, url: URL, ctx: ExecutionContext,
   const ssHtml = screenshots.length > 1 ? `
 <div class="sec">
   <div class="gallery">
-    <button class="gallery-nav prev" onclick="ssSlide(-1)" aria-label="Previous screenshot">${iconChevronLeft(20)}</button>
+    <button class="gallery-nav prev" onclick="ssSlide(-1)" aria-label="Previous screenshot">${icon('chevronLeft', 20, 2.5)}</button>
     <div class="gallery-track" id="ss-track">
       ${screenshots.map(s => `<div class="gallery-slide"><img src="${escapeHtml(s)}" alt="${safeName} screenshot" loading="lazy" onclick="openLb(this.src)"></div>`).join('')}
     </div>
-    <button class="gallery-nav next" onclick="ssSlide(1)" aria-label="Next screenshot">${iconChevronRight(20)}</button>
+    <button class="gallery-nav next" onclick="ssSlide(1)" aria-label="Next screenshot">${icon('chevronRight', 20, 2.5)}</button>
   </div>
   <div class="gallery-dots" id="ss-dots">${screenshots.map((_, i) => `<button class="gallery-dot${i === 0 ? ' active' : ''}" onclick="ssGo(${i})" aria-label="Slide ${i + 1}"></button>`).join('')}</div>
 </div>` : screenshots.length === 1 ? `
@@ -763,7 +761,7 @@ ${sharedHead(`${pkg.name} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
       <div class="term-header">
         <div class="term-title">apt install</div>
         <button class="copy-btn" onclick="copyCmd(this,'${escapeHtml(installCmd)}')" aria-label="Copy install command">
-          ${iconCopy(13)}${iconCheck(13)}<span class="copy-text">Copy</span>
+          ${icon('copy', 13, 2, 'icon-copy')}${icon('check', 13, 2.5, 'icon-check')}<span class="copy-text">Copy</span>
         </button>
       </div>
       <div class="term-body">
@@ -776,9 +774,9 @@ ${sharedHead(`${pkg.name} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
 ${sharedFooter(env.REPO, env.TELEGRAM)}
 
 <div class="lb" id="lb" onclick="closeLb()">
-  <button class="lb-btn lb-close" onclick="closeLb()" aria-label="Close">${iconClose(20)}</button>
-  <button class="lb-btn lb-prev" onclick="event.stopPropagation();lbSlide(-1)" aria-label="Previous">${iconChevronLeft(20)}</button>
-  <button class="lb-btn lb-next" onclick="event.stopPropagation();lbSlide(1)" aria-label="Next">${iconChevronRight(20)}</button>
+  <button class="lb-btn lb-close" onclick="closeLb()" aria-label="Close">${icon('close', 20, 2.5)}</button>
+  <button class="lb-btn lb-prev" onclick="event.stopPropagation();lbSlide(-1)" aria-label="Previous">${icon('chevronLeft', 20, 2.5)}</button>
+  <button class="lb-btn lb-next" onclick="event.stopPropagation();lbSlide(1)" aria-label="Next">${icon('chevronRight', 20, 2.5)}</button>
   <img id="lb-img" src="" alt="Screenshot preview" onclick="event.stopPropagation()">
 </div>
 
