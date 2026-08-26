@@ -566,7 +566,6 @@ async function servePackageList(ctx: ExecutionContext, env: Env): Promise<Respon
   const allCats = new Set<string>();
   for (const p of pkgs || []) for (const c of p.categories || []) allCats.add(c);
   const sortedCats = [...allCats].sort();
-  const catBtns = sortedCats.map(c => `<button class="filter-pill" data-cat="${escapeHtml(c)}" aria-pressed="false">${escapeHtml(catLabel(c))}</button>`).join('');
 
   const groupCats = new Map<string, string[]>();
   for (const p of pkgs || []) {
@@ -615,12 +614,8 @@ ${sharedHead(`${env.SITE_NAME || 'apt-repo'} — Packages`, `Browse ${pkgCount} 
 .search-input{flex:1;min-width:180px;padding:0.45rem 0.65rem;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);color:var(--text-primary);font-family:inherit;font-size:0.85rem;outline:none}
 .search-input:focus{border-color:var(--accent)}
 .search-input::placeholder{color:var(--text-muted)}
-.filter-pill{padding:0.2rem 0.55rem;background:none;border:1px solid var(--border);border-radius:var(--radius-full);color:var(--text-secondary);font-family:inherit;font-size:0.75rem;cursor:pointer;transition:all var(--transition)}
-.filter-pill:hover{border-color:var(--accent);color:var(--accent)}
-.filter-pill.active{background:var(--accent-btn);border-color:var(--accent-btn);color:#fff}
-.filter-toggle svg{transition:transform var(--transition)}
-.filter-toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
-.toolbar.filter-more{margin:-0.35rem 0 0.8rem}
+.filter-select{padding:0.4rem 0.6rem;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);color:var(--text-primary);font-family:inherit;font-size:0.8rem;cursor:pointer;outline:none}
+.filter-select:focus{border-color:var(--accent)}
 .count{color:var(--text-secondary);font-size:0.8rem;margin-left:auto}
 .empty-state{text-align:center;padding:2rem;color:var(--text-secondary);font-size:0.9rem}
 @media(max-width:600px){.prow-tags{display:none}}
@@ -632,12 +627,11 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'packages', env.TELEGRAM)}
 <main>
   <div class="toolbar">
     <input type="search" class="search-input" id="search" placeholder="Search packages..." aria-label="Search packages" autocomplete="off" spellcheck="false">
-    <button class="filter-pill active" data-cat="all" aria-pressed="true">All</button>
-    <button class="filter-pill filter-toggle" id="filter-toggle" aria-expanded="false" aria-controls="filter-more">Filters ${icon('chevronDown', 12)}</button>
+    <select class="filter-select" id="filter-select" aria-label="Filter by category">
+      <option value="all">All categories</option>
+      ${sortedCats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(catLabel(c))}</option>`).join('')}
+    </select>
     <span class="count" id="count">${pkgCount}</span>
-  </div>
-  <div class="toolbar filter-more" id="filter-more" hidden>
-    ${catBtns}
   </div>
 
   <div class="plist" id="plist">${rows}</div>
@@ -664,21 +658,8 @@ function filterAll(){
   document.getElementById('empty').style.display = v === 0 ? 'block' : 'none';
 }
 document.getElementById('search').addEventListener('input', filterAll);
-document.addEventListener('click', e => {
-  const t = e.target instanceof Element ? e.target : null; if(!t) return;
-  if(t.closest('#filter-toggle')){
-    const m = document.getElementById('filter-more');
-    m.hidden = !m.hidden;
-    document.getElementById('filter-toggle').setAttribute('aria-expanded', String(!m.hidden));
-    return;
-  }
-  const pill = t.closest('[data-cat]'); if(!pill) return;
-  activeCat = pill.dataset.cat;
-  document.querySelectorAll('[data-cat]').forEach(b => {
-    const on = b === pill;
-    b.classList.toggle('active', on);
-    b.setAttribute('aria-pressed', String(on));
-  });
+document.getElementById('filter-select').addEventListener('change', e => {
+  activeCat = e.target.value;
   filterAll();
 });
 </script>
