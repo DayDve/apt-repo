@@ -435,7 +435,7 @@ sudo apt update`;
     const safeDesc = escapeHtml(p.description);
     const iconUrl = p.icon ? `${safeAptOrigin}${escapeHtml(p.icon)}` : '';
     const iconHtml = iconUrl
-      ? `<img class="store-icon" src="${iconUrl}" alt="${safeName}" width="44" height="44" loading="lazy" onerror="this.style.display='none'">`
+      ? `<img class="store-icon" src="${iconUrl}" alt="${safeName}" width="44" height="44" loading="lazy">`
       : `<div class="store-ph">${icon('package', 20)}</div>`;
     const familyTag = p.group ? ` <span class="family-badge">${escapeHtml(p.group)}</span>` : '';
 
@@ -580,7 +580,7 @@ async function servePackageList(ctx: ExecutionContext, env: Env): Promise<Respon
     const catsHtml = effectiveCats.map(c => `<span class="tag">${escapeHtml(catLabel(c))}</span>`).join(' ');
     const iconUrl = p.icon ? `${aptOrigin}${escapeHtml(p.icon)}` : '';
     const iconHtml = iconUrl
-      ? `<img class="prow-icon" src="${iconUrl}" alt="${safeName}" width="34" height="34" loading="lazy" onerror="this.style.display='none'">`
+      ? `<img class="prow-icon" src="${iconUrl}" alt="${safeName}" width="34" height="34" loading="lazy">`
       : `<div class="prow-ph">${icon('package', 18)}</div>`;
     const familyTag = p.group ? ` <span style="font-size:0.75rem;color:var(--accent)">${escapeHtml(p.group)}</span>` : '';
 
