@@ -1,90 +1,176 @@
 [{
-  "name": "wps-office-langpack-ru",
-  "description": "Russian language pack for WPS Office",
-  "source": "https://github.com/DayDve/wps-office-langpack-ru",
-  "version": "12.3.1.0.3038",
-  "longDescription": "Russian language pack for WPS Office. Adds Russian UI translations and spell-check dictionaries to the WPS Office suite components.",
-  "icon": "/icons/wps-office-langpack-ru.png",
+  "name": "ayugram",
+  "description": "Telegram client with enhanced features",
+  "source": "https://github.com/AyuGram/AyuGramDesktop",
+  "version": "7.0.9-1-gdb3b989",
+  "longDescription": "AyuGram is a modified Telegram Desktop client that adds advanced privacy controls and expanded messaging features to the standard Telegram interface. It includes a flexible ghost mode to hide your online status and read receipts, as well as anti-recall functionality that saves deleted and edited message history locally. Additionally, it offers font and theme customization, built-in message translation, streamer mode, and local Telegram Premium options.",
+  "icon": "/icons/ayugram.png",
   "screenshots": [
-    "/screenshots/wps-office-langpack-ru/0.png",
-    "/screenshots/wps-office-langpack-ru/1.png"
+    "/screenshots/ayugram/0.png",
+    "/screenshots/ayugram/1.png",
+    "/screenshots/ayugram/2.png",
+    "/screenshots/ayugram/3.png",
+    "/screenshots/ayugram/4.png"
   ],
-  "group": "wps-office"
-}
-,{
-  "name": "wps-office",
-  "description": "WPS Office repack with patches",
-  "source": "https://github.com/Rongronggg9/wps-office-repack",
-  "version": "12.1.2.26885.repack",
-  "longDescription": "A comprehensive office suite compatible with Microsoft Word, Excel, and PowerPoint formats. This is a community patched repack with fixes and improvements over the stock package, including removed telemetry and better Linux desktop integration. Includes Writer, Presentation, and Spreadsheets.",
-  "icon": "/icons/wps-office.png",
-  "screenshots": [
-    "/screenshots/wps-office/0.png",
-    "/screenshots/wps-office/1.png",
-    "/screenshots/wps-office/2.png"
-  ],
-  "group": "wps-office",
   "categories": [
-    "Office",
-    "WordProcessor"
+    "InstantMessaging"
   ]
 }
 ,{
-  "name": "wlvncc",
-  "description": "Wayland native VNC client",
-  "source": "https://github.com/any1/wlvncc",
-  "version": "0.1.0-150-gcc0abf8-1",
-  "longDescription": "`wlvncc` allows you to connect to and control remote VNC servers natively within a Wayland desktop environment without relying on XWayland. Built using `pixman` and `libxkbcommon`, it provides a lightweight remote desktop viewing experience with proper input handling. It is a minimalist command-line client ideal for users who want a simple, native tool to access remote machines on Wayland compositors.",
+  "name": "bees",
+  "description": "btrfs deduplication daemon",
+  "source": "https://github.com/Zygo/bees",
+  "version": "0.11-50-g2d53565",
+  "longDescription": "Bees is a background deduplication daemon for Btrfs filesystems that continuously scans for and consolidates duplicate data blocks to recover disk space. It operates on live filesystems and automatically self-throttles, working seamlessly alongside Btrfs snapshots, reflinks, and transparent compression. Designed for high efficiency, it uses a fixed-size persistent hash table that requires as little as 1 GB of RAM per 10 TB of unique data.",
   "categories": [
-    "Network",
-    "RemoteAccess"
+    "System",
+    "Filesystem"
   ]
 }
 ,{
-  "name": "winegui",
-  "description": "Wine prefix manager with a modern GUI",
-  "source": "https://github.com/winegui/WineGUI",
-  "version": "4.2.0",
-  "longDescription": "WineGUI provides a clean GTK graphical interface for managing Wine prefixes and launching Windows applications on Linux. It simplifies creating, configuring, and organizing isolated Wine environments so you don't have to manage them through the terminal. Note that it requires Wine v9 or higher to be installed on your host system.",
-  "icon": "/icons/winegui.png",
+  "name": "btrfs-assistant",
+  "description": "GUI management tool for Btrfs filesystem",
+  "source": "https://gitlab.com/btrfs-assistant/btrfs-assistant",
+  "version": "2.3.1",
+  "longDescription": "Btrfs Assistant provides a graphical interface for managing Btrfs subvolumes, filesystem settings, and maintenance routines. It integrates directly with Snapper to let you browse, create, and restore system snapshots directly from the GUI. You can also use it to monitor subvolume space usage and schedule or manually run routine operations like scrubs, balances, and defragmentation.",
+  "icon": "/icons/btrfs-assistant.png",
   "screenshots": [
-    "/screenshots/winegui/0.png",
-    "/screenshots/winegui/1.png"
+    "/screenshots/btrfs-assistant/0.png",
+    "/screenshots/btrfs-assistant/1.png",
+    "/screenshots/btrfs-assistant/2.png"
   ],
   "categories": [
     "System",
-    "Emulator"
+    "Filesystem"
   ]
 }
 ,{
-  "name": "viber",
-  "description": "Free and secure calls and messages to anyone, anywhere",
-  "source": "https://www.viber.com",
-  "version": "27.3.0.2",
-  "longDescription": "Viber is a messaging and VoIP client that lets you make voice and video calls, send text messages, and share files with other users. The desktop application syncs with your mobile account using your phone number, allowing you to seamlessly transfer active calls between devices and manage message histories from your Linux PC. Key features include end-to-end encrypted chats, group video conferencing, screen sharing, and calling non-Viber phone numbers via Viber Out.",
-  "icon": "/icons/viber.png",
-  "screenshots": [
-    "/screenshots/viber/0.png",
-    "/screenshots/viber/1.png"
-  ],
+  "name": "fonts-noto-lite",
+  "description": "Hide non-Latin/Cyrillic Noto fonts from font selection dialogs on Ubuntu/Debian",
+  "source": "https://github.com/DayDve/fonts-noto-lite",
+  "version": "1.1.0",
+  "longDescription": "fonts-noto-lite declutters font selection menus in Ubuntu and Debian by hiding non-Latin and non-Cyrillic Noto font families from desktop applications. It uses dpkg-divert and system fontconfig rules to disable dozens of script-specific families—such as Arabic, Thai, Devanagari, and CJK—while keeping standard Noto Sans, Serif, Mono, and Color Emoji available. Installing this package also replaces fonts-noto-extra, freeing around 334 MB of disk space without breaking base package dependencies.",
   "categories": [
-    "InstantMessaging",
-    "Network"
+    "Fonts"
   ]
 }
 ,{
-  "name": "scrcpy",
-  "description": "Mirror and control Android devices via USB/TCP",
-  "source": "https://github.com/Genymobile/scrcpy",
-  "version": "4.1",
-  "longDescription": "scrcpy mirrors your Android device's screen and audio to your desktop over USB or Wi-Fi, allowing you to fully control your phone using your computer's keyboard and mouse. It requires no root access or installed mobile apps, delivering low-latency performance with support for frame rates up to 120 FPS. Key features include screen recording, seamless two-way copy-pasting, mirroring while the phone screen remains off, and using your device's camera as a Linux webcam via V4L2.",
-  "icon": "/icons/scrcpy.png",
-  "screenshots": [
-    "/screenshots/scrcpy/0.jpg"
-  ],
+  "name": "glab",
+  "description": "Official GitLab command-line tool",
+  "source": "https://gitlab.com/gitlab-org/cli",
+  "version": "1.115.0",
+  "longDescription": "`glab` is a command-line tool that lets you manage GitLab repositories, issues, merge requests, and CI/CD pipelines directly from your terminal. You can create and review merge requests, check build pipeline statuses, manage project issues, and publish releases without opening a web browser. It works with both GitLab.com and self-hosted GitLab instances.",
+  "icon": "/icons/glab.png",
   "categories": [
     "Utility",
     "Development"
+  ]
+}
+,{
+  "name": "grub-btrfs",
+  "description": "GRUB menu entries for btrfs snapshots",
+  "source": "https://github.com/Antynea/grub-btrfs",
+  "version": "4.14-39-g38cd2fa",
+  "longDescription": "grub-btrfs automatically integrates your Btrfs system snapshots into the GRUB bootloader menu, allowing you to boot directly into previous system states during startup. It automatically detects kernels, initramfs images, and snapshot metadata generated manually or by tools like Snapper, Timeshift, and Yabsnap. Additionally, it includes a background service that automatically updates your GRUB configuration whenever snapshots are created or deleted.",
+  "categories": [
+    "System",
+    "Boot"
+  ]
+}
+,{
+  "name": "keyd",
+  "description": "Key remapping daemon",
+  "source": "https://github.com/rvaiya/keyd",
+  "version": "2.6.0-2-gf564288",
+  "longDescription": "`keyd` is a system-wide key remapping daemon for Linux that intercepts low-level inputs using evdev and uinput to remap keys across your entire system. It supports advanced features typically found in custom keyboard firmware, such as tap/hold key overloading, custom layers, hybrid modifiers, and device-specific configurations. Because it operates at the kernel level, your custom keybindings work consistently across X11, Wayland, and virtual consoles without depending on a specific desktop environment.",
+  "categories": [
+    "System",
+    "Hardware"
+  ]
+}
+,{
+  "name": "kio-stash",
+  "description": "Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6",
+  "source": "https://github.com/DayDve/kio-stash",
+  "version": "1.0.0+daydve5",
+  "longDescription": "kio-stash adds a virtual temporary folder (`stash:/`) to KDE file managers like Dolphin, allowing you to stage files and folders from different locations into a single view. Instead of creating physical temporary folders or relying on fragile multi-file selections, you can drag and drop items into the stash to organize a batch job. Once gathered, you can easily copy or move the entire staged collection to its final destination in one operation.",
+  "categories": [
+    "System",
+    "Utility",
+    "KDE"
+  ]
+}
+,{
+  "name": "localsend",
+  "description": "Cross-platform file sharing over local network",
+  "source": "https://github.com/localsend/localsend",
+  "version": "1.18.2",
+  "longDescription": "LocalSend transfers files and text messages directly between devices on your local network without requiring an internet connection or third-party servers. It automatically detects nearby devices running the app, allowing you to quickly share documents, media, and clipboard content across Linux, Android, iOS, Windows, and macOS. Because all traffic stays within your local Wi-Fi or Ethernet connection, transfers are fast, private, and use zero internet bandwidth.",
+  "icon": "/icons/localsend.png",
+  "screenshots": [
+    "/screenshots/localsend/0.webp",
+    "/screenshots/localsend/1.webp"
+  ],
+  "categories": [
+    "Network",
+    "FileTransfer"
+  ]
+}
+,{
+  "name": "mc6",
+  "description": "Midnight Commander with Plugins",
+  "source": "https://github.com/ilia-maslakov/mcdev",
+  "version": "6.0.3",
+  "longDescription": "mc6 is an enhanced fork of GNU Midnight Commander, providing a dual-panel text-mode file manager for terminal and SSH environments. It extends the classic interface with dynamic plugins that let you browse Git repositories, Docker containers, Kubernetes clusters, and S3 buckets directly within file panels. It also includes an integrated archive manager, structured tree views for JSON and YAML, live viewer filtering, and an embedded shell terminal.",
+  "icon": "/icons/mc6.png",
+  "screenshots": [
+    "/screenshots/mc6/0.png"
+  ],
+  "group": "mc6",
+  "categories": [
+    "System",
+    "FileTools"
+  ]
+}
+,{
+  "name": "mc6-data",
+  "description": "Midnight Commander with Plugins — data files",
+  "source": "https://github.com/ilia-maslakov/mcdev",
+  "version": "6.0.3",
+  "longDescription": "This package provides the essential architecture-independent data, syntax highlighting definitions, and interface skins for `mc6`, a fork of the Midnight Commander terminal file manager. The `mc6` suite adds panel plugins for managing Git, Docker, Kubernetes, S3, and remote connections directly inside a classic two-panel text-mode interface. It is a required dependency for `mc6` to supply configuration assets, editor themes, and structured viewer templates for JSON, YAML, and XML files.",
+  "group": "mc6"
+}
+,{
+  "name": "mc6-plugins",
+  "description": "Midnight Commander with Plugins — panel plugins (git, docker, k8s, s3, samba, mongo, ftp, sftp, systemd, shell links, arcmc)",
+  "source": "https://github.com/ilia-maslakov/mcdev",
+  "version": "6.0.3",
+  "longDescription": "Provides dynamic panel plugins for the `mc6` terminal file manager, allowing you to manage cloud services, containers, and network drives directly inside dual-panel views. It adds native panel integration for Git repositories, Docker containers, Kubernetes clusters, Amazon S3 buckets, MongoDB, systemd units, and Samba shares, alongside upgraded FTP and SFTP support. It also includes `arcmc`, a libarchive-powered tool for browsing, packing, and extracting compressed archives directly in your terminal.",
+  "group": "mc6"
+}
+,{
+  "name": "rclone",
+  "description": "rsync for cloud storage",
+  "source": "https://github.com/rclone/rclone",
+  "version": "1.75.0",
+  "longDescription": "Rclone is a command-line utility that synchronizes, transfers, and manages files between your local system and cloud storage services. Acting like rsync for the cloud, it supports dozens of storage backends including Amazon S3, Backblaze B2, Box, Google Drive, and S3-compatible providers. It is ideal for scripting automated offsite backups, migrating data between different cloud hosts, or mounting remote storage directly onto your local file system.",
+  "icon": "/icons/rclone.png",
+  "categories": [
+    "Utility",
+    "FileTransfer"
+  ]
+}
+,{
+  "name": "remotedesktopmanager",
+  "description": "One application for every remote connection you'll ever open",
+  "source": "https://devolutions.net/remote-desktop-manager/",
+  "version": "2026.2.2.2",
+  "longDescription": "Remote Desktop Manager centralizes remote connection protocols into a single interface, allowing you to launch and manage SSH, RDP, VNC, and VPN sessions from one Linux application. It features built-in credential management, session grouping, and secure password vault integration to eliminate the need for multiple separate connection clients. It is built for system administrators and power users who need to maintain organized, secure access to large fleets of servers and network infrastructure.",
+  "icon": "/icons/remotedesktopmanager.png",
+  "categories": [
+    "Utility",
+    "Security",
+    "RemoteAccess"
   ]
 }
 ,{
@@ -104,178 +190,92 @@
   ]
 }
 ,{
-  "name": "remotedesktopmanager",
-  "description": "One application for every remote connection you'll ever open",
-  "source": "https://devolutions.net/remote-desktop-manager/",
-  "version": "2026.2.1.3",
-  "longDescription": "Remote Desktop Manager centralizes remote connection protocols into a single interface, allowing you to launch and manage SSH, RDP, VNC, and VPN sessions from one Linux application. It features built-in credential management, session grouping, and secure password vault integration to eliminate the need for multiple separate connection clients. It is built for system administrators and power users who need to maintain organized, secure access to large fleets of servers and network infrastructure.",
-  "icon": "/icons/remotedesktopmanager.png",
-  "categories": [
-    "Utility",
-    "Security",
-    "RemoteAccess"
-  ]
-}
-,{
-  "name": "rclone",
-  "description": "rsync for cloud storage",
-  "source": "https://github.com/rclone/rclone",
-  "version": "1.74.4",
-  "longDescription": "Rclone is a command-line utility that synchronizes, transfers, and manages files between your local system and cloud storage services. Acting like rsync for the cloud, it supports dozens of storage backends including Amazon S3, Backblaze B2, Box, Google Drive, and S3-compatible providers. It is ideal for scripting automated offsite backups, migrating data between different cloud hosts, or mounting remote storage directly onto your local file system.",
-  "icon": "/icons/rclone.png",
-  "categories": [
-    "Utility",
-    "FileTransfer"
-  ]
-}
-,{
-  "name": "mc6-plugins",
-  "description": "Midnight Commander with Plugins — panel plugins (git, docker, k8s, s3, samba, mongo, ftp, sftp, systemd, shell links, arcmc)",
-  "source": "https://github.com/ilia-maslakov/mcdev",
-  "version": "6.0.3",
-  "longDescription": "Provides dynamic panel plugins for the `mc6` terminal file manager, allowing you to manage cloud services, containers, and network drives directly inside dual-panel views. It adds native panel integration for Git repositories, Docker containers, Kubernetes clusters, Amazon S3 buckets, MongoDB, systemd units, and Samba shares, alongside upgraded FTP and SFTP support. It also includes `arcmc`, a libarchive-powered tool for browsing, packing, and extracting compressed archives directly in your terminal.",
-  "group": "mc6"
-}
-,{
-  "name": "mc6-data",
-  "description": "Midnight Commander with Plugins — data files",
-  "source": "https://github.com/ilia-maslakov/mcdev",
-  "version": "6.0.3",
-  "longDescription": "This package provides the essential architecture-independent data, syntax highlighting definitions, and interface skins for `mc6`, a fork of the Midnight Commander terminal file manager. The `mc6` suite adds panel plugins for managing Git, Docker, Kubernetes, S3, and remote connections directly inside a classic two-panel text-mode interface. It is a required dependency for `mc6` to supply configuration assets, editor themes, and structured viewer templates for JSON, YAML, and XML files.",
-  "group": "mc6"
-}
-,{
-  "name": "mc6",
-  "description": "Midnight Commander with Plugins",
-  "source": "https://github.com/ilia-maslakov/mcdev",
-  "version": "6.0.3",
-  "longDescription": "mc6 is an enhanced fork of GNU Midnight Commander, providing a dual-panel text-mode file manager for terminal and SSH environments. It extends the classic interface with dynamic plugins that let you browse Git repositories, Docker containers, Kubernetes clusters, and S3 buckets directly within file panels. It also includes an integrated archive manager, structured tree views for JSON and YAML, live viewer filtering, and an embedded shell terminal.",
-  "icon": "/icons/mc6.png",
+  "name": "scrcpy",
+  "description": "Mirror and control Android devices via USB/TCP",
+  "source": "https://github.com/Genymobile/scrcpy",
+  "version": "4.1",
+  "longDescription": "scrcpy mirrors your Android device's screen and audio to your desktop over USB or Wi-Fi, allowing you to fully control your phone using your computer's keyboard and mouse. It requires no root access or installed mobile apps, delivering low-latency performance with support for frame rates up to 120 FPS. Key features include screen recording, seamless two-way copy-pasting, mirroring while the phone screen remains off, and using your device's camera as a Linux webcam via V4L2.",
+  "icon": "/icons/scrcpy.png",
   "screenshots": [
-    "/screenshots/mc6/0.png"
+    "/screenshots/scrcpy/0.jpg"
   ],
-  "group": "mc6",
-  "categories": [
-    "System",
-    "FileTools"
-  ]
-}
-,{
-  "name": "localsend",
-  "description": "Cross-platform file sharing over local network",
-  "source": "https://github.com/localsend/localsend",
-  "version": "1.17.0",
-  "longDescription": "LocalSend transfers files and text messages directly between devices on your local network without requiring an internet connection or third-party servers. It automatically detects nearby devices running the app, allowing you to quickly share documents, media, and clipboard content across Linux, Android, iOS, Windows, and macOS. Because all traffic stays within your local Wi-Fi or Ethernet connection, transfers are fast, private, and use zero internet bandwidth.",
-  "icon": "/icons/localsend.png",
-  "screenshots": [
-    "/screenshots/localsend/0.webp",
-    "/screenshots/localsend/1.webp"
-  ],
-  "categories": [
-    "Network",
-    "FileTransfer"
-  ]
-}
-,{
-  "name": "kio-stash",
-  "description": "Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6",
-  "source": "https://github.com/DayDve/kio-stash",
-  "version": "1.0.0+daydve2",
-  "longDescription": "kio-stash adds a virtual temporary folder (`stash:/`) to KDE file managers like Dolphin, allowing you to stage files and folders from different locations into a single view. Instead of creating physical temporary folders or relying on fragile multi-file selections, you can drag and drop items into the stash to organize a batch job. Once gathered, you can easily copy or move the entire staged collection to its final destination in one operation.",
-  "categories": [
-    "System",
-    "Utility",
-    "KDE"
-  ]
-}
-,{
-  "name": "keyd",
-  "description": "Key remapping daemon",
-  "source": "https://github.com/rvaiya/keyd",
-  "version": "2.6.0-0-gf564288",
-  "longDescription": "`keyd` is a system-wide key remapping daemon for Linux that intercepts low-level inputs using evdev and uinput to remap keys across your entire system. It supports advanced features typically found in custom keyboard firmware, such as tap/hold key overloading, custom layers, hybrid modifiers, and device-specific configurations. Because it operates at the kernel level, your custom keybindings work consistently across X11, Wayland, and virtual consoles without depending on a specific desktop environment.",
-  "categories": [
-    "System",
-    "Hardware"
-  ]
-}
-,{
-  "name": "grub-btrfs",
-  "description": "GRUB menu entries for btrfs snapshots",
-  "source": "https://github.com/Antynea/grub-btrfs",
-  "version": "4.14-33-ga136a7c",
-  "longDescription": "grub-btrfs automatically integrates your Btrfs system snapshots into the GRUB bootloader menu, allowing you to boot directly into previous system states during startup. It automatically detects kernels, initramfs images, and snapshot metadata generated manually or by tools like Snapper, Timeshift, and Yabsnap. Additionally, it includes a background service that automatically updates your GRUB configuration whenever snapshots are created or deleted.",
-  "categories": [
-    "System",
-    "Boot"
-  ]
-}
-,{
-  "name": "glab",
-  "description": "Official GitLab command-line tool",
-  "source": "https://gitlab.com/gitlab-org/cli",
-  "version": "1.113.0",
-  "longDescription": "`glab` is a command-line tool that lets you manage GitLab repositories, issues, merge requests, and CI/CD pipelines directly from your terminal. You can create and review merge requests, check build pipeline statuses, manage project issues, and publish releases without opening a web browser. It works with both GitLab.com and self-hosted GitLab instances.",
-  "icon": "/icons/glab.png",
   "categories": [
     "Utility",
     "Development"
   ]
 }
 ,{
-  "name": "fonts-noto-lite",
-  "description": "Hide non-Latin/Cyrillic Noto fonts from font selection dialogs on Ubuntu/Debian",
-  "source": "https://github.com/DayDve/fonts-noto-lite",
-  "version": "1.0",
-  "longDescription": "fonts-noto-lite declutters font selection menus in Ubuntu and Debian by hiding non-Latin and non-Cyrillic Noto font families from desktop applications. It uses dpkg-divert and system fontconfig rules to disable dozens of script-specific families—such as Arabic, Thai, Devanagari, and CJK—while keeping standard Noto Sans, Serif, Mono, and Color Emoji available. Installing this package also replaces fonts-noto-extra, freeing around 334 MB of disk space without breaking base package dependencies.",
+  "name": "viber",
+  "description": "Free and secure calls and messages to anyone, anywhere",
+  "source": "https://www.viber.com",
+  "version": "27.3.0.2",
+  "longDescription": "Viber is a messaging and VoIP client that lets you make voice and video calls, send text messages, and share files with other users. The desktop application syncs with your mobile account using your phone number, allowing you to seamlessly transfer active calls between devices and manage message histories from your Linux PC. Key features include end-to-end encrypted chats, group video conferencing, screen sharing, and calling non-Viber phone numbers via Viber Out.",
+  "icon": "/icons/viber.png",
+  "screenshots": [
+    "/screenshots/viber/0.png",
+    "/screenshots/viber/1.png"
+  ],
   "categories": [
-    "Fonts"
+    "InstantMessaging",
+    "Network"
   ]
 }
 ,{
-  "name": "btrfs-assistant",
-  "description": "GUI management tool for Btrfs filesystem",
-  "source": "https://gitlab.com/btrfs-assistant/btrfs-assistant",
-  "version": "2.2",
-  "longDescription": "Btrfs Assistant provides a graphical interface for managing Btrfs subvolumes, filesystem settings, and maintenance routines. It integrates directly with Snapper to let you browse, create, and restore system snapshots directly from the GUI. You can also use it to monitor subvolume space usage and schedule or manually run routine operations like scrubs, balances, and defragmentation.",
-  "icon": "/icons/btrfs-assistant.png",
+  "name": "winegui",
+  "description": "Wine prefix manager with a modern GUI",
+  "source": "https://github.com/winegui/WineGUI",
+  "version": "4.3.0",
+  "longDescription": "WineGUI provides a clean GTK graphical interface for managing Wine prefixes and launching Windows applications on Linux. It simplifies creating, configuring, and organizing isolated Wine environments so you don't have to manage them through the terminal. Note that it requires Wine v9 or higher to be installed on your host system.",
+  "icon": "/icons/winegui.png",
   "screenshots": [
-    "/screenshots/btrfs-assistant/0.png",
-    "/screenshots/btrfs-assistant/1.png",
-    "/screenshots/btrfs-assistant/2.png"
+    "/screenshots/winegui/0.png",
+    "/screenshots/winegui/1.png"
   ],
   "categories": [
     "System",
-    "Filesystem"
+    "Emulator"
   ]
 }
 ,{
-  "name": "bees",
-  "description": "btrfs deduplication daemon",
-  "source": "https://github.com/Zygo/bees",
-  "version": "0.11-0-g2d53565",
-  "longDescription": "Bees is a background deduplication daemon for Btrfs filesystems that continuously scans for and consolidates duplicate data blocks to recover disk space. It operates on live filesystems and automatically self-throttles, working seamlessly alongside Btrfs snapshots, reflinks, and transparent compression. Designed for high efficiency, it uses a fixed-size persistent hash table that requires as little as 1 GB of RAM per 10 TB of unique data.",
+  "name": "wlvncc",
+  "description": "Wayland native VNC client",
+  "source": "https://github.com/any1/wlvncc",
+  "version": "0.1.0-150-gcc0abf8-1",
+  "longDescription": "`wlvncc` allows you to connect to and control remote VNC servers natively within a Wayland desktop environment without relying on XWayland. Built using `pixman` and `libxkbcommon`, it provides a lightweight remote desktop viewing experience with proper input handling. It is a minimalist command-line client ideal for users who want a simple, native tool to access remote machines on Wayland compositors.",
   "categories": [
-    "System",
-    "Filesystem"
+    "Network",
+    "RemoteAccess"
   ]
 }
 ,{
-  "name": "ayugram",
-  "description": "Telegram client with enhanced features",
-  "source": "https://github.com/AyuGram/AyuGramDesktop",
-  "version": "6.7.8-1873-g4c23f16",
-  "longDescription": "AyuGram is a modified Telegram Desktop client that adds advanced privacy controls and expanded messaging features to the standard Telegram interface. It includes a flexible ghost mode to hide your online status and read receipts, as well as anti-recall functionality that saves deleted and edited message history locally. Additionally, it offers font and theme customization, built-in message translation, streamer mode, and local Telegram Premium options.",
-  "icon": "/icons/ayugram.png",
+  "name": "wps-office",
+  "description": "WPS Office repack with patches",
+  "source": "https://github.com/Rongronggg9/wps-office-repack",
+  "version": "12.1.2.28080.repack",
+  "longDescription": "A comprehensive office suite compatible with Microsoft Word, Excel, and PowerPoint formats. This is a community patched repack with fixes and improvements over the stock package, including removed telemetry and better Linux desktop integration. Includes Writer, Presentation, and Spreadsheets.",
+  "icon": "/icons/wps-office.png",
   "screenshots": [
-    "/screenshots/ayugram/0.png",
-    "/screenshots/ayugram/1.png",
-    "/screenshots/ayugram/2.png",
-    "/screenshots/ayugram/3.png",
-    "/screenshots/ayugram/4.png"
+    "/screenshots/wps-office/0.png",
+    "/screenshots/wps-office/1.png",
+    "/screenshots/wps-office/2.png"
   ],
+  "group": "wps-office",
   "categories": [
-    "InstantMessaging"
+    "Office",
+    "WordProcessor"
   ]
+}
+,{
+  "name": "wps-office-langpack-ru",
+  "description": "Russian language pack for WPS Office",
+  "source": "https://github.com/DayDve/wps-office-langpack-ru",
+  "version": "12.3.1.0.3207",
+  "longDescription": "Russian language pack for WPS Office. Adds Russian UI translations and spell-check dictionaries to the WPS Office suite components.",
+  "icon": "/icons/wps-office-langpack-ru.png",
+  "screenshots": [
+    "/screenshots/wps-office-langpack-ru/0.png",
+    "/screenshots/wps-office-langpack-ru/1.png"
+  ],
+  "group": "wps-office"
 }
 ]
