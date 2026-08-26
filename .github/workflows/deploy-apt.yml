@@ -361,6 +361,8 @@ jobs:
           cp /tmp/icons-48/*.png "$GITHUB_WORKSPACE/icons/" 2>/dev/null || true
 
       - name: Generate packages.json
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh release list --repo $GITHUB_REPOSITORY --limit 1000 \
             --json tagName,createdAt > /tmp/releases.json
