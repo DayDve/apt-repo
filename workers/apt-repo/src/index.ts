@@ -919,38 +919,33 @@ ${sharedHead('About — ' + (env.SITE_NAME || 'apt-repo'), 'How this APT reposit
 <body>
 ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'about', env.TELEGRAM)}
 <main class="sec about">
-  <h2>What is this?</h2>
-  <p class="lead">A personal APT repository I keep for the software I use on my own machines. No advertising, no popups, no tracking &mdash; just packages that I install daily.</p>
+  <h2>Why does this exist?</h2>
+  <p class="lead">One of Linux's killer features &mdash; something Windows and macOS only got recently, while Linux had it for decades &mdash; is centralized software management through a package manager. On Ubuntu that's <code style="color:var(--text-primary)">deb</code>/<code style="color:var(--text-primary)">apt</code>: one command to install, update or remove anything, with dependencies resolved for you.</p>
+  <p>The catch is that a lot of software never plays by those rules. Some apps are simply missing from the official repositories. Others are there, but years out of date. Developers ship a <code style="color:var(--text-primary)">.deb</code> on the project website or drop artifacts into GitHub/GitLab releases. Some distribute bare compiled binaries. And some only give you source code &mdash; build it yourself, along with a pile of dev dependencies that will hang around as dead weight, eating disk space and occasionally conflicting with everything else.</p>
 
-  <h2>Where did it come from?</h2>
-  <p>Many Linux projects ship only Snap, Flatpak, AppImage or their own bundle format. I wanted clean <code style="color:var(--text-primary)">deb</code> packages that integrate with the native package manager, so I built this repo to build and host them.</p>
-  <p>Today it covers everything I personally run:</p>
-  <ul>
-    <li><strong>wine-staging</strong> with patches I need for my workflow</li>
-    <li><strong>Docker</strong> (versioned releases, not the distro default)</li>
-    <li><strong>miCONVERTER</strong>, <strong>Avidemux</strong>, <strong>GPA</strong></li>
-    <li><strong>TeamViewer</strong>, <strong>VK Music</strong>, <strong>Blanket</strong></li>
-    <li>and more &mdash; see the <a href="/packages">packages list</a></li>
-  </ul>
-  <p>Everything here builds reproducibly and is served through Cloudflare + GitHub Pages with GPG-signed indices.</p>
+  <h2>The road here</h2>
+  <p>In the beginning I did all of this by hand. Then I moved source builds into Dockerfiles and wrote scripts to check upstream versions and fetch/build fresh ones &mdash; still launched manually, one by one.</p>
+  <p>Next came a cheap VPS: cron jobs checked versions and notified me when updates were available, and eventually <strong>aptly</strong> settled there too. The scripts started downloading and building new releases on their own, publishing ready-made debs straight into a private APT repository.</p>
+  <p>It worked &mdash; barely. The box lagged, disk space kept running out, and of course there were no backups at all. In March 2022 my hosting provider wiped that VPS without any warning, and years of work turned into nothing overnight.</p>
+  <p>I dropped it. For several years I didn't come back to this &mdash; the software I needed was already installed, and nothing really begged for updates. Recently, though, the idea for this project finally took shape.</p>
 
-  <h2>How does it work?</h2>
-  <p>The pipeline is fully automated:</p>
+  <h2>What it is today</h2>
+  <p>The same idea, but with nothing left on my side to lose:</p>
   <ol>
-    <li>A scheduled GitHub Actions workflow checks upstream releases for new versions</li>
-    <li>When a new version is found, a reproducible Docker build produces a <code style="color:var(--text-primary)">.deb</code></li>
-    <li>The release is published to GitHub Releases, and the APT index is regenerated</li>
-    <li>A Cloudflare Worker serves the website and proxies package downloads</li>
+    <li>scheduled GitHub Actions check every upstream project for new releases</li>
+    <li>when an update is found, a reproducible Docker build produces a clean <code style="color:var(--text-primary)">.deb</code></li>
+    <li>the package lands on GitHub Releases, and the APT index is regenerated and GPG-signed automatically</li>
+    <li>a Cloudflare Worker serves this website and proxies downloads</li>
   </ol>
-  <p>Everything &mdash; the build system, the worker, the website &mdash; lives in one repo and is public.</p>
+  <p>No VPS, no cron on someone else's box, no single point of failure that can be wiped overnight. Just one public repo &mdash; build system, workflows and this site included.</p>
 
   <h2>How can I use it?</h2>
-  <p>Add this repo once and install any package from it like any other APT source:</p>
+  <p>Add this repo once, then install anything from it like from any other apt source:</p>
   <pre style="margin:.5rem 0;padding:.5rem;background:var(--bg-surface);border:1px solid var(--border-muted);border-radius:var(--radius-sm);font-size:.82rem;color:var(--text-primary)"><code>${safeOrigin}</code></pre>
-  <p>Or see the <a href="/">home page</a> for the one-liner and manual instructions.</p>
+  <p>The <a href="/">home page</a> has the one-liner, and the full catalog lives in the <a href="/packages">packages list</a>.</p>
 
   <h2>Open to contributions</h2>
-  <p>If you use these packages and want to fix something or add a new one, contributions are welcome. Open a PR or an issue in the <a href="https://github.com/${escapeHtml(env.REPO || '')}" target="_blank" rel="noopener">GitHub repo</a> &mdash; I review everything and merge reasonably quickly.</p>
+  <p>If you use these packages and want to fix something or add your own &mdash; PRs and issues are welcome in the <a href="https://github.com/${escapeHtml(env.REPO || '')}" target="_blank" rel="noopener">GitHub repo</a>.</p>
 </main>
 ${sharedFooter(env.REPO, env.TELEGRAM)}
 </body>
