@@ -229,7 +229,7 @@ ${ogImageTags}
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{background-color:var(--bg-body);color-scheme:dark}
-body{font-family:var(--font-sans);max-width:860px;margin:0 auto;padding:1.5rem 1.25rem 3rem;line-height:1.6;color:var(--text-primary);background:var(--bg-body);-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-sans);font-size:1rem;max-width:860px;margin:0 auto;padding:1.5rem 1.25rem 3rem;line-height:1.6;color:var(--text-primary);background:var(--bg-body);-webkit-font-smoothing:antialiased}
 a{color:var(--accent);text-decoration:none;transition:color var(--transition)}
 a:hover{text-decoration:underline}
 pre,code{font-family:var(--font-mono)}
@@ -898,20 +898,14 @@ document.addEventListener('keydown', e => {
 }
 
 function serveAbout(env: Env): Response {
-  const { aptOrigin } = getOrigins(env);
-  const safeOrigin = escapeHtml(aptOrigin);
-
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
 ${sharedHead('About — ' + (env.SITE_NAME || 'apt-repo'), 'How this APT repository came to be, what it offers, and how you can help.')}
 <style>
-  .about h2{font-size:1.05rem;margin:1.6rem 0 .5rem;color:var(--text-primary)}
-  .about p,.about li{color:var(--text-secondary);font-size:.92rem;line-height:1.7}
-  .about strong{color:var(--text-primary)}
-  .about .lead{font-size:1rem;color:var(--text-primary);line-height:1.6}
-  .about ol{padding-left:1.2rem;display:flex;flex-direction:column;gap:.45rem;list-style:decimal}
-  .about ul{padding-left:1.2rem;display:flex;flex-direction:column;gap:.3rem;list-style:disc}
+  .about h2{font-size:1.25rem;margin:1.8rem 0 .6rem;color:var(--text-primary)}
+  .about p{color:var(--text-secondary);font-size:1.05rem;line-height:1.75;text-align:justify;text-indent:1.5rem;overflow-wrap:break-word}
+  .about p:first-of-type{text-indent:0}
   .about a{color:var(--accent)}
   .about a:hover{text-decoration:underline}
 </style>
@@ -920,32 +914,27 @@ ${sharedHead('About — ' + (env.SITE_NAME || 'apt-repo'), 'How this APT reposit
 ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'about', env.TELEGRAM)}
 <main class="sec about">
   <h2>Why does this exist?</h2>
-  <p class="lead">One of Linux's killer features &mdash; something Windows and macOS only got recently, while Linux had it for decades &mdash; is centralized software management through a package manager. On Ubuntu that's <code style="color:var(--text-primary)">deb</code>/<code style="color:var(--text-primary)">apt</code>: one command to install, update or remove anything, with dependencies resolved for you.</p>
-  <p>The catch is that a lot of software never plays by those rules. Some apps are simply missing from the official repositories. Others are there, but years out of date. Developers ship a <code style="color:var(--text-primary)">.deb</code> on the project website or drop artifacts into GitHub/GitLab releases. Some distribute bare compiled binaries. And some only give you source code &mdash; build it yourself, along with a pile of dev dependencies that will hang around as dead weight, eating disk space and occasionally conflicting with everything else.</p>
+  <p>Software management in Linux is great. Everything you need is in the repositories. No Googling, no downloading. On Ubuntu, for example, run apt install - and you're done. Simple, right?</p>
+  <p>But in practice, things aren't that rosy. Yes, the infrastructure for centralized software installation and updates exists. But the software itself has to get into that infrastructure somehow. And that's where the problem lies.</p>
+  <p>Most popular software is in the main repositories. But far from all of it. Some things simply aren't packaged for Ubuntu. Some were added once and never updated - nobody bothers. And some conflict with packages that are already there. Yes, there's Launchpad and PPA - but even that's not everything.</p>
+  <p>Many developers distribute ready-made .deb packages through their own repositories. Fine, you can add those too. But a ton of software sits on developer websites, in GitHub/GitLab/SourceForge releases - as .deb files, compiled binaries, or source code. And instead of a single apt install, you get a three-ring circus: downloading by hand, tracking versions yourself, building from source and cluttering your system with dev dependencies. And when a new version comes out - which you somehow have to find out about - you do it all over again.</p>
+  <p>And people have been putting up with this for years. Because that's just how it is.</p>
+  <p>Arch users have been proud all this time that they have AUR - where everything is available and always up to date, and where they don't have these problems. In Ubuntu, things were as described above. Or rather, they were. Until now :)</p>
 
-  <h2>The road here</h2>
-  <p>In the beginning I did all of this by hand. Then I moved source builds into Dockerfiles and wrote scripts to check upstream versions and fetch/build fresh ones &mdash; still launched manually, one by one.</p>
-  <p>Next came a cheap VPS: cron jobs checked versions and notified me when updates were available, and eventually <strong>aptly</strong> settled there too. The scripts started downloading and building new releases on their own, publishing ready-made debs straight into a private APT repository.</p>
-  <p>It worked &mdash; barely. The box lagged, disk space kept running out, and of course there were no backups at all. In March 2022 my hosting provider wiped that VPS without any warning, and years of work turned into nothing overnight.</p>
-  <p>I dropped it. For several years I didn't come back to this &mdash; the software I needed was already installed, and nothing really begged for updates. Recently, though, the idea for this project finally took shape.</p>
+  <h2>How I got here</h2>
+  <p>I put up with it too. Downloaded, compiled, installed - all by hand.</p>
+  <p>Then Docker came along, and I started building binaries in containers without cluttering my system. Gradually, scripts appeared that checked for updates, downloaded, and built. The scripts did the work for me.</p>
+  <p>Then I moved the scripts to a cheap VPS. They checked for updates and notified me, while the scripts did all the heavy lifting.</p>
+  <p>Then I set up aptly on the VPS and configured the scripts to automatically add updated software to the repository. That's how my first personal APT repository was born.</p>
+  <p>But things kept breaking. Disk space ran out.</p>
+  <p>Basically, it was held together with duct tape and prayers.</p>
+  <p>Then in March 2022, my hosting provider wiped my VPS without warning, and all my years of work went up in smoke. (No backups, of course. Only quitters make backups!)</p>
+  <p>And I gave up for several years. There was no need. Inertia got the better of me.</p>
 
-  <h2>What it is today</h2>
-  <p>The same idea, but with nothing left on my side to lose:</p>
-  <ol>
-    <li>scheduled GitHub Actions check every upstream project for new releases</li>
-    <li>when an update is found, a reproducible Docker build produces a clean <code style="color:var(--text-primary)">.deb</code></li>
-    <li>the package lands on GitHub Releases, and the APT index is regenerated and GPG-signed automatically</li>
-    <li>a Cloudflare Worker serves this website and proxies downloads</li>
-  </ol>
-  <p>No VPS, no cron on someone else's box, no single point of failure that can be wiped overnight. Just one public repo &mdash; build system, workflows and this site included.</p>
-
-  <h2>How can I use it?</h2>
-  <p>Add this repo once, then install anything from it like from any other apt source:</p>
-  <pre style="margin:.5rem 0;padding:.5rem;background:var(--bg-surface);border:1px solid var(--border-muted);border-radius:var(--radius-sm);font-size:.82rem;color:var(--text-primary)"><code>${safeOrigin}</code></pre>
-  <p>The <a href="/">home page</a> has the one-liner, and the full catalog lives in the <a href="/packages">packages list</a>.</p>
-
-  <h2>Open to contributions</h2>
-  <p>If you use these packages and want to fix something or add your own &mdash; PRs and issues are welcome in the <a href="https://github.com/${escapeHtml(env.REPO || '')}" target="_blank" rel="noopener">GitHub repo</a>.</p>
+  <h2>What now</h2>
+  <p>Recently, I had the idea to bring it back. But not on VPS and makeshift solutions - on technologies that aren't going anywhere (or so I'd like to believe). That's how this project was born - no own servers, no extra costs. Just free solutions - GitHub and Cloudflare Workers.</p>
+  <p>There isn't much software yet, but what's there is unique. And the project has made my life significantly easier. I just add a new APT repository to my system, and everything else happens automatically.</p>
+  <p>The project is open source. Contributions are welcome. I'd be glad if you wanted to add some software. Everything you need is in the <a href="https://github.com/${escapeHtml(env.REPO || '')}" target="_blank" rel="noopener">GitHub repository</a> - a template with instructions, and even an AI agent skill to help with building. And if you don't trust my APT repository - you can run your own by forking the project. I don't mind.</p>
 </main>
 ${sharedFooter(env.REPO, env.TELEGRAM)}
 </body>
