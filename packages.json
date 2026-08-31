@@ -269,7 +269,7 @@
   "name": "wps-office-langpack-ru",
   "description": "Russian language pack for WPS Office",
   "source": "https://github.com/DayDve/wps-office-langpack-ru",
-  "version": "12.3.1.0.3207",
+  "version": "12.3.1.0.3321",
   "longDescription": "Russian language pack for WPS Office. Adds Russian UI translations and spell-check dictionaries to the WPS Office suite components.",
   "icon": "/icons/wps-office-langpack-ru.png",
   "screenshots": [
