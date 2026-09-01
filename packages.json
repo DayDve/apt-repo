@@ -58,7 +58,7 @@
   "name": "glab",
   "description": "Official GitLab command-line tool",
   "source": "https://gitlab.com/gitlab-org/cli",
-  "version": "1.115.0",
+  "version": "1.116.0",
   "longDescription": "`glab` is a command-line tool that lets you manage GitLab repositories, issues, merge requests, and CI/CD pipelines directly from your terminal. You can create and review merge requests, check build pipeline statuses, manage project issues, and publish releases without opening a web browser. It works with both GitLab.com and self-hosted GitLab instances.",
   "icon": "/icons/glab.png",
   "categories": [
