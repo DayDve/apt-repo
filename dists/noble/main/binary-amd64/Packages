@@ -538,31 +538,6 @@ Description: Viber for Desktop.
  Viber for Desktop syncs your contacts, messages and call history with your mobile device.
 
 Package: winegui
-Version: 4.2.0
-Architecture: amd64
-Maintainer: Melroy van den Berg <melroy@melroy.org>
-Installed-Size: 14529
-Depends: libgtkmm-4.0-0, cabextract, unzip, p7zip, wget, zenity, xz-utils
-Suggests: libvulkan1, libvulkan1:i386, mesa-vulkan-drivers, mesa-vulkan-drivers:i386
-Filename: pool/noble/main/winegui.deb
-Size: 5823008
-MD5sum: ceaff6f9db9f7cf5556a0520bebb90ec
-SHA1: c4946e48f77fe9a193a71ebdb28b1e77ec032f4a
-SHA256: cd3dd32ae9824ff16dcc2d31f0c4528591522cd76630e5d3b2e99d59888b8ac2
-Section: utils
-Priority: optional
-Homepage: https://winegui.melroy.org
-Description: WineGUI is a user-friendly WINE graphical interface
- WineGUI is a friendly interface for Wine. Allowing you to easily manage your Wine machines/bottles.
- .
- WineGUI contains many features and conveniences, including but not limited to:
- easy step-by-step wizard for creating a new machine, built-in application list, editing machines and configure your machine with a single click.
- .
- Plus so much more!
- .
- Code archive at: https://gitlab.melroy.org/melroy/winegui.
-
-Package: winegui
 Version: 4.2.1
 Architecture: amd64
 Maintainer: Melroy van den Berg <melroy@melroy.org>
@@ -599,6 +574,31 @@ Size: 5884036
 MD5sum: 88653cc1f9d24a4c77da0a7f0695ec9d
 SHA1: 73a58c498cc32af550c172aba0cc45c0f897c5d2
 SHA256: d442b4b3ef56fda33920cb93643432263bf7594b47915f3465b4836baf968ed9
+Section: utils
+Priority: optional
+Homepage: https://winegui.melroy.org
+Description: WineGUI is a user-friendly WINE graphical interface
+ WineGUI is a friendly interface for Wine. Allowing you to easily manage your Wine machines/bottles.
+ .
+ WineGUI contains many features and conveniences, including but not limited to:
+ easy step-by-step wizard for creating a new machine, built-in application list, editing machines and configure your machine with a single click.
+ .
+ Plus so much more!
+ .
+ Code archive at: https://gitlab.melroy.org/melroy/winegui.
+
+Package: winegui
+Version: 4.3.2
+Architecture: amd64
+Maintainer: Melroy van den Berg <melroy@melroy.org>
+Installed-Size: 14673
+Depends: libgtkmm-4.0-0, cabextract, unzip, 7zip, wget, zenity, xz-utils, python3 (>= 3.10)
+Suggests: libvulkan1, libvulkan1:i386, mesa-vulkan-drivers, mesa-vulkan-drivers:i386
+Filename: pool/noble/main/winegui_4.3.2_noble_amd64.deb
+Size: 5884054
+MD5sum: 4ca48c88fc71c58d17b8ca0166ae2843
+SHA1: e2aa33b2c8c2ef86490dc84c9a478d69f0e54f4c
+SHA256: b7bd4cf530a99436cd574d271d2aa1f2524eda61cf1895fdda389a01758b73bb
 Section: utils
 Priority: optional
 Homepage: https://winegui.melroy.org

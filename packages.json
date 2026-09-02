@@ -224,7 +224,7 @@
   "name": "winegui",
   "description": "Wine prefix manager with a modern GUI",
   "source": "https://github.com/winegui/WineGUI",
-  "version": "4.3.0",
+  "version": "4.3.2",
   "longDescription": "WineGUI provides a clean GTK graphical interface for managing Wine prefixes and launching Windows applications on Linux. It simplifies creating, configuring, and organizing isolated Wine environments so you don't have to manage them through the terminal. Note that it requires Wine v9 or higher to be installed on your host system.",
   "icon": "/icons/winegui.png",
   "screenshots": [
