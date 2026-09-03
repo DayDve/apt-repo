@@ -104,6 +104,26 @@ pull_package_info() {
   echo "---"
 }
 
+# check_update_safe: wrapper around a package's check_update() that treats an
+# upstream-API failure as "no update", so we never trigger a rebuild from a
+# transient error (e.g. gh api returning tag="unknown" / empty version).
+# Usage: check_update_safe <current_version>
+# Returns 0 if an update is available, 1 otherwise.
+check_update_safe() {
+  local current="${1:-}"
+  version=""
+  local ret
+  check_update "$current"
+  ret=$?
+  # Only trust the result when the version could be resolved to something sane.
+  if [ -z "$version" ] || [ "$version" = "unknown" ] || [[ "$version" == *"-unknown"* ]] \
+     || [[ "$version" == "unknown"* ]] || [[ "$version" == *"unknown-"* ]]; then
+    echo "check_update_safe: unresolved version '${version}', treating as no update"
+    return 1
+  fi
+  return "$ret"
+}
+
 # fetch_url: Fetches URL (direct → proxy fallback)
 # Usage: fetch_url <url> [curl_args...]
 # Tries direct curl first, falls back to PROXY_URL if available.

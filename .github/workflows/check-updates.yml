@@ -91,7 +91,7 @@ jobs:
           fi
           source apps/build.sh
           source apps/${{ matrix.app }}/package
-          if check_update "${{ steps.current.outputs.version }}"; then
+          if check_update_safe "${{ steps.current.outputs.version }}"; then
             echo "update=true" >> "$GITHUB_OUTPUT"
           else
             echo "update=false" >> "$GITHUB_OUTPUT"
