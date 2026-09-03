@@ -15,7 +15,7 @@ RUN mkdir -p /src && cd /src \
       "https://github.com/ilia-maslakov/mcdev/releases/download/v${APP_VERSION}/mc6-${APP_VERSION}.tar.gz" \
  && curl -fsSL -O \
       "https://github.com/ilia-maslakov/mcdev/releases/download/v${APP_VERSION}/mc6_${APP_VERSION}-1.${UPSTREAM_PKG_SUFFIX}.dsc" \
- && curl -fsSL -O \
+ && curl -fsSL -o "mc6_${APP_VERSION}-1~${UPSTREAM_PKG_SUFFIX}.debian.tar.xz" \
       "https://github.com/ilia-maslakov/mcdev/releases/download/v${APP_VERSION}/mc6_${APP_VERSION}-1.${UPSTREAM_PKG_SUFFIX}.debian.tar.xz" \
  && dpkg-source -x "mc6_${APP_VERSION}-1.${UPSTREAM_PKG_SUFFIX}.dsc" \
  && cd "mc6-${APP_VERSION}" \
@@ -23,7 +23,7 @@ RUN mkdir -p /src && cd /src \
  && useradd -m build \
  && chown -R build /src \
  && su build -c "cd /src/mc6-${APP_VERSION} && dpkg-buildpackage -us -uc -b" \
- && cp "/src/mc6-plugins_${APP_VERSION}-1_amd64.deb" /
+ && cp "/src/mc6-plugins_${APP_VERSION}-1~${UPSTREAM_PKG_SUFFIX}_amd64.deb" /
 
 FROM scratch AS output
 COPY --from=builder /mc6-plugins_*.deb /
