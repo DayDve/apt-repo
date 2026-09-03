@@ -391,6 +391,29 @@ Description: Midnight Commander with Plugins
  A fork of GNU Midnight Commander with dynamically loaded panel plugins.  It
  installs /usr/bin/mc and the mcedit, mcview, mcdiff and mctree symlinks.
 
+Package: mc6
+Version: 3:6.0.4-1~ubuntu26.04.1
+Architecture: amd64
+Maintainer: Ilia Maslakov <il.smind@gmail.com>
+Installed-Size: 2134
+Depends: libc6 (>= 2.38), libext2fs2t64 (>= 1.37), libglib2.0-0t64 (>= 2.77.3), libgpm2 (>= 1.20.7), libmagic1t64 (>= 5.12), libslang2 (>= 2.2.4), perl:any, python3:any, mc6-data (= 3:6.0.4-1~ubuntu26.04.1)
+Recommends: mailcap, perl, sensible-utils, unzip
+Suggests: mc6-plugins, aspell, hunspell
+Conflicts: mc
+Replaces: mc
+Provides: mc (= 3:6.0.4-1~ubuntu26.04.1)
+Filename: pool/noble/main/mc6_6.0.4-1.ubuntu26.04.1_noble_amd64.deb
+Size: 802126
+MD5sum: 55f23cfddc731aa116fc9bf46294a114
+SHA1: 842a09b714602e79ee06b2ec943db933fc52943a
+SHA256: d7d2ac6fcf47098e014b39357cb758bff6a8707d0388b33411657b23a04bd173
+Section: utils
+Priority: optional
+Homepage: https://github.com/ilia-maslakov/mcdev/wiki
+Description: Midnight Commander with Plugins
+ A fork of GNU Midnight Commander with dynamically loaded panel plugins.  It
+ installs /usr/bin/mc and the mcedit, mcview, mcdiff and mctree symlinks.
+
 Package: mc6-data
 Source: mc6
 Version: 3:6.0.3-1
@@ -412,6 +435,27 @@ Homepage: https://github.com/ilia-maslakov/mcdev/wiki
 Description: Midnight Commander with Plugins -- data files
  Architecture-independent data, manuals and translations for mc6.
 
+Package: mc6-data
+Source: mc6
+Version: 3:6.0.4-1~ubuntu26.04.1
+Architecture: all
+Maintainer: Ilia Maslakov <il.smind@gmail.com>
+Installed-Size: 6128
+Conflicts: mc-data
+Replaces: mc-data
+Provides: mc-data (= 3:6.0.4-1~ubuntu26.04.1)
+Filename: pool/noble/main/mc6-data_6.0.4-1.ubuntu26.04.1_noble_all.deb
+Size: 1352926
+MD5sum: 67687966f6a7e96fb1ac4af2298daf01
+SHA1: 111f2660e2f778e4d9ffaf6039305466f1e43db2
+SHA256: 246dc45235eac5597156a9a43206ae0e673a372b3542ae157ff6a069392e81b5
+Section: utils
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://github.com/ilia-maslakov/mcdev/wiki
+Description: Midnight Commander with Plugins -- data files
+ Architecture-independent data, manuals and translations for mc6.
+
 Package: mc6-plugins
 Source: mc6
 Version: 3:6.0.3-1
@@ -425,6 +469,26 @@ Size: 255528
 MD5sum: 48f2ef645f9ec12ebe8cdc1a7f8ca404
 SHA1: 2e53365b8ddc56ebc1b198a86502a590437460d1
 SHA256: 8e975ba189d01cc6f7046f57cdc1954e61e0688e77a49761c933a9d8d57823a2
+Section: utils
+Priority: optional
+Homepage: https://github.com/ilia-maslakov/mcdev/wiki
+Description: Midnight Commander with Plugins -- panel plugins
+ Dynamic panel plugins for Git, Docker, Kubernetes, MongoDB, S3, FTP,
+ SFTP, Samba, systemd, shell links, panelize and archive management.
+
+Package: mc6-plugins
+Source: mc6
+Version: 3:6.0.4-1~ubuntu26.04.1
+Architecture: amd64
+Maintainer: Ilia Maslakov <il.smind@gmail.com>
+Installed-Size: 1441
+Depends: libarchive13t64 (>= 3.2.1), libbson-1.0-0t64 (>= 1.26.0), libc6 (>= 2.38), libcurl4t64 (>= 7.16.2), libglib2.0-0t64 (>= 2.75.3), libmagic1t64 (>= 5.12), libmongoc-1.0-0t64 (>= 1.26.0), libsmbclient0 (>= 2:4.0.3+dfsg1), libssh2-1t64 (>= 1.2.9), zlib1g (>= 1:1.1.4), mc6 (= 3:6.0.4-1~ubuntu26.04.1)
+Enhances: mc6
+Filename: pool/noble/main/mc6-plugins_6.0.4-1.ubuntu26.04.1_noble_amd64.deb
+Size: 411834
+MD5sum: 844d52aa0a48cbfaed64e071b820dc3e
+SHA1: a2df4b3284d30cb0e9e5f68c2ff77d23b29b49f2
+SHA256: 9fba13a88982536e5e628af11738bda0f88b5755a4ce53d773d25580c05f35f1
 Section: utils
 Priority: optional
 Homepage: https://github.com/ilia-maslakov/mcdev/wiki

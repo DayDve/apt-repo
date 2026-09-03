@@ -120,7 +120,7 @@
   "name": "mc6",
   "description": "Midnight Commander with Plugins",
   "source": "https://github.com/ilia-maslakov/mcdev",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "longDescription": "mc6 is an enhanced fork of GNU Midnight Commander, providing a dual-panel text-mode file manager for terminal and SSH environments. It extends the classic interface with dynamic plugins that let you browse Git repositories, Docker containers, Kubernetes clusters, and S3 buckets directly within file panels. It also includes an integrated archive manager, structured tree views for JSON and YAML, live viewer filtering, and an embedded shell terminal.",
   "icon": "/icons/mc6.png",
   "screenshots": [
@@ -136,7 +136,7 @@
   "name": "mc6-data",
   "description": "Midnight Commander with Plugins — data files",
   "source": "https://github.com/ilia-maslakov/mcdev",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "longDescription": "This package provides the essential architecture-independent data, syntax highlighting definitions, and interface skins for `mc6`, a fork of the Midnight Commander terminal file manager. The `mc6` suite adds panel plugins for managing Git, Docker, Kubernetes, S3, and remote connections directly inside a classic two-panel text-mode interface. It is a required dependency for `mc6` to supply configuration assets, editor themes, and structured viewer templates for JSON, YAML, and XML files.",
   "group": "mc6"
 }
@@ -144,7 +144,7 @@
   "name": "mc6-plugins",
   "description": "Midnight Commander with Plugins — panel plugins (git, docker, k8s, s3, samba, mongo, ftp, sftp, systemd, shell links, arcmc)",
   "source": "https://github.com/ilia-maslakov/mcdev",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "longDescription": "Provides dynamic panel plugins for the `mc6` terminal file manager, allowing you to manage cloud services, containers, and network drives directly inside dual-panel views. It adds native panel integration for Git repositories, Docker containers, Kubernetes clusters, Amazon S3 buckets, MongoDB, systemd units, and Samba shares, alongside upgraded FTP and SFTP support. It also includes `arcmc`, a libarchive-powered tool for browsing, packing, and extracting compressed archives directly in your terminal.",
   "group": "mc6"
 }
