@@ -9,7 +9,8 @@ WORKDIR /build
 RUN git clone --depth 1 --branch dev \
     https://github.com/AyuGram/AyuGramDesktop.git src \
  && cd src \
- && git submodule update --init --recursive --depth 1
+ && git submodule update --init --recursive --depth 1 \
+ && git -C cmake checkout ce47e85122cfa87d4ba4550049377f5167d31226
 
 RUN chown -R user:user /build
 
