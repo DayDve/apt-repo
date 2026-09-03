@@ -158,6 +158,7 @@ flowchart TD
              fetch_url / gh_fetch_raw"]
   SH --> DKR2["docker buildx build
               --build-arg APP_VERSION
+              --build-arg UPSTREAM_PKG_SUFFIX
               --cache-from type=gha"]
   DKR2 --> DEB[".deb file"]
   DEB --> REL["gh release create
@@ -186,6 +187,17 @@ Template for a new package: [`docs/template/`](template/).
 | `gh_latest_release <repo>` | Latest release |
 | `gh_release_body[_by_tag]` | Release changelog |
 | `pull_package_info` | Log header |
+
+### Distro → upstream source package suffix
+
+`build.sh` maps `$distro` to `UPSTREAM_PKG_SUFFIX` (passed as a Docker build arg) because upstream publishes distro-suffixed source packages:
+
+| `$distro` | `UPSTREAM_PKG_SUFFIX` |
+|-----------|----------------------|
+| `noble` (default) | `ubuntu26.04.1` |
+| `trixie` | `debian13.1` |
+
+Add new entries to the `case` block in `build.sh` when supporting additional distros.
 
 ---
 

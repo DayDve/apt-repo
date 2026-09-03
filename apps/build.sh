@@ -265,6 +265,12 @@ if [ -s /tmp/changelog ]; then
   cp /tmp/changelog "$dir/.changelog"
 fi
 
+case "$distro" in
+  noble)  UPSTREAM_PKG_SUFFIX="ubuntu26.04.1" ;;
+  trixie) UPSTREAM_PKG_SUFFIX="debian13.1" ;;
+  *)      UPSTREAM_PKG_SUFFIX="$distro" ;;
+esac
+
 docker buildx build \
   --output type=local,dest=/tmp/deb-out \
   --cache-from type=gha \
@@ -272,6 +278,7 @@ docker buildx build \
   --build-arg "DEBFULLNAME=$DEBFULLNAME" \
   --build-arg "DEBEMAIL=$DEBEMAIL" \
   --build-arg "APP_VERSION=$version" \
+  --build-arg "UPSTREAM_PKG_SUFFIX=$UPSTREAM_PKG_SUFFIX" \
   -f "$dir/Dockerfile" "$dir"
 
 rm -f "$dir/.changelog"
