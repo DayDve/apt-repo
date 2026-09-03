@@ -155,11 +155,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          apps=$(gh run view ${{ github.run_id }} --repo ${{ github.repository }} --json jobs --jq '
-            [.jobs[] | select(.name | startswith("build (")) |
-             select(.steps[] | select(.name == "Build" and .conclusion == "success")) |
-             .name | ltrimstr("build (") | rtrimstr(")")]
-          ' | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          started=$(gh run view ${{ github.run_id }} --repo ${{ github.repository }} --json createdAt --jq '.createdAt')
+          now=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          # A changed app = a release created during this run. This is robust
+          # to fail-fast cancellations (a job can be cancelled after build.sh
+          # already created the release), unlike relying on step conclusion.
+          apps=$(gh release list --repo ${{ github.repository }} --limit 1000 \
+            --json tagName,createdAt --jq '.' \
+            | jq -r --arg c "$started" --arg n "$now" \
+              '.[] | select(.createdAt >= $c and .createdAt <= $n) | .tagName' \
+            | sed -E 's/-[0-9].*$//' \
+            | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
           echo "list=$apps" >> "$GITHUB_OUTPUT"
 
       - name: Trigger apt repo deploy
