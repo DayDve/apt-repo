@@ -21,7 +21,7 @@ Description:
     official Linux build with its built-in Python and Qt runtime, so it works out of the box on Ubuntu and Debian.</p>
 Developer:
   name:
-    C: '|Ankitects'
+    C: 'Ankitects'
 Categories:
 - Education
 - Languages
@@ -85,7 +85,7 @@ Description:
     customization, built-in message translation, streamer mode, and local Telegram Premium options.</p>
 Developer:
   name:
-    C: '|AyuGram'
+    C: 'AyuGram'
 Categories:
 - InstantMessaging
 Url:
@@ -168,7 +168,7 @@ Description:
     hash table that requires as little as 1 GB of RAM per 10 TB of unique data.</p>
 Developer:
   name:
-    C: '|Zygo'
+    C: 'Zygo'
 Categories:
 - System
 - Filesystem
@@ -194,7 +194,7 @@ Description:
     balances, and defragmentation.</p>
 Developer:
   name:
-    C: '|Btrfs Assistant'
+    C: 'Btrfs Assistant'
 Categories:
 - System
 - Filesystem
@@ -259,7 +259,7 @@ Description:
     dependencies.</p>
 Developer:
   name:
-    C: '|DayDve'
+    C: 'DayDve'
 Categories:
 - Fonts
 Url:
@@ -283,7 +283,7 @@ Description:
     and publish releases without opening a web browser. It works with both GitLab.com and self-hosted GitLab instances.</p>
 Developer:
   name:
-    C: '|GitLab'
+    C: 'GitLab'
 Categories:
 - Utility
 - Development
@@ -309,7 +309,7 @@ Description:
     that automatically updates your GRUB configuration whenever snapshots are created or deleted.</p>
 Developer:
   name:
-    C: '|Antynea'
+    C: 'Antynea'
 Categories:
 - System
 - Boot
@@ -336,7 +336,7 @@ Description:
     desktop environment.</p>
 Developer:
   name:
-    C: '|rvaiya'
+    C: 'rvaiya'
 Categories:
 - System
 - Hardware
@@ -362,7 +362,7 @@ Description:
     can easily copy or move the entire staged collection to its final destination in one operation.</p>
 Developer:
   name:
-    C: '|DayDve'
+    C: 'DayDve'
 Categories:
 - System
 - Utility
@@ -392,7 +392,7 @@ Description:
     your local Wi-Fi or Ethernet connection, transfers are fast, private, and use zero internet bandwidth.</p>
 Developer:
   name:
-    C: '|LocalSend'
+    C: 'LocalSend'
 Categories:
 - Network
 - FileTransfer
@@ -482,7 +482,7 @@ Description:
     between different cloud hosts, or mounting remote storage directly onto your local file system.</p>
 Developer:
   name:
-    C: '|Nick Craig-Wood'
+    C: 'Nick Craig-Wood'
 Categories:
 - Utility
 - FileTransfer
@@ -509,7 +509,7 @@ Description:
     and network infrastructure.</p>
 Developer:
   name:
-    C: '|Devolutions'
+    C: 'Devolutions'
 Categories:
 - Utility
 - Security
@@ -542,7 +542,7 @@ Description:
     tool for remote system administration and desktop technical support.</p>
 Developer:
   name:
-    C: '|RustDesk'
+    C: 'RustDesk'
 Categories:
 - Network
 - RemoteAccess
@@ -596,7 +596,7 @@ Description:
     mirroring while the phone screen remains off, and using your device's camera as a Linux webcam via V4L2.</p>
 Developer:
   name:
-    C: '|Genymobile'
+    C: 'Genymobile'
 Categories:
 - Utility
 - Development
@@ -640,7 +640,7 @@ Description:
     encrypted chats, group video conferencing, screen sharing, and calling non-Viber phone numbers via Viber Out.</p>
 Developer:
   name:
-    C: '|Rakuten Viber'
+    C: 'Rakuten Viber'
 Categories:
 - InstantMessaging
 - Network
@@ -693,7 +693,7 @@ Description:
     the terminal. Note that it requires Wine v9 or higher to be installed on your host system.</p>
 Developer:
   name:
-    C: '|WineGUI'
+    C: 'WineGUI'
 Categories:
 - System
 - Emulator
@@ -747,7 +747,7 @@ Description:
     remote machines on Wayland compositors.</p>
 Developer:
   name:
-    C: '|any1'
+    C: 'any1'
 Categories:
 - Network
 - RemoteAccess
