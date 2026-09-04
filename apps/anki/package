@@ -1,0 +1,39 @@
+# ============================================================
+# Package script for anki
+# ============================================================
+
+SOURCE_URL="https://github.com/ankitects/anki"
+DESCRIPTION="Spaced repetition flashcard program"
+APPSTREAM_TYPE="desktop-application"
+APPSTREAM_CATEGORIES="Education;Languages"
+
+# Anki ships the *stable* release (never betas) and always publishes the
+# linux-x86_64.tar.zst asset. Its release body contains literal control
+# characters, which break the shared gh_latest_release helper (the full JSON
+# piped through a shell var trips jq), so fetch the tag and body separately.
+latest_stable() {
+  LATEST_TAG=$(gh_api_retry repos/ankitects/anki/releases/latest --jq '.tag_name' 2>/dev/null)
+  RELEASE_BODY=$(gh_api_retry repos/ankitects/anki/releases/latest --jq '.body' 2>/dev/null || true)
+}
+
+check_update() {
+  latest_stable
+  [ -z "$LATEST_TAG" ] && return 1
+  version="$LATEST_TAG"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  latest_stable
+  version="$LATEST_TAG"
+  local current="${1:-}"
+  if [ -n "$current" ]; then
+    local raw
+    raw=$(gh_commits_between ankitects/anki "$current" "$LATEST_TAG")
+    if [ -n "$raw" ]; then
+      ai_changelog "anki" "$raw"
+      return
+    fi
+  fi
+  printf '%s' "${RELEASE_BODY:-https://github.com/ankitects/anki/releases/tag/$LATEST_TAG}"
+}

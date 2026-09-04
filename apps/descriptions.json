@@ -2,6 +2,9 @@
   "ayugram": {
     "description": "AyuGram is a modified Telegram Desktop client that adds advanced privacy controls and expanded messaging features to the standard Telegram interface. It includes a flexible ghost mode to hide your online status and read receipts, as well as anti-recall functionality that saves deleted and edited message history locally. Additionally, it offers font and theme customization, built-in message translation, streamer mode, and local Telegram Premium options."
   },
+  "anki": {
+    "description": "Anki is a spaced repetition system (SRS) that makes remembering things easy by scheduling reviews of study material at optimal intervals. It uses smart scheduling to show you exactly the cards you are struggling with, so you spend your time efficiently instead of re-studying what you already know. You can create your own decks and cards for anything you want to learn, or download shared decks covering languages, medicine, law, math, and more. This package bundles Anki's official Linux build with its built-in Python and Qt runtime, so it works out of the box on Ubuntu and Debian."
+  },
   "bees": {
     "description": "Bees is a background deduplication daemon for Btrfs filesystems that continuously scans for and consolidates duplicate data blocks to recover disk space. It operates on live filesystems and automatically self-throttles, working seamlessly alongside Btrfs snapshots, reflinks, and transparent compression. Designed for high efficiency, it uses a fixed-size persistent hash table that requires as little as 1 GB of RAM per 10 TB of unique data."
   },
