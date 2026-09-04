@@ -7,7 +7,7 @@ MediaBaseUrl: https://raw.githubusercontent.com/DayDve/apt-repo/apt/
 Type: desktop-application
 ID: io.github.daydve.apt.anki
 Package: anki
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: AGPL-3.0
 Name:
   C: anki
 Summary:
@@ -72,7 +72,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.ayugram
 Package: ayugram
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: GPL-3.0
 Name:
   C: ayugram
 Summary:
@@ -155,7 +155,7 @@ Screenshots:
 Type: console-application
 ID: io.github.daydve.apt.bees
 Package: bees
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: GPL-3.0
 Name:
   C: bees
 Summary:
@@ -181,7 +181,7 @@ Provides:
 Type: desktop-application
 ID: io.github.daydve.apt.btrfs-assistant
 Package: btrfs-assistant
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: GPL-3.0
 Name:
   C: btrfs-assistant
 Summary:
@@ -245,7 +245,7 @@ Screenshots:
 Type: font
 ID: io.github.daydve.apt.fonts-noto-lite
 Package: fonts-noto-lite
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: OFL-1.1
 Name:
   C: fonts-noto-lite
 Summary:
@@ -271,7 +271,7 @@ Provides:
 Type: console-application
 ID: io.github.daydve.apt.glab
 Package: glab
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: MIT
 Name:
   C: glab
 Summary:
@@ -296,7 +296,7 @@ Provides:
 Type: console-application
 ID: io.github.daydve.apt.grub-btrfs
 Package: grub-btrfs
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: GPL-3.0
 Name:
   C: grub-btrfs
 Summary:
@@ -322,7 +322,7 @@ Provides:
 Type: console-application
 ID: io.github.daydve.apt.keyd
 Package: keyd
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: MIT
 Name:
   C: keyd
 Summary:
@@ -349,7 +349,7 @@ Provides:
 Type: addon
 ID: io.github.daydve.apt.kio-stash
 Package: kio-stash
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: GPL-2.0
 Name:
   C: kio-stash
 Summary:
@@ -379,7 +379,7 @@ Provides:
 Type: desktop-application
 ID: io.github.daydve.apt.localsend
 Package: localsend
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: Apache-2.0
 Name:
   C: localsend
 Summary:
@@ -425,7 +425,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.mc6
 Package: mc6
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: MIT
 Name:
   C: mc6
 Summary:
@@ -469,7 +469,7 @@ Screenshots:
 Type: console-application
 ID: io.github.daydve.apt.rclone
 Package: rclone
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: MIT
 Name:
   C: rclone
 Summary:
@@ -495,7 +495,7 @@ Provides:
 Type: desktop-application
 ID: io.github.daydve.apt.remotedesktopmanager
 Package: remotedesktopmanager
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: LicenseRef-proprietary
 Name:
   C: remotedesktopmanager
 Summary:
@@ -529,7 +529,7 @@ Provides:
 Type: desktop-application
 ID: io.github.daydve.apt.rustdesk
 Package: rustdesk
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: AGPL-3.0
 Name:
   C: rustdesk
 Summary:
@@ -583,7 +583,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.scrcpy
 Package: scrcpy
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: Apache-2.0
 Name:
   C: scrcpy
 Summary:
@@ -627,7 +627,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.viber
 Package: viber
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: LicenseRef-proprietary
 Name:
   C: viber
 Summary:
@@ -681,7 +681,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.winegui
 Package: winegui
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: AGPL-3.0
 Name:
   C: winegui
 Summary:
@@ -734,7 +734,7 @@ Screenshots:
 Type: console-application
 ID: io.github.daydve.apt.wlvncc
 Package: wlvncc
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: ISC
 Name:
   C: wlvncc
 Summary:
@@ -760,7 +760,6 @@ Provides:
 Type: addon
 ID: io.github.daydve.apt.wps-office-langpack-ru
 Package: wps-office-langpack-ru
-ProjectLicense: GPL-3.0-or-later
 Name:
   C: wps-office-langpack-ru
 Summary:
@@ -806,7 +805,6 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.wps-office
 Package: wps-office
-ProjectLicense: GPL-3.0-or-later
 Name:
   C: wps-office
 Summary:
