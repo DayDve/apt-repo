@@ -161,6 +161,7 @@ jobs:
             icon_path=$(git show "$pkg_file" | awk -F'"' '/^ICON_PATH=/{print $2}')
             group=$(git show "$pkg_file" | awk -F'"' '/^GROUP=/{print $2}')
             developer=$(git show "$pkg_file" | awk -F'"' '/^DEVELOPER=/{print $2}')
+            developer=$(printf '%s' "$developer" | tr -d '|')
             [ -n "$url" ] && echo "$app|$url|$desc|$type|$cats|$icon_source|$icon_path|$group|$developer"
           done > /tmp/pkg-info
           # Fetch descriptions.json for long descriptions
@@ -259,9 +260,11 @@ jobs:
             done < /tmp/pkg-info
             echo '</components>' >> "$xml_file"
             yml_plain="dists/$distro/main/dep11/Components-amd64.yml"
-            appstreamcli --version
-            echo "DEBUG-developer-lines:"; grep -o '<developer_name>[^<]*</developer_name>' "$xml_file"
             appstreamcli convert "$xml_file" "$yml_plain" --format yaml
+            # appstreamcli (Ubuntu 24.04) renders <developer_name> as a literal
+            # block: strip any stray '|' the serializer may prepend.
+            sed -i "/C: '|/s/|//" "$yml_plain"
+            sed -i "/C: '|/s/|//" "$yml_plain"
             # Add MediaBaseUrl so Discover resolves relative screenshot paths
             sed -i '/^Origin: daydve-apt$/a MediaBaseUrl: https://raw.githubusercontent.com/DayDve/apt-repo/apt/' "$yml_plain"
             # Inject Thumbnails into screenshots (appstreamcli generates thumbnails: [])
