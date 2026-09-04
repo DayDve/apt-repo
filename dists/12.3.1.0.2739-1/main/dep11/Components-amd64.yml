@@ -5,6 +5,68 @@ Origin: daydve-apt
 MediaBaseUrl: https://raw.githubusercontent.com/DayDve/apt-repo/apt/
 ---
 Type: desktop-application
+ID: io.github.daydve.apt.anki
+Package: anki
+ProjectLicense: GPL-3.0-or-later
+Name:
+  C: anki
+Summary:
+  C: Spaced repetition flashcard program
+Description:
+  C: >-
+    <p>Anki is a spaced repetition system (SRS) that makes remembering things easy by scheduling reviews of study material
+    at optimal intervals. It uses smart scheduling to show you exactly the cards you are struggling with, so you spend your
+    time efficiently instead of re-studying what you already know. You can create your own decks and cards for anything you
+    want to learn, or download shared decks covering languages, medicine, law, math, and more. This package bundles Anki's
+    official Linux build with its built-in Python and Qt runtime, so it works out of the box on Ubuntu and Debian.</p>
+Categories:
+- Education
+- Languages
+Url:
+  homepage: https://github.com/ankitects/anki
+Icon:
+  cached:
+  - name: anki
+Launchable:
+  desktop-id:
+  - anki.desktop
+Provides:
+  binaries:
+  - anki
+Screenshots:
+- default: true
+  caption:
+    C: anki
+  thumbnails:
+    - url: screenshots/anki/0.png
+      width: 1036
+      height: 946
+  source-image:
+    url: screenshots/anki/0.png
+    width: 1036
+    height: 946
+- caption:
+    C: anki
+  thumbnails:
+    - url: screenshots/anki/1.png
+      width: 1079
+      height: 1057
+  source-image:
+    url: screenshots/anki/1.png
+    width: 1079
+    height: 1057
+- caption:
+    C: anki
+  thumbnails:
+    - url: screenshots/anki/2.png
+      width: 1008
+      height: 1066
+  source-image:
+    url: screenshots/anki/2.png
+    width: 1008
+    height: 1066
+---
+Type: desktop-application
 ID: io.github.daydve.apt.ayugram
 Package: ayugram
 ProjectLicense: GPL-3.0-or-later

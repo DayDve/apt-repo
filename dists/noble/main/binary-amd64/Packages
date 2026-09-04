@@ -515,6 +515,25 @@ Description: Rclone - "rsync for cloud storage"
  from most cloud providers. It can also mount, tree, ncdu and lots
  of other useful things.
 
+Package: rclone
+Version: 1.75.1
+Architecture: amd64
+Maintainer: Nick Craig-Wood <nick@craig-wood.com>
+Installed-Size: 93175
+Provides: rclone
+Filename: pool/noble/main/rclone_1.75.1_noble_amd64.deb
+Size: 32154762
+MD5sum: 8e36b347466dc596fe13fdc42275c7e9
+SHA1: 8d22462b89d92825aae658125c9efca847faa705
+SHA256: 09c9f7606ed9e31eecc1eec26a89992cf2931a8d2d1a5f0ae2bb1c11630ffb15
+Section: default
+Priority: extra
+Homepage: https://rclone.org
+Description: Rclone - "rsync for cloud storage"
+ is a command-line program to sync files and directories to and
+ from most cloud providers. It can also mount, tree, ncdu and lots
+ of other useful things.
+
 Package: remotedesktopmanager
 Version: 2026.2.1.4
 Architecture: amd64
