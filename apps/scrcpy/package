@@ -4,6 +4,7 @@
 
 SOURCE_URL="https://github.com/Genymobile/scrcpy"
 DESCRIPTION="Mirror and control Android devices via USB/TCP"
+DEVELOPER="Genymobile"
 APPSTREAM_TYPE="desktop-application"
 APPSTREAM_CATEGORIES="Utility;Development"
 

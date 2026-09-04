@@ -1,5 +1,6 @@
 SOURCE_URL="https://github.com/Antynea/grub-btrfs"
 DESCRIPTION="GRUB menu entries for btrfs snapshots"
+DEVELOPER="Antynea"
 APPSTREAM_TYPE="console-application"
 APPSTREAM_CATEGORIES="System;Boot"
 

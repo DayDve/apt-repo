@@ -160,7 +160,8 @@ jobs:
             icon_source=$(git show "$pkg_file" | awk -F'"' '/^ICON_SOURCE=/{print $2}')
             icon_path=$(git show "$pkg_file" | awk -F'"' '/^ICON_PATH=/{print $2}')
             group=$(git show "$pkg_file" | awk -F'"' '/^GROUP=/{print $2}')
-            [ -n "$url" ] && echo "$app|$url|$desc|$type|$cats|$icon_source|$icon_path|$group"
+            developer=$(git show "$pkg_file" | awk -F'"' '/^DEVELOPER=/{print $2}')
+            [ -n "$url" ] && echo "$app|$url|$desc|$type|$cats|$icon_source|$icon_path|$group|$developer"
           done > /tmp/pkg-info
           # Fetch descriptions.json for long descriptions
           git show "origin/apps:apps/descriptions.json" > /tmp/descriptions.json 2>/dev/null || echo '{}' > /tmp/descriptions.json
@@ -187,7 +188,7 @@ jobs:
             xml_file="dists/$distro/main/dep11/Components-amd64.xml"
             echo '<?xml version="1.0" encoding="UTF-8"?>' > "$xml_file"
             echo '<components origin="daydve-apt">' >> "$xml_file"
-            while IFS='|' read -r app url desc type cats icon_source icon_path; do
+            while IFS='|' read -r app url desc type cats icon_source icon_path developer; do
               [ -z "$app" ] && continue
               [ -z "$type" ] && type="console-application"
               [ "$type" = "none" ] && continue
@@ -195,6 +196,10 @@ jobs:
               printf '    <id>io.github.daydve.apt.%s</id>\n' "$app" >> "$xml_file"
               printf '    <name>%s</name>\n' "$app" >> "$xml_file"
               printf '    <summary>%s</summary>\n' "$desc" >> "$xml_file"
+              # Author shown in Discover/Software (falls back to the repo owner)
+              printf '    <developer id="io.github.daydve.apt.%s">\n' "$app" >> "$xml_file"
+              printf '      <name>%s</name>\n' "${developer:-DayDve}" >> "$xml_file"
+              printf '    </developer>\n' >> "$xml_file"
               # Long description
               long_desc=$(jq -r --arg k "$app" '.[$k].description // empty' /tmp/descriptions.json 2>/dev/null || echo "")
               if [ -n "$long_desc" ]; then

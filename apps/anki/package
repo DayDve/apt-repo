@@ -4,6 +4,7 @@
 
 SOURCE_URL="https://github.com/ankitects/anki"
 DESCRIPTION="Spaced repetition flashcard program"
+DEVELOPER="Ankitects"
 APPSTREAM_TYPE="desktop-application"
 APPSTREAM_CATEGORIES="Education;Languages"
 

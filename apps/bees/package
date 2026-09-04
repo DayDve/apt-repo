@@ -1,5 +1,6 @@
 SOURCE_URL="https://github.com/Zygo/bees"
 DESCRIPTION="btrfs deduplication daemon"
+DEVELOPER="Zygo"
 APPSTREAM_TYPE="console-application"
 APPSTREAM_CATEGORIES="System;Filesystem"
 

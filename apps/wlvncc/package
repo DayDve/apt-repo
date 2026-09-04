@@ -1,5 +1,6 @@
 SOURCE_URL="https://github.com/any1/wlvncc"
 DESCRIPTION="Wayland native VNC client"
+DEVELOPER="any1"
 APPSTREAM_TYPE="console-application"
 APPSTREAM_CATEGORIES="Network;RemoteAccess"
 PKGREV="${PKGREV:-1}"

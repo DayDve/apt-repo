@@ -1,5 +1,6 @@
 SOURCE_URL="https://gitlab.com/gitlab-org/cli"
 DESCRIPTION="Official GitLab command-line tool"
+DEVELOPER="GitLab"
 CHANGELOG_URL="https://gitlab.com/gitlab-org/cli/-/releases"
 APPSTREAM_TYPE="console-application"
 APPSTREAM_CATEGORIES="Utility;Development"

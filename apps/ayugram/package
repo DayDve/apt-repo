@@ -1,5 +1,6 @@
 SOURCE_URL="https://github.com/AyuGram/AyuGramDesktop"
 DESCRIPTION="Telegram client with enhanced features"
+DEVELOPER="AyuGram"
 APPSTREAM_TYPE="desktop-application"
 APPSTREAM_CATEGORIES="InstantMessaging"
 ICON_SOURCE="deb"

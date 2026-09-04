@@ -1,5 +1,6 @@
 SOURCE_URL="https://github.com/rvaiya/keyd"
 DESCRIPTION="Key remapping daemon"
+DEVELOPER="rvaiya"
 APPSTREAM_TYPE="console-application"
 APPSTREAM_CATEGORIES="System;Hardware"
 

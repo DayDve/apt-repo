@@ -1,5 +1,6 @@
 SOURCE_URL="https://github.com/rclone/rclone"
 DESCRIPTION="rsync for cloud storage"
+DEVELOPER="Nick Craig-Wood"
 APPSTREAM_TYPE="console-application"
 APPSTREAM_CATEGORIES="Utility;FileTransfer"
 ICON_SOURCE="url"

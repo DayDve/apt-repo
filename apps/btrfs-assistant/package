@@ -4,6 +4,7 @@
 
 SOURCE_URL="https://gitlab.com/btrfs-assistant/btrfs-assistant"
 DESCRIPTION="GUI management tool for Btrfs filesystem"
+DEVELOPER="Btrfs Assistant"
 # 2.2 is the last release that builds with stock Ubuntu 24.04 Qt (6.4.x);
 # 2.3+ requires Qt 6.10+ (KDE Neon repo).  Keep it for users without Neon.
 PINNED_VERSIONS="2.2"

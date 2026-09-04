@@ -23,6 +23,10 @@
 #   APPSTREAM_CATEGORIES  — Freedesktop categories separated by ;
 #   APPSTREAM_KEYWORDS    — Comma-separated search keywords
 #   APPSTREAM_SUMMARY     — Short summary (if DESCRIPTION is long)
+#   DEVELOPER             — Original upstream author shown in Discover's
+#                           "Author"/developer field (single quoted line,
+#                           e.g. DEVELOPER="Genymobile"). Leave unset to
+#                           fall back to the repo owner (DayDve).
 #
 # Icons for DEP-11 (optional, for app icons in KDE Discover):
 #   ICON_SOURCE  — file | url | deb (default: deb = auto-extract from .deb)
@@ -69,6 +73,7 @@
 
 SOURCE_URL="https://example.com/OWNER/REPO"
 DESCRIPTION="My awesome app"
+DEVELOPER="Awesome Org"
 
 # --- Example A: GitHub release-based (rclone, wps-office) ---
 # check_update() {

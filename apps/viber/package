@@ -4,6 +4,7 @@
 
 SOURCE_URL="https://www.viber.com"
 DESCRIPTION="Free and secure calls and messages to anyone, anywhere"
+DEVELOPER="Rakuten Viber"
 APPSTREAM_TYPE="desktop-application"
 APPSTREAM_CATEGORIES="InstantMessaging;Network"
 
