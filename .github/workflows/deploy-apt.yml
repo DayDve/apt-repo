@@ -161,7 +161,6 @@ jobs:
             icon_path=$(git show "$pkg_file" | awk -F'"' '/^ICON_PATH=/{print $2}')
             group=$(git show "$pkg_file" | awk -F'"' '/^GROUP=/{print $2}')
             developer=$(git show "$pkg_file" | awk -F'"' '/^DEVELOPER=/{print $2}')
-            developer=$(printf '%s' "$developer" | tr -d '|')
             [ -n "$url" ] && echo "$app|$url|$desc|$type|$cats|$icon_source|$icon_path|$group|$developer"
           done > /tmp/pkg-info
           # Fetch descriptions.json for long descriptions
@@ -189,7 +188,7 @@ jobs:
             xml_file="dists/$distro/main/dep11/Components-amd64.xml"
             echo '<?xml version="1.0" encoding="UTF-8"?>' > "$xml_file"
             echo '<components origin="daydve-apt">' >> "$xml_file"
-            while IFS='|' read -r app url desc type cats icon_source icon_path developer; do
+            while IFS='|' read -r app url desc type cats icon_source icon_path group developer; do
               [ -z "$app" ] && continue
               [ -z "$type" ] && type="console-application"
               [ "$type" = "none" ] && continue
@@ -197,20 +196,11 @@ jobs:
               printf '    <id>io.github.daydve.apt.%s</id>\n' "$app" >> "$xml_file"
               printf '    <name>%s</name>\n' "$app" >> "$xml_file"
               printf '    <summary>%s</summary>\n' "$desc" >> "$xml_file"
-              # Author shown in Discover/Software (falls back to the repo owner).
-              # developer_name > DEP-11 Developer.name; the newer <developer id>
-              # form is mangled by appstreamcli 1.0.2 on Ubuntu 24.04 (a pipe
-              # appears prepended to the name).
-              if [ "$app" = "anki" ]; then
-              echo "PGINFO-anki: $(grep -E '^anki\|' /tmp/pkg-info)"
-            fi
-            if [ "$app" = "mc6" ]; then
-              echo "PGINFO-mc6: $(grep -E '^mc6\|' /tmp/pkg-info)"
-            fi
-            if [ "$app" = "anki" ]; then
-              case "$developer" in *"|"*) echo "PIPE-in-developer: [$developer]";; *) echo "no-pipe: [$developer]";; esac
-            fi
-            printf '    <developer_name>%s</developer_name>\n' "${developer:-DayDve}" >> "$xml_file"
+              # Author shown in Discover/Software (favours original developer,
+              # falls back to the repo owner). developer_name > DEP-11
+              # Developer.name; the newer <developer id> form is dropped by
+              # appstreamcli 1.0.2 on Ubuntu 24.04.
+              printf '    <developer_name>%s</developer_name>\n' "${developer:-DayDve}" >> "$xml_file"
               # Long description
               long_desc=$(jq -r --arg k "$app" '.[$k].description // empty' /tmp/descriptions.json 2>/dev/null || echo "")
               if [ -n "$long_desc" ]; then
@@ -261,10 +251,6 @@ jobs:
             echo '</components>' >> "$xml_file"
             yml_plain="dists/$distro/main/dep11/Components-amd64.yml"
             appstreamcli convert "$xml_file" "$yml_plain" --format yaml
-            # appstreamcli (Ubuntu 24.04) renders <developer_name> as a literal
-            # block: strip any stray '|' the serializer may prepend.
-            sed -i "/C: '|/s/|//" "$yml_plain"
-            sed -i "/C: '|/s/|//" "$yml_plain"
             # Add MediaBaseUrl so Discover resolves relative screenshot paths
             sed -i '/^Origin: daydve-apt$/a MediaBaseUrl: https://raw.githubusercontent.com/DayDve/apt-repo/apt/' "$yml_plain"
             # Inject Thumbnails into screenshots (appstreamcli generates thumbnails: [])
