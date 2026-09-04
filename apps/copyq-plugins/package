@@ -1,0 +1,21 @@
+SOURCE_URL="https://github.com/hluk/CopyQ"
+DESCRIPTION="Advanced clipboard manager with editing and scripting — extra plugins"
+FAMILY="copyq"
+GROUP="copyq"
+APPSTREAM_TYPE="none"
+
+# copyq-plugins is built from the same upstream tree as copyq and locked to
+# the same version tag. The FAMILY ties it to copyq for one combined Telegram
+# notification (the main package's changelog covers this one too).
+check_update() {
+  gh_latest_release hluk/CopyQ
+  version="${LATEST_TAG#v}"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  local current="${1:-}"
+  gh_latest_release hluk/CopyQ
+  version="${LATEST_TAG#v}"
+  ai_changelog "copyq-plugins" "$RELEASE_BODY" "the dynamically loaded plugin modules (itemtext, itemimage, itemnotes, itempinned, itemtags, itemencrypted, vim-like fakevim editing, itemsync)"
+}

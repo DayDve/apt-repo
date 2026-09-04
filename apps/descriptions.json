@@ -11,6 +11,12 @@
   "btrfs-assistant": {
     "description": "Btrfs Assistant provides a graphical interface for managing Btrfs subvolumes, filesystem settings, and maintenance routines. It integrates directly with Snapper to let you browse, create, and restore system snapshots directly from the GUI. You can also use it to monitor subvolume space usage and schedule or manually run routine operations like scrubs, balances, and defragmentation."
   },
+  "copyq": {
+    "description": "CopyQ is an advanced clipboard manager with editing and scripting features. It monitors the system clipboard, stores the history of copied items in customizable tabs, and makes it easy to search, edit, tag, pin, and re-paste items. Extensive scripting and plugin support lets you automate clipboard workflows, encrypt sensitive items, and synchronize the clipboard between multiple devices."
+  },
+  "copyq-plugins": {
+    "description": "Dynamically loaded plugins for CopyQ, the advanced clipboard manager. Adds support for text and rich-text items, image thumbnails, notes, pinned and tagged items, encrypted items, vim-like editing, and clipboard synchronization. Installed automatically through the copyq package recommendation."
+  },
   "fonts-noto-lite": {
     "description": "fonts-noto-lite declutters font selection menus in Ubuntu and Debian by hiding non-Latin and non-Cyrillic Noto font families from desktop applications. It uses dpkg-divert and system fontconfig rules to disable dozens of script-specific families—such as Arabic, Thai, Devanagari, and CJK—while keeping standard Noto Sans, Serif, Mono, and Color Emoji available. Installing this package also replaces fonts-noto-extra, freeing around 334 MB of disk space without breaking base package dependencies."
   },

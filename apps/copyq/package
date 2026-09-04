@@ -1,0 +1,26 @@
+SOURCE_URL="https://github.com/hluk/CopyQ"
+DESCRIPTION="Advanced clipboard manager with editing and scripting"
+DEVELOPER="Lukáš Holeček"
+# Display grouping: copyq and copyq-plugins shown as one entry on the site/README.
+GROUP="copyq"
+APPSTREAM_TYPE="desktop-application"
+APPSTREAM_CATEGORIES="Utility;Qt"
+APPSTREAM_KEYWORDS="clipboard,manager,history,scripting,editor"
+APPSTREAM_SUMMARY="Advanced clipboard manager with editing and scripting"
+
+# Upstream tags releases vX.Y.Z; every release also ships the Linux source
+# tarball (CopyQ-<version>.tar.gz), so the binary package mirrors the main app.
+# The plugin modules are built from the same tree and version-locked to this
+# tag (separate copyq-plugins package, shares the Telegram notification).
+check_update() {
+  gh_latest_release hluk/CopyQ
+  version="${LATEST_TAG#v}"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  local current="${1:-}"
+  gh_latest_release hluk/CopyQ
+  version="${LATEST_TAG#v}"
+  ai_changelog "copyq" "$RELEASE_BODY" "the clipboard manager application itself (monitoring, history tabs, editing, scripting)"
+}
