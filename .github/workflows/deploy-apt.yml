@@ -200,7 +200,16 @@ jobs:
               # developer_name > DEP-11 Developer.name; the newer <developer id>
               # form is mangled by appstreamcli 1.0.2 on Ubuntu 24.04 (a pipe
               # appears prepended to the name).
-              printf '    <developer_name>%s</developer_name>\n' "${developer:-DayDve}" >> "$xml_file"
+              if [ "$app" = "anki" ]; then
+              echo "PGINFO-anki: $(grep -E '^anki\|' /tmp/pkg-info)"
+            fi
+            if [ "$app" = "mc6" ]; then
+              echo "PGINFO-mc6: $(grep -E '^mc6\|' /tmp/pkg-info)"
+            fi
+            if [ "$app" = "anki" ]; then
+              case "$developer" in *"|"*) echo "PIPE-in-developer: [$developer]";; *) echo "no-pipe: [$developer]";; esac
+            fi
+            printf '    <developer_name>%s</developer_name>\n' "${developer:-DayDve}" >> "$xml_file"
               # Long description
               long_desc=$(jq -r --arg k "$app" '.[$k].description // empty' /tmp/descriptions.json 2>/dev/null || echo "")
               if [ -n "$long_desc" ]; then
