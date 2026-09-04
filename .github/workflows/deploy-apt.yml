@@ -250,6 +250,8 @@ jobs:
             done < /tmp/pkg-info
             echo '</components>' >> "$xml_file"
             yml_plain="dists/$distro/main/dep11/Components-amd64.yml"
+            appstreamcli --version
+            echo "DEBUG-developer-lines:"; grep -o '<developer_name>[^<]*</developer_name>' "$xml_file"
             appstreamcli convert "$xml_file" "$yml_plain" --format yaml
             # Add MediaBaseUrl so Discover resolves relative screenshot paths
             sed -i '/^Origin: daydve-apt$/a MediaBaseUrl: https://raw.githubusercontent.com/DayDve/apt-repo/apt/' "$yml_plain"
