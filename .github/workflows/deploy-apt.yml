@@ -196,10 +196,11 @@ jobs:
               printf '    <id>io.github.daydve.apt.%s</id>\n' "$app" >> "$xml_file"
               printf '    <name>%s</name>\n' "$app" >> "$xml_file"
               printf '    <summary>%s</summary>\n' "$desc" >> "$xml_file"
-              # Author shown in Discover/Software (falls back to the repo owner)
-              printf '    <developer id="io.github.daydve.apt.%s">\n' "$app" >> "$xml_file"
-              printf '      <name>%s</name>\n' "${developer:-DayDve}" >> "$xml_file"
-              printf '    </developer>\n' >> "$xml_file"
+              # Author shown in Discover/Software (falls back to the repo owner).
+              # developer_name > DEP-11 Developer.name; the newer <developer id>
+              # form is mangled by appstreamcli 1.0.2 on Ubuntu 24.04 (a pipe
+              # appears prepended to the name).
+              printf '    <developer_name>%s</developer_name>\n' "${developer:-DayDve}" >> "$xml_file"
               # Long description
               long_desc=$(jq -r --arg k "$app" '.[$k].description // empty' /tmp/descriptions.json 2>/dev/null || echo "")
               if [ -n "$long_desc" ]; then
