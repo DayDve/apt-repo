@@ -44,6 +44,7 @@ jobs:
       contents: write
     strategy:
       matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
+      fail-fast: false
     steps:
       - uses: actions/checkout@v5
 
@@ -63,9 +64,9 @@ jobs:
           others=$(ls -d apps/*/ | sed 's|apps/||;s|/||' \
             | awk -v a="${{ matrix.app }}" 'length($0) > length(a)' \
             | sed 's/[][\.*^$()+?{}|\/]/\\&/g' | paste -sd'|')
-          cand=$(echo "$tags" | grep -E "^${{ matrix.app }}-[0-9]")
+          cand=$(echo "$tags" | grep -E "^${{ matrix.app }}-[0-9]" || true)
           if [ -n "$others" ]; then
-            cand=$(echo "$cand" | grep -Ev "^(${others})-")
+            cand=$(echo "$cand" | grep -Ev "^(${others})-" || true)
           fi
           tag=$(echo "$cand" | sort -V | tail -1)
           if [ -n "$tag" ]; then
