@@ -242,6 +242,110 @@ Screenshots:
     width: 945
     height: 747
 ---
+Type: desktop-application
+ID: io.github.daydve.apt.copyq
+Package: copyq
+ProjectLicense: GPL-3.0
+Name:
+  C: copyq
+Summary:
+  C: Advanced clipboard manager with editing and scripting
+Description:
+  C: >-
+    <p>CopyQ is an advanced clipboard manager with editing and scripting features. It monitors the system clipboard, stores
+    the history of copied items in customizable tabs, and makes it easy to search, edit, tag, pin, and re-paste items. Extensive
+    scripting and plugin support lets you automate clipboard workflows, encrypt sensitive items, and synchronize the clipboard
+    between multiple devices.</p>
+Developer:
+  name:
+    C: Lukáš Holeček
+Categories:
+- Utility
+- Qt
+Url:
+  homepage: https://github.com/hluk/CopyQ
+Icon:
+  cached:
+  - name: copyq
+Launchable:
+  desktop-id:
+  - copyq.desktop
+Provides:
+  binaries:
+  - copyq
+Screenshots:
+- default: true
+  caption:
+    C: copyq
+  thumbnails:
+    - url: screenshots/copyq/0.png
+      width: 640
+      height: 360
+  source-image:
+    url: screenshots/copyq/0.png
+    width: 640
+    height: 360
+- caption:
+    C: copyq
+  thumbnails:
+    - url: screenshots/copyq/1.png
+      width: 312
+      height: 440
+  source-image:
+    url: screenshots/copyq/1.png
+    width: 312
+    height: 440
+- caption:
+    C: copyq
+  thumbnails:
+    - url: screenshots/copyq/2.png
+      width: 263
+      height: 341
+  source-image:
+    url: screenshots/copyq/2.png
+    width: 263
+    height: 341
+- caption:
+    C: copyq
+  thumbnails:
+    - url: screenshots/copyq/3.png
+      width: 312
+      height: 440
+  source-image:
+    url: screenshots/copyq/3.png
+    width: 312
+    height: 440
+- caption:
+    C: copyq
+  thumbnails:
+    - url: screenshots/copyq/4.png
+      width: 332
+      height: 270
+  source-image:
+    url: screenshots/copyq/4.png
+    width: 332
+    height: 270
+- caption:
+    C: copyq
+  thumbnails:
+    - url: screenshots/copyq/5.png
+      width: 293
+      height: 388
+  source-image:
+    url: screenshots/copyq/5.png
+    width: 293
+    height: 388
+- caption:
+    C: copyq
+  thumbnails:
+    - url: screenshots/copyq/6.png
+      width: 293
+      height: 324
+  source-image:
+    url: screenshots/copyq/6.png
+    width: 293
+    height: 324
+---
 Type: font
 ID: io.github.daydve.apt.fonts-noto-lite
 Package: fonts-noto-lite
@@ -425,7 +529,6 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.mc6
 Package: mc6
-ProjectLicense: MIT
 Name:
   C: mc6
 Summary:
@@ -760,6 +863,7 @@ Provides:
 Type: addon
 ID: io.github.daydve.apt.wps-office-langpack-ru
 Package: wps-office-langpack-ru
+ProjectLicense: LicenseRef-proprietary
 Name:
   C: wps-office-langpack-ru
 Summary:
@@ -805,6 +909,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.wps-office
 Package: wps-office
+ProjectLicense: GPL-3.0-or-later
 Name:
   C: wps-office
 Summary:

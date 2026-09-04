@@ -125,6 +125,41 @@ Description: GUI management tool for Btrfs filesystem
  A Qt6-based tool for managing Btrfs filesystems, including
  subvolumes, snapshots (Snapper/Timeshift), scrub, and balance operations.
 
+Package: copyq
+Version: 16.0.0
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 9088
+Depends: libc6, libgcc-s1, libstdc++6, libqt6core6t64, libqt6dbus6t64, libqt6gui6t64, libqt6network6t64, libqt6qml6, libqt6svg6, libqt6widgets6t64, libqt6xml6, libqca-qt6-2, libqt6keychain1, libkf6guiaddons6, libkf6notifications6, kf6-kstatusnotifieritem
+Recommends: copyq-plugins (= 16.0.0), qt6-wayland
+Filename: pool/noble/main/copyq_16.0.0_noble_amd64.deb
+Size: 2442648
+MD5sum: 735ff157d5a0b5aa5c7422d0671f0847
+SHA1: 67a9abe0c10b4a7b2fae3cc9112abbbbed3e4a17
+SHA256: d762d2bfcd2da0d86ea6c196c557a4babb43a9864b9b36c7d134bb0b8482be45
+Homepage: https://hluk.github.io/CopyQ/
+Description: Advanced clipboard manager with editing and scripting
+ CopyQ monitors the system clipboard and saves its content in
+ customized tabs. Saved clipboard can be later copied and pasted
+ directly into any application, with editing and scripting support.
+
+Package: copyq-plugins
+Version: 16.0.0
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 3344
+Depends: copyq (= 16.0.0), libc6, libgcc-s1, libstdc++6, libqt6core6t64, libqt6gui6t64, libqt6widgets6t64
+Filename: pool/noble/main/copyq-plugins_16.0.0_noble_amd64.deb
+Size: 743440
+MD5sum: 658b25a31a0cc4b503f3defcc58d7b2a
+SHA1: 5a84f1182cfc3d8a816de98af70bd95e81f19568
+SHA256: acecf3603c47d7907546ac56b146d695663de76239c3f920690a319395fe173a
+Homepage: https://hluk.github.io/CopyQ/
+Description: Advanced clipboard manager with editing and scripting (plugins)
+ Dynamically loaded plugins for CopyQ: text and rich-text items,
+ image thumbnails, notes, pinned and tagged items, encrypted items,
+ vim-like editing and advanced clipboard synchronization.
+
 Package: fonts-noto-lite
 Version: 1.0
 Architecture: all
