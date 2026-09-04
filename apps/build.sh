@@ -244,6 +244,133 @@ $raw_text"
   fi
 }
 
+# detect_license: Determine the SPDX license id for a project.
+# Usage: detect_license <url_or_owner_repo>
+# Tries, in order:
+#   1. GitHub license API (repos/OWNER/REPO/license) — authoritative SPDX id
+#   2. Raw LICENSE/COPYING file from the default branch (GitHub, GitLab)
+#   3. Gemini summarization (GEMINI_API_KEY) — names the license from context;
+#      only asked when the repo-based methods could not identify it
+# Prints the SPDX id on stdout (e.g. MIT, Apache-2.0, GPL-3.0-or-later,
+# LicenseRef-proprietary), or nothing (return 1) if it could not be determined.
+# The caller decides the final license (e.g. fall back to LicenseRef-proprietary).
+
+# _espdx_from_text: recognize a license from the opening lines of a LICENSE file.
+# The first ~30 lines carry the authoritative header; wording further down the
+# text is ignored (GPL-3 section 13 mentions the "GNU Affero General Public
+# License", which would otherwise cause a false AGPL hit).
+_espdx_from_text() {
+  local first
+  first=$(printf '%s' "$1" | sed -n '1,30p' | tr 'A-Z' 'a-z')
+  local gpl agpl
+  # Aggressive AGPL first — GPL-3 never names Affero in its first 30 lines.
+  if printf '%s' "$first" | grep -q "gnu affero"; then
+    agpl="AGPL-3.0"
+    printf '%s' "$first" | grep -qE "or \(at your option\) any later|version 3 or later" && agpl="AGPL-3.0-or-later"
+    printf '%s' "$agpl"; return 0
+  fi
+  if printf '%s' "$first" | grep -q "Apache License" ; then
+    printf '%s' "$first" | grep -qE "License[[:space:]]*$|version 2\.0" && { printf '%s' "Apache-2.0"; return 0; }
+    printf '%s' "Apache-2.0"; return 0
+  fi
+  if printf '%s' "$first" | grep -q "SIL OPEN FONT LICENSE"; then
+    printf '%s' "OFL-1.1"; return 0
+  fi
+  if printf '%s' "$first" | grep -q "Mozilla Public License"; then
+    printf '%s' "MPL-2.0"; return 0
+  fi
+  if printf '%s' "$first" | grep -q "redistribution and use in source and binary forms" &&
+     printf '%s' "$first" | grep -q "all rights reserved"; then
+    printf '%s' "BSD-3-Clause"; return 0
+  fi
+  if printf '%s' "$first" | grep -q "the mit license\|permission is hereby granted, free of charge"; then
+    printf '%s' "MIT"; return 0
+  fi
+  if printf '%s' "$first" | grep -q "isc license\|permission to use, copy, modify"; then
+    printf '%s' "ISC"; return 0
+  fi
+  if printf '%s' "$first" | grep -qE "gnu general public license|general public license"; then
+    gpl="GPL-3.0"
+    printf '%s' "$first" | grep -qE "version 2[ ,]|version 2$" && gpl="GPL-2.0"
+    printf '%s' "$first" | grep -qE "or \(at your option\) any later|version [23] or later" && gpl="$gpl-or-later"
+    printf '%s' "$gpl"; return 0
+  fi
+  return 1
+}
+
+# _espdx_fetch_raw: download a license-ish file and recognize it.
+_espdx_fetch_raw() {
+  local url="$1" text=""
+  text=$(curl -fsSL --max-time 15 "$url" 2>/dev/null) || text=""
+  [ -z "$text" ] && return 1
+  printf '%s' "$text" | grep -qiE "<html|<!doctype" && return 1
+  _espdx_from_text "$text"
+}
+
+detect_license() {
+  local url="$1" api_key="${GEMINI_API_KEY:-}"
+  api_key="${api_key//\"/}"; api_key="${api_key//\'/}"; api_key="$(echo "$api_key" | xargs)"
+
+  # --- 1. GitHub license API ---
+  if [[ "$url" =~ github\.com/([^/]+)/([^/]+)/? ]]; then
+    local owner="${BASH_REMATCH[1]}" repo="${BASH_REMATCH[2]}"
+    local lic
+    lic=$(gh_api_retry "repos/$owner/$repo/license" --jq '.license.spdx_id // empty' 2>/dev/null || true)
+    lic=$(echo "$lic" | xargs)
+    if [ -n "$lic" ] && [ "$lic" != "NOASSERTION" ] && [ "$lic" != "OTHER" ]; then
+      printf '%s' "$lic"; return 0
+    fi
+    # --- 2a. raw LICENSE fallback (default branch) ---
+    for f in LICENSE LICENSE.md LICENSE.txt COPYING COPYING.md; do
+      if lic=$(_espdx_fetch_raw "https://raw.githubusercontent.com/$owner/$repo/HEAD/$f"); then
+        printf '%s' "$lic"; return 0
+      fi
+    done
+  fi
+
+  # --- 2b. GitLab raw LICENSE on master/main ---
+  if [[ "$url" =~ gitlab\.com/(.+)$ ]]; then
+    local path="${BASH_REMATCH[1]}"
+    for branch in master main; do
+      for f in LICENSE LICENSE.md LICENSE.txt COPYING COPYING.md COPYING.txt; do
+        if lic=$(_espdx_fetch_raw "https://gitlab.com/$path/-/raw/$branch/$f"); then
+          printf '%s' "$lic"; return 0
+        fi
+      done
+    done
+  fi
+
+  # --- 3. Gemini fallback ---
+  if [ -n "$api_key" ]; then
+    local prompt="You are a licensing expert. Given the project URL '$url', tell me the SPDX license identifier this upstream project is released under. If the project appears to be proprietary/closed-source, reply exactly 'LicenseRef-proprietary'. If you cannot determine it, reply exactly 'unknown'. Reply with ONLY the SPDX identifier, nothing else."
+    local payload
+    payload=$(jq -n --arg p "$prompt" '{contents: [{parts: [{text: $p}]}], generationConfig: {temperature: 0}}')
+    local endpoints=(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent"
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent"
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+    )
+    local result=""
+    for gemurl in "${endpoints[@]}"; do
+      result=$(curl -s --max-time 30 \
+        -H "Content-Type: application/json" \
+        -H "X-goog-api-key: $api_key" \
+        -d "$payload" "$gemurl" 2>/dev/null) || continue
+      result=$(echo "$result" | jq -r '.candidates[0].content.parts[0].text // empty' 2>/dev/null) || continue
+      [ -n "$result" ] && break
+    done
+    if [ -n "$result" ]; then
+      result=$(echo "$result" | xargs)
+      case "$result" in
+        unknown|Unknown|UNKNOWN|"") ;;
+        *) printf '%s' "$result"; return 0 ;;
+      esac
+    fi
+  fi
+
+  return 1
+}
+
 # ============================================================
 # Main logic (skipped when sourced — e.g. from check-updates.yml)
 # ============================================================

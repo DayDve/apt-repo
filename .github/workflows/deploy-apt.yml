@@ -149,8 +149,15 @@ jobs:
           echo '}' >> "$GITHUB_WORKSPACE/pool-map.json"
 
       - name: Get package info from apps
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           git fetch origin apps
+          # detect_license helper (build.sh is safe to source: main logic
+          # is guarded and returns early when sourced)
+          git show origin/apps:apps/build.sh > /tmp/apt-build.sh
+          source /tmp/apt-build.sh
           for app in $(git ls-tree --name-only origin/apps:apps/ | grep -v '^template$'); do
             pkg_file="origin/apps:apps/$app/package"
             url=$(git show "$pkg_file" | awk -F'"' '/^SOURCE_URL=/{print $2}')
@@ -161,7 +168,14 @@ jobs:
             icon_path=$(git show "$pkg_file" | awk -F'"' '/^ICON_PATH=/{print $2}')
             group=$(git show "$pkg_file" | awk -F'"' '/^GROUP=/{print $2}')
             developer=$(git show "$pkg_file" | awk -F'"' '/^DEVELOPER=/{print $2}')
-            [ -n "$url" ] && echo "$app|$url|$desc|$type|$cats|$icon_source|$icon_path|$group|$developer"
+            license=$(git show "$pkg_file" | awk -F'"' '/^LICENSE=/{print $2}')
+            # LICENSE is optional — auto-detect from the upstream repo when unset
+            if [ -z "$license" ]; then
+              echo "detecting license for $app ($url)..." >&2
+              license=$(detect_license "$url" 2>/dev/null || true)
+              [ -n "$license" ] && echo "  -> $license" >&2
+            fi
+            [ -n "$url" ] && echo "$app|$url|$desc|$type|$cats|$icon_source|$icon_path|$group|$developer|$license"
           done > /tmp/pkg-info
           # Fetch descriptions.json for long descriptions
           git show "origin/apps:apps/descriptions.json" > /tmp/descriptions.json 2>/dev/null || echo '{}' > /tmp/descriptions.json
@@ -188,7 +202,7 @@ jobs:
             xml_file="dists/$distro/main/dep11/Components-amd64.xml"
             echo '<?xml version="1.0" encoding="UTF-8"?>' > "$xml_file"
             echo '<components origin="daydve-apt">' >> "$xml_file"
-            while IFS='|' read -r app url desc type cats icon_source icon_path group developer; do
+            while IFS='|' read -r app url desc type cats icon_source icon_path group developer license; do
               [ -z "$app" ] && continue
               [ -z "$type" ] && type="console-application"
               [ "$type" = "none" ] && continue
@@ -207,7 +221,11 @@ jobs:
                 echo '    <description><p>'"$long_desc"'</p></description>' >> "$xml_file"
               fi
               printf '    <metadata_license>CC0-1.0</metadata_license>\n' >> "$xml_file"
-              printf '    <project_license>GPL-3.0-or-later</project_license>\n' >> "$xml_file"
+              # project_license: only when known (explicit LICENSE= or
+              # auto-detected); omit otherwise rather than guess wrong
+              if [ -n "$license" ]; then
+                printf '    <project_license>%s</project_license>\n' "$license" >> "$xml_file"
+              fi
               printf '    <pkgname>%s</pkgname>\n' "$app" >> "$xml_file"
               printf '    <url type="homepage">%s</url>\n' "$url" >> "$xml_file"
               if [ "$type" = "desktop-application" ] || [ "$type" = "addon" ]; then

@@ -27,6 +27,13 @@
 #                           "Author"/developer field (single quoted line,
 #                           e.g. DEVELOPER="Genymobile"). Leave unset to
 #                           fall back to the repo owner (DayDve).
+#   LICENSE               — SPDX identifier for <project_license> in DEP-11
+#                           (e.g. LICENSE="MIT", LICENSE="GPL-3.0-or-later").
+#                           Use LICENSE="LicenseRef-proprietary" for closed
+#                           source. Leave unset to auto-detect from the
+#                           upstream repo (or ask Gemini) and confirm the
+#                           resulting value, since DEP-11 consumers (KDE
+#                           Discover) display this under "License".
 #
 # Icons for DEP-11 (optional, for app icons in KDE Discover):
 #   ICON_SOURCE  — file | url | deb (default: deb = auto-extract from .deb)
@@ -74,6 +81,7 @@
 SOURCE_URL="https://example.com/OWNER/REPO"
 DESCRIPTION="My awesome app"
 DEVELOPER="Awesome Org"
+LICENSE="MIT"
 
 # --- Example A: GitHub release-based (rclone, wps-office) ---
 # check_update() {
