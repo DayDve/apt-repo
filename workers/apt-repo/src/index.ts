@@ -813,7 +813,7 @@ ${sharedFooter(env.REPO, env.TELEGRAM)}
   <button class="lb-btn lb-close" data-action="lb-close" aria-label="Close">${icon('close', 20, 2.5)}</button>
   <button class="lb-btn lb-prev" data-action="lb-prev" aria-label="Previous">${icon('chevronLeft', 20, 2.5)}</button>
   <button class="lb-btn lb-next" data-action="lb-next" aria-label="Next">${icon('chevronRight', 20, 2.5)}</button>
-  <img id="lb-img" src="" alt="Screenshot preview">
+  <img id="lb-img" alt="Screenshot preview">
 </div>
 
 <script>
