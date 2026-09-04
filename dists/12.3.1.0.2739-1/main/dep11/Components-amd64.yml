@@ -19,6 +19,10 @@ Description:
     time efficiently instead of re-studying what you already know. You can create your own decks and cards for anything you
     want to learn, or download shared decks covering languages, medicine, law, math, and more. This package bundles Anki's
     official Linux build with its built-in Python and Qt runtime, so it works out of the box on Ubuntu and Debian.</p>
+Developer:
+  id: io.github.daydve.apt.anki
+  name:
+    C: '|Ankitects'
 Categories:
 - Education
 - Languages
@@ -80,6 +84,10 @@ Description:
     the standard Telegram interface. It includes a flexible ghost mode to hide your online status and read receipts, as well
     as anti-recall functionality that saves deleted and edited message history locally. Additionally, it offers font and theme
     customization, built-in message translation, streamer mode, and local Telegram Premium options.</p>
+Developer:
+  id: io.github.daydve.apt.ayugram
+  name:
+    C: '|AyuGram'
 Categories:
 - InstantMessaging
 Url:
@@ -160,6 +168,10 @@ Description:
     data blocks to recover disk space. It operates on live filesystems and automatically self-throttles, working seamlessly
     alongside Btrfs snapshots, reflinks, and transparent compression. Designed for high efficiency, it uses a fixed-size persistent
     hash table that requires as little as 1 GB of RAM per 10 TB of unique data.</p>
+Developer:
+  id: io.github.daydve.apt.bees
+  name:
+    C: '|Zygo'
 Categories:
 - System
 - Filesystem
@@ -183,6 +195,10 @@ Description:
     routines. It integrates directly with Snapper to let you browse, create, and restore system snapshots directly from the
     GUI. You can also use it to monitor subvolume space usage and schedule or manually run routine operations like scrubs,
     balances, and defragmentation.</p>
+Developer:
+  id: io.github.daydve.apt.btrfs-assistant
+  name:
+    C: '|Btrfs Assistant'
 Categories:
 - System
 - Filesystem
@@ -245,6 +261,10 @@ Description:
     families—such as Arabic, Thai, Devanagari, and CJK—while keeping standard Noto Sans, Serif, Mono, and Color Emoji available.
     Installing this package also replaces fonts-noto-extra, freeing around 334 MB of disk space without breaking base package
     dependencies.</p>
+Developer:
+  id: io.github.daydve.apt.fonts-noto-lite
+  name:
+    C: '|DayDve'
 Categories:
 - Fonts
 Url:
@@ -266,6 +286,10 @@ Description:
     <p>`glab` is a command-line tool that lets you manage GitLab repositories, issues, merge requests, and CI/CD pipelines
     directly from your terminal. You can create and review merge requests, check build pipeline statuses, manage project issues,
     and publish releases without opening a web browser. It works with both GitLab.com and self-hosted GitLab instances.</p>
+Developer:
+  id: io.github.daydve.apt.glab
+  name:
+    C: '|GitLab'
 Categories:
 - Utility
 - Development
@@ -289,6 +313,10 @@ Description:
     directly into previous system states during startup. It automatically detects kernels, initramfs images, and snapshot
     metadata generated manually or by tools like Snapper, Timeshift, and Yabsnap. Additionally, it includes a background service
     that automatically updates your GRUB configuration whenever snapshots are created or deleted.</p>
+Developer:
+  id: io.github.daydve.apt.grub-btrfs
+  name:
+    C: '|Antynea'
 Categories:
 - System
 - Boot
@@ -313,6 +341,10 @@ Description:
     key overloading, custom layers, hybrid modifiers, and device-specific configurations. Because it operates at the kernel
     level, your custom keybindings work consistently across X11, Wayland, and virtual consoles without depending on a specific
     desktop environment.</p>
+Developer:
+  id: io.github.daydve.apt.keyd
+  name:
+    C: '|rvaiya'
 Categories:
 - System
 - Hardware
@@ -336,6 +368,10 @@ Description:
     and folders from different locations into a single view. Instead of creating physical temporary folders or relying on
     fragile multi-file selections, you can drag and drop items into the stash to organize a batch job. Once gathered, you
     can easily copy or move the entire staged collection to its final destination in one operation.</p>
+Developer:
+  id: io.github.daydve.apt.kio-stash
+  name:
+    C: '|DayDve'
 Categories:
 - System
 - Utility
@@ -363,6 +399,10 @@ Description:
     connection or third-party servers. It automatically detects nearby devices running the app, allowing you to quickly share
     documents, media, and clipboard content across Linux, Android, iOS, Windows, and macOS. Because all traffic stays within
     your local Wi-Fi or Ethernet connection, transfers are fast, private, and use zero internet bandwidth.</p>
+Developer:
+  id: io.github.daydve.apt.localsend
+  name:
+    C: '|LocalSend'
 Categories:
 - Network
 - FileTransfer
@@ -406,6 +446,10 @@ Description:
     environments. It extends the classic interface with dynamic plugins that let you browse Git repositories, Docker containers,
     Kubernetes clusters, and S3 buckets directly within file panels. It also includes an integrated archive manager, structured
     tree views for JSON and YAML, live viewer filtering, and an embedded shell terminal.</p>
+Developer:
+  id: io.github.daydve.apt.mc6
+  name:
+    C: mc6|Ilia Maslakov
 Categories:
 - System
 - FileTools
@@ -447,6 +491,10 @@ Description:
     storage services. Acting like rsync for the cloud, it supports dozens of storage backends including Amazon S3, Backblaze
     B2, Box, Google Drive, and S3-compatible providers. It is ideal for scripting automated offsite backups, migrating data
     between different cloud hosts, or mounting remote storage directly onto your local file system.</p>
+Developer:
+  id: io.github.daydve.apt.rclone
+  name:
+    C: '|Nick Craig-Wood'
 Categories:
 - Utility
 - FileTransfer
@@ -471,6 +519,10 @@ Description:
     grouping, and secure password vault integration to eliminate the need for multiple separate connection clients. It is
     built for system administrators and power users who need to maintain organized, secure access to large fleets of servers
     and network infrastructure.</p>
+Developer:
+  id: io.github.daydve.apt.remotedesktopmanager
+  name:
+    C: '|Devolutions'
 Categories:
 - Utility
 - Security
@@ -501,6 +553,10 @@ Description:
     and transfer files. It works out of the box using default connection servers, but also allows you to set up your own self-hosted
     relay server for full control over your privacy and traffic. Featuring a multi-language graphical interface, it is a practical
     tool for remote system administration and desktop technical support.</p>
+Developer:
+  id: io.github.daydve.apt.rustdesk
+  name:
+    C: '|RustDesk'
 Categories:
 - Network
 - RemoteAccess
@@ -552,6 +608,10 @@ Description:
     your phone using your computer's keyboard and mouse. It requires no root access or installed mobile apps, delivering low-latency
     performance with support for frame rates up to 120 FPS. Key features include screen recording, seamless two-way copy-pasting,
     mirroring while the phone screen remains off, and using your device's camera as a Linux webcam via V4L2.</p>
+Developer:
+  id: io.github.daydve.apt.scrcpy
+  name:
+    C: '|Genymobile'
 Categories:
 - Utility
 - Development
@@ -593,6 +653,10 @@ Description:
     with other users. The desktop application syncs with your mobile account using your phone number, allowing you to seamlessly
     transfer active calls between devices and manage message histories from your Linux PC. Key features include end-to-end
     encrypted chats, group video conferencing, screen sharing, and calling non-Viber phone numbers via Viber Out.</p>
+Developer:
+  id: io.github.daydve.apt.viber
+  name:
+    C: '|Rakuten Viber'
 Categories:
 - InstantMessaging
 - Network
@@ -643,6 +707,10 @@ Description:
     <p>WineGUI provides a clean GTK graphical interface for managing Wine prefixes and launching Windows applications on Linux.
     It simplifies creating, configuring, and organizing isolated Wine environments so you don't have to manage them through
     the terminal. Note that it requires Wine v9 or higher to be installed on your host system.</p>
+Developer:
+  id: io.github.daydve.apt.winegui
+  name:
+    C: '|WineGUI'
 Categories:
 - System
 - Emulator
@@ -694,6 +762,10 @@ Description:
     relying on XWayland. Built using `pixman` and `libxkbcommon`, it provides a lightweight remote desktop viewing experience
     with proper input handling. It is a minimalist command-line client ideal for users who want a simple, native tool to access
     remote machines on Wayland compositors.</p>
+Developer:
+  id: io.github.daydve.apt.wlvncc
+  name:
+    C: '|any1'
 Categories:
 - Network
 - RemoteAccess
@@ -715,6 +787,10 @@ Description:
   C: >-
     <p>Russian language pack for WPS Office. Adds Russian UI translations and spell-check dictionaries to the WPS Office suite
     components.</p>
+Developer:
+  id: io.github.daydve.apt.wps-office-langpack-ru
+  name:
+    C: wps-office|DayDve
 Url:
   homepage: https://github.com/DayDve/wps-office-langpack-ru
 Icon:
@@ -759,6 +835,10 @@ Description:
     <p>A comprehensive office suite compatible with Microsoft Word, Excel, and PowerPoint formats. This is a community patched
     repack with fixes and improvements over the stock package, including removed telemetry and better Linux desktop integration.
     Includes Writer, Presentation, and Spreadsheets.</p>
+Developer:
+  id: io.github.daydve.apt.wps-office
+  name:
+    C: wps-office|WPS Office
 Categories:
 - Office
 - WordProcessor
