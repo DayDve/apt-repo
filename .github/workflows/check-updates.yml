@@ -162,9 +162,9 @@ jobs:
           # to fail-fast cancellations (a job can be cancelled after build.sh
           # already created the release), unlike relying on step conclusion.
           apps=$(gh release list --repo ${{ github.repository }} --limit 1000 \
-            --json tagName,createdAt --jq '.' \
+            --json tagName,publishedAt --jq '.' \
             | jq -r --arg c "$started" --arg n "$now" \
-              '.[] | select(.createdAt >= $c and .createdAt <= $n) | .tagName' \
+              '.[] | select(.publishedAt >= $c and .publishedAt <= $n) | .tagName' \
             | sed -E 's/-[0-9].*$//' \
             | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
           echo "list=$apps" >> "$GITHUB_OUTPUT"
