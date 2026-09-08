@@ -349,7 +349,6 @@ Screenshots:
 Type: font
 ID: io.github.daydve.apt.fonts-noto-lite
 Package: fonts-noto-lite
-ProjectLicense: OFL-1.1
 Name:
   C: fonts-noto-lite
 Summary:
@@ -529,6 +528,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.mc6
 Package: mc6
+ProjectLicense: MIT
 Name:
   C: mc6
 Summary:
