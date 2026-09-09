@@ -2,7 +2,7 @@
 
 ![Apps](https://img.shields.io/badge/apps-25-blue)
 [![Website](https://img.shields.io/badge/website-apt.smbit.pro-4a9eff)](https://apt.smbit.pro)
-[![About](https://img.shields.io/badge/about-apt.smbit.pro-4a9eff)](https://apt.smbit.pro/about)
+[![About](https://img.shields.io/badge/about-this%20repo-4a9eff)](https://apt.smbit.pro/about)
 [![Telegram](https://img.shields.io/badge/channel-@ddaptrepo-26A5E4?logo=telegram)](https://t.me/ddaptrepo)
 
 Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos. Packages are delivered as-is from upstream developers or repackagers - no guarantees on functionality or fitness for purpose.
