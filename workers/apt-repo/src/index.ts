@@ -153,7 +153,7 @@ function getOrigins(env: Env): { aptOrigin: string; fallbackOrigin: string } {
 // ── Plain-text banner helpers ──
 
 const BANNER_W = 66;
-const border = () => '#'.repeat(70);
+const border = () => '#'.repeat(BANNER_W);
 const box = (s: string) => `#${s.padEnd(BANNER_W - 2)}#`;
 
 // Local APT keyring/source filenames follow the author (or repo owner on forks)
@@ -391,7 +391,7 @@ async function serveText(ctx: ExecutionContext, env: Env): Promise<Response> {
     const entries = displayEntries(pkgs);
     const shown = entries.slice(0, 10);
     pkgLines = shown.map(pkgLine);
-    if (entries.length > 10) pkgLines.push('#', `# More packages — see the full list at ${aptOrigin}/packages`);
+    if (entries.length > 10) pkgLines.push('#', `# ... and more — see the full list at ${aptOrigin}/packages`);
   } else {
     pkgLines = ['# (failed to load package list)'];
   }
