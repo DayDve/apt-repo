@@ -152,8 +152,8 @@ function getOrigins(env: Env): { aptOrigin: string; fallbackOrigin: string } {
 
 // ── Plain-text banner helpers ──
 
-const BANNER_W = 70;
-const border = () => '#'.repeat(BANNER_W);
+const BANNER_W = 66;
+const border = () => '#'.repeat(70);
 const box = (s: string) => `#${s.padEnd(BANNER_W - 2)}#`;
 
 // Local APT keyring/source filenames follow the author (or repo owner on forks)
