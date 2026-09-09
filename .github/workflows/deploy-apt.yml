@@ -452,7 +452,6 @@ jobs:
       - name: Generate Release
         env:
           AUTHOR: ${{ vars.AUTHOR }}
-          SITE_NAME: ${{ vars.SITE_NAME }}
         run: |
           for distro in dists/*/; do
             [ -d "$distro" ] || continue
@@ -460,7 +459,7 @@ jobs:
 
             apt-ftparchive release \
               -o "APT::FTPArchive::Release::Origin=$AUTHOR" \
-              -o "APT::FTPArchive::Release::Label=$SITE_NAME" \
+              -o "APT::FTPArchive::Release::Label=DayDve apt repo" \
               -o "APT::FTPArchive::Release::Suite=$distro" \
               -o "APT::FTPArchive::Release::Codename=$distro" \
               -o "APT::FTPArchive::Release::Architectures=amd64" \
@@ -570,6 +569,14 @@ jobs:
             echo "No changed apps, skipping"
             exit 0
           fi
+
+          # Notify only about releases created since the previous deploy
+          # (manual runs for screenshots/metadata must not re-notify).
+          LAST_DEPLOY=""
+          if git fetch --quiet origin apt --depth=2 && git rev-parse --verify origin/apt~1 >/dev/null 2>&1; then
+            LAST_DEPLOY=$(git show -s --format=%cI origin/apt~1)
+          fi
+          export LAST_DEPLOY="$LAST_DEPLOY"
 
           # Start local Bot API server
           docker run -d --rm \

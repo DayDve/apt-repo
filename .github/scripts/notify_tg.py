@@ -14,6 +14,7 @@ import json
 import os
 import re
 import subprocess
+from datetime import datetime
 
 import requests
 
@@ -65,17 +66,35 @@ def build_groups(apps):
 
 def gh_list_tags(app):
     r = sh(["gh", "release", "list", "--limit", "1000", "--repo", os.environ["REPO"],
-            "--json", "tagName", "--jq", ".[].tagName"])
-    tags = [t for t in r.stdout.splitlines()
-            if re.match(r"^%s-[0-9]" % re.escape(app), t)]
+            "--json", "tagName,publishedAt", "--jq", ".[]"])
+    tags = []
+    for line in r.stdout.splitlines():
+        if not line:
+            continue
+        info = json.loads(line)
+        if re.match(r"^%s-[0-9]" % re.escape(app), info["tagName"]):
+            tags.append(info)
     if not tags:
         return None
 
     def sort_key(t):
-        v = t[len(app) + 1:]
+        v = t["tagName"][len(app) + 1:]
         return [("n", int(x)) if x.isdigit() else ("s", x)
                 for x in re.split(r"(\d+)", v) if x]
     return sorted(tags, key=sort_key)[-1]
+
+
+def is_new_release(tag):
+    last_deploy = os.environ.get("LAST_DEPLOY")
+    published = tag.get("publishedAt")
+    if not last_deploy or not published:
+        return True
+    try:
+        t = datetime.fromisoformat(published.replace("Z", "+00:00"))
+        ref = datetime.fromisoformat(last_deploy.replace("Z", "+00:00"))
+    except ValueError:
+        return True
+    return t > ref
 
 
 def extract_repo(url):
@@ -112,25 +131,28 @@ def member_data(app):
     if not tag:
         print("No release tag for %s, skipping" % app)
         return None
-    ver = tag[len(app) + 1:]
-    r = sh(["gh", "release", "view", tag, "--repo", os.environ["REPO"],
+    if not is_new_release(tag):
+        print("No new release for %s since last deploy, skipping" % app)
+        return None
+    ver = tag["tagName"][len(app) + 1:]
+    r = sh(["gh", "release", "view", tag["tagName"], "--repo", os.environ["REPO"],
             "--json", "body", "--jq", ".body"])
     src = read_var(app, "SOURCE_URL") or ""
     cl = read_var(app, "CHANGELOG_URL") or src
     d = "/tmp/deb-notify/%s" % app
     os.makedirs(d, exist_ok=True)
-    sh(["gh", "release", "download", tag, "--repo", os.environ["REPO"],
+    sh(["gh", "release", "download", tag["tagName"], "--repo", os.environ["REPO"],
         "--pattern", "*.deb", "--clobber", "--dir", d])
     debs = [os.path.join(d, f) for f in os.listdir(d) if f.endswith(".deb")]
     if not debs:
-        print("No .deb in release %s, skipping" % tag)
+        print("No .deb in release %s, skipping" % tag["tagName"])
         return None
     return {
-        "app": app, "tag": tag, "ver": ver,
+        "app": app, "tag": tag["tagName"], "ver": ver,
         "body": html.escape(r.stdout).strip(),
         "desc": read_var(app, "DESCRIPTION") or "",
         "src": src, "cl": cl, "deb": debs[0],
-        "link": changelog_link(src, cl, tag),
+        "link": changelog_link(src, cl, tag["tagName"]),
     }
 
 
