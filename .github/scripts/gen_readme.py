@@ -19,6 +19,8 @@ repo_owner, repo_name = repo.split("/", 1)
 apt_origin = required("APT_ORIGIN").rstrip("/")
 apt_domain = apt_origin.split("://", 1)[-1].split("/", 1)[0]
 
+apt_fallback = os.environ.get("APT_FALLBACK", "").strip().rstrip("/") or apt_origin
+
 telegram = required("TELEGRAM").rstrip("/")
 tg_handle = telegram.rsplit("/", 1)[-1]
 
@@ -31,6 +33,7 @@ content = env.get_template("README.md.j2").render(
     keyring_name=f"{repo_owner.lower()}-apt-repo",
     app_count=len(pkgs),
     apt_domain=apt_domain,
+    apt_fallback=apt_fallback,
     tg_handle=tg_handle,
 )
 

@@ -10,10 +10,10 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 ## Install
 
 ```bash
-sudo curl -fsSL https://apt.smbit.pro/apt-key.asc \
+sudo curl -fsSL https://apt-repo.daydve.workers.dev/apt-key.asc \
   -o /etc/apt/keyrings/daydve-apt-repo.asc && \
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \
-  https://apt.smbit.pro noble main" \
+  https://apt-repo.daydve.workers.dev noble main" \
   | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \
 sudo apt update
 ```

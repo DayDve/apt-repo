@@ -500,6 +500,7 @@ jobs:
       - name: Update README on apps
         env:
           APT_ORIGIN: ${{ vars.APT_ORIGIN }}
+          APT_FALLBACK: ${{ vars.APT_FALLBACK }}
           TELEGRAM: ${{ vars.TELEGRAM }}
         run: |
           cp "$GITHUB_WORKSPACE/packages.json" /tmp/packages.json

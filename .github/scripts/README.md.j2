@@ -10,10 +10,10 @@ Personal APT repository for software unavailable or outdated in standard Ubuntu/
 ## Install
 
 ```bash
-sudo curl -fsSL https://{{ apt_domain }}/apt-key.asc \
+sudo curl -fsSL {{ apt_fallback }}/apt-key.asc \
   -o /etc/apt/keyrings/{{ keyring_name }}.asc && \
 echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/{{ keyring_name }}.asc] \
-  https://{{ apt_domain }} noble main" \
+  {{ apt_fallback }} noble main" \
   | sudo tee /etc/apt/sources.list.d/{{ keyring_name }}.list && \
 sudo apt update
 ```
