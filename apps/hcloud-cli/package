@@ -1,0 +1,20 @@
+SOURCE_URL="https://github.com/hetznercloud/cli"
+DESCRIPTION="A command-line interface for Hetzner Cloud"
+DEVELOPER="Hetzner Cloud GmbH"
+CHANGELOG_URL="https://github.com/hetznercloud/cli/releases"
+APPSTREAM_TYPE="console-application"
+APPSTREAM_CATEGORIES="Network;System;Utility"
+APPSTREAM_KEYWORDS="hetzner,hcloud,cloud,server,cli"
+
+check_update() {
+  gh_latest_release hetznercloud/cli
+  version="${LATEST_TAG#v}"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  gh_latest_release hetznercloud/cli
+  version="${LATEST_TAG#v}"
+
+  echo "$RELEASE_BODY"
+}
