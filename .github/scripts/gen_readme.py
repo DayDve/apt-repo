@@ -1,50 +1,38 @@
 import json
+import os
+
+import jinja2
+
+HERE = os.path.dirname(os.path.abspath(__file__))
 
 
-with open('/tmp/packages.json') as f:
+def required(name):
+    value = os.environ.get(name, "").strip()
+    if not value:
+        raise SystemExit(f"ERROR: required env var {name} is not set (set it in the workflow from repo vars)")
+    return value
+
+
+repo = required("GITHUB_REPOSITORY")
+repo_owner, repo_name = repo.split("/", 1)
+
+apt_origin = required("APT_ORIGIN").rstrip("/")
+apt_domain = apt_origin.split("://", 1)[-1].split("/", 1)[0]
+
+telegram = required("TELEGRAM").rstrip("/")
+tg_handle = telegram.rsplit("/", 1)[-1]
+
+with open("/tmp/packages.json") as f:
     pkgs = json.load(f)
 
-n = len(pkgs)
+env = jinja2.Environment(loader=jinja2.FileSystemLoader(HERE), keep_trailing_newline=True)
+content = env.get_template("README.md.j2").render(
+    repo_name=repo_name,
+    keyring_name=f"{repo_owner.lower()}-apt-repo",
+    app_count=len(pkgs),
+    apt_domain=apt_domain,
+    tg_handle=tg_handle,
+)
 
-template = """\
-# apt-repo
-
-![Apps](https://img.shields.io/badge/apps-__COUNT__-blue)
-[![Website](https://img.shields.io/badge/website-apt.smbit.pro-4a9eff)](https://apt.smbit.pro)
-[![Telegram](https://img.shields.io/badge/channel-@ddaptrepo-26A5E4?logo=telegram)](https://t.me/ddaptrepo)
-
-Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos. Packages are delivered as-is from upstream developers or repackagers - no guarantees on functionality or fitness for purpose.
-
-## Install
-
-```bash
-sudo curl -fsSL https://apt.smbit.pro/apt-key.asc \\
-  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\
-  https://apt.smbit.pro noble main" \\
-  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\
-sudo apt update
-```
-
-Or one-liner: `curl -sL https://apt.smbit.pro | bash`
-
-## Browse packages
-
-**[Browse all packages on the website](https://apt.smbit.pro/packages)**
-
-## Want to add a package?
-
-Open a pull request with `apps/<app>/` containing two files. Use [`docs/template/`](docs/template/) as a starting point.
-
-| File | Requirements |
-|---|---|
-| `Dockerfile` | Multi-stage build for `docker buildx`. Final stage must be `FROM scratch` with `COPY --from=<stage> /path/*.deb /`. Build arg `APP_VERSION` is passed automatically. |
-| `package` | Sourced by [`apps/build.sh`](apps/build.sh). Must define `SOURCE_URL`, `check_update()`, and `get_version()`. See [template](docs/template/package) for the interface and patterns. |
-
-The PR description should explain what the package is and why it doesn't belong in standard repos.
-"""
-
-content = template.replace('__COUNT__', str(n))
-
-with open('README.md', 'w') as f:
+with open("README.md", "w") as f:
     f.write(content)

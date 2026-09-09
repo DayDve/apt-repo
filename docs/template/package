@@ -26,7 +26,7 @@
 #   DEVELOPER             — Original upstream author shown in Discover's
 #                           "Author"/developer field (single quoted line,
 #                           e.g. DEVELOPER="Genymobile"). Leave unset to
-#                           fall back to the repo owner (DayDve).
+#                         fall back to the repo's AUTHOR variable.
 #   LICENSE               — SPDX identifier for <project_license> in DEP-11
 #                           (e.g. LICENSE="MIT", LICENSE="GPL-3.0-or-later").
 #                           Use LICENSE="LicenseRef-proprietary" for closed

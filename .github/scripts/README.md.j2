@@ -1,28 +1,28 @@
-# apt-repo
+# {{ repo_name }}
 
-![Apps](https://img.shields.io/badge/apps-25-blue)
-[![Website](https://img.shields.io/badge/website-apt.smbit.pro-4a9eff)](https://apt.smbit.pro)
-[![About](https://img.shields.io/badge/about-apt.smbit.pro-4a9eff)](https://apt.smbit.pro/about)
-[![Telegram](https://img.shields.io/badge/channel-@ddaptrepo-26A5E4?logo=telegram)](https://t.me/ddaptrepo)
+![Apps](https://img.shields.io/badge/apps-{{ app_count }}-blue)
+[![Website](https://img.shields.io/badge/website-{{ apt_domain }}-4a9eff)](https://{{ apt_domain }})
+[![About](https://img.shields.io/badge/about-{{ apt_domain }}-4a9eff)](https://{{ apt_domain }}/about)
+[![Telegram](https://img.shields.io/badge/channel-@{{ tg_handle }}-26A5E4?logo=telegram)](https://t.me/{{ tg_handle }})
 
 Personal APT repository for software unavailable or outdated in standard Ubuntu/Debian repos. Packages are delivered as-is from upstream developers or repackagers - no guarantees on functionality or fitness for purpose.
 
 ## Install
 
 ```bash
-sudo curl -fsSL https://apt.smbit.pro/apt-key.asc \
-  -o /etc/apt/keyrings/daydve-apt-repo.asc && \
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \
-  https://apt.smbit.pro noble main" \
-  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \
+sudo curl -fsSL https://{{ apt_domain }}/apt-key.asc \
+  -o /etc/apt/keyrings/{{ keyring_name }}.asc && \
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/{{ keyring_name }}.asc] \
+  https://{{ apt_domain }} noble main" \
+  | sudo tee /etc/apt/sources.list.d/{{ keyring_name }}.list && \
 sudo apt update
 ```
 
-Or one-liner: `curl -sL https://apt.smbit.pro | bash`
+Or one-liner: `curl -sL https://{{ apt_domain }} | bash`
 
 ## Browse packages
 
-**[Browse all packages on the website](https://apt.smbit.pro/packages)**
+**[Browse all packages on the website](https://{{ apt_domain }}/packages)**
 
 ## Want to add a package?
 

@@ -191,8 +191,12 @@ jobs:
           done
 
       - name: Generate AppStream metadata
+        env:
+          AUTHOR: ${{ vars.AUTHOR }}
         run: |
           git fetch origin apps
+          REPO_OWNER="${GITHUB_REPOSITORY%%/*}"
+          REPO_OWNER_LC="${REPO_OWNER,,}"
           for distro in dists/*/; do
             [ -d "$distro" ] || continue
             distro=$(basename "$distro")
@@ -201,20 +205,20 @@ jobs:
             mkdir -p "dists/$distro/main/dep11"
             xml_file="dists/$distro/main/dep11/Components-amd64.xml"
             echo '<?xml version="1.0" encoding="UTF-8"?>' > "$xml_file"
-            echo '<components origin="daydve-apt">' >> "$xml_file"
+            echo "<components origin=\"${REPO_OWNER_LC}-apt\">" >> "$xml_file"
             while IFS='|' read -r app url desc type cats icon_source icon_path group developer license; do
               [ -z "$app" ] && continue
               [ -z "$type" ] && type="console-application"
               [ "$type" = "none" ] && continue
               printf '  <component type="%s">\n' "$type" >> "$xml_file"
-              printf '    <id>io.github.daydve.apt.%s</id>\n' "$app" >> "$xml_file"
+              printf '    <id>io.github.%s.apt.%s</id>\n' "$REPO_OWNER_LC" "$app" >> "$xml_file"
               printf '    <name>%s</name>\n' "$app" >> "$xml_file"
               printf '    <summary>%s</summary>\n' "$desc" >> "$xml_file"
               # Author shown in Discover/Software (favours original developer,
-              # falls back to the repo owner). developer_name > DEP-11
+              # falls back to the AUTHOR repo var). developer_name > DEP-11
               # Developer.name; the newer <developer id> form is dropped by
               # appstreamcli 1.0.2 on Ubuntu 24.04.
-              printf '    <developer_name>%s</developer_name>\n' "${developer:-DayDve}" >> "$xml_file"
+              printf '    <developer_name>%s</developer_name>\n' "${developer:-$AUTHOR}" >> "$xml_file"
               # Long description
               long_desc=$(jq -r --arg k "$app" '.[$k].description // empty' /tmp/descriptions.json 2>/dev/null || echo "")
               if [ -n "$long_desc" ]; then
@@ -270,7 +274,7 @@ jobs:
             yml_plain="dists/$distro/main/dep11/Components-amd64.yml"
             appstreamcli convert "$xml_file" "$yml_plain" --format yaml
             # Add MediaBaseUrl so Discover resolves relative screenshot paths
-            sed -i '/^Origin: daydve-apt$/a MediaBaseUrl: https://raw.githubusercontent.com/DayDve/apt-repo/apt/' "$yml_plain"
+            sed -i "/^Origin: ${REPO_OWNER_LC}-apt$/a MediaBaseUrl: https://raw.githubusercontent.com/$GITHUB_REPOSITORY/apt/" "$yml_plain"
             # Inject Thumbnails into screenshots (appstreamcli generates thumbnails: [])
             git show origin/apps:.github/scripts/inject_thumbnails.py > /tmp/inject_thumbnails.py
             python3 /tmp/inject_thumbnails.py "$yml_plain" "$GITHUB_WORKSPACE/screenshots" "$GITHUB_REPOSITORY"
@@ -446,14 +450,17 @@ jobs:
           echo -n ']' >> "$GITHUB_WORKSPACE/packages.json"
 
       - name: Generate Release
+        env:
+          AUTHOR: ${{ vars.AUTHOR }}
+          SITE_NAME: ${{ vars.SITE_NAME }}
         run: |
           for distro in dists/*/; do
             [ -d "$distro" ] || continue
             distro=$(basename "$distro")
 
             apt-ftparchive release \
-              -o APT::FTPArchive::Release::Origin="DayDve" \
-              -o APT::FTPArchive::Release::Label="DayDve apt repo" \
+              -o "APT::FTPArchive::Release::Origin=$AUTHOR" \
+              -o "APT::FTPArchive::Release::Label=$SITE_NAME" \
               -o "APT::FTPArchive::Release::Suite=$distro" \
               -o "APT::FTPArchive::Release::Codename=$distro" \
               -o "APT::FTPArchive::Release::Architectures=amd64" \
@@ -491,8 +498,12 @@ jobs:
           git push
 
       - name: Update README on apps
+        env:
+          APT_ORIGIN: ${{ vars.APT_ORIGIN }}
+          TELEGRAM: ${{ vars.TELEGRAM }}
         run: |
           cp "$GITHUB_WORKSPACE/packages.json" /tmp/packages.json
+          python3 -m pip install --quiet --break-system-packages jinja2
           git fetch origin apps
           git checkout apps
           python3 .github/scripts/gen_readme.py
