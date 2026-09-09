@@ -349,7 +349,6 @@ Screenshots:
 Type: font
 ID: io.github.daydve.apt.fonts-noto-lite
 Package: fonts-noto-lite
-ProjectLicense: Apache-2.0
 Name:
   C: fonts-noto-lite
 Summary:
@@ -550,7 +549,6 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.mc6
 Package: mc6
-ProjectLicense: MIT
 Name:
   C: mc6
 Summary:
@@ -650,6 +648,38 @@ Launchable:
 Provides:
   binaries:
   - remotedesktopmanager
+Screenshots:
+- default: true
+  caption:
+    C: remotedesktopmanager
+  thumbnails:
+    - url: screenshots/remotedesktopmanager/0.png
+      width: 3840
+      height: 2160
+  source-image:
+    url: screenshots/remotedesktopmanager/0.png
+    width: 3840
+    height: 2160
+- caption:
+    C: remotedesktopmanager
+  thumbnails:
+    - url: screenshots/remotedesktopmanager/1.png
+      width: 3840
+      height: 2160
+  source-image:
+    url: screenshots/remotedesktopmanager/1.png
+    width: 3840
+    height: 2160
+- caption:
+    C: remotedesktopmanager
+  thumbnails:
+    - url: screenshots/remotedesktopmanager/2.png
+      width: 1917
+      height: 1119
+  source-image:
+    url: screenshots/remotedesktopmanager/2.png
+    width: 1917
+    height: 1119
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.rustdesk
@@ -752,7 +782,6 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.viber
 Package: viber
-ProjectLicense: LicenseRef-proprietary
 Name:
   C: viber
 Summary:
@@ -885,7 +914,6 @@ Provides:
 Type: addon
 ID: io.github.daydve.apt.wps-office-langpack-ru
 Package: wps-office-langpack-ru
-ProjectLicense: LicenseRef-proprietary
 Name:
   C: wps-office-langpack-ru
 Summary:
@@ -931,7 +959,6 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.wps-office
 Package: wps-office
-ProjectLicense: LicenseRef-proprietary
 Name:
   C: wps-office
 Summary:
