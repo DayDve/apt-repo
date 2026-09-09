@@ -349,6 +349,7 @@ Screenshots:
 Type: font
 ID: io.github.daydve.apt.fonts-noto-lite
 Package: fonts-noto-lite
+ProjectLicense: Apache-2.0
 Name:
   C: fonts-noto-lite
 Summary:
@@ -421,6 +422,27 @@ Url:
 Provides:
   binaries:
   - grub-btrfs
+---
+Type: console-application
+ID: io.github.daydve.apt.hcloud-cli
+Package: hcloud-cli
+ProjectLicense: MIT
+Name:
+  C: hcloud-cli
+Summary:
+  C: A command-line interface for Hetzner Cloud
+Developer:
+  name:
+    C: Hetzner Cloud GmbH
+Categories:
+- Network
+- System
+- Utility
+Url:
+  homepage: https://github.com/hetznercloud/cli
+Provides:
+  binaries:
+  - hcloud-cli
 ---
 Type: console-application
 ID: io.github.daydve.apt.keyd
@@ -909,7 +931,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.wps-office
 Package: wps-office
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: LicenseRef-proprietary
 Name:
   C: wps-office
 Summary:

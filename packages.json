@@ -125,6 +125,17 @@
   ]
 }
 ,{
+  "name": "hcloud-cli",
+  "description": "A command-line interface for Hetzner Cloud",
+  "source": "https://github.com/hetznercloud/cli",
+  "version": "1.67.0",
+  "categories": [
+    "Network",
+    "System",
+    "Utility"
+  ]
+}
+,{
   "name": "keyd",
   "description": "Key remapping daemon",
   "source": "https://github.com/rvaiya/keyd",
