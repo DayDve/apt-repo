@@ -105,18 +105,27 @@ async function proxy(url: string, opts: { contentType?: string; cache?: boolean 
   return new Response(resp.body, { status: resp.status, headers });
 }
 
+const JSON_CACHE_TTL_MS = 5 * 60 * 1000;
+
 async function fetchJSON(url: string, cacheKey: string, ctx: ExecutionContext): Promise<any> {
   const cache = (caches as any).default;
   const req = new Request(cacheKey);
   const cached = await cache.match(req);
   const headers = { 'cache-control': 'public, max-age=0, must-revalidate' };
-  if (cached) return cached.json();
+
+  const cachedAt = Number(cached ? cached.headers.get('x-cached-at') || 0 : 0);
+  if (cached && cachedAt > Date.now() - JSON_CACHE_TTL_MS) return cached.json();
 
   const resp = await fetch(url);
-  if (!resp.ok) return null;
-  const data = await resp.json();
-  ctx.waitUntil(cache.put(req, new Response(JSON.stringify(data), { headers })));
-  return data;
+  if (resp.ok) {
+    const data = await resp.json();
+    ctx.waitUntil(cache.put(req, new Response(JSON.stringify(data), {
+      headers: { ...headers, 'x-cached-at': String(Date.now()) },
+    })));
+    return data;
+  }
+  if (cached) return cached.json();
+  return null;
 }
 
 async function loadPackages(env: Env, ctx: ExecutionContext): Promise<Package[] | null> {
