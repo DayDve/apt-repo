@@ -150,6 +150,16 @@ function getOrigins(env: Env): { aptOrigin: string; fallbackOrigin: string } {
   return { aptOrigin, fallbackOrigin };
 }
 
+// ── Plain-text banner helpers ──
+
+const BANNER_W = 70;
+const border = () => '#'.repeat(BANNER_W);
+const box = (s: string) => `#${s.padEnd(BANNER_W - 2)}#`;
+
+// Local APT keyring/source filenames follow the author (or repo owner on forks)
+const keyringName = (env: Env) =>
+  `${(env.AUTHOR || env.REPO.split('/')[0]).toLowerCase()}-apt-repo`;
+
 // ── Shared design & icons ──
 
 const CAT_LABELS: Record<string, string> = {
@@ -386,27 +396,34 @@ async function serveText(ctx: ExecutionContext, env: Env): Promise<Response> {
     pkgLines = ['# (failed to load package list)'];
   }
 
+  const logoArt = [
+    '                 _   ___ _____   ___',
+    '                /_\\ | _ \\_   _| | _ \\___ _ __  ___',
+    '               / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\',
+    '              /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/',
+  ];
+  const heroText = [
+    '               Personal APT repository for software',
+    '                    unavailable or outdated in',
+    '                   standard Ubuntu repos',
+  ];
+
   const text = [
-    '######################################################################',
-    '#                 _   ___ _____   ___                                #',
-    '#                /_\\ | _ \\_   _| | _ \\___ _ __  ___                  #',
-    '#               / _ \\|  _/ | |   |   / -_) \'_ \\/ _ \\                 #',
-    '#              /_/ \\_\\_|   |_|   |_|_\\___| .__/\\___/                 #',
-    `#                by ${author}|_|${' '.repeat(Math.max(0, 29 - author.length))}#`,
-    '#                                                                    #',
-    '#               Personal APT repository for software                 #',
-    '#                    unavailable or outdated in                      #',
-    '#                   standard Ubuntu repos                            #',
-    '#                                                                    #',
-    '######################################################################',
+    border(),
+    ...logoArt.map(box),
+    box(`${('by ' + author).padStart(40)}|_|`),
+    box(''),
+    ...heroText.map(box),
+    box(''),
+    border(),
     '#', '# Apps already in this repo:', '#',
     ...pkgLines,
     '#', '# If you want to use this repo, just add it to your APT sources:', '#',
     `sudo curl -fsSL ${fallbackOrigin}/apt-key.asc \\`,
-    '  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\',
-    'echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\',
+    `  -o /etc/apt/keyrings/${keyringName(env)}.asc && \\`,
+    `echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/${keyringName(env)}.asc] \\`,
     `  ${fallbackOrigin} noble main" \\`,
-    '  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\',
+    `  | sudo tee /etc/apt/sources.list.d/${keyringName(env)}.list && \\`,
     'sudo apt update', '',
   ].join('\n');
 
@@ -424,10 +441,10 @@ async function serveHome(ctx: ExecutionContext, env: Env): Promise<Response> {
   const safeFallback = escapeHtml(fallbackOrigin);
 
   const manualPrimary = `sudo curl -fsSL ${safeFallback}/apt-key.asc \\
-  -o /etc/apt/keyrings/daydve-apt-repo.asc && \\
-echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc] \\
+  -o /etc/apt/keyrings/${keyringName(env)}.asc && \\
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/${keyringName(env)}.asc] \\
   ${safeFallback} noble main" \\
-  | sudo tee /etc/apt/sources.list.d/daydve-apt-repo.list && \\
+  | sudo tee /etc/apt/sources.list.d/${keyringName(env)}.list && \\
 sudo apt update`;
 
   const pkgCards = (pkgs || []).slice(0, 12).map(p => {
@@ -518,10 +535,10 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'home', env.TELEGRAM)}
         </div>
         <div class="term-body">
           <pre><code><span class="hl-cmd">sudo curl</span> <span class="hl-flag">-fsSL</span> <span class="hl-str">${safeFallback}/apt-key.asc</span> <span class="hl-pipe">\\</span>
-  <span class="hl-flag">-o</span> <span class="hl-path">/etc/apt/keyrings/daydve-apt-repo.asc</span> <span class="hl-pipe">&amp;&amp; \\</span>
-<span class="hl-cmd">echo</span> <span class="hl-str">&quot;deb <span class="hl-opt">[arch=amd64 signed-by=/etc/apt/keyrings/daydve-apt-repo.asc]</span> \\
+  <span class="hl-flag">-o</span> <span class="hl-path">/etc/apt/keyrings/${keyringName(env)}.asc</span> <span class="hl-pipe">&amp;&amp; \\</span>
+<span class="hl-cmd">echo</span> <span class="hl-str">&quot;deb <span class="hl-opt">[arch=amd64 signed-by=/etc/apt/keyrings/${keyringName(env)}.asc]</span> \\
   ${safeFallback} noble main&quot;</span> <span class="hl-pipe">\\</span>
-  <span class="hl-pipe">|</span> <span class="hl-cmd">sudo tee</span> <span class="hl-path">/etc/apt/sources.list.d/daydve-apt-repo.list</span> <span class="hl-pipe">&amp;&amp; \\</span>
+  <span class="hl-pipe">|</span> <span class="hl-cmd">sudo tee</span> <span class="hl-path">/etc/apt/sources.list.d/${keyringName(env)}.list</span> <span class="hl-pipe">&amp;&amp; \\</span>
 <span class="hl-cmd">sudo apt</span> <span class="hl-arg">update</span></code></pre>
         </div>
       </div>
