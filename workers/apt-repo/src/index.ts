@@ -382,7 +382,7 @@ function pkgLine(e: { kind: string; name: string; head?: Package; members?: Pack
 }
 
 async function serveText(ctx: ExecutionContext, env: Env): Promise<Response> {
-  const { fallbackOrigin } = getOrigins(env);
+  const { fallbackOrigin, aptOrigin } = getOrigins(env);
   const author = env.AUTHOR || '';
   const pkgs = await loadPackages(env, ctx);
 
@@ -391,7 +391,7 @@ async function serveText(ctx: ExecutionContext, env: Env): Promise<Response> {
     const entries = displayEntries(pkgs);
     const shown = entries.slice(0, 10);
     pkgLines = shown.map(pkgLine);
-    if (entries.length > 10) pkgLines.push('#', `# And ${entries.length - 10} more ...`);
+    if (entries.length > 10) pkgLines.push('#', `# More packages — see the full list at ${aptOrigin}/packages`);
   } else {
     pkgLines = ['# (failed to load package list)'];
   }
