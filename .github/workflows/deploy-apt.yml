@@ -459,7 +459,7 @@ jobs:
 
             apt-ftparchive release \
               -o "APT::FTPArchive::Release::Origin=$AUTHOR" \
-              -o "APT::FTPArchive::Release::Label=DayDve apt repo" \
+              -o "APT::FTPArchive::Release::Label=${AUTHOR} apt repo" \
               -o "APT::FTPArchive::Release::Suite=$distro" \
               -o "APT::FTPArchive::Release::Codename=$distro" \
               -o "APT::FTPArchive::Release::Architectures=amd64" \
