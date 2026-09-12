@@ -619,6 +619,7 @@ Provides:
 Type: desktop-application
 ID: io.github.daydve.apt.remotedesktopmanager
 Package: remotedesktopmanager
+ProjectLicense: LicenseRef-proprietary
 Name:
   C: remotedesktopmanager
 Summary:
@@ -782,6 +783,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.viber
 Package: viber
+ProjectLicense: LicenseRef-proprietary
 Name:
   C: viber
 Summary:
@@ -959,7 +961,6 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.wps-office
 Package: wps-office
-ProjectLicense: GPL-3.0-or-later
 Name:
   C: wps-office
 Summary:
