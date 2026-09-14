@@ -1,0 +1,52 @@
+# ============================================================
+# Package script for tmog
+# ============================================================
+
+SOURCE_URL="https://tmog.org"
+DESCRIPTION="Native Qt 6 system monitor and task manager by the author of the original Windows Task Manager"
+DEVELOPER="Plummer's Software LLC"
+APPSTREAM_TYPE="desktop-application"
+APPSTREAM_CATEGORIES="System;Monitor"
+APPSTREAM_KEYWORDS="task manager,system monitor,processes,performance,cpu,memory"
+APPSTREAM_SUMMARY="Native system monitor and task manager"
+
+_tmog_deb_url() {
+  fetch_url "https://tmog.org" | grep -oP 'href="\K[^"]+\.deb' | head -1
+}
+
+# Version source of truth: the site serves /version.txt (it's what
+# <span data-source-version> is filled from). Fall back to parsing the
+# version out of the .deb download href.
+_tmog_version() {
+  local v
+  v=$(fetch_url "https://tmog.org/version.txt" | tr -d '[:space:]\r')
+  if [[ "$v" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "$v"
+    return 0
+  fi
+  local url
+  url=$(_tmog_deb_url) || return 1
+  grep -oP '\d+\.\d+\.\d+' <<<"${url}" || return 1
+}
+
+# check_update_safe validates the GLOBAL $version after this runs, so it
+# must be set here (no `local`).
+check_update() {
+  local current="${1:-}"
+  version=$(_tmog_version) || { echo "tmog: failed to detect version"; return 1; }
+  [ "$version" != "$current" ]
+}
+
+get_version() {
+  version=$(_tmog_version) || { echo "Failed to parse version"; return 1; }
+  local rn
+  rn=$(fetch_url "https://www.tmog.org/release-notes.html" 2>/dev/null || true)
+  if [ -n "$rn" ]; then
+    echo "$rn" | sed -e 's/<[^>]*>/ /g' -e 's/&nbsp;/ /g' | tr -s '[:space:]' ' ' \
+      | grep -ioP 'this public beta focuses on[^.]*\.'
+  else
+    echo "Task Manager TMOG ${version}"
+  fi
+  echo
+  echo "Release notes: https://www.tmog.org/release-notes.html"
+}
