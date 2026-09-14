@@ -10,3 +10,4 @@ credentials*
 AGENTS.md
 .opencode/
 *.deb
+__pycache__/

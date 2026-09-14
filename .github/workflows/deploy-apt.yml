@@ -102,9 +102,12 @@ jobs:
         run: |
           > /tmp/tag-map
           > /tmp/pool-map-entries
+          > /tmp/app-pkgmap
+          > /tmp/app-desktopmap
           for tag_dir in /tmp/by-tag/*/; do
             [ -d "$tag_dir" ] || continue
             tag=$(basename "$tag_dir")
+            app=$(echo "$tag" | sed -E 's/-[0-9].*$//')
             for deb in "$tag_dir"*.deb; do
               [ -f "$deb" ] || continue
               name=$(basename "$deb")
@@ -117,8 +120,17 @@ jobs:
               mkdir -p "/tmp/pool/$distro/main"
               cp "$deb" "/tmp/pool/$distro/main/$name"
               echo "$distro|$name|$tag" >> /tmp/tag-map
+              # The installable Package name and desktop-id come from the deb
+              # itself, not the app dir name (prebuilt upstream debs may differ;
+              # the dir name is only an internal id for tags/site slugs).
+              pkg=$(dpkg-deb -f "$deb" Package 2>/dev/null)
+              [ -n "$pkg" ] && echo "$app|$pkg" >> /tmp/app-pkgmap
+              desktop=$(dpkg-deb -c "$deb" 2>/dev/null | grep -oP '/usr/share/applications/\K[^ ]+\.desktop' | head -1)
+              [ -n "$desktop" ] && echo "$app|$desktop" >> /tmp/app-desktopmap
             done
           done
+          sort -u -o /tmp/app-pkgmap /tmp/app-pkgmap
+          sort -u -o /tmp/app-desktopmap /tmp/app-desktopmap
 
           for distro_dir in /tmp/pool/*/; do
             [ -d "$distro_dir" ] || continue
@@ -169,13 +181,14 @@ jobs:
             group=$(git show "$pkg_file" | awk -F'"' '/^GROUP=/{print $2}')
             developer=$(git show "$pkg_file" | awk -F'"' '/^DEVELOPER=/{print $2}')
             license=$(git show "$pkg_file" | awk -F'"' '/^LICENSE=/{print $2}')
+            app_name=$(git show "$pkg_file" | awk -F'"' '/^APP_NAME=/{print $2}')
             # LICENSE is optional — auto-detect from the upstream repo when unset
             if [ -z "$license" ]; then
               echo "detecting license for $app ($url)..." >&2
               license=$(detect_license "$url" 2>/dev/null || true)
               [ -n "$license" ] && echo "  -> $license" >&2
             fi
-            [ -n "$url" ] && echo "$app|$url|$desc|$type|$cats|$icon_source|$icon_path|$group|$developer|$license"
+            [ -n "$url" ] && echo "$app|$url|$desc|$type|$cats|$icon_source|$icon_path|$group|$developer|$license|$app_name"
           done > /tmp/pkg-info
           # Fetch descriptions.json for long descriptions
           git show "origin/apps:apps/descriptions.json" > /tmp/descriptions.json 2>/dev/null || echo '{}' > /tmp/descriptions.json
@@ -206,13 +219,18 @@ jobs:
             xml_file="dists/$distro/main/dep11/Components-amd64.xml"
             echo '<?xml version="1.0" encoding="UTF-8"?>' > "$xml_file"
             echo "<components origin=\"${REPO_OWNER_LC}-apt\">" >> "$xml_file"
-            while IFS='|' read -r app url desc type cats icon_source icon_path group developer license; do
+            while IFS='|' read -r app url desc type cats icon_source icon_path group developer license app_name; do
               [ -z "$app" ] && continue
               [ -z "$type" ] && type="console-application"
               [ "$type" = "none" ] && continue
+              # Real apt package name + desktop-id come from the deb (via app-pkgmap),
+              # display name from the optional APP_NAME var. The app dir name is only
+              # an internal id — prebuilt upstream debs may not match it.
+              pkg=$(awk -F'|' -v a="$app" '$1==a{print $2}' /tmp/app-pkgmap 2>/dev/null | head -1)
+              desktop=$(awk -F'|' -v a="$app" '$1==a{print $2}' /tmp/app-desktopmap 2>/dev/null | head -1)
               printf '  <component type="%s">\n' "$type" >> "$xml_file"
               printf '    <id>io.github.%s.apt.%s</id>\n' "$REPO_OWNER_LC" "$app" >> "$xml_file"
-              printf '    <name>%s</name>\n' "$app" >> "$xml_file"
+              printf '    <name>%s</name>\n' "${app_name:-$app}" >> "$xml_file"
               printf '    <summary>%s</summary>\n' "$desc" >> "$xml_file"
               # Author shown in Discover/Software (favours original developer,
               # falls back to the AUTHOR repo var). developer_name > DEP-11
@@ -230,13 +248,13 @@ jobs:
               if [ -n "$license" ]; then
                 printf '    <project_license>%s</project_license>\n' "$license" >> "$xml_file"
               fi
-              printf '    <pkgname>%s</pkgname>\n' "$app" >> "$xml_file"
+              printf '    <pkgname>%s</pkgname>\n' "${pkg:-$app}" >> "$xml_file"
               printf '    <url type="homepage">%s</url>\n' "$url" >> "$xml_file"
               if [ "$type" = "desktop-application" ] || [ "$type" = "addon" ]; then
                 printf '    <icon type="cached">%s</icon>\n' "$app" >> "$xml_file"
               fi
               if [ "$type" = "desktop-application" ]; then
-                printf '    <launchable type="desktop-id">%s.desktop</launchable>\n' "$app" >> "$xml_file"
+                printf '    <launchable type="desktop-id">%s</launchable>\n' "${desktop:-$app.desktop}" >> "$xml_file"
               fi
               printf '    <provides>\n      <binary>%s</binary>\n    </provides>\n' "$app" >> "$xml_file"
               if [ -n "$cats" ]; then
@@ -261,7 +279,7 @@ jobs:
                   else
                     echo '      <screenshot>' >> "$xml_file"
                   fi
-                  printf '        <caption>%s</caption>\n' "$app" >> "$xml_file"
+                  printf '        <caption>%s</caption>\n' "${app_name:-$app}" >> "$xml_file"
                   printf '        <image>%s</image>\n' "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/apt/screenshots/${app}/${ss_name}" >> "$xml_file"
                   echo '      </screenshot>' >> "$xml_file"
                 done
@@ -417,6 +435,8 @@ jobs:
             desc=$(awk -F'|' -v a="$app" '$1==a{print $3}' /tmp/pkg-info)
             cats=$(awk -F'|' -v a="$app" '$1==a{print $5}' /tmp/pkg-info)
             group=$(awk -F'|' -v a="$app" '$1==a{print $8}' /tmp/pkg-info)
+            app_name=$(awk -F'|' -v a="$app" '$1==a{print $11}' /tmp/pkg-info)
+            pkg=$(awk -F'|' -v a="$app" '$1==a{print $2}' /tmp/app-pkgmap 2>/dev/null | head -1)
             [ -z "$desc" ] && desc="$app"
             long_desc=$(jq -r --arg k "$app" '.[$k].description // empty' /tmp/descriptions.json 2>/dev/null || echo "")
             screenshots="null"
@@ -438,13 +458,16 @@ jobs:
             jq -n --arg name "$app" --arg desc "$desc" --arg source "$source_url" \
               --arg long "$long_desc" --arg icon "$icon" \
               --arg group "$group" --arg cats "$cats" --arg version "$version" \
+              --arg pkg "$pkg" --arg app_name "$app_name" \
               --argjson screenshots "${screenshots:-null}" \
               '{name:$name,description:$desc,source:$source,version:$version}
                + (if $long != "" then {longDescription:$long} else {} end)
                + (if $icon != "" then {icon:$icon} else {} end)
                + (if $screenshots != null then {screenshots:$screenshots} else {} end)
                + (if $group != "" then {group:$group} else {} end)
-               + (if $cats != "" then {categories:($cats|split(";"))} else {} end)' \
+               + (if $cats != "" then {categories:($cats|split(";"))} else {} end)
+               + (if $app_name != "" and $app_name != $name then {displayName:$app_name} else {} end)
+               + (if $pkg != "" and $pkg != $name then {pkgName:$pkg} else {} end)' \
               >> "$GITHUB_WORKSPACE/packages.json"
           done < /tmp/latest-releases.tsv
           echo -n ']' >> "$GITHUB_WORKSPACE/packages.json"

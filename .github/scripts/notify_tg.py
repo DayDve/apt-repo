@@ -149,6 +149,10 @@ def member_data(app):
         return None
     return {
         "app": app, "tag": tag["tagName"], "ver": ver,
+        # Display name (optional APP_NAME= in the package file), install name is
+        # whatever the deb itself declares as its Package field.
+        "name": read_var(app, "APP_NAME") or app,
+        "pkg": deb_package_name(debs[0]) or app,
         "body": html.escape(r.stdout).strip(),
         "desc": read_var(app, "DESCRIPTION") or "",
         "src": src, "cl": cl, "deb": debs[0],
@@ -156,14 +160,23 @@ def member_data(app):
     }
 
 
+def deb_package_name(deb):
+    try:
+        out = subprocess.run(["dpkg-deb", "-f", deb, "Package"],
+                             capture_output=True, text=True, check=True)
+        return out.stdout.strip()
+    except (subprocess.CalledProcessError, OSError):
+        return None
+
+
 def caption_for(m, first, group_size):
-    cap = "<b>{app} {ver}</b>\n{desc}\n<a href=\"{src}\">Разработчик</a>".format(
-        app=m["app"], ver=m["ver"], desc=m["desc"], src=m["src"])
+    cap = "<b>{name} {ver}</b>\n{desc}\n<a href=\"{src}\">Разработчик</a>".format(
+        name=m["name"], ver=m["ver"], desc=m["desc"], src=m["src"])
     body = m["body"]
     if body and body != "No user-facing changes for this release.":
         cap += "\n\n📝 WHAT'S NEW\n<blockquote>\n{body}\n</blockquote>".format(body=body)
     if first:
-        cap += "\n\n📦 <code>apt install {app}</code>".format(app=m["app"])
+        cap += "\n\n📦 <code>apt install {pkg}</code>".format(pkg=m["pkg"])
     return truncate(cap, m["link"])
 
 

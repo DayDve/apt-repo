@@ -5,6 +5,8 @@
 SOURCE_URL="https://tmog.org"
 DESCRIPTION="Native Qt 6 system monitor and task manager by the author of the original Windows Task Manager"
 DEVELOPER="Plummer's Software LLC"
+# Display name on the site / KDE Discover / Telegram (dir name is only an internal id).
+APP_NAME="TMOG"
 APPSTREAM_TYPE="desktop-application"
 APPSTREAM_CATEGORIES="System;Monitor"
 APPSTREAM_KEYWORDS="task manager,system monitor,processes,performance,cpu,memory"
