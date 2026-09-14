@@ -349,7 +349,6 @@ Screenshots:
 Type: font
 ID: io.github.daydve.apt.fonts-noto-lite
 Package: fonts-noto-lite
-ProjectLicense: OFL-1.1
 Name:
   C: fonts-noto-lite
 Summary:
@@ -782,10 +781,11 @@ Screenshots:
     height: 600
 ---
 Type: desktop-application
-ID: io.github.daydve.apt.tmog
-Package: tmog
+ID: io.github.daydve.apt.taskmanagerog
+Package: taskmanagerog
+ProjectLicense: LicenseRef-proprietary
 Name:
-  C: tmog
+  C: taskmanagerog
 Summary:
   C: Native Qt 6 system monitor and task manager by the author of the original Windows Task Manager
 Developer:
@@ -798,37 +798,37 @@ Url:
   homepage: https://tmog.org
 Icon:
   cached:
-  - name: tmog
+  - name: taskmanagerog
 Launchable:
   desktop-id:
-  - tmog.desktop
+  - taskmanagerog.desktop
 Provides:
   binaries:
-  - tmog
+  - taskmanagerog
 Screenshots:
 - default: true
   caption:
-    C: tmog
+    C: taskmanagerog
   thumbnails:
-    - url: screenshots/tmog/0.webp
+    - url: screenshots/taskmanagerog/0.webp
   source-image:
-    url: screenshots/tmog/0.webp
+    url: screenshots/taskmanagerog/0.webp
 - caption:
-    C: tmog
+    C: taskmanagerog
   thumbnails:
-    - url: screenshots/tmog/1.png
+    - url: screenshots/taskmanagerog/1.png
       width: 1920
       height: 760
   source-image:
-    url: screenshots/tmog/1.png
+    url: screenshots/taskmanagerog/1.png
     width: 1920
     height: 760
 - caption:
-    C: tmog
+    C: taskmanagerog
   thumbnails:
-    - url: screenshots/tmog/2.webp
+    - url: screenshots/taskmanagerog/2.webp
   source-image:
-    url: screenshots/tmog/2.webp
+    url: screenshots/taskmanagerog/2.webp
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.viber
@@ -966,7 +966,7 @@ Provides:
 Type: addon
 ID: io.github.daydve.apt.wps-office-langpack-ru
 Package: wps-office-langpack-ru
-ProjectLicense: LicenseRef-proprietary
+ProjectLicense: GPL-3.0-only
 Name:
   C: wps-office-langpack-ru
 Summary:
@@ -1012,7 +1012,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.wps-office
 Package: wps-office
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: LicenseRef-proprietary
 Name:
   C: wps-office
 Summary:
