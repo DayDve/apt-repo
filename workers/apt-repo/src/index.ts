@@ -26,7 +26,16 @@ interface Package {
   group?: string;
   categories?: string[];
   screenshots?: string[];
+  /** product display name, when it differs from the dir name (slug) */
+  displayName?: string;
+  /** real installable apt package name, when it differs from the dir name */
+  pkgName?: string;
 }
+
+/** Display name for a package: displayName when present, else the slug. */
+const displayOf = (p: { displayName?: string; name: string }): string => p.displayName || p.name;
+/** Name to feed to `apt install`/`apt://`: pkgName when present, else the slug. */
+const installOf = (p: { pkgName?: string; name: string }): string => p.pkgName || p.name;
 
 function repoOrigin(repo: string): string {
   return `https://raw.githubusercontent.com/${repo}/apt`;
@@ -385,8 +394,8 @@ function displayEntries(pkgs: Package[]): { kind: 'family'|'pkg'; name: string; 
 }
 
 function pkgLine(e: { kind: string; name: string; head?: Package; members?: Package[]; pkg?: Package }): string {
-  if (e.kind === 'pkg' && e.pkg) return `#  ${e.pkg.name} - ${e.pkg.description}`;
-  if (e.head && e.members) return `#  ${e.name} - ${e.head.description} (packages: ${e.members.map(m => m.name).join(', ')})`;
+  if (e.kind === 'pkg' && e.pkg) return `#  ${displayOf(e.pkg)} - ${e.pkg.description}`;
+  if (e.head && e.members) return `#  ${e.name} - ${e.head.description} (packages: ${e.members.map(m => displayOf(m)).join(', ')})`;
   return '';
 }
 
@@ -457,7 +466,8 @@ echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/${keyringName(env)}.asc] \\
 sudo apt update`;
 
   const pkgCards = (pkgs || []).slice(0, 12).map(p => {
-    const safeName = escapeHtml(p.name);
+    const safeName = escapeHtml(displayOf(p));
+    const slug = escapeHtml(p.name);
     const safeDesc = escapeHtml(p.description);
     const iconUrl = p.icon ? `${safeAptOrigin}${escapeHtml(p.icon)}` : '';
     const iconHtml = iconUrl
@@ -465,7 +475,7 @@ sudo apt update`;
       : `<div class="store-ph">${icon('package', 20)}</div>`;
     const familyTag = p.group ? ` <span class="family-badge">${escapeHtml(p.group)}</span>` : '';
 
-    return `<a href="/packages/${safeName}" class="store-card">
+    return `<a href="/packages/${slug}" class="store-card">
   <div class="store-icon-wrap">${iconHtml}</div>
   <div class="store-info">
     <div class="store-name">${safeName}${familyTag}</div>
@@ -599,7 +609,8 @@ async function servePackageList(ctx: ExecutionContext, env: Env): Promise<Respon
   }
 
   const rows = (pkgs || []).map(p => {
-    const safeName = escapeHtml(p.name);
+    const safeName = escapeHtml(displayOf(p));
+    const slug = escapeHtml(p.name);
     const safeDesc = escapeHtml(p.description);
     const effectiveCats = p.group ? [...new Set([...(p.categories || []), ...(groupCats.get(p.group) || [])])] : (p.categories || []);
     const catsHtml = effectiveCats.map(c => `<span class="tag">${escapeHtml(catLabel(c))}</span>`).join(' ');
@@ -609,7 +620,7 @@ async function servePackageList(ctx: ExecutionContext, env: Env): Promise<Respon
       : `<div class="prow-ph">${icon('package', 18)}</div>`;
     const familyTag = p.group ? ` <span style="font-size:0.75rem;color:var(--accent)">${escapeHtml(p.group)}</span>` : '';
 
-    return `<a class="prow" href="/packages/${safeName}" data-cats="${escapeHtml(effectiveCats.join(','))}">
+    return `<a class="prow" href="/packages/${slug}" data-cats="${escapeHtml(effectiveCats.join(','))}">
   <div class="prow-icon-wrap">${iconHtml}</div>
   <div class="prow-main">
     <div class="prow-name">${safeName}${familyTag}${p.version ? ` <span class="prow-ver">${escapeHtml(p.version)}</span>` : ''}</div>
@@ -705,11 +716,13 @@ async function servePackageDetail(name: string, ctx: ExecutionContext, env: Env)
   if (!pkg) return new Response('Not found', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8' } });
 
   const { aptOrigin } = getOrigins(env);
-  const safeName = escapeHtml(pkg.name);
+  const safeTitle = escapeHtml(displayOf(pkg));
+  const safeName = safeTitle;
   const safeDesc = escapeHtml(pkg.description);
   const safeSource = escapeHtml(pkg.source || '');
-  const installCmd = `sudo apt install ${pkg.name}`;
-  const aptLink = `apt://${pkg.name}`;
+  const safeInstall = escapeHtml(installOf(pkg));
+  const installCmd = `sudo apt install ${installOf(pkg)}`;
+  const aptLink = `apt://${installOf(pkg)}`;
   const longDesc = pkg.longDescription ? escapeHtml(pkg.longDescription) : safeDesc;
 
   const iconUrl = pkg.icon ? `${aptOrigin}${escapeHtml(pkg.icon)}` : '';
@@ -721,7 +734,7 @@ async function servePackageDetail(name: string, ctx: ExecutionContext, env: Env)
   if (pkg.group) {
     const members = pkgs.filter(p => p.group === pkg.group);
     if (members.length > 1) {
-      const links = members.filter(m => m.name !== pkg.name).map(m => `<a href="/packages/${escapeHtml(m.name)}">${escapeHtml(m.name)}</a>`).join(' · ');
+      const links = members.filter(m => m.name !== pkg.name).map(m => `<a href="/packages/${escapeHtml(m.name)}">${escapeHtml(displayOf(m))}</a>`).join(' · ');
       if (links) familyHtml = `<div style="font-size:0.8rem;color:var(--accent);margin-top:0.3rem">Part of <strong>${escapeHtml(pkg.group)}</strong>: ${links}</div>`;
     }
   }
@@ -748,7 +761,7 @@ async function servePackageDetail(name: string, ctx: ExecutionContext, env: Env)
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-${sharedHead(`${pkg.name} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
+${sharedHead(`${safeTitle} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
 .back-link{display:inline-block;margin-bottom:1rem;color:var(--text-secondary);font-size:0.85rem}
 .back-link:hover{color:var(--accent);text-decoration:underline}
 .dtop{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.2rem}
@@ -827,7 +840,7 @@ ${sharedHead(`${pkg.name} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
         </button>
       </div>
       <div class="term-body">
-        <pre><code><span class="hl-cmd">sudo apt</span> <span class="hl-arg">install</span> <span class="hl-str">${safeName}</span></code></pre>
+        <pre><code><span class="hl-cmd">sudo apt</span> <span class="hl-arg">install</span> <span class="hl-str">${safeInstall}</span></code></pre>
       </div>
     </div>
   </div>
