@@ -550,6 +550,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.mc6
 Package: mc6
+ProjectLicense: MIT
 Name:
   C: mc6
 Summary:
