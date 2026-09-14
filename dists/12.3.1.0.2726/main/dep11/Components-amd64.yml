@@ -95,7 +95,7 @@ Icon:
   - name: ayugram
 Launchable:
   desktop-id:
-  - ayugram.desktop
+  - com.ayugram.desktop
 Provides:
   binaries:
   - ayugram
@@ -269,7 +269,7 @@ Icon:
   - name: copyq
 Launchable:
   desktop-id:
-  - copyq.desktop
+  - com.github.hluk.copyq.desktop
 Provides:
   binaries:
   - copyq
@@ -349,6 +349,7 @@ Screenshots:
 Type: font
 ID: io.github.daydve.apt.fonts-noto-lite
 Package: fonts-noto-lite
+ProjectLicense: OFL-1.1
 Name:
   C: fonts-noto-lite
 Summary:
@@ -527,7 +528,7 @@ Icon:
   - name: localsend
 Launchable:
   desktop-id:
-  - localsend.desktop
+  - localsend_app.desktop
 Provides:
   binaries:
   - localsend
@@ -573,7 +574,7 @@ Icon:
   - name: mc6
 Launchable:
   desktop-id:
-  - mc6.desktop
+  - mc6-edit.desktop
 Provides:
   binaries:
   - mc6
@@ -645,7 +646,7 @@ Icon:
   - name: remotedesktopmanager
 Launchable:
   desktop-id:
-  - remotedesktopmanager.desktop
+  - com.devolutions.remotedesktopmanager.desktop
 Provides:
   binaries:
   - remotedesktopmanager
@@ -709,7 +710,7 @@ Icon:
   - name: rustdesk
 Launchable:
   desktop-id:
-  - rustdesk.desktop
+  - rustdesk-link.desktop
 Provides:
   binaries:
   - rustdesk
@@ -763,7 +764,7 @@ Icon:
   - name: scrcpy
 Launchable:
   desktop-id:
-  - scrcpy.desktop
+  - scrcpy-console.desktop
 Provides:
   binaries:
   - scrcpy
@@ -781,11 +782,10 @@ Screenshots:
     height: 600
 ---
 Type: desktop-application
-ID: io.github.daydve.apt.taskmanagerog
+ID: io.github.daydve.apt.tmog
 Package: taskmanagerog
-ProjectLicense: LicenseRef-proprietary
 Name:
-  C: taskmanagerog
+  C: TMOG
 Summary:
   C: Native Qt 6 system monitor and task manager by the author of the original Windows Task Manager
 Developer:
@@ -798,37 +798,37 @@ Url:
   homepage: https://tmog.org
 Icon:
   cached:
-  - name: taskmanagerog
+  - name: tmog
 Launchable:
   desktop-id:
-  - taskmanagerog.desktop
+  - com.tmog.taskmanager.desktop
 Provides:
   binaries:
-  - taskmanagerog
+  - tmog
 Screenshots:
 - default: true
   caption:
-    C: taskmanagerog
+    C: TMOG
   thumbnails:
-    - url: screenshots/taskmanagerog/0.webp
+    - url: screenshots/tmog/0.webp
   source-image:
-    url: screenshots/taskmanagerog/0.webp
+    url: screenshots/tmog/0.webp
 - caption:
-    C: taskmanagerog
+    C: TMOG
   thumbnails:
-    - url: screenshots/taskmanagerog/1.png
+    - url: screenshots/tmog/1.png
       width: 1920
       height: 760
   source-image:
-    url: screenshots/taskmanagerog/1.png
+    url: screenshots/tmog/1.png
     width: 1920
     height: 760
 - caption:
-    C: taskmanagerog
+    C: TMOG
   thumbnails:
-    - url: screenshots/taskmanagerog/2.webp
+    - url: screenshots/tmog/2.webp
   source-image:
-    url: screenshots/taskmanagerog/2.webp
+    url: screenshots/tmog/2.webp
 ---
 Type: desktop-application
 ID: io.github.daydve.apt.viber
@@ -966,7 +966,7 @@ Provides:
 Type: addon
 ID: io.github.daydve.apt.wps-office-langpack-ru
 Package: wps-office-langpack-ru
-ProjectLicense: GPL-3.0-only
+ProjectLicense: LicenseRef-proprietary
 Name:
   C: wps-office-langpack-ru
 Summary:
@@ -1035,7 +1035,7 @@ Icon:
   - name: wps-office
 Launchable:
   desktop-id:
-  - wps-office.desktop
+  - wps-office-et.desktop
 Provides:
   binaries:
   - wps-office
