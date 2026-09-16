@@ -2,7 +2,7 @@
   "name": "anki",
   "description": "Spaced repetition flashcard program",
   "source": "https://github.com/ankitects/anki",
-  "version": "26.09",
+  "version": "26.09.2",
   "longDescription": "Anki is a spaced repetition system (SRS) that makes remembering things easy by scheduling reviews of study material at optimal intervals. It uses smart scheduling to show you exactly the cards you are struggling with, so you spend your time efficiently instead of re-studying what you already know. You can create your own decks and cards for anything you want to learn, or download shared decks covering languages, medicine, law, math, and more. This package bundles Anki's official Linux build with its built-in Python and Qt runtime, so it works out of the box on Ubuntu and Debian.",
   "icon": "/icons/anki.png",
   "screenshots": [

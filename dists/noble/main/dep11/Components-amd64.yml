@@ -550,7 +550,6 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.mc6
 Package: mc6
-ProjectLicense: MIT
 Name:
   C: mc6
 Summary:
@@ -784,6 +783,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.tmog
 Package: taskmanagerog
+ProjectLicense: MIT
 Name:
   C: TMOG
 Summary:
@@ -1011,7 +1011,6 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.wps-office
 Package: wps-office
-ProjectLicense: LicenseRef-proprietary
 Name:
   C: wps-office
 Summary:

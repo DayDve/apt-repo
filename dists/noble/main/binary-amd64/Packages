@@ -36,6 +36,25 @@ Description: Spaced repetition flashcard program
  control your learning. It is smart about scheduling, so you can spend
  your time working on exactly the cards you are struggling with.
 
+Package: anki
+Version: 26.09.2
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Depends: libxcb-xinerama0, libxcb-cursor0, libnss3, libxcb-icccm4, libxcb-keysyms1, libxcb-image0, libxcb-randr0, libxcb-render-util0, libxcb-shape0, libxcb-xkb1, libxcomposite1, libxcursor1, libxi6, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxrender1, libxtst6, libdbus-1-3, libfontconfig1, libfreetype6, libgl1
+Filename: pool/noble/main/anki_26.09.2_noble_amd64.deb
+Size: 200383230
+MD5sum: 94035efa2871dbda56d87d993eecd3c5
+SHA1: 98bff7434d3c895c931555057883f7cf05d81bb5
+SHA256: bcec541c024c731fb6f8c09028f48f31bcd1031a1950dbe13c663169fd7031cd
+Section: education
+Priority: optional
+Description: Spaced repetition flashcard program
+ Anki is a program which makes remembering things easy. It is a free,
+ open-source program which intelligent flash cards make remembering things
+ easier. Anki is a spaced repetition system (SRS), which allows you to
+ control your learning. It is smart about scheduling, so you can spend
+ your time working on exactly the cards you are struggling with.
+
 Package: ayugram
 Version: 6.7.8-1873-g4c23f16
 Architecture: amd64
