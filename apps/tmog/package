@@ -16,19 +16,20 @@ _tmog_deb_url() {
   fetch_url "https://tmog.org" | grep -oP 'href="\K[^"]+\.deb' | head -1
 }
 
-# Version source of truth: the site serves /version.txt (it's what
-# <span data-source-version> is filled from). Fall back to parsing the
-# version out of the .deb download href.
+# Version is derived from the .deb download href (not version.txt),
+# because the page can advertise a version before the file is uploaded.
+# A HEAD check ensures we never claim a version we can't actually ship.
 _tmog_version() {
-  local v
-  v=$(fetch_url "https://tmog.org/version.txt" | tr -d '[:space:]\r')
-  if [[ "$v" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    echo "$v"
-    return 0
-  fi
   local url
   url=$(_tmog_deb_url) || return 1
-  grep -oP '\d+\.\d+\.\d+' <<<"${url}" || return 1
+  local v
+  v=$(grep -oP '\d+\.\d+\.\d+' <<<"${url}") || return 1
+  # Verify the deb is actually downloadable (upstream sometimes updates
+  # the page before uploading the file).
+  local code
+  code=$(curl -sIL -o /dev/null -w '%{http_code}' "https://tmog.org${url}" 2>/dev/null) || code=000
+  [[ "$code" == "200" ]] || { echo "tmog: $url returned HTTP $code, treating as no update" >&2; return 1; }
+  echo "$v"
 }
 
 # check_update_safe validates the GLOBAL $version after this runs, so it
@@ -44,8 +45,12 @@ get_version() {
   local rn
   rn=$(fetch_url "https://www.tmog.org/release-notes.html" 2>/dev/null || true)
   if [ -n "$rn" ]; then
+    # Release notes are a short prose summary followed by bullet lists.
+    # Strip markup; a missing grep match must not abort the build (set -e),
+    # so every extractor is guarded with || true.
     echo "$rn" | sed -e 's/<[^>]*>/ /g' -e 's/&nbsp;/ /g' | tr -s '[:space:]' ' ' \
-      | grep -ioP 'this public beta focuses on[^.]*\.'
+      | grep -ioP 'TMOG brings[^.]*\.' || true
+    echo "$rn" | grep -oP '<li>\K[^<]+(?=</li>)' | sed 's/^[[:space:]]*/ - /' || true
   else
     echo "Task Manager TMOG ${version}"
   fi
