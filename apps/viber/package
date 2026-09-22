@@ -16,7 +16,7 @@ _viber_download_url() {
 }
 
 check_update() {
-  local current="${1:-}" url version
+  local current="${1:-}" url
   url=$(_viber_download_url) || return 1
   version=$(curl -fsSL -o /tmp/viber.deb "$url" && \
     dpkg-deb -f /tmp/viber.deb Version && rm -f /tmp/viber.deb)

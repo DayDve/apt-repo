@@ -6,10 +6,10 @@ APPSTREAM_CATEGORIES="Utility;Security;RemoteAccess"
 
 check_update() {
   local current="${1:-}"
-  local url version
+  local url
   version=$(fetch_url https://devolutions.net/remote-desktop-manager/download/ \
     | grep -oP 'https://[^"]*Linux/[^"]*RemoteDesktopManager[^"]*amd64\.deb' \
-    | grep -oP '\d{4}(\.\d){3}' | sort -V | tail -1)
+    | grep -oP '\d{4}(\.\d+){3}' | sort -V | tail -1)
   [ -n "$version" ] && [ "$version" != "$current" ]
 }
 
@@ -17,7 +17,7 @@ get_version() {
   local current="${1:-}"
   version=$(fetch_url https://devolutions.net/remote-desktop-manager/download/ \
     | grep -oP 'https://[^"]*Linux/[^"]*RemoteDesktopManager[^"]*amd64\.deb' \
-    | grep -oP '\d{4}(\.\d){3}' | sort -V | tail -1)
+    | grep -oP '\d{4}(\.\d+){3}' | sort -V | tail -1)
 
   fetch_url https://devolutions.net/remote-desktop-manager/release-notes/linux/ \
     | awk -v ver="$version" 'BEGIN{RS="<"}
