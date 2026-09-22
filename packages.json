@@ -222,7 +222,7 @@
   "name": "remotedesktopmanager",
   "description": "One application for every remote connection you'll ever open",
   "source": "https://devolutions.net/remote-desktop-manager/",
-  "version": "2026.2.2.2",
+  "version": "2026.3.0.5",
   "longDescription": "Remote Desktop Manager centralizes remote connection protocols into a single interface, allowing you to launch and manage SSH, RDP, VNC, and VPN sessions from one Linux application. It features built-in credential management, session grouping, and secure password vault integration to eliminate the need for multiple separate connection clients. It is built for system administrators and power users who need to maintain organized, secure access to large fleets of servers and network infrastructure.",
   "icon": "/icons/remotedesktopmanager.png",
   "screenshots": [
