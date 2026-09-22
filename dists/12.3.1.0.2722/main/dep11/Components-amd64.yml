@@ -349,7 +349,7 @@ Screenshots:
 Type: font
 ID: io.github.daydve.apt.fonts-noto-lite
 Package: fonts-noto-lite
-ProjectLicense: OFL-1.1
+ProjectLicense: Apache-2.0
 Name:
   C: fonts-noto-lite
 Summary:
@@ -550,6 +550,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.mc6
 Package: mc6
+ProjectLicense: MIT
 Name:
   C: mc6
 Summary:
@@ -783,6 +784,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.tmog
 Package: taskmanagerog
+ProjectLicense: MIT
 Name:
   C: TMOG
 Summary:
@@ -1011,7 +1013,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.wps-office
 Package: wps-office
-ProjectLicense: GPL-3.0-or-later
+ProjectLicense: LicenseRef-proprietary
 Name:
   C: wps-office
 Summary:

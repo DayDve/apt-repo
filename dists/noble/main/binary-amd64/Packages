@@ -282,21 +282,6 @@ Description: Hides non-Latin/Cyrillic Noto fonts from font selection dialogs
  removed automatically via Conflicts.
 
 Package: glab
-Version: 1.116.0
-Architecture: amd64
-Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
-Installed-Size: 49973
-Depends: git
-Filename: pool/noble/main/glab_1.116.0_linux_noble_amd64.deb
-Size: 18204314
-MD5sum: f4c0b63b86eebfc7701f5cc48ca72cd4
-SHA1: 5f69e64d17754fb3f6ec027d2d97a3aa9633251e
-SHA256: c04a2413b12b9ff17047f430d2ef0e93ef9713f5650e06a61ae7092fdfdd284d
-Priority: optional
-Homepage: https://gitlab.com/gitlab-org/cli
-Description: An open source GitLab CLI tool
-
-Package: glab
 Version: 1.117.0
 Architecture: amd64
 Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
@@ -322,6 +307,21 @@ Size: 18440138
 MD5sum: 5a5bed7371bc72f7cb25c5f4ba4de725
 SHA1: 5dadfd4510ada2261d50d4a13b7e348eb653d38b
 SHA256: 2a4a6413594cfaf9b84af33780d32098ee5011092607389a57a8452efa33c698
+Priority: optional
+Homepage: https://gitlab.com/gitlab-org/cli
+Description: An open source GitLab CLI tool
+
+Package: glab
+Version: 1.119.0
+Architecture: amd64
+Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
+Installed-Size: 50822
+Depends: git
+Filename: pool/noble/main/glab_1.119.0_linux_noble_amd64.deb
+Size: 18510348
+MD5sum: cb694647d137d6fa605f123d05875011
+SHA1: 47ec234ff10eda2e4f8605b93c9f2aa2737a2d5d
+SHA256: 95a9ca105518dec7f70ee403d98501402a5fda154c406f4f4cd6696928d3a098
 Priority: optional
 Homepage: https://gitlab.com/gitlab-org/cli
 Description: An open source GitLab CLI tool
