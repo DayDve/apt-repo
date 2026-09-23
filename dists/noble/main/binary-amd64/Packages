@@ -1,23 +1,4 @@
 Package: anki
-Version: 26.08.1
-Architecture: amd64
-Maintainer: DayDve <DayDve@users.noreply.github.com>
-Depends: libxcb-xinerama0, libxcb-cursor0, libnss3, libxcb-icccm4, libxcb-keysyms1, libxcb-image0, libxcb-randr0, libxcb-render-util0, libxcb-shape0, libxcb-xkb1, libxcomposite1, libxcursor1, libxi6, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxrender1, libxtst6, libdbus-1-3, libfontconfig1, libfreetype6, libgl1
-Filename: pool/noble/main/anki_26.08.1_noble_amd64.deb
-Size: 200850662
-MD5sum: a76a332bcd5a8e96a2b08a4bfc465e01
-SHA1: d30c2561723b2a65d40c3c534adaa96b3112d6a9
-SHA256: 40b51129d2524e6a941a8cf062fd06aaf75c32da3399431e54992e87f8d24f41
-Section: education
-Priority: optional
-Description: Spaced repetition flashcard program
- Anki is a program which makes remembering things easy. It is a free,
- open-source program which intelligent flash cards make remembering things
- easier. Anki is a spaced repetition system (SRS), which allows you to
- control your learning. It is smart about scheduling, so you can spend
- your time working on exactly the cards you are struggling with.
-
-Package: anki
 Version: 26.09
 Architecture: amd64
 Maintainer: DayDve <DayDve@users.noreply.github.com>
@@ -46,6 +27,25 @@ Size: 200383230
 MD5sum: 94035efa2871dbda56d87d993eecd3c5
 SHA1: 98bff7434d3c895c931555057883f7cf05d81bb5
 SHA256: bcec541c024c731fb6f8c09028f48f31bcd1031a1950dbe13c663169fd7031cd
+Section: education
+Priority: optional
+Description: Spaced repetition flashcard program
+ Anki is a program which makes remembering things easy. It is a free,
+ open-source program which intelligent flash cards make remembering things
+ easier. Anki is a spaced repetition system (SRS), which allows you to
+ control your learning. It is smart about scheduling, so you can spend
+ your time working on exactly the cards you are struggling with.
+
+Package: anki
+Version: 26.09.3
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Depends: libxcb-xinerama0, libxcb-cursor0, libnss3, libxcb-icccm4, libxcb-keysyms1, libxcb-image0, libxcb-randr0, libxcb-render-util0, libxcb-shape0, libxcb-xkb1, libxcomposite1, libxcursor1, libxi6, libxkbcommon0, libxkbcommon-x11-0, libxrandr2, libxrender1, libxtst6, libdbus-1-3, libfontconfig1, libfreetype6, libgl1
+Filename: pool/noble/main/anki_26.09.3_noble_amd64.deb
+Size: 200446658
+MD5sum: 3da29443daec989284038ba69163571f
+SHA1: 03b85fb6b1fa35891359d3d772f57841a3a1dd51
+SHA256: 96238d0963bf1ac8da6404f6f9ae242141a7b5ee6fa51b9b985a8a86921464ab
 Section: education
 Priority: optional
 Description: Spaced repetition flashcard program
