@@ -5,9 +5,9 @@ ARG APP_VERSION
 RUN apk add --no-cache curl ca-certificates zstd && \
     curl -fsSL -o /anki.tar.zst \
       "https://github.com/ankitects/anki/releases/download/${APP_VERSION}/anki-${APP_VERSION}-linux-x86_64.tar.zst" && \
-    mkdir -p /extracted && \
+    mkdir -p /extracted/anki-linux && \
     unzstd /anki.tar.zst -o /anki.tar && \
-    tar -xf /anki.tar -C /extracted
+    tar -xf /anki.tar -C /extracted/anki-linux --strip-components=1
 
 FROM ubuntu:24.04 AS package
 RUN apt-get update && \
