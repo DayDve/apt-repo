@@ -370,6 +370,21 @@ Priority: optional
 Homepage: https://github.com/hetznercloud/cli
 Description: A command-line interface for Hetzner Cloud
 
+Package: hcloud-cli
+Version: 1.69.0
+Architecture: amd64
+Maintainer: Hetzner Cloud GmbH <support-cloud@hetzner.com>
+Installed-Size: 19197
+Provides: hcloud
+Filename: pool/noble/main/hcloud-cli_1.69.0_noble_amd64.deb
+Size: 6927894
+MD5sum: f064be3433d5d178f7516a0c87ef54f3
+SHA1: 0323febfb9dbf678146924efdd6d94c243a02423
+SHA256: c876c600aded09d10a87c0f85386431a42d55b7a729628ddd8c05ecd567551a4
+Priority: optional
+Homepage: https://github.com/hetznercloud/cli
+Description: A command-line interface for Hetzner Cloud
+
 Package: keyd
 Version: 2.6.0
 Architecture: amd64

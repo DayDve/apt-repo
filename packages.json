@@ -128,7 +128,7 @@
   "name": "hcloud-cli",
   "description": "A command-line interface for Hetzner Cloud",
   "source": "https://github.com/hetznercloud/cli",
-  "version": "1.68.0",
+  "version": "1.69.0",
   "categories": [
     "Network",
     "System",
