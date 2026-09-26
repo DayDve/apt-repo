@@ -1,6 +1,6 @@
 # apt-repo
 
-[![Apps](https://img.shields.io/badge/apps-26-blue)](https://apt.smbit.pro/packages)
+[![Apps](https://img.shields.io/badge/apps-23-blue)](https://apt.smbit.pro/packages)
 [![Website](https://img.shields.io/badge/website-apt.smbit.pro-4a9eff)](https://apt.smbit.pro)
 [![About](https://img.shields.io/badge/about-this%20repo-4a9eff)](https://apt.smbit.pro/about)
 [![Telegram](https://img.shields.io/badge/channel-@ddaptrepo-26A5E4?logo=telegram)](https://t.me/ddaptrepo)
