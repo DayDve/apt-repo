@@ -547,49 +547,6 @@ Screenshots:
   source-image:
     url: screenshots/localsend/1.webp
 ---
-Type: desktop-application
-ID: io.github.daydve.apt.mc6
-Package: mc6
-Name:
-  C: mc6
-Summary:
-  C: Midnight Commander with Plugins
-Description:
-  C: >-
-    <p>mc6 is an enhanced fork of GNU Midnight Commander, providing a dual-panel text-mode file manager for terminal and SSH
-    environments. It extends the classic interface with dynamic plugins that let you browse Git repositories, Docker containers,
-    Kubernetes clusters, and S3 buckets directly within file panels. It also includes an integrated archive manager, structured
-    tree views for JSON and YAML, live viewer filtering, and an embedded shell terminal.</p>
-Developer:
-  name:
-    C: Ilia Maslakov
-Categories:
-- System
-- FileTools
-Url:
-  homepage: https://github.com/ilia-maslakov/mcdev
-Icon:
-  cached:
-  - name: mc6
-Launchable:
-  desktop-id:
-  - mc6-edit.desktop
-Provides:
-  binaries:
-  - mc6
-Screenshots:
-- default: true
-  caption:
-    C: mc6
-  thumbnails:
-    - url: screenshots/mc6/0.png
-      width: 1268
-      height: 1086
-  source-image:
-    url: screenshots/mc6/0.png
-    width: 1268
-    height: 1086
----
 Type: console-application
 ID: io.github.daydve.apt.rclone
 Package: rclone
@@ -965,7 +922,6 @@ Provides:
 Type: addon
 ID: io.github.daydve.apt.wps-office-langpack-ru
 Package: wps-office-langpack-ru
-ProjectLicense: LicenseRef-proprietary
 Name:
   C: wps-office-langpack-ru
 Summary:
@@ -1011,6 +967,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.wps-office
 Package: wps-office
+ProjectLicense: GPL-3.0-or-later
 Name:
   C: wps-office
 Summary:
