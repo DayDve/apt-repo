@@ -208,7 +208,7 @@
   "name": "rustdesk",
   "description": "Fast open-source remote desktop",
   "source": "https://github.com/rustdesk/rustdesk",
-  "version": "1.4.9",
+  "version": "1.5.0",
   "longDescription": "RustDesk is an open-source remote desktop client that lets you remotely control a computer, share screen sessions, and transfer files. It works out of the box using default connection servers, but also allows you to set up your own self-hosted relay server for full control over your privacy and traffic. Featuring a multi-language graphical interface, it is a practical tool for remote system administration and desktop technical support.",
   "icon": "/icons/rustdesk.png",
   "screenshots": [
