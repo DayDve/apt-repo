@@ -545,23 +545,6 @@ Description: Rclone - "rsync for cloud storage"
  of other useful things.
 
 Package: remotedesktopmanager
-Version: 2026.2.1.4
-Architecture: amd64
-Maintainer: Devolutions
-Depends: libwebkit2gtk-4.1-0 | libwebkit2gtk-4.0-37, ca-certificates, libsecret-1-0, xwayland
-Recommends: gnome-keyring
-Suggests: libappindicator3-1, xdotool, lsof, libopenal1
-Filename: pool/noble/main/rdm.deb
-Size: 255149996
-MD5sum: ef7ce07189bd7f9ff761d7a9dbd16796
-SHA1: fad83b225bc2a08d815dde24aa9e8420c3c8f51f
-SHA256: d5d9b78d579c7dae026f1453538d2cbbdf72228702f93486cb53639a5a009903
-Section: utils
-Homepage: https://devolutions.net/remote-desktop-manager/
-Description: Centralize, Manage and Secure Remote Connections
- Remote Desktop Manager (RDM) centralizes all remote connections on a single platform that is securely shared between users and across the entire team. With support for hundreds of integrated technologies — including multiple protocols and VPNs — along with built-in enterprise-grade password management tools, global and granular-level access controls, and robust mobile apps to complement desktop clients for Windows and Mac, RDM is a IT toolbox for remote access. RDM empowers IT departments to drive security, speed and productivity throughout the organization, while reducing inefficiency, cost and risk.
-
-Package: remotedesktopmanager
 Version: 2026.2.2.2
 Architecture: amd64
 Maintainer: Devolutions
@@ -592,6 +575,25 @@ Size: 285687368
 MD5sum: 48dc879dd314cf657ef7a318756683db
 SHA1: 37697a6a2ea0b46ebf89d5291cc2cc07d8fafdfb
 SHA256: 7a08f8af70f293230b105f5be62e56a7562d17baeaec4ebb341b9d6fe18243bd
+Section: utils
+Homepage: https://devolutions.net/remote-desktop-manager/
+Description: Centralize, Manage and Secure Remote Connections
+ Remote Desktop Manager (RDM) centralizes all remote connections on a single platform that is securely shared between users and across the entire team. With support for hundreds of integrated technologies — including multiple protocols and VPNs — along with built-in enterprise-grade password management tools, global and granular-level access controls, and robust mobile apps to complement desktop clients for Windows and Mac, RDM is a IT toolbox for remote access. RDM empowers IT departments to drive security, speed and productivity throughout the organization, while reducing inefficiency, cost and risk.
+
+Package: remotedesktopmanager
+Version: 2026.3.1.1
+Architecture: amd64
+Maintainer: Devolutions
+Depends: libwebkit2gtk-4.1-0 | libwebkit2gtk-4.0-37, ca-certificates, libsecret-1-0, xwayland
+Recommends: gnome-keyring, fuse3, libfido2-1
+Suggests: libappindicator3-1, xdotool, lsof, libopenal1
+Conflicts: remotedesktopmanager-em
+Replaces: remotedesktopmanager-em
+Filename: pool/noble/main/remotedesktopmanager_2026.3.1.1_noble_amd64.deb
+Size: 286176572
+MD5sum: 1ab94fb84c40a240b4ff1e0e8acfa576
+SHA1: 31f94ab8c93acb30d839b50b8e037b148d51f71e
+SHA256: 3a40341a6201f172273ebd6aa70cc0528a91231bcdfd9e66b70bb67ead456d76
 Section: utils
 Homepage: https://devolutions.net/remote-desktop-manager/
 Description: Centralize, Manage and Secure Remote Connections
