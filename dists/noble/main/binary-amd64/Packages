@@ -181,6 +181,24 @@ Description: Advanced clipboard manager with editing and scripting
  customized tabs. Saved clipboard can be later copied and pasted
  directly into any application, with editing and scripting support.
 
+Package: copyq
+Version: 17.0.0
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 9164
+Depends: libc6, libgcc-s1, libstdc++6, libqt6core6t64, libqt6dbus6t64, libqt6gui6t64, libqt6network6t64, libqt6qml6, libqt6svg6, libqt6widgets6t64, libqt6xml6, libqca-qt6-2, libqt6keychain1, libkf6guiaddons6, libkf6notifications6, kf6-kstatusnotifieritem
+Recommends: copyq-plugins (= 17.0.0), qt6-wayland
+Filename: pool/noble/main/copyq_17.0.0_noble_amd64.deb
+Size: 2463062
+MD5sum: 03de8183d3da0b6d0b17eb7b7b7780af
+SHA1: 1ccc57178e5c340d7da8b8c7a70451a8e344a7ee
+SHA256: 927f80a259a853a395c4e8a2148c21e7442023d1534ef62379aa71fa17f59ff0
+Homepage: https://hluk.github.io/CopyQ/
+Description: Advanced clipboard manager with editing and scripting
+ CopyQ monitors the system clipboard and saves its content in
+ customized tabs. Saved clipboard can be later copied and pasted
+ directly into any application, with editing and scripting support.
+
 Package: copyq-plugins
 Version: 16.0.0
 Architecture: amd64
@@ -192,6 +210,23 @@ Size: 743440
 MD5sum: 658b25a31a0cc4b503f3defcc58d7b2a
 SHA1: 5a84f1182cfc3d8a816de98af70bd95e81f19568
 SHA256: acecf3603c47d7907546ac56b146d695663de76239c3f920690a319395fe173a
+Homepage: https://hluk.github.io/CopyQ/
+Description: Advanced clipboard manager with editing and scripting (plugins)
+ Dynamically loaded plugins for CopyQ: text and rich-text items,
+ image thumbnails, notes, pinned and tagged items, encrypted items,
+ vim-like editing and advanced clipboard synchronization.
+
+Package: copyq-plugins
+Version: 17.0.0
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 3380
+Depends: copyq (= 17.0.0), libc6, libgcc-s1, libstdc++6, libqt6core6t64, libqt6gui6t64, libqt6widgets6t64
+Filename: pool/noble/main/copyq-plugins_17.0.0_noble_amd64.deb
+Size: 748874
+MD5sum: 8038b6bf19fb30dc33dbd4bc065c4fdf
+SHA1: 3fd687a48ad52aff406be19842b5ab7a31cbb288
+SHA256: 70c60b91a0ba7301dd508a633fe8783a6030686b9ef561bd37714d55316c00b8
 Homepage: https://hluk.github.io/CopyQ/
 Description: Advanced clipboard manager with editing and scripting (plugins)
  Dynamically loaded plugins for CopyQ: text and rich-text items,
