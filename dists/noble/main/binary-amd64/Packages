@@ -56,21 +56,6 @@ Description: Spaced repetition flashcard program
  your time working on exactly the cards you are struggling with.
 
 Package: ayugram
-Version: 6.7.8-1873-g4c23f16
-Architecture: amd64
-Maintainer: DayDve <DayDve@users.noreply.github.com>
-Depends: libc6, ca-certificates
-Filename: pool/noble/main/ayugram_6.7.8-1873-g4c23f16_noble_amd64.deb
-Size: 97698928
-MD5sum: 5fd0cd272326a8d8c1a5b7718a6147f8
-SHA1: 13c50a9508487213c15f9d8919bf790bffee4c74
-SHA256: e290be2d7595301aba2798e13b302441720f52336e07a956350b61a4a839ef12
-Section: net
-Priority: optional
-Description: AyuGram Desktop
- ToS breaking Telegram client with enhanced features.
-
-Package: ayugram
 Version: 7.0.9-0-g032ad32
 Architecture: amd64
 Maintainer: DayDve <DayDve@users.noreply.github.com>
@@ -95,6 +80,21 @@ Size: 98262974
 MD5sum: 71b12ffa57a3e1317b504a3072060d53
 SHA1: d1d75dc9abb29b49ed2f7991ae5c028bfbff6bbc
 SHA256: 5674e491346d0e664641a9b0695f59e8b321526e13e5d2a4ee9992bbbc97cfd8
+Section: net
+Priority: optional
+Description: AyuGram Desktop
+ ToS breaking Telegram client with enhanced features.
+
+Package: ayugram
+Version: 7.2.9-0-gd4b7546
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Depends: libc6, ca-certificates
+Filename: pool/noble/main/ayugram_7.2.9-0-gd4b7546_noble_amd64.deb
+Size: 100115698
+MD5sum: 65b332a1b62e37dc43fc9978598255a5
+SHA1: 09307d73f342e3ccfb0a78369a9faccaabfc719c
+SHA256: d0892d500ea86186e47a110863f69628686c917df25fbd57ffdcbffaa7f1385d
 Section: net
 Priority: optional
 Description: AyuGram Desktop
@@ -578,6 +578,23 @@ Description: Rclone - "rsync for cloud storage"
  is a command-line program to sync files and directories to and
  from most cloud providers. It can also mount, tree, ncdu and lots
  of other useful things.
+
+Package: remotedesktopmanager
+Version: 2026.2.2.2
+Architecture: amd64
+Maintainer: Devolutions
+Depends: libwebkit2gtk-4.1-0 | libwebkit2gtk-4.0-37, ca-certificates, libsecret-1-0, xwayland
+Recommends: gnome-keyring, fuse3
+Suggests: libappindicator3-1, xdotool, lsof, libopenal1
+Filename: pool/noble/main/remotedesktopmanager_2026.2.2.2_noble_amd64.deb
+Size: 254836592
+MD5sum: e6c51f6a72b3914db5bd75dac77e9ebd
+SHA1: 4c83110fb60e8d48f3c0d24921cb33a90db448aa
+SHA256: 2a61be1e0357b3ff96e19ef32ebe696249a7427dc570e8da449cc52a5405cf4e
+Section: utils
+Homepage: https://devolutions.net/remote-desktop-manager/
+Description: Centralize, Manage and Secure Remote Connections
+ Remote Desktop Manager (RDM) centralizes all remote connections on a single platform that is securely shared between users and across the entire team. With support for hundreds of integrated technologies — including multiple protocols and VPNs — along with built-in enterprise-grade password management tools, global and granular-level access controls, and robust mobile apps to complement desktop clients for Windows and Mac, RDM is a IT toolbox for remote access. RDM empowers IT departments to drive security, speed and productivity throughout the organization, while reducing inefficiency, cost and risk.
 
 Package: remotedesktopmanager
 Version: 2026.3.0.5

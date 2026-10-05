@@ -922,7 +922,7 @@ Provides:
 Type: addon
 ID: io.github.daydve.apt.wps-office-langpack-ru
 Package: wps-office-langpack-ru
-ProjectLicense: LicenseRef-proprietary
+ProjectLicense: GPL-3.0-only
 Name:
   C: wps-office-langpack-ru
 Summary:
