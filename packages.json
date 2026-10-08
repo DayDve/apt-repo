@@ -224,7 +224,7 @@
   "name": "scrcpy",
   "description": "Mirror and control Android devices via USB/TCP",
   "source": "https://github.com/Genymobile/scrcpy",
-  "version": "5.0",
+  "version": "5.0.1",
   "longDescription": "scrcpy mirrors your Android device's screen and audio to your desktop over USB or Wi-Fi, allowing you to fully control your phone using your computer's keyboard and mouse. It requires no root access or installed mobile apps, delivering low-latency performance with support for frame rates up to 120 FPS. Key features include screen recording, seamless two-way copy-pasting, mirroring while the phone screen remains off, and using your device's camera as a Linux webcam via V4L2.",
   "icon": "/icons/scrcpy.png",
   "screenshots": [
