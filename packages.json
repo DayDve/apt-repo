@@ -48,7 +48,7 @@
   "name": "btrfs-assistant",
   "description": "GUI management tool for Btrfs filesystem",
   "source": "https://gitlab.com/btrfs-assistant/btrfs-assistant",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "longDescription": "Btrfs Assistant provides a graphical interface for managing Btrfs subvolumes, filesystem settings, and maintenance routines. It integrates directly with Snapper to let you browse, create, and restore system snapshots directly from the GUI. You can also use it to monitor subvolume space usage and schedule or manually run routine operations like scrubs, balances, and defragmentation.",
   "icon": "/icons/btrfs-assistant.png",
   "screenshots": [
