@@ -300,7 +300,7 @@
   "name": "wps-office",
   "description": "WPS Office repack with patches",
   "source": "https://github.com/Rongronggg9/wps-office-repack",
-  "version": "12.1.2.28080.repack",
+  "version": "12.1.2.29183.repack",
   "longDescription": "A comprehensive office suite compatible with Microsoft Word, Excel, and PowerPoint formats. This is a community patched repack with fixes and improvements over the stock package, including removed telemetry and better Linux desktop integration. Includes Writer, Presentation, and Spreadsheets.",
   "icon": "/icons/wps-office.png",
   "screenshots": [

@@ -923,20 +923,21 @@ SHA256: 0f117f315404bb3c9a9fc174a84e5fe8fc274e65883921e3ea70fff46d2b48aa
 Description: Wayland native VNC client
 
 Package: wps-office
-Version: 12.1.2.28080.AK.preread.sw+prefixed+fcitx5xwayland
+Version: 12.1.2.29183.AK.preread.sw+prefixed+fcitx5xwayland
 Architecture: amd64
 Maintainer: WPS Office Community Team <wps_linux@kingsoft.com>
-Installed-Size: 96636451
+Installed-Size: 2108204
 Depends: libc6 (>= 2.15) | libc6.1, libfreetype6 (>= 2.4),
          libcups2, libglib2.0-0, libglu1-mesa,
          libsm6, libxrender1, libfontconfig1,
-         libxext6, libxcb1, libbz2-1.0
+         libxext6, libxcb1, libbz2-1.0,
+         libxkbcommon0, libxkbcommon-x11-0
 Replaces: kingsoft-office
 Filename: pool/noble/main/wps-office.deb
-Size: 571901940
-MD5sum: 84439b5c8241f1ab16550fa009d63df9
-SHA1: 2b7ad77d1dfc616e142f63d5d355c31fd982d092
-SHA256: 60a054568454cc6eea77b6ab41d6cc95a915c40119ed80bc975e683948587845
+Size: 562326332
+MD5sum: 84160238731d3911c0b239d16ba25f34
+SHA1: b4a48e3cac15b80090f184ba7f1ab78c63d8b596
+SHA256: 380040864bca2780009e3577e20b452dd917889265d801260c2bfd13f0b47779
 Section: editors
 Priority: optional
 Multi-Arch: foreign

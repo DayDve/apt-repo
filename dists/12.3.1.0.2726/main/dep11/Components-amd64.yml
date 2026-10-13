@@ -922,7 +922,6 @@ Provides:
 Type: addon
 ID: io.github.daydve.apt.wps-office-langpack-ru
 Package: wps-office-langpack-ru
-ProjectLicense: LicenseRef-proprietary
 Name:
   C: wps-office-langpack-ru
 Summary:
@@ -968,7 +967,6 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.wps-office
 Package: wps-office
-ProjectLicense: GPL-3.0-or-later
 Name:
   C: wps-office
 Summary:
