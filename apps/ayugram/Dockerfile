@@ -9,7 +9,13 @@ WORKDIR /build
 RUN git clone --depth 1 --branch dev \
     https://github.com/AyuGram/AyuGramDesktop.git src \
  && cd src \
- && git submodule update --init --recursive --depth 1
+ && git submodule update --init --recursive --depth 1 \
+ && git clone --depth 1 --filter=blob:none --no-checkout \
+    https://github.com/telegramdesktop/tdesktop.git /tmp/tdesktop \
+ && CMAKE_SHA=$(git -C /tmp/tdesktop ls-tree HEAD cmake | awk '{print $3}') \
+ && rm -rf /tmp/tdesktop \
+ && git -C cmake fetch --depth 1 origin "$CMAKE_SHA" \
+ && git -C cmake checkout "$CMAKE_SHA"
 
 RUN chown -R user:user /build
 
