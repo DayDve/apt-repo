@@ -56,21 +56,6 @@ Description: Spaced repetition flashcard program
  your time working on exactly the cards you are struggling with.
 
 Package: ayugram
-Version: 7.0.9-0-g032ad32
-Architecture: amd64
-Maintainer: DayDve <DayDve@users.noreply.github.com>
-Depends: libc6, ca-certificates
-Filename: pool/noble/main/ayugram_7.0.9-0-g032ad32_noble_amd64.deb
-Size: 98262916
-MD5sum: 74c2bb25de6148904d8848cf8d683858
-SHA1: 02c538bd8cbc8ac531d10bf67dcef66981fdca49
-SHA256: 1cf7073f18ed6745d3cf6104236e397664d8a037b66c3728aaf1177223310733
-Section: net
-Priority: optional
-Description: AyuGram Desktop
- ToS breaking Telegram client with enhanced features.
-
-Package: ayugram
 Version: 7.0.9-1-gdb3b989
 Architecture: amd64
 Maintainer: DayDve <DayDve@users.noreply.github.com>
@@ -95,6 +80,21 @@ Size: 100115698
 MD5sum: 65b332a1b62e37dc43fc9978598255a5
 SHA1: 09307d73f342e3ccfb0a78369a9faccaabfc719c
 SHA256: d0892d500ea86186e47a110863f69628686c917df25fbd57ffdcbffaa7f1385d
+Section: net
+Priority: optional
+Description: AyuGram Desktop
+ ToS breaking Telegram client with enhanced features.
+
+Package: ayugram
+Version: 7.2.9-2-g0f2a31b
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Depends: libc6, ca-certificates
+Filename: pool/noble/main/ayugram_7.2.9-2-g0f2a31b_noble_amd64.deb
+Size: 100429360
+MD5sum: a2cc99d7949e242e5188a2cf3a6ecc8a
+SHA1: d0e099c6e53584673a101097be536d7647f5a844
+SHA256: 05aa5a5ef2360d12744c2aed5d7f6abdb48712853c31493d782b2d8c115ee20a
 Section: net
 Priority: optional
 Description: AyuGram Desktop
