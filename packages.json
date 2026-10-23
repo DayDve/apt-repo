@@ -175,6 +175,22 @@
   ]
 }
 ,{
+  "name": "ntrcn",
+  "description": "Fix text typed in the wrong keyboard layout on KDE Plasma 6 (Wayland)",
+  "source": "https://github.com/DayDve/ntrcn",
+  "version": "0.1.0",
+  "icon": "/icons/ntrcn.png",
+  "screenshots": [
+    "/screenshots/ntrcn/0.png",
+    "/screenshots/ntrcn/1.png",
+    "/screenshots/ntrcn/2.png"
+  ],
+  "categories": [
+    "Utility",
+    "Qt"
+  ]
+}
+,{
   "name": "rclone",
   "description": "rsync for cloud storage",
   "source": "https://github.com/rclone/rclone",

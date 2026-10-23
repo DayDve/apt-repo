@@ -555,6 +555,27 @@ Homepage: https://localsend.org/
 Description: An open source cross-platform alternative to AirDrop
 Uploaders: TheGB0077 <gb.lima.dev@gmail.com>
 
+Package: ntrcn
+Version: 0.1.0
+Architecture: all
+Maintainer: DayDve <daydve@smbit.pro>
+Installed-Size: 421
+Depends: python3:any, libhunspell-1.7-0, libxkbcommon0, pipewire-bin | pulseaudio-utils, python3-dbus, python3-evdev, python3-pyside6.qtnetwork, python3-pyside6.qtsvg, python3-pyside6.qtwidgets (>= 6.5), qt6-svg-plugins | qt6-svg, wl-clipboard
+Recommends: hunspell-dictionary
+Filename: pool/noble/main/ntrcn_0.1.0_noble_all.deb
+Size: 150532
+MD5sum: 909897e462315b826c8f11184adbfde7
+SHA1: d0c759e8d0bc7e9390da1addaab731889f1c9397
+SHA256: 6eed2feb7972bb769d5b51136017d556f583f697fc6f9c6fd31f4d70da2ec013
+Section: utils
+Priority: optional
+Homepage: https://github.com/DayDve/ntrcn
+Description: retype text typed in the wrong keyboard layout
+ Pause retypes the end of what was typed in the wrong layout, Shift+Pause the
+ selected text, choosing the layouts and the start of the mistyped part with
+ hunspell dictionaries. For KDE Plasma 6 on Wayland, with any number of
+ layouts. Shows the current layout in the system tray.
+
 Package: rclone
 Version: 1.75.0
 Architecture: amd64
