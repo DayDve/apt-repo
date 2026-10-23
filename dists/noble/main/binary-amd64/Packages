@@ -390,21 +390,6 @@ SHA256: 26904b1e2a2b800c75bb32c5764bd1108f63a4d4c8e9564928c07e979cf1ad91
 Description: Grub btrfs snapshot boot manager.
 
 Package: hcloud-cli
-Version: 1.69.0
-Architecture: amd64
-Maintainer: Hetzner Cloud GmbH <support-cloud@hetzner.com>
-Installed-Size: 19197
-Provides: hcloud
-Filename: pool/noble/main/hcloud-cli_1.69.0_noble_amd64.deb
-Size: 6927894
-MD5sum: f064be3433d5d178f7516a0c87ef54f3
-SHA1: 0323febfb9dbf678146924efdd6d94c243a02423
-SHA256: c876c600aded09d10a87c0f85386431a42d55b7a729628ddd8c05ecd567551a4
-Priority: optional
-Homepage: https://github.com/hetznercloud/cli
-Description: A command-line interface for Hetzner Cloud
-
-Package: hcloud-cli
 Version: 1.70.0
 Architecture: amd64
 Maintainer: Hetzner Cloud GmbH <support-cloud@hetzner.com>
@@ -430,6 +415,21 @@ Size: 6931558
 MD5sum: 51af8bebc0e9a421b67b37a963c5f154
 SHA1: c900046fc691af2ff592a594eb9e6ea675cff015
 SHA256: 1b795e1f7b92d484e7a39ff120cb75689f3ceceb3685cf5288984f906b31f25e
+Priority: optional
+Homepage: https://github.com/hetznercloud/cli
+Description: A command-line interface for Hetzner Cloud
+
+Package: hcloud-cli
+Version: 1.70.2
+Architecture: amd64
+Maintainer: Hetzner Cloud GmbH <support-cloud@hetzner.com>
+Installed-Size: 19229
+Provides: hcloud
+Filename: pool/noble/main/hcloud-cli_1.70.2_noble_amd64.deb
+Size: 7102160
+MD5sum: 0f55c0f3453bce8305a405f5dff7a0e7
+SHA1: 21a85eead728ee5c5261592d0c91589cc681c48f
+SHA256: 7dfb2de08f111df4abbcb27fe83945e723d3dfc7f4c58039089ee4147c3e2ba3
 Priority: optional
 Homepage: https://github.com/hetznercloud/cli
 Description: A command-line interface for Hetzner Cloud
