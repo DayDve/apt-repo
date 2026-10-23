@@ -1,0 +1,23 @@
+# ============================================================
+# Package script for ntrcn
+# ============================================================
+
+SOURCE_URL="https://github.com/DayDve/ntrcn"
+DESCRIPTION="Fix text typed in the wrong keyboard layout on KDE Plasma 6 (Wayland)"
+DEVELOPER="DayDve"
+LICENSE="MIT"
+APPSTREAM_TYPE="desktop-application"
+APPSTREAM_CATEGORIES="Utility;Qt"
+APPSTREAM_KEYWORDS="keyboard,layout,switcher,punto,wayland,plasma"
+
+check_update() {
+  gh_latest_release DayDve/ntrcn
+  version="${LATEST_TAG#v}"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  gh_latest_release DayDve/ntrcn
+  version="${LATEST_TAG#v}"
+  echo "$RELEASE_BODY"
+}
