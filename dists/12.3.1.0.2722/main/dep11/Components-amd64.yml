@@ -798,7 +798,6 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.tmog
 Package: taskmanagerog
-ProjectLicense: LicenseRef-proprietary
 Name:
   C: TMOG
 Summary:

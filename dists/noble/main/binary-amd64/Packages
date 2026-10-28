@@ -332,21 +332,6 @@ Description: Hides non-Latin/Cyrillic Noto fonts from font selection dialogs
  removed automatically via Conflicts.
 
 Package: glab
-Version: 1.123.0
-Architecture: amd64
-Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
-Installed-Size: 51409
-Depends: git
-Filename: pool/noble/main/glab_1.123.0_linux_noble_amd64.deb
-Size: 18711334
-MD5sum: f1e8f8c15834faf56fb4da8760d7acfc
-SHA1: f2d83cbe574a3bd85403449c17e05ab936ae061d
-SHA256: 0effb3e550b80fd826b5a50655acc7fe7142728d0afe9a1d5d857aa2fc651f5a
-Priority: optional
-Homepage: https://gitlab.com/gitlab-org/cli
-Description: An open source GitLab CLI tool
-
-Package: glab
 Version: 1.124.0
 Architecture: amd64
 Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
@@ -372,6 +357,21 @@ Size: 18042164
 MD5sum: 11f091f830bb3d32a987c4b98e8d1628
 SHA1: 4058b0f38308780cb24aa086370ef3c6df33b51d
 SHA256: cef937bc144078826c50f8dfa32fcd899a9a3e79dbffb0c8ed6e609a07b2ea55
+Priority: optional
+Homepage: https://gitlab.com/gitlab-org/cli
+Description: An open source GitLab CLI tool
+
+Package: glab
+Version: 1.126.0
+Architecture: amd64
+Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
+Installed-Size: 49287
+Depends: git
+Filename: pool/noble/main/glab_1.126.0_linux_noble_amd64.deb
+Size: 18223176
+MD5sum: 6449b2deb0a4a98aff064fa281383b95
+SHA1: 14430c13167479910b79aecefc51bb9b44a7449a
+SHA256: 41583b9801086dd347fc6480b6c4597178c2e39e99e491e961a7179cd87f0407
 Priority: optional
 Homepage: https://gitlab.com/gitlab-org/cli
 Description: An open source GitLab CLI tool
@@ -771,24 +771,6 @@ Priority: optional
 Description: Mirror and control Android devices via USB/TCP
 
 Package: taskmanagerog
-Version: 0.1.4
-Architecture: amd64
-Maintainer: Plummer's Software LLC <dave@plummerssoftwarellc.com>
-Installed-Size: 13555
-Depends: python3, libc6 (>= 2.35), libgcc-s1 (>= 3.0), libqt6core6 (>= 6.4.0), libqt6gui6 (>= 6.3.0), libqt6network6 (>= 6.1.2), libqt6opengl6 (>= 6.1.2), libqt6svg6 (>= 6.2.0), libqt6widgets6 (>= 6.3.0), libstdc++6 (>= 12), libsystemd0 (>= 240), libxcb1
-Recommends: udisks2, pci.ids, libdrm-common
-Filename: pool/noble/main/tmog_0.1.4_noble_amd64.deb
-Size: 8381594
-MD5sum: ffbebf284232be0d33d3265f6ded9720
-SHA1: 1f8d1044f130e2fa970199d46e9fd166e9b54b80
-SHA256: 3da52c590723a549b8172e1edc262db0f8a37c0da6ea70bffb3820a0ec98ab5e
-Section: utils
-Priority: optional
-Homepage: https://github.com/PlummersSoftwareLLC/TMOG
-Description: Native Qt 6 system monitor and task manager
- Task Manager TMOG is a native system monitor with dedicated Windows, macOS and Linux clients sharing a common C++ core. The Linux client is built with Qt 6 Widgets and does not embed a browser runtime.
-
-Package: taskmanagerog
 Version: 1.0.0
 Architecture: amd64
 Maintainer: Plummer's Software LLC <dave@plummerssoftwarellc.com>
@@ -818,6 +800,26 @@ Size: 9736112
 MD5sum: 7a8dea9a8a14aae1c460bbe4871a910b
 SHA1: 98bcbbb99fa11fb29d9f06e2cb5fb677ce42976d
 SHA256: f37b6c9e3c30479009e545fcef13d04f9a44b8ed8aaf09e36cc321e433918efa
+Section: utils
+Priority: optional
+Homepage: https://github.com/PlummersSoftwareLLC/TMOG
+Description: Native Qt 6 system monitor and task manager
+ Task Manager TMOG is a native system monitor with dedicated Windows, macOS
+ and Linux clients sharing a common C++ core. The Linux client is built with
+ Qt 6 Widgets and does not embed a browser runtime.
+
+Package: taskmanagerog
+Version: 1.1.1
+Architecture: amd64
+Maintainer: Plummer's Software LLC <dave@plummerssoftwarellc.com>
+Installed-Size: 16260
+Depends: python3, libc6 (>= 2.35), libgcc-s1 (>= 3.0), libqt6core6 (>= 6.4.0), libqt6gui6 (>= 6.3.0), libqt6network6 (>= 6.3.0), libqt6opengl6 (>= 6.1.2), libqt6svg6 (>= 6.2.0), libqt6widgets6 (>= 6.3.0), libstdc++6 (>= 12), libxcb1
+Recommends: udisks2, pci.ids, libdrm-common, libsystemd0 | libelogind0, avahi-daemon
+Filename: pool/noble/main/tmog_1.1.1_noble_amd64.deb
+Size: 9739896
+MD5sum: 83a4f396896af47078a8c02f9576b433
+SHA1: a2445049cfaeffaa810cc6794384acbae69781e7
+SHA256: f3cf260150830569d0e794741558fc197fbe4cfeec1187d4461faa39f7d3d8fe
 Section: utils
 Priority: optional
 Homepage: https://github.com/PlummersSoftwareLLC/TMOG
