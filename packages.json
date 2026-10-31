@@ -150,7 +150,7 @@
   "name": "kio-stash",
   "description": "Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6",
   "source": "https://github.com/DayDve/kio-stash",
-  "version": "1.0.0+daydve5",
+  "version": "1.0.0+daydve6",
   "longDescription": "kio-stash adds a virtual temporary folder (`stash:/`) to KDE file managers like Dolphin, allowing you to stage files and folders from different locations into a single view. Instead of creating physical temporary folders or relying on fragile multi-file selections, you can drag and drop items into the stash to organize a batch job. Once gathered, you can easily copy or move the entire staged collection to its final destination in one operation.",
   "categories": [
     "System",

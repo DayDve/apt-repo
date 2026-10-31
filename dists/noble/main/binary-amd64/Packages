@@ -448,23 +448,6 @@ SHA256: 6897af6a4b5de995d251b7425926469b3bc7e58e7bbac80c1557d5a2ccf0f33c
 Description: A key remapping daemon for linux.
 
 Package: kio-stash
-Version: 1.0.0+daydve2
-Architecture: amd64
-Maintainer: Vitaliy Elin <daydve@smbit.pro>
-Depends: kf6-kio, libc6 (>= 2.38), libqt6core6t64, libqt6dbus6t64, libqt6gui6t64, libstdc++6 (>= 13)
-Recommends: dolphin
-Enhances: dolphin
-Filename: pool/noble/main/kio-stash_1.0.0+daydve2_noble_amd64.deb
-Size: 99598
-MD5sum: e31fdf8ff546b6ae343182a8533268ae
-SHA1: 3477793b5fc55d25ddd34a4d029add65a63d9886
-SHA256: 322240e4462cdbe4fa82b45561e761b88209dd5470a0f0750b9bcac17e567d50
-Section: kde
-Priority: optional
-Description: Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6
- Custom KF6 port built for KDE Neon / Noble.
-
-Package: kio-stash
 Version: 1.0.0+daydve3
 Architecture: amd64
 Maintainer: Vitaliy Elin <daydve@smbit.pro>
@@ -493,6 +476,23 @@ Size: 100068
 MD5sum: e1f12348d2ff21874b36b13713d9ebe5
 SHA1: 0406be43a30ff53ba407f1f7cbb7d00d8bdaf120
 SHA256: 95f52d810cf7d1bc48847f788ec1cf2345ede92bdbc77359b188f28aadd35419
+Section: kde
+Priority: optional
+Description: Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6
+ Custom KF6 port built for KDE Neon / Noble.
+
+Package: kio-stash
+Version: 1.0.0+daydve6
+Architecture: amd64
+Maintainer: Vitaliy Elin <daydve@smbit.pro>
+Depends: kf6-kio, libc6 (>= 2.38), libqt6core6t64, libqt6dbus6t64, libqt6gui6t64, libstdc++6 (>= 13)
+Recommends: dolphin
+Enhances: dolphin
+Filename: pool/noble/main/kio-stash_1.0.0+daydve6_noble_amd64.deb
+Size: 98714
+MD5sum: f02542c558f455f89c46145bd9b924a9
+SHA1: 317dd2c34daf73e3dfb9cc1a2b77bc52e61f8662
+SHA256: 5c7da021e32fd3ebe2a88edf6eb10d1587ecabe64f2582c3f4ec72879dc9ba3d
 Section: kde
 Priority: optional
 Description: Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6
