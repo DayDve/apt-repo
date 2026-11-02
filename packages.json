@@ -105,7 +105,7 @@
   "name": "glab",
   "description": "Official GitLab command-line tool",
   "source": "https://gitlab.com/gitlab-org/cli",
-  "version": "1.126.0",
+  "version": "1.127.0",
   "longDescription": "`glab` is a command-line tool that lets you manage GitLab repositories, issues, merge requests, and CI/CD pipelines directly from your terminal. You can create and review merge requests, check build pipeline statuses, manage project issues, and publish releases without opening a web browser. It works with both GitLab.com and self-hosted GitLab instances.",
   "icon": "/icons/glab.png",
   "categories": [
@@ -224,7 +224,7 @@
   "name": "rustdesk",
   "description": "Fast open-source remote desktop",
   "source": "https://github.com/rustdesk/rustdesk",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "longDescription": "RustDesk is an open-source remote desktop client that lets you remotely control a computer, share screen sessions, and transfer files. It works out of the box using default connection servers, but also allows you to set up your own self-hosted relay server for full control over your privacy and traffic. Featuring a multi-language graphical interface, it is a practical tool for remote system administration and desktop technical support.",
   "icon": "/icons/rustdesk.png",
   "screenshots": [
@@ -334,7 +334,7 @@
   "name": "wps-office-langpack-ru",
   "description": "Russian language pack for WPS Office",
   "source": "https://github.com/DayDve/wps-office-langpack-ru",
-  "version": "12.3.1.0.3952",
+  "version": "12.3.1.0.3981",
   "longDescription": "Russian language pack for WPS Office. Adds Russian UI translations and spell-check dictionaries to the WPS Office suite components.",
   "icon": "/icons/wps-office-langpack-ru.png",
   "screenshots": [

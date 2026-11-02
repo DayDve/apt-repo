@@ -332,21 +332,6 @@ Description: Hides non-Latin/Cyrillic Noto fonts from font selection dialogs
  removed automatically via Conflicts.
 
 Package: glab
-Version: 1.124.0
-Architecture: amd64
-Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
-Installed-Size: 48728
-Depends: git
-Filename: pool/noble/main/glab_1.124.0_linux_noble_amd64.deb
-Size: 17984562
-MD5sum: 2d3544b0788d1ff60f3ec527a4a6ad25
-SHA1: 86db8bdd89705efbd1c7d8a7b1d22cb015d2bd59
-SHA256: b27a358de7306ea4b10d971c9b1371cc832c30eb46eeeaf1dc4f8a6f203afd3b
-Priority: optional
-Homepage: https://gitlab.com/gitlab-org/cli
-Description: An open source GitLab CLI tool
-
-Package: glab
 Version: 1.125.0
 Architecture: amd64
 Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
@@ -372,6 +357,21 @@ Size: 18223176
 MD5sum: 6449b2deb0a4a98aff064fa281383b95
 SHA1: 14430c13167479910b79aecefc51bb9b44a7449a
 SHA256: 41583b9801086dd347fc6480b6c4597178c2e39e99e491e961a7179cd87f0407
+Priority: optional
+Homepage: https://gitlab.com/gitlab-org/cli
+Description: An open source GitLab CLI tool
+
+Package: glab
+Version: 1.127.0
+Architecture: amd64
+Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
+Installed-Size: 49372
+Depends: git
+Filename: pool/noble/main/glab_1.127.0_linux_noble_amd64.deb
+Size: 18250852
+MD5sum: f6c5a78b0d9bb6d4c27c12c70f37beb3
+SHA1: b3e6a8d4713575adcddb69995ae57bae3934235b
+SHA256: fd613e42d6a0281df0f326ef503a88d4102d3f80cc79e4b2617eb589b3f15e4b
 Priority: optional
 Homepage: https://gitlab.com/gitlab-org/cli
 Description: An open source GitLab CLI tool
@@ -722,6 +722,22 @@ Priority: optional
 Homepage: https://rustdesk.com
 Description: A remote control software.
 
+Package: rustdesk
+Version: 1.5.1
+Architecture: amd64
+Maintainer: rustdesk <info@rustdesk.com>
+Depends: libgtk-3-0t64 | libgtk-3-0, libxcb-randr0, libxdo3 | libxdo4, libxfixes3, libxcb-shape0, libxcb-xfixes0, libasound2t64 | libasound2, libsystemd0, curl, libva2, libva-drm2, libva-x11-2, libgstreamer-plugins-base1.0-0, gstreamer1.0-pipewire
+Recommends: libayatana-appindicator3-1
+Filename: pool/noble/main/rustdesk_1.5.1_noble_amd64.deb
+Size: 25337156
+MD5sum: 49ba3e49888cf0ad4f5d649782477ec3
+SHA1: 17d49997be71cc01a7dd75b9e44f999e89cac5f4
+SHA256: b5d682ad90cb7571ecbdbf26eef58d3c4514e726a74ef6d08ce3f0b114ef0bd9
+Section: net
+Priority: optional
+Homepage: https://rustdesk.com
+Description: A remote control software.
+
 Package: scrcpy
 Version: 4.1
 Architecture: amd64
@@ -981,22 +997,6 @@ Name: wps-office
 Relocations: /opt/kingsoft
 
 Package: wps-office-langpack-ru
-Version: 12.3.1.0.3321-1
-Architecture: all
-Maintainer: DayDve <daydve@smbit.pro>
-Depends: wps-office (>= 12)
-Recommends: ttf-mscorefonts-installer
-Replaces: wps-office
-Filename: pool/noble/main/wps-office-langpack-ru_12.3.1.0.3321-1_noble_amd64.deb
-Size: 3398194
-MD5sum: 12e919302389905466cbde4040b7dae9
-SHA1: 0255eff0ee6d7cbb8d24083fcd47df4f5ffb911a
-SHA256: 63560cb0ceb0f5527a398b094a5650726f7dd433c03363c42e11ea1e4d46337a
-Section: localization
-Priority: optional
-Description: Russian language pack, plugins and font metric fixes for WPS Office 12
-
-Package: wps-office-langpack-ru
 Version: 12.3.1.0.3950-1
 Architecture: all
 Maintainer: DayDve <daydve@smbit.pro>
@@ -1024,6 +1024,22 @@ Size: 3454182
 MD5sum: 82adf0abbd9c5929a2365d5649848271
 SHA1: 8095ed33ad9b08126d271358be45922bfbf5469f
 SHA256: 21eb166c258488fac67bb4af014a22498f6d56d32052f2a0f4b07a63ed196690
+Section: localization
+Priority: optional
+Description: Russian language pack, plugins and font metric fixes for WPS Office 12
+
+Package: wps-office-langpack-ru
+Version: 12.3.1.0.3981-1
+Architecture: all
+Maintainer: DayDve <daydve@smbit.pro>
+Depends: wps-office (>= 12)
+Recommends: ttf-mscorefonts-installer
+Replaces: wps-office
+Filename: pool/noble/main/wps-office-langpack-ru_12.3.1.0.3981-1_noble_amd64.deb
+Size: 3455190
+MD5sum: 5203be0e439c506fac51cd051d97a23d
+SHA1: 716f74b3bc25616afe81703baccc1e411a5d3fc4
+SHA256: af90b36ccb5599f32349a610cc7b2dc830d48c34a2f164e43473f766fe3019cf
 Section: localization
 Priority: optional
 Description: Russian language pack, plugins and font metric fixes for WPS Office 12
