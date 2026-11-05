@@ -273,7 +273,7 @@
   "name": "viber",
   "description": "Free and secure calls and messages to anyone, anywhere",
   "source": "https://www.viber.com",
-  "version": "27.3.0.2",
+  "version": "29.4.0.7",
   "longDescription": "Viber is a messaging and VoIP client that lets you make voice and video calls, send text messages, and share files with other users. The desktop application syncs with your mobile account using your phone number, allowing you to seamlessly transfer active calls between devices and manage message histories from your Linux PC. Key features include end-to-end encrypted chats, group video conferencing, screen sharing, and calling non-Viber phone numbers via Viber Out.",
   "icon": "/icons/viber.png",
   "screenshots": [

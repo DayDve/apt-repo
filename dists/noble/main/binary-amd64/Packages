@@ -864,6 +864,27 @@ Description: Viber for Desktop.
  Free and secure calls and messages to anyone, anywhere, on any device and network, in any country!
  Viber for Desktop syncs your contacts, messages and call history with your mobile device.
 
+Package: viber
+Version: 29.4.0.7
+Architecture: amd64
+Maintainer: Viber Media S.à r.l. <support@viber.com>
+Installed-Size: 488853
+Depends: libc6 (>= 2.28), libegl1, libgl1, libice6, libsm6, libx11-xcb1, libx11-6, libxcomposite1, libxdamage1, libxext6, libxfixes3, libxrandr2, libxss1, libxtst6, libasound2 | libasound2t64, libbrotli1, libbz2-1.0, libdbus-1-3, libdrm2, libexpat1, libfontconfig1, libfreetype6, libgbm1 (>= 21.1), libgcc-s1 | libgcc1, libglib2.0-0 | libglib2.0-0t64, libgssapi-krb5-2, libnspr4, libnss3, libpng16-16 | libpng16-16t64, libpulse0, libstdc++6 (>= 8), libudev1, libva-drm2, libva2, libwayland-client0, libwayland-cursor0, libwayland-egl1, libxcb-dri3-0, libxcb-glx0, libxcb-icccm4, libxcb-image0, libxcb-keysyms1, libxcb-randr0, libxcb-render-util0, libxcb-render0, libxcb-shape0, libxcb-shm0, libxcb-sync1, libxcb-xfixes0, libxcb-xkb1, libxcb1, libxkbcommon-x11-0, libxkbcommon0, libxkbfile1, zlib1g, libzstd1
+Recommends: libatk1.0-0 | libatk1.0-0t64, libcairo-gobject2, libcairo2, libgtk-3-0 | libgtk-3-0t64, libgdk-pixbuf-2.0-0 | libgdk-pixbuf2.0-0, libpango-1.0-0, libpangocairo-1.0-0, xdg-utils
+Conflicts: Viber (<< 29.4.0.7)
+Replaces: Viber (<< 29.4.0.7)
+Filename: pool/noble/main/viber_29.4.0.7_noble_amd64.deb
+Size: 146838584
+MD5sum: 6508f6e98006a936b4944614791f789c
+SHA1: 6ec8b6f6635522232fdd43f9f18bb60b29f70980
+SHA256: 34b3c18f5d441a9813066811d037e971e1207d439c246766abd28e185a7ecd37
+Section: non-free/net
+Priority: extra
+Homepage: https://viber.com
+Description: Viber for Desktop.
+ Free and secure calls and messages to anyone, anywhere, on any device and network, in any country!
+ Viber for Desktop syncs your contacts, messages and call history with your mobile device.
+
 Package: winegui
 Version: 4.4.0-1~ubuntu24.04.1
 Architecture: amd64
