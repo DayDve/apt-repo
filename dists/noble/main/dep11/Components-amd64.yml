@@ -179,6 +179,64 @@ Provides:
   - bees
 ---
 Type: desktop-application
+ID: io.github.daydve.apt.bitwarden
+Package: bitwarden
+ProjectLicense: GPL-3.0-only
+Name:
+  C: Bitwarden
+Summary:
+  C: Open source password manager (desktop app)
+Developer:
+  name:
+    C: Bitwarden Inc.
+Categories:
+- Utility
+- Security
+Url:
+  homepage: https://github.com/bitwarden/clients
+Icon:
+  cached:
+  - name: bitwarden
+Launchable:
+  desktop-id:
+  - bitwarden.desktop
+Provides:
+  binaries:
+  - bitwarden
+Screenshots:
+- default: true
+  caption:
+    C: Bitwarden
+  thumbnails:
+    - url: screenshots/bitwarden/0.png
+      width: 1470
+      height: 1039
+  source-image:
+    url: screenshots/bitwarden/0.png
+    width: 1470
+    height: 1039
+- caption:
+    C: Bitwarden
+  thumbnails:
+    - url: screenshots/bitwarden/1.png
+      width: 1465
+      height: 1035
+  source-image:
+    url: screenshots/bitwarden/1.png
+    width: 1465
+    height: 1035
+- caption:
+    C: Bitwarden
+  thumbnails:
+    - url: screenshots/bitwarden/2.png
+      width: 1470
+      height: 1033
+  source-image:
+    url: screenshots/bitwarden/2.png
+    width: 1470
+    height: 1033
+---
+Type: desktop-application
 ID: io.github.daydve.apt.btrfs-assistant
 Package: btrfs-assistant
 ProjectLicense: GPL-3.0
@@ -349,7 +407,7 @@ Screenshots:
 Type: font
 ID: io.github.daydve.apt.fonts-noto-lite
 Package: fonts-noto-lite
-ProjectLicense: OFL-1.1
+ProjectLicense: Apache-2.0
 Name:
   C: fonts-noto-lite
 Summary:
@@ -1025,7 +1083,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.wps-office
 Package: wps-office
-ProjectLicense: LicenseRef-proprietary
+ProjectLicense: GPL-3.0-or-later
 Name:
   C: wps-office
 Summary:

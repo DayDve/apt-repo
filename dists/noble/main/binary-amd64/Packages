@@ -118,6 +118,26 @@ Description: Btrfs deduplication daemon
  A daemon that deduplicates data on Btrfs volumes using
  reflinks and stable file handles.
 
+Package: bitwarden
+Version: 2026.10.4
+Architecture: amd64
+Maintainer: Bitwarden Inc. <hello@bitwarden.com>
+Installed-Size: 668560
+Depends: libnotify4, libxtst6, libnss3, libxss1
+Recommends: libappindicator3-1
+Filename: pool/noble/main/bitwarden_2026.10.4_noble_amd64.deb
+Size: 163692848
+MD5sum: 45b56c0f9ffc1828969ffa2fc1981a7e
+SHA1: 648a4cbeb5f3fc8a6304f5858d881d4dff2a3ade
+SHA256: a45a34a20a9d5becbb1c710851717583ad578597d10fbd2bd57fe597f7625f41
+Section: default
+Priority: optional
+Homepage: https://bitwarden.com
+Description: A secure and free password manager for all of your devices.
+  A secure and free password manager for all of your devices.
+License: GPL-3.0
+Vendor: Bitwarden Inc. <hello@bitwarden.com>
+
 Package: btrfs-assistant
 Version: 2.2
 Architecture: amd64

@@ -45,6 +45,23 @@
   ]
 }
 ,{
+  "name": "bitwarden",
+  "description": "Open source password manager (desktop app)",
+  "source": "https://github.com/bitwarden/clients",
+  "version": "2026.10.4",
+  "icon": "/icons/bitwarden.png",
+  "screenshots": [
+    "/screenshots/bitwarden/0.png",
+    "/screenshots/bitwarden/1.png",
+    "/screenshots/bitwarden/2.png"
+  ],
+  "categories": [
+    "Utility",
+    "Security"
+  ],
+  "displayName": "Bitwarden"
+}
+,{
   "name": "btrfs-assistant",
   "description": "GUI management tool for Btrfs filesystem",
   "source": "https://gitlab.com/btrfs-assistant/btrfs-assistant",
