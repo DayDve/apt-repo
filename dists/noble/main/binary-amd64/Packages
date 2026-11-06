@@ -597,25 +597,6 @@ Description: retype text typed in the wrong keyboard layout
  layouts. Shows the current layout in the system tray.
 
 Package: rclone
-Version: 1.75.0
-Architecture: amd64
-Maintainer: Nick Craig-Wood <nick@craig-wood.com>
-Installed-Size: 93031
-Provides: rclone
-Filename: pool/noble/main/rclone.deb
-Size: 32099950
-MD5sum: 7be5b75df0c24083b90e6e05f0bab975
-SHA1: f65e53167c323a338ce85e68279014a9de6a05ca
-SHA256: 266598b5c66a42b821571332013cc85a88ffcff8939cf0643861c8d033dd3a4a
-Section: default
-Priority: extra
-Homepage: https://rclone.org
-Description: Rclone - "rsync for cloud storage"
- is a command-line program to sync files and directories to and
- from most cloud providers. It can also mount, tree, ncdu and lots
- of other useful things.
-
-Package: rclone
 Version: 1.75.1
 Architecture: amd64
 Maintainer: Nick Craig-Wood <nick@craig-wood.com>
@@ -645,6 +626,25 @@ Size: 32295266
 MD5sum: cedd7fff7d04bf934fbbcd2e6929bc8f
 SHA1: 9590aa56260e1e2c4116db0459c2b5c87fbc9a60
 SHA256: efbfe852181f7191eb3c9043ed1ab49c9b2d0ba045c61c926a5da111c939ec5c
+Section: default
+Priority: extra
+Homepage: https://rclone.org
+Description: Rclone - "rsync for cloud storage"
+ is a command-line program to sync files and directories to and
+ from most cloud providers. It can also mount, tree, ncdu and lots
+ of other useful things.
+
+Package: rclone
+Version: 1.76.0
+Architecture: amd64
+Maintainer: Nick Craig-Wood <nick@craig-wood.com>
+Installed-Size: 94068
+Provides: rclone
+Filename: pool/noble/main/rclone_1.76.0_noble_amd64.deb
+Size: 32699694
+MD5sum: 10a7d34b8397711bb3789d1770799056
+SHA1: fc7c1143fbcf9df5723440293675d57c4d741f9b
+SHA256: 9db7ee9b725bce7cdd195b9183449a4c6fb93cad3e6578e70b87c0bc7f6062e9
 Section: default
 Priority: extra
 Homepage: https://rclone.org
