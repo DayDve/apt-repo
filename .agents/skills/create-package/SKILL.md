@@ -1,242 +1,164 @@
+---
+name: create-package
+description: Add a new .deb package to this apt-repo (apps/<app>/package + apps/<app>/Dockerfile) that repackages or builds upstream software and auto-tracks its updates. Use when the user asks to add, create, package or "завернуть в deb" a new program/app/tool for the APT repo, or to model a new package on an existing one.
+---
+
 # create-package
 
-Create a new .deb package for the apt-repo project. Activated when the user asks to add or create a new package for a program.
+Creates `apps/<app>/package` + `apps/<app>/Dockerfile` on the `apps` branch. The authoritative
+contract and full recipes live in `docs/template/package` and `docs/template/Dockerfile` — read both
+before writing files. This skill is the workflow + the decisions; don't duplicate the templates.
 
 ## Workflow
 
-### Step 1: Gather information
+### 1. Get the upstream, infer the rest
 
-Ask the user these questions interactively:
+Only the **upstream URL** is required from the user. Infer everything else yourself and only ask
+about what you genuinely cannot determine (or confirm your guesses in one message):
 
-1. **Upstream URL** — GitHub repo or project homepage
-2. **App name** — short lowercase name (e.g. `localsend`, `keyd`)
-3. **Description** — one-line human-readable description
-4. **Version source** — how to detect the current version:
-   - **GitHub releases** (`gh_latest_release`) — most common, use if upstream has releases
-   - **GitHub tags + commits** (`gh_tag_ahead`) — no releases, but tags exist
-   - **Custom file in repo** (`version.txt`, `meson.build`, etc.) — fetch and parse a file
-   - **Web scraping** — parse HTML from a webpage
-   - **Other** — describe in chat
+- **`<app>` dir name** — short lowercase id (`localsend`, `keyd`). Internal only: release tag
+  `<app>-<version>`, site slug, screenshot names. It is *not* the `apt install` name (that is read
+  from the built `.deb`'s `Package:` field).
+- **`DESCRIPTION`** — one line; take it from the repo description / homepage.
+- **`APP_NAME`** — only if the product name differs from the dir name (e.g. dir `tmog`).
 
-### Step 2: Analyze the upstream
+### 2. Analyze the upstream
 
-Based on the upstream URL, determine:
+**Preflight:** `command -v gh && gh auth status`. If `gh` is missing or not logged in:
 
-- **Does it have GitHub releases?** → check via `gh release list`
-- **Does it provide prebuilt .deb files?** → check release assets for `.deb`
-- **What language/build system?** → affects Dockerfile pattern
-- **How is the version tracked?** → tag, commit count, custom file?
+- Analysis still works through the public API with curl (unauthenticated limit is 60 req/h):
+  `curl -s https://api.github.com/repos/owner/repo/releases/latest | jq -r '.tag_name, .assets[].name'`
+  (same paths for `/releases`, `/tags`, `/repos/owner/repo`; add
+  `-H "Authorization: Bearer $GH_TOKEN"` if a token exists).
+- The local build in step 5 still works. Without `gh`, the `gh_*` helpers in `build.sh` switch
+  to curl, and they send `GH_TOKEN`/`GITHUB_TOKEN` if one is set. Without a token the limit is
+  60 req/h, and `build.sh` prints a warning about it. Each run makes only a few requests, but repeated
+  runs add up, so suggest setting `GH_TOKEN` if you hit the limit. On a failed API call `build.sh` stops with
+  `Failed to parse version (got 'unknown')`, which usually means rate limit or a bad token.
+- Never push to `apps` just to "let CI test it": that push publishes a real release.
 
-### Step 3: Choose patterns
-
-#### Package patterns (apps/<name>/package)
-
-| Pattern | When to use | Example |
-|---|---|---|
-| `gh_latest_release` | Repo has GitHub releases with tags | localsend, rclone, scrcpy |
-| `gh_tag_ahead` | No releases, but tags exist, commits ahead of tag | bees, keyd, grub-btrfs |
-| Web scraping | Version/changelog on a website, not GitHub | viber, remotedesktopmanager |
-| Custom | Complex versioning, multiple sources | wlvncc, ayugram |
-
-#### Dockerfile patterns (apps/<name>/Dockerfile)
-
-| Pattern | When to use | Example |
-|---|---|---|
-| Download prebuilt .deb | Release has .deb asset | localsend, rclone, wps-office |
-| Download tarball + repackage | Release has tarball, needs .deb wrapper | scrcpy |
-| Build from source (manual) | No releases, compile from git | keyd, grub-btrfs |
-| Build from source (debhelper) | Has debian/ dir or can create one | bees |
-
-### Step 4: Generate files
-
-Create `apps/<name>/package` and `apps/<name>/Dockerfile`.
-
-### Step 5: Verify
-
-Run `bash apps/build.sh <name>` locally (or at minimum validate syntax).
-
----
-
-## Reference: package script contract
-
-The `package` file is **sourced** by `apps/build.sh`. It must define:
+With `gh` available:
 
 ```bash
-SOURCE_URL="https://..."        # upstream URL
-DESCRIPTION="..."               # one-line description
+gh release list -R owner/repo -L 5                       # releases at all?
+gh release view -R owner/repo --json tagName,assets -q '.tagName, .assets[].name'   # .deb / tarball / AppImage?
+gh api repos/owner/repo/tags -q '.[0:5][].name'          # tags without releases?
+gh api repos/owner/repo -q '.license.spdx_id, .language' # license + build system hint
+```
 
-# AppStream metadata (optional, for KDE Discover visibility)
-APPSTREAM_TYPE="desktop-application"              # desktop-application | console-application | font | addon
-APPSTREAM_CATEGORIES="InstantMessaging;Network"    # Freedesktop categories via ;
-APPSTREAM_KEYWORDS="telegram,messenger,chat"       # Comma-separated search keywords
-APPSTREAM_SUMMARY="Enhanced Telegram client"       # Short summary (if DESCRIPTION is long)
+Also check: does upstream ship a `debian/` dir or `.dsc` source package? Is the version in a file
+(`meson.build`, `version.txt`) instead of tags? Is the host reachable only via proxy from GHA?
 
-check_update() {                # exit 0 if update available
-  ...
+### 3. Pick patterns
+
+**Version detection (`package`)** — recipes in `docs/template/package`:
+
+| Pattern | When | Examples |
+|---|---|---|
+| `gh_latest_release` | Normal GitHub releases | rclone, scrcpy, wps-office |
+| `gh_latest_release_with_asset <repo> <substr>` | Some releases lack the Linux asset | localsend |
+| `gh_tag_ahead` → `${tag#v}-${ahead}-g${sha:0:7}` | Tags but no releases / track HEAD | bees, keyd, grub-btrfs |
+| `gh_fetch_raw` + parse | Version lives in a file in the repo | — |
+| Web scraping (`fetch_url` + regex) | Not on GitHub | viber, remotedesktopmanager |
+| Custom / multi-source | Odd versioning, submodules, rebuilds | wlvncc, ayugram |
+
+**Build (`Dockerfile`)** — patterns in `docs/template/Dockerfile`:
+
+| Pattern | When | Examples |
+|---|---|---|
+| Download prebuilt `.deb` | Release ships an amd64 `.deb` | localsend, rclone, wps-office |
+| Tarball/binary → hand-made `.deb` | Release ships binaries, no `.deb` | scrcpy |
+| Build from source, manual `DEBIAN/control` | Simple make/cargo/go build | keyd, grub-btrfs |
+| Build with debhelper | Upstream has `debian/` or it's easy to add | bees |
+| Rebuild upstream `.dsc` (uses `UPSTREAM_PKG_SUFFIX`) | Upstream publishes distro-suffixed source pkgs | mc6 family |
+
+Before writing, open the closest existing example from the tables and copy its structure.
+
+### 4. Write the files
+
+`package` (sourced by `apps/build.sh`; both functions receive current version as `$1`):
+
+```bash
+SOURCE_URL="https://github.com/owner/repo"
+DESCRIPTION="One-line description"
+DEVELOPER="Upstream Author"
+APPSTREAM_TYPE="desktop-application"
+APPSTREAM_CATEGORIES="Network;FileTransfer"
+
+check_update() {          # exit 0 = update available
+  gh_latest_release owner/repo
+  version="${LATEST_TAG#v}"
+  [ "$version" != "${1:-}" ]
 }
 
-get_version() {                 # MUST set $version, SHOULD print changelog to stdout
-  version="1.2.3"
-  echo "changelog text here"
+get_version() {           # MUST set $version; stdout = changelog (keep it clean)
+  gh_latest_release owner/repo
+  version="${LATEST_TAG#v}"
+  echo "$RELEASE_BODY"
 }
 ```
 
-### AppStream variables
+Optional vars (full list + semantics in the `docs/template/package` header):
 
-| Variable | Required | Description |
-|---|---|---|
-| `APPSTREAM_TYPE` | No | Component type. Default: `console-application` |
-| `APPSTREAM_CATEGORIES` | No | Semicolon-separated Freedesktop categories |
-| `APPSTREAM_KEYWORDS` | No | Comma-separated search keywords |
-| `APPSTREAM_SUMMARY` | No | Short summary for Discover |
-| `ICON_SOURCE` | No | Icon source: `file` / `url` / `deb` (default: `deb` = auto-extract from .deb) |
-| `ICON_PATH` | No | Path for icon. For `file`: relative to `apps/<app>/`; for `url`: full URL; for `deb`: path inside .deb (optional — if unset, auto-discovers `*.png` in `hicolor/*/apps/`) |
+| Var | Purpose |
+|---|---|
+| `APPSTREAM_TYPE` | `desktop-application` / `console-application` / `font` / `addon` / `none` (hide from DEP-11) |
+| `APPSTREAM_CATEGORIES` | Freedesktop categories, `;`-separated |
+| `APPSTREAM_KEYWORDS`, `APPSTREAM_SUMMARY` | Discover search keywords (`,`), short summary |
+| `DEVELOPER` | Upstream author shown in Discover (almost every package sets it) |
+| `LICENSE` | SPDX id; unset = auto-detect (`detect_license`). Closed source: `LicenseRef-proprietary` |
+| `APP_NAME` | Product display name if it differs from dir name |
+| `ICON_SOURCE` / `ICON_PATH` | `deb` (default, auto-extract `hicolor/*/apps/*.png`) / `file` (rel. to `apps/<app>/`) / `url` |
+| `CHANGELOG_URL` | "Full changelog" link in Telegram (default `SOURCE_URL`) |
+| `PINNED_VERSIONS` | Comma-separated versions never pruned from releases |
+| `FAMILY`, `GROUP` | Multi-package families (Telegram bundling / one site row) — see `apps/mc6*/package` |
 
-### Icons for DEP-11
+Long changelogs / commit lists: pipe through `ai_changelog <app> "$raw" [scope]` (Gemini; falls
+back to raw text without `GEMINI_API_KEY`).
 
-For apps to show icons in Discover, the deploy script needs PNG icons at standard sizes (48×48, 64×64, 128×128) in DEP-11 tarballs.
+`Dockerfile` rules:
 
-**If you want icons for your package:**
+- Final stage **`FROM scratch`** with `COPY --from=<stage> /path/*.deb /` — exactly one `.deb`.
+- Output filename must end in **`_amd64.deb`** (build.sh renames it to `_<distro>_amd64.deb`).
+- **Re-declare `ARG APP_VERSION`** (and `DEBFULLNAME`, `DEBEMAIL`, `UPSTREAM_PKG_SUFFIX` if used)
+  after every `FROM`.
+- Hand-made `.deb`s: set `Maintainer: ${DEBFULLNAME} <${DEBEMAIL}>`, real `Depends:`, and
+  `dpkg-deb --root-owner-group --build`.
+- If `version` was transformed from the tag (suffixes, `-N-gSHA`, epochs), reverse it in the
+  Dockerfile when building download URLs / git refs.
 
-1. **PNG icon at known size** — add to `apps/<app>/` and set:
-   ```bash
-   ICON_SOURCE="file"
-   ICON_PATH="icons/myapp.png"
-   ```
+Optional assets: `apps/<app>/screenshots/0.png, 1.jpg, …` (display order), long description in
+`apps/descriptions.json` (`{"<app>": {"description": "…"}}`).
 
-2. **Icon inside the .deb** (most common for prebuilt .deb packages) — set the exact path:
-   ```bash
-   ICON_SOURCE="deb"
-   ICON_PATH="usr/share/icons/hicolor/256x256/apps/myapp.png"
-   ```
-   Or leave both unset (defaults to auto-extract from .deb).
+### 5. Verify — required
 
-3. **Icon from URL**:
-   ```bash
-   ICON_SOURCE="url"
-   ICON_PATH="https://example.com/icon.png"
-   ```
-
-### Screenshots
-
-Place screenshots in `apps/<app>/screenshots/` directory:
-```
-apps/<app>/screenshots/
-├── screenshot-1.png
-├── screenshot-2.png
-└── ...
+```bash
+bash apps/build.sh <app>              # builds into /tmp/deb-out/, publishes nothing locally
+dpkg-deb -I /tmp/deb-out/*<app>*.deb  # check Package/Version/Depends/Maintainer
+dpkg-deb -c /tmp/deb-out/*<app>*.deb | head -30
 ```
 
-Screenshots are automatically included in AppStream metadata as GitHub raw URLs.
+`build.sh` never calls `check_update` — test it separately (must print `no-update` for the
+version just built, `update` for an older one):
 
-### Available helpers (from build.sh)
-
-| Helper | Usage | Sets |
-|---|---|---|
-| `gh_latest_release <owner/repo>` | Fetches latest release | `$LATEST_TAG`, `$RELEASE_BODY` |
-| `gh_tag_ahead <owner/repo>` | Latest tag + HEAD ahead count | `$LATEST_TAG`, `$HEAD_SHA`, `$AHEAD_COUNT` |
-| `gh_tag_message <owner/repo> <tag>` | Annotated tag message | stdout |
-| `gh_commits_between <owner/repo> <base> <head>` | Commits between refs | stdout |
-| `gh_release_body <owner/repo>` | Latest release body | stdout |
-| `gh_release_body_by_tag <owner/repo> <tag>` | Release body for tag | stdout |
-| `gh_latest_release_with_asset <owner/repo> <asset-substring>` | Latest release whose assets contain the substring (skips releases without the .deb, e.g. android-only) | `$LATEST_TAG`, `$RELEASE_BODY` |
-| `fetch_url <url> [curl_args...]` | HTTP GET with direct→proxy fallback | stdout |
-| `fetch_to_file <url> <dest> [curl_args...]` | Binary-safe download to `<dest>`, direct→proxy fallback | file on disk |
-
----
-
-## Reference: Dockerfile contract
-
-**Final stage must be `FROM scratch`** with exactly one `.deb` copied to `/`.
-
-Build args available:
-- `APP_VERSION` — from `get_version()`
-- `DEBFULLNAME` — package maintainer name
-- `DEBEMAIL` — package maintainer email
-
-### Pattern: Download prebuilt .deb
-
-```dockerfile
-FROM alpine:latest AS download
-ARG APP_VERSION
-RUN apk add --no-cache curl && \
-    curl -fsSL -o /app.deb "https://example.com/app_${APP_VERSION}_amd64.deb"
-
-FROM scratch
-COPY --from=download /app.deb /
+```bash
+bash -c 'source apps/build.sh; source apps/<app>/package;
+  check_update_safe "$1" >/dev/null && echo update || echo no-update' _ <version>
 ```
 
-### Pattern: Download tarball + repackage
-
-```dockerfile
-FROM alpine:latest AS download
-ARG APP_VERSION
-RUN apk add --no-cache curl && \
-    curl -fsSL -o /src.tar.gz "https://example.com/v${APP_VERSION}.tar.gz" && \
-    tar -xzf /src.tar.gz -C /src
-
-FROM ubuntu:24.04 AS package
-ARG APP_VERSION
-RUN apt-get update && apt-get install -y -qq dpkg-dev
-COPY --from=download /src /src
-RUN mkdir -p /pkg/DEBIAN && \
-    printf 'Package: my-app\nVersion: %s\nArchitecture: amd64\nDepends: libc6\nDescription: My app\n' \
-      "$APP_VERSION" > /pkg/DEBIAN/control && \
-    cp -r /src/* /pkg/ && \
-    dpkg-deb --root-owner-group --build /pkg "/out/my-app_${APP_VERSION}_amd64.deb"
-
-FROM scratch
-COPY --from=package /out/*.deb /
-```
-
-### Pattern: Build from source (manual deb)
-
-```dockerfile
-FROM ubuntu:24.04 AS build
-ARG APP_VERSION
-RUN apt-get update && apt-get install -y -qq git make gcc dpkg-dev
-RUN git clone --depth 1 --branch "v${APP_VERSION}" https://github.com/owner/repo /src
-RUN cd /src && make
-
-FROM ubuntu:24.04 AS package
-ARG APP_VERSION
-COPY --from=build /src/my-app /usr/local/bin/
-RUN mkdir -p /pkg/DEBIAN && \
-    printf 'Package: my-app\nVersion: %s\nArchitecture: amd64\nDepends: libc6\nDescription: My app\n' \
-      "$APP_VERSION" > /pkg/DEBIAN/control && \
-    dpkg-deb --root-owner-group --build /pkg "/out/my-app_${APP_VERSION}_amd64.deb"
-
-FROM scratch
-COPY --from=package /out/*.deb /
-```
-
----
+Don't declare done until the build succeeds.
 
 ## Gotchas
 
-1. **`ARG` after `FROM`** — must re-declare `ARG APP_VERSION` after each `FROM`, build args don't persist
-2. **Version suffixes** — if version differs from tag (e.g. `.repack`), Dockerfile must reverse the transformation
-3. **`gh` CLI** — all GitHub helpers require `gh` + `GH_TOKEN`. `fetch_url` only needs `PROXY_URL`/`PROXY_TOKEN` for proxy fallback
-4. **`_amd64` suffix** — `.deb` filename must end with `_amd64.deb` for the build script to find it
-5. **`check_update` is optional but recommended** — called by `check-updates.yml` to detect new versions
-6. **`get_version` stdout** — captured as changelog, used in Telegram notifications. Keep it clean (no shell noise)
-7. **Release tag format** — `<app>-<version>`, created automatically by `build.sh`
-8. **Distro suffix** — `.deb` gets renamed to `_noble_amd64.deb` by `build.sh` before publishing
-
-## Repository structure
-
-```
-apps/
-├── build.sh                    # Main build script (DO NOT MODIFY without understanding)
-├── <app-name>/
-│   ├── Dockerfile              # Build instructions
-│   └── package                 # Version detection + changelog
-├── ...
-docs/
-└── template/                   # Reference templates
-    ├── Dockerfile
-    └── package
-│   ├── Dockerfile              # Build instructions
-│   └── package                 # Version detection + changelog
-└── ...
-```
+1. Optional vars are parsed by `deploy-apt.yml` with `awk -F'"' '/^VAR=/{print $2}'` — keep each as a
+   **single `VAR="value"` line at column 0**, no computed values, or it's silently dropped.
+2. `check_update` must set `$version`: `check_update_safe` treats empty / `unknown` versions as "no
+   update", so a broken API call won't trigger a rebuild — but also won't error loudly.
+3. `get_version` stdout becomes the Telegram/release changelog — no debug output, no `set -x` noise
+   (send diagnostics to stderr).
+4. GitHub helpers need `gh` + `GH_TOKEN`. Use `fetch_url` (text) / `fetch_to_file` (binary) for
+   non-GitHub hosts — they fall back to the gha-proxy Worker when GHA runners can't reach the host.
+5. Don't modify `apps/build.sh`, don't hand-edit `README.md` (auto-generated), never touch the `apt`
+   branch.
+6. Version must sort correctly in dpkg (`dpkg --compare-versions`) against previous releases; if the
+   scheme ever goes backwards, an epoch (`1:`) is needed.
