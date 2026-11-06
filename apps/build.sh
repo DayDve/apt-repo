@@ -5,12 +5,46 @@ set -e
 # Common helpers for package scripts (available when sourced)
 # ============================================================
 
+# Without the gh CLI, gh_api_retry falls back to curl against api.github.com.
+# Warn once (at source time — call sites silence stderr) about the auth state.
+if ! command -v gh > /dev/null 2>&1; then
+  if [ -n "${GH_TOKEN:-${GITHUB_TOKEN:-}}" ]; then
+    echo "build.sh: gh CLI not found, using curl + GH_TOKEN for the GitHub API" >&2
+  else
+    echo "build.sh: gh CLI not found and GH_TOKEN is not set — using unauthenticated" \
+         "GitHub API via curl (60 requests/hour limit)" >&2
+  fi
+fi
+
+# _gh_api_curl: minimal `gh api` replacement. Supports <endpoint> [--jq|-q <expr>].
+_gh_api_curl() {
+  local endpoint="" jq_expr="" token="${GH_TOKEN:-${GITHUB_TOKEN:-}}" json
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --jq|-q) jq_expr="$2"; shift 2 ;;
+      -*) echo "gh_api_retry (curl fallback): unsupported flag $1" >&2; return 1 ;;
+      *) endpoint="${1#/}"; shift ;;
+    esac
+  done
+  local -a auth=()
+  [ -n "$token" ] && auth=(-H "Authorization: Bearer $token")
+  json=$(curl -fsSL -H "Accept: application/vnd.github+json" "${auth[@]}" \
+    "https://api.github.com/$endpoint") || return 1
+  if [ -n "$jq_expr" ]; then
+    printf '%s' "$json" | jq -r "$jq_expr"
+  else
+    printf '%s' "$json"
+  fi
+}
+
 # gh_api_retry: gh api with retries on transient failures (503, timeouts)
-# Usage: same as gh api — gh_api_retry repos/OWNER/REPO/tags
+# Usage: same as gh api — gh_api_retry repos/OWNER/REPO/tags [--jq <expr>]
+# Falls back to curl (_gh_api_curl) when the gh CLI is not installed.
 gh_api_retry() {
-  local attempt=0 max=3 delay=2 result
+  local attempt=0 max=3 delay=2 result api=(gh api)
+  command -v gh > /dev/null 2>&1 || api=(_gh_api_curl)
   while (( attempt < max )); do
-    if result=$(gh api "$@" 2>/dev/null); then
+    if result=$("${api[@]}" "$@" 2>/dev/null); then
       printf '%s' "$result"
       return 0
     fi
@@ -394,7 +428,7 @@ if ! declare -f get_version > /dev/null; then
 fi
 
 get_version "$current_version" > /tmp/changelog
-[ -z "$version" ] && { echo "Failed to parse version"; exit 1; }
+[[ -z "$version" || "$version" == *unknown* ]] && { echo "Failed to parse version (got '${version}')"; exit 1; }
 [ -z "$SOURCE_URL" ] && { echo "Failed to parse source URL"; exit 1; }
 
 pull_package_info > /tmp/version_info
