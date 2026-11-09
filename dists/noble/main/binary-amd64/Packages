@@ -1038,22 +1038,6 @@ Name: wps-office
 Relocations: /opt/kingsoft
 
 Package: wps-office-langpack-ru
-Version: 12.3.1.0.3950-1
-Architecture: all
-Maintainer: DayDve <daydve@smbit.pro>
-Depends: wps-office (>= 12)
-Recommends: ttf-mscorefonts-installer
-Replaces: wps-office
-Filename: pool/noble/main/wps-office-langpack-ru_12.3.1.0.3950-1_noble_amd64.deb
-Size: 3422544
-MD5sum: b2c391ce32d80c305f960fc0004efbf8
-SHA1: 0d20e625423f53ba91e0d2a45c7a89f61a4770fe
-SHA256: 557f82bfc6f970cd6e468aa613581cc18f8b5e68e4c5e8b5f35a939c35211f0e
-Section: localization
-Priority: optional
-Description: Russian language pack, plugins and font metric fixes for WPS Office 12
-
-Package: wps-office-langpack-ru
 Version: 12.3.1.0.3952-1
 Architecture: all
 Maintainer: DayDve <daydve@smbit.pro>
@@ -1081,6 +1065,22 @@ Size: 3455190
 MD5sum: 5203be0e439c506fac51cd051d97a23d
 SHA1: 716f74b3bc25616afe81703baccc1e411a5d3fc4
 SHA256: af90b36ccb5599f32349a610cc7b2dc830d48c34a2f164e43473f766fe3019cf
+Section: localization
+Priority: optional
+Description: Russian language pack, plugins and font metric fixes for WPS Office 12
+
+Package: wps-office-langpack-ru
+Version: 12.3.1.0.4058-1
+Architecture: all
+Maintainer: DayDve <daydve@smbit.pro>
+Depends: wps-office (>= 12)
+Recommends: ttf-mscorefonts-installer
+Replaces: wps-office
+Filename: pool/noble/main/wps-office-langpack-ru_12.3.1.0.4058-1_noble_amd64.deb
+Size: 3462684
+MD5sum: 8a7fccf5bbf54fa2ad66357cc528ac8d
+SHA1: fea3241eeb5a00cc59edc6cd5ba1444032b0ebc5
+SHA256: cb6e9224abe17dc6dd2e6faa54df583cab232b9caaee881c7fa4bb672dac26e8
 Section: localization
 Priority: optional
 Description: Russian language pack, plugins and font metric fixes for WPS Office 12
