@@ -7,6 +7,8 @@ DESCRIPTION="Open source password manager (desktop app)"
 APP_NAME="Bitwarden"
 DEVELOPER="Bitwarden Inc."
 LICENSE="GPL-3.0-only"
+# Display grouping: bitwarden and bitwarden-cli shown as one entry on the site/README.
+GROUP="bitwarden"
 APPSTREAM_TYPE="desktop-application"
 APPSTREAM_CATEGORIES="Utility;Security"
 APPSTREAM_KEYWORDS="password,manager,vault,security"

@@ -1,0 +1,41 @@
+# ============================================================
+# Package script for bitwarden-cli (bw command-line client)
+# ============================================================
+
+SOURCE_URL="https://github.com/bitwarden/clients"
+DESCRIPTION="Open source password manager (command-line client)"
+APP_NAME="Bitwarden CLI"
+DEVELOPER="Bitwarden Inc."
+LICENSE="GPL-3.0-only"
+# Display grouping: bitwarden and bitwarden-cli shown as one entry on the site/README.
+# No FAMILY: CLI and desktop are released independently with different versions.
+GROUP="bitwarden"
+APPSTREAM_TYPE="console-application"
+APPSTREAM_CATEGORIES="Utility;Security"
+APPSTREAM_KEYWORDS="password,manager,vault,security,cli,bw"
+CHANGELOG_URL="https://github.com/bitwarden/clients/releases"
+
+# bitwarden/clients is a monorepo: releases are tagged desktop-v*, browser-v*,
+# cli-v*, web-v*, plus occasional *-beta.N prereleases. Pick the newest
+# stable CLI release.
+_bitwarden_cli_latest() {
+  local json
+  json=$(gh_api_retry "repos/bitwarden/clients/releases?per_page=50") || {
+    LATEST_TAG="unknown"; RELEASE_BODY=""; return 1; }
+  LATEST_TAG=$(printf '%s' "$json" | jq -r \
+    '[.[] | select((.tag_name | startswith("cli-v")) and (.prerelease | not) and (.draft | not))][0].tag_name // "unknown"')
+  RELEASE_BODY=$(printf '%s' "$json" | jq -r --arg t "$LATEST_TAG" \
+    '.[] | select(.tag_name == $t) | .body' | sed -e 's/\r$//' -e '/^<!--.*-->$/d')
+}
+
+check_update() {
+  _bitwarden_cli_latest
+  version="${LATEST_TAG#cli-v}"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  _bitwarden_cli_latest
+  version="${LATEST_TAG#cli-v}"
+  echo "$RELEASE_BODY"
+}
