@@ -178,6 +178,26 @@ Provides:
   binaries:
   - bees
 ---
+Type: console-application
+ID: io.github.daydve.apt.bitwarden-cli
+Package: bitwarden-cli
+ProjectLicense: GPL-3.0-only
+Name:
+  C: Bitwarden CLI
+Summary:
+  C: Open source password manager (command-line client)
+Developer:
+  name:
+    C: Bitwarden Inc.
+Categories:
+- Utility
+- Security
+Url:
+  homepage: https://github.com/bitwarden/clients
+Provides:
+  binaries:
+  - bitwarden-cli
+---
 Type: desktop-application
 ID: io.github.daydve.apt.bitwarden
 Package: bitwarden
@@ -407,7 +427,7 @@ Screenshots:
 Type: font
 ID: io.github.daydve.apt.fonts-noto-lite
 Package: fonts-noto-lite
-ProjectLicense: Apache-2.0
+ProjectLicense: OFL-1.1
 Name:
   C: fonts-noto-lite
 Summary:
@@ -1038,7 +1058,6 @@ Provides:
 Type: addon
 ID: io.github.daydve.apt.wps-office-langpack-ru
 Package: wps-office-langpack-ru
-ProjectLicense: MIT
 Name:
   C: wps-office-langpack-ru
 Summary:
@@ -1084,7 +1103,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.wps-office
 Package: wps-office
-ProjectLicense: LicenseRef-proprietary
+ProjectLicense: GPL-3.0-or-later
 Name:
   C: wps-office
 Summary:

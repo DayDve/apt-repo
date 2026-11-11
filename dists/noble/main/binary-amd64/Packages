@@ -138,6 +138,23 @@ Description: A secure and free password manager for all of your devices.
 License: GPL-3.0
 Vendor: Bitwarden Inc. <hello@bitwarden.com>
 
+Package: bitwarden-cli
+Version: 2026.10.1
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Depends: libc6, libstdc++6, libgcc-s1
+Filename: pool/noble/main/bitwarden-cli_2026.10.1_noble_amd64.deb
+Size: 31945896
+MD5sum: f57f1660bd914eeb61b5413f922a8b25
+SHA1: 7b74b3e29595f7cc898b9537ae607e2902d97d46
+SHA256: d3f9a1e7fc88562c495a5a9f45123edf276ca824f4f229f7f1fa7a63b947395d
+Section: utils
+Priority: optional
+Homepage: https://bitwarden.com
+Description: Bitwarden password manager command-line client
+ The Bitwarden CLI (bw) provides full access to a Bitwarden vault
+ from the terminal. Open source (OSS) build.
+
 Package: btrfs-assistant
 Version: 2.2
 Architecture: amd64
@@ -352,21 +369,6 @@ Description: Hides non-Latin/Cyrillic Noto fonts from font selection dialogs
  removed automatically via Conflicts.
 
 Package: glab
-Version: 1.126.0
-Architecture: amd64
-Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
-Installed-Size: 49287
-Depends: git
-Filename: pool/noble/main/glab_1.126.0_linux_noble_amd64.deb
-Size: 18223176
-MD5sum: 6449b2deb0a4a98aff064fa281383b95
-SHA1: 14430c13167479910b79aecefc51bb9b44a7449a
-SHA256: 41583b9801086dd347fc6480b6c4597178c2e39e99e491e961a7179cd87f0407
-Priority: optional
-Homepage: https://gitlab.com/gitlab-org/cli
-Description: An open source GitLab CLI tool
-
-Package: glab
 Version: 1.127.0
 Architecture: amd64
 Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
@@ -392,6 +394,21 @@ Size: 18281428
 MD5sum: f97803d88df99e2d59b86a335fc22627
 SHA1: 1858612d0a9d3152dfa3f1da6d9eb36b1ec63ff8
 SHA256: b42db1c339cb66df2dbdaf190b8c4e359cb2ea3f7ac53e46302b04777f2cf405
+Priority: optional
+Homepage: https://gitlab.com/gitlab-org/cli
+Description: An open source GitLab CLI tool
+
+Package: glab
+Version: 1.130.0
+Architecture: amd64
+Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
+Installed-Size: 55468
+Depends: git
+Filename: pool/noble/main/glab_1.130.0_linux_noble_amd64.deb
+Size: 20319180
+MD5sum: facdebb758b3636538dcda1797dc5d6a
+SHA1: 4d7f1bc64dc5865b81fc6cd5856f835eed9b555a
+SHA256: caf19cb4a842da7dbe4ecf146929f44e037fc733ab3f11945a1a48798497ed51
 Priority: optional
 Homepage: https://gitlab.com/gitlab-org/cli
 Description: An open source GitLab CLI tool
