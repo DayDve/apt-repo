@@ -61,5 +61,8 @@
   },
   "wps-office-langpack-ru": {
     "description": "Russian language pack for WPS Office. Adds Russian UI translations and spell-check dictionaries to the WPS Office suite components."
+  },
+  "obsidian": {
+    "description": "Obsidian is a private and flexible note-taking app that stores your knowledge base as plain Markdown files in a local folder you fully control. Notes can be connected with wiki-style links, and the backlinks panel and interactive graph view reveal the relationships between your ideas. Canvas, Bases, daily notes, templates, and thousands of community plugins and themes let you shape it into a journal, a wiki, a task manager, or a research tool. This package is the official Linux build from the Obsidian developers."
   }
 }

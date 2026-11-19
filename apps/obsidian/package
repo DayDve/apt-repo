@@ -1,0 +1,55 @@
+# ============================================================
+# Package script for obsidian (desktop app)
+# ============================================================
+
+SOURCE_URL="https://obsidian.md"
+DESCRIPTION="Private and flexible note-taking app for Markdown knowledge bases"
+APP_NAME="Obsidian"
+DEVELOPER="Dynalist Inc."
+LICENSE="LicenseRef-proprietary"
+APPSTREAM_TYPE="desktop-application"
+APPSTREAM_CATEGORIES="Office;TextEditor;Utility"
+APPSTREAM_KEYWORDS="notes,markdown,knowledge,zettelkasten,wiki,pkm"
+CHANGELOG_URL="https://obsidian.md/changelog/"
+
+# Binaries are published on obsidianmd/obsidian-releases, but the release body
+# is just a link — real notes live in the Atom feed at obsidian.md/changelog.xml.
+_obsidian_latest() {
+  gh_latest_release obsidianmd/obsidian-releases
+  [ -n "$LATEST_TAG" ] || LATEST_TAG="unknown"
+}
+
+# Prints the plain-text desktop changelog for version $1 (empty if not found).
+_obsidian_changelog() {
+  fetch_url "https://obsidian.md/changelog.xml" | python3 -c '
+import html, re, sys, xml.etree.ElementTree as ET
+ns = {"a": "http://www.w3.org/2005/Atom"}
+want = "desktop-v" + sys.argv[1] + "/"
+for e in ET.fromstring(sys.stdin.read()).findall("a:entry", ns):
+    if (e.findtext("a:id", "", ns) or "").endswith(want):
+        s = e.findtext("a:content", "", ns)
+        s = re.sub(r"<h([1-6])[^>]*>", lambda m: "\n" + "#" * int(m.group(1)) + " ", s)
+        s = re.sub(r"<li[^>]*>", "- ", s)
+        s = re.sub(r"<[^>]+>", "", s)
+        print(re.sub(r"\n{3,}", "\n\n", html.unescape(s)).strip())
+        break
+' "$1" 2>/dev/null
+}
+
+check_update() {
+  _obsidian_latest
+  version="${LATEST_TAG#v}"
+  [ "$version" != "${1:-}" ]
+}
+
+get_version() {
+  _obsidian_latest
+  version="${LATEST_TAG#v}"
+  local raw
+  raw=$(_obsidian_changelog "$version")
+  if [ -n "$raw" ]; then
+    ai_changelog "obsidian" "$raw"
+  else
+    echo "https://obsidian.md/changelog/"
+  fi
+}
