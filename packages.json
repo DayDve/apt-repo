@@ -66,7 +66,7 @@
   "name": "bitwarden-cli",
   "description": "Open source password manager (command-line client)",
   "source": "https://github.com/bitwarden/clients",
-  "version": "2026.10.1",
+  "version": "2026.11.0",
   "group": "bitwarden",
   "categories": [
     "Utility",
@@ -221,6 +221,26 @@
   ]
 }
 ,{
+  "name": "obsidian",
+  "description": "Private and flexible note-taking app for Markdown knowledge bases",
+  "source": "https://obsidian.md",
+  "version": "1.15.1",
+  "longDescription": "Obsidian is a private and flexible note-taking app that stores your knowledge base as plain Markdown files in a local folder you fully control. Notes can be connected with wiki-style links, and the backlinks panel and interactive graph view reveal the relationships between your ideas. Canvas, Bases, daily notes, templates, and thousands of community plugins and themes let you shape it into a journal, a wiki, a task manager, or a research tool. This package is the official Linux build from the Obsidian developers.",
+  "icon": "/icons/obsidian.png",
+  "screenshots": [
+    "/screenshots/obsidian/0.png",
+    "/screenshots/obsidian/1.png",
+    "/screenshots/obsidian/2.png",
+    "/screenshots/obsidian/3.png"
+  ],
+  "categories": [
+    "Office",
+    "TextEditor",
+    "Utility"
+  ],
+  "displayName": "Obsidian"
+}
+,{
   "name": "rclone",
   "description": "rsync for cloud storage",
   "source": "https://github.com/rclone/rclone",
@@ -236,7 +256,7 @@
   "name": "remotedesktopmanager",
   "description": "One application for every remote connection you'll ever open",
   "source": "https://devolutions.net/remote-desktop-manager/",
-  "version": "2026.3.2.1",
+  "version": "2026.3.3.2",
   "longDescription": "Remote Desktop Manager centralizes remote connection protocols into a single interface, allowing you to launch and manage SSH, RDP, VNC, and VPN sessions from one Linux application. It features built-in credential management, session grouping, and secure password vault integration to eliminate the need for multiple separate connection clients. It is built for system administrators and power users who need to maintain organized, secure access to large fleets of servers and network infrastructure.",
   "icon": "/icons/remotedesktopmanager.png",
   "screenshots": [

@@ -155,6 +155,23 @@ Description: Bitwarden password manager command-line client
  The Bitwarden CLI (bw) provides full access to a Bitwarden vault
  from the terminal. Open source (OSS) build.
 
+Package: bitwarden-cli
+Version: 2026.11.0
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Depends: libc6, libstdc++6, libgcc-s1
+Filename: pool/noble/main/bitwarden-cli_2026.11.0_noble_amd64.deb
+Size: 34810414
+MD5sum: 8c9f610f6c10d11bba999563e73c52c6
+SHA1: 4dcc4999c82ac777c43c66e2ec1056191f4142c2
+SHA256: 15a4832a0a7657d76a140d563220be7e7104b6dc7779acdafdae5a099208c241
+Section: utils
+Priority: optional
+Homepage: https://bitwarden.com
+Description: Bitwarden password manager command-line client
+ The Bitwarden CLI (bw) provides full access to a Bitwarden vault
+ from the terminal. Open source (OSS) build.
+
 Package: btrfs-assistant
 Version: 2.2
 Architecture: amd64
@@ -613,6 +630,26 @@ Description: retype text typed in the wrong keyboard layout
  hunspell dictionaries. For KDE Plasma 6 on Wayland, with any number of
  layouts. Shows the current layout in the system tray.
 
+Package: obsidian
+Version: 1.15.1
+Architecture: amd64
+Maintainer: Dynalist Inc.
+Installed-Size: 347799
+Depends: libgtk-3-0, libnotify4, libnss3, libxss1, libxtst6, xdg-utils, libatspi2.0-0, libuuid1, libsecret-1-0
+Recommends: libappindicator3-1
+Filename: pool/noble/main/obsidian_1.15.1_noble_amd64.deb
+Size: 107976848
+MD5sum: 9d1fba1b972810c8fbbcfabee533d6dc
+SHA1: 0515a0e5d18fa16c78c880b877cf7347796b757f
+SHA256: f77b6dfc8c040214f2febad2b1b9b051b6a838a47b0f4fb90a31cfcb79b8fcec
+Section: default
+Priority: optional
+Homepage: https://obsidian.md
+Description:
+  Obsidian
+License: UNLICENSED
+Vendor: Dynalist Inc.
+
 Package: rclone
 Version: 1.75.1
 Architecture: amd64
@@ -671,25 +708,6 @@ Description: Rclone - "rsync for cloud storage"
  of other useful things.
 
 Package: remotedesktopmanager
-Version: 2026.3.1.1
-Architecture: amd64
-Maintainer: Devolutions
-Depends: libwebkit2gtk-4.1-0 | libwebkit2gtk-4.0-37, ca-certificates, libsecret-1-0, xwayland
-Recommends: gnome-keyring, fuse3, libfido2-1
-Suggests: libappindicator3-1, xdotool, lsof, libopenal1
-Conflicts: remotedesktopmanager-em
-Replaces: remotedesktopmanager-em
-Filename: pool/noble/main/remotedesktopmanager_2026.3.1.1_noble_amd64.deb
-Size: 286176572
-MD5sum: 1ab94fb84c40a240b4ff1e0e8acfa576
-SHA1: 31f94ab8c93acb30d839b50b8e037b148d51f71e
-SHA256: 3a40341a6201f172273ebd6aa70cc0528a91231bcdfd9e66b70bb67ead456d76
-Section: utils
-Homepage: https://devolutions.net/remote-desktop-manager/
-Description: Centralize, Manage and Secure Remote Connections
- Remote Desktop Manager (RDM) centralizes all remote connections on a single platform that is securely shared between users and across the entire team. With support for hundreds of integrated technologies — including multiple protocols and VPNs — along with built-in enterprise-grade password management tools, global and granular-level access controls, and robust mobile apps to complement desktop clients for Windows and Mac, RDM is a IT toolbox for remote access. RDM empowers IT departments to drive security, speed and productivity throughout the organization, while reducing inefficiency, cost and risk.
-
-Package: remotedesktopmanager
 Version: 2026.3.1.2
 Architecture: amd64
 Maintainer: Devolutions
@@ -722,6 +740,25 @@ Size: 296756432
 MD5sum: 17eb73103738100ecc2f770ca87e41c5
 SHA1: a10e753a9f4ecbdabdc1df338cbeed39647836b7
 SHA256: 852cec0cc96de28c404bba1d2a5beab46c91a91ca8b23f8ed1ab307988f549cf
+Section: utils
+Homepage: https://devolutions.net/remote-desktop-manager/
+Description: Centralize, Manage and Secure Remote Connections
+ Remote Desktop Manager (RDM) centralizes all remote connections on a single platform that is securely shared between users and across the entire team. With support for hundreds of integrated technologies — including multiple protocols and VPNs — along with built-in enterprise-grade password management tools, global and granular-level access controls, and robust mobile apps to complement desktop clients for Windows and Mac, RDM is a IT toolbox for remote access. RDM empowers IT departments to drive security, speed and productivity throughout the organization, while reducing inefficiency, cost and risk.
+
+Package: remotedesktopmanager
+Version: 2026.3.3.2
+Architecture: amd64
+Maintainer: Devolutions
+Depends: libwebkit2gtk-4.1-0 | libwebkit2gtk-4.0-37, ca-certificates, libsecret-1-0, xwayland
+Recommends: gnome-keyring, fuse3, libfido2-1
+Suggests: libappindicator3-1, xdotool, lsof, libopenal1
+Conflicts: remotedesktopmanager-em
+Replaces: remotedesktopmanager-em
+Filename: pool/noble/main/remotedesktopmanager_2026.3.3.2_noble_amd64.deb
+Size: 300514876
+MD5sum: 51213c0769a6dcf495a08bd71cb95c21
+SHA1: 4c0cfc95c113a26f4462f326e8a77ad5303ad073
+SHA256: 787926518cac0eeab83eedec6d173ed0790d6e3dbebc42e8d9bda28acf251ad5
 Section: utils
 Homepage: https://devolutions.net/remote-desktop-manager/
 Description: Centralize, Manage and Secure Remote Connections

@@ -425,7 +425,7 @@ Screenshots:
 Type: font
 ID: io.github.daydve.apt.fonts-noto-lite
 Package: fonts-noto-lite
-ProjectLicense: Apache-2.0
+ProjectLicense: OFL-1.1
 Name:
   C: fonts-noto-lite
 Summary:
@@ -679,6 +679,81 @@ Screenshots:
     width: 500
     height: 54
 ---
+Type: desktop-application
+ID: io.github.daydve.apt.obsidian
+Package: obsidian
+ProjectLicense: LicenseRef-proprietary
+Name:
+  C: Obsidian
+Summary:
+  C: Private and flexible note-taking app for Markdown knowledge bases
+Description:
+  C: >-
+    <p>Obsidian is a private and flexible note-taking app that stores your knowledge base as plain Markdown files in a local folder you
+    fully control. Notes can be connected with wiki-style links, and the backlinks panel and interactive graph view reveal the relationships
+    between your ideas. Canvas, Bases, daily notes, templates, and thousands of community plugins and themes let you shape it into a journal,
+    a wiki, a task manager, or a research tool. This package is the official Linux build from the Obsidian developers.</p>
+Developer:
+  name:
+    C: Dynalist Inc.
+Categories:
+- Office
+- TextEditor
+- Utility
+Url:
+  homepage: https://obsidian.md
+Icon:
+  cached:
+  - name: obsidian
+Launchable:
+  desktop-id:
+  - md.obsidian.Obsidian.desktop
+Provides:
+  binaries:
+  - obsidian
+Screenshots:
+- default: true
+  caption:
+    C: Obsidian
+  thumbnails:
+    - url: screenshots/obsidian/0.png
+      width: 2000
+      height: 1250
+  source-image:
+    url: screenshots/obsidian/0.png
+    width: 2000
+    height: 1250
+- caption:
+    C: Obsidian
+  thumbnails:
+    - url: screenshots/obsidian/1.png
+      width: 2000
+      height: 1250
+  source-image:
+    url: screenshots/obsidian/1.png
+    width: 2000
+    height: 1250
+- caption:
+    C: Obsidian
+  thumbnails:
+    - url: screenshots/obsidian/2.png
+      width: 2000
+      height: 1250
+  source-image:
+    url: screenshots/obsidian/2.png
+    width: 2000
+    height: 1250
+- caption:
+    C: Obsidian
+  thumbnails:
+    - url: screenshots/obsidian/3.png
+      width: 2000
+      height: 1250
+  source-image:
+    url: screenshots/obsidian/3.png
+    width: 2000
+    height: 1250
+---
 Type: console-application
 ID: io.github.daydve.apt.rclone
 Package: rclone
@@ -871,7 +946,6 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.tmog
 Package: taskmanagerog
-ProjectLicense: MIT
 Name:
   C: TMOG
 Summary:
@@ -1054,7 +1128,7 @@ Provides:
 Type: addon
 ID: io.github.daydve.apt.wps-office-langpack-ru
 Package: wps-office-langpack-ru
-ProjectLicense: LicenseRef-proprietary
+ProjectLicense: MIT
 Name:
   C: wps-office-langpack-ru
 Summary:
@@ -1099,7 +1173,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.wps-office
 Package: wps-office
-ProjectLicense: LicenseRef-proprietary
+ProjectLicense: GPL-3.0-or-later
 Name:
   C: wps-office
 Summary:
