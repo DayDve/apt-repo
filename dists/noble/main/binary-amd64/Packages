@@ -138,6 +138,26 @@ Description: A secure and free password manager for all of your devices.
 License: GPL-3.0
 Vendor: Bitwarden Inc. <hello@bitwarden.com>
 
+Package: bitwarden
+Version: 2026.11.0
+Architecture: amd64
+Maintainer: Bitwarden Inc. <hello@bitwarden.com>
+Installed-Size: 441549
+Depends: libnotify4, libxtst6, libnss3, libxss1
+Recommends: libappindicator3-1
+Filename: pool/noble/main/bitwarden_2026.11.0_noble_amd64.deb
+Size: 129552832
+MD5sum: 36f59cbaecf4e6c84b9f87743ea63585
+SHA1: 0e7a7a5c8b7d16110582cc9c77aacb601801cb55
+SHA256: ab9e0fda0fed3787517c1919966271831f888cfbee711adeaf3e1afb57eb4a8f
+Section: default
+Priority: optional
+Homepage: https://bitwarden.com
+Description: A secure and free password manager for all of your devices.
+  A secure and free password manager for all of your devices.
+License: GPL-3.0
+Vendor: Bitwarden Inc. <hello@bitwarden.com>
+
 Package: bitwarden-cli
 Version: 2026.10.1
 Architecture: amd64

@@ -48,7 +48,7 @@
   "name": "bitwarden",
   "description": "Open source password manager (desktop app)",
   "source": "https://github.com/bitwarden/clients",
-  "version": "2026.10.4",
+  "version": "2026.11.0",
   "icon": "/icons/bitwarden.png",
   "screenshots": [
     "/screenshots/bitwarden/0.png",
