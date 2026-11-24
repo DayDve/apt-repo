@@ -135,7 +135,7 @@
   "name": "glab",
   "description": "Official GitLab command-line tool",
   "source": "https://gitlab.com/gitlab-org/cli",
-  "version": "1.131.0",
+  "version": "1.132.0",
   "longDescription": "`glab` is a command-line tool that lets you manage GitLab repositories, issues, merge requests, and CI/CD pipelines directly from your terminal. You can create and review merge requests, check build pipeline statuses, manage project issues, and publish releases without opening a web browser. It works with both GitLab.com and self-hosted GitLab instances.",
   "icon": "/icons/glab.png",
   "categories": [
@@ -192,7 +192,7 @@
   "name": "localsend",
   "description": "Cross-platform file sharing over local network",
   "source": "https://github.com/localsend/localsend",
-  "version": "1.18.2",
+  "version": "1.19.0",
   "longDescription": "LocalSend transfers files and text messages directly between devices on your local network without requiring an internet connection or third-party servers. It automatically detects nearby devices running the app, allowing you to quickly share documents, media, and clipboard content across Linux, Android, iOS, Windows, and macOS. Because all traffic stays within your local Wi-Fi or Ethernet connection, transfers are fast, private, and use zero internet bandwidth.",
   "icon": "/icons/localsend.png",
   "screenshots": [

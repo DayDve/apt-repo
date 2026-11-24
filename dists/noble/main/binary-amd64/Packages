@@ -406,21 +406,6 @@ Description: Hides non-Latin/Cyrillic Noto fonts from font selection dialogs
  removed automatically via Conflicts.
 
 Package: glab
-Version: 1.128.0
-Architecture: amd64
-Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
-Installed-Size: 49447
-Depends: git
-Filename: pool/noble/main/glab_1.128.0_linux_noble_amd64.deb
-Size: 18281428
-MD5sum: f97803d88df99e2d59b86a335fc22627
-SHA1: 1858612d0a9d3152dfa3f1da6d9eb36b1ec63ff8
-SHA256: b42db1c339cb66df2dbdaf190b8c4e359cb2ea3f7ac53e46302b04777f2cf405
-Priority: optional
-Homepage: https://gitlab.com/gitlab-org/cli
-Description: An open source GitLab CLI tool
-
-Package: glab
 Version: 1.130.0
 Architecture: amd64
 Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
@@ -446,6 +431,21 @@ Size: 19975020
 MD5sum: bc475f7377bbd1b9d95ec97e79cc98ef
 SHA1: cc0e0b496daf85e3461deccc721717f6b2909804
 SHA256: e9e841f4bc62dfb0d6c30ada0aa70e22d9bb4879eba7571ef54998912cebe9ed
+Priority: optional
+Homepage: https://gitlab.com/gitlab-org/cli
+Description: An open source GitLab CLI tool
+
+Package: glab
+Version: 1.132.0
+Architecture: amd64
+Maintainer: GitLab<contact-project+gitlab-org-cli-34675721-issue-@incoming.gitlab.com>
+Installed-Size: 54444
+Depends: git
+Filename: pool/noble/main/glab_1.132.0_linux_noble_amd64.deb
+Size: 20033700
+MD5sum: 2d31149688d7b3f30842a6120d533a16
+SHA1: 31f8c856b845255fa60a73b1cf025a38c944b9cd
+SHA256: 5a1c91b787598e9892bffca070188164d7bb1d23b8be60a9f8bc2a17b446b54d
 Priority: optional
 Homepage: https://gitlab.com/gitlab-org/cli
 Description: An open source GitLab CLI tool
@@ -573,25 +573,6 @@ Description: Virtual folder protocol (stash:/) for Dolphin on KDE Plasma 6
  Custom KF6 port built for KDE Neon / Noble.
 
 Package: localsend
-Version: 1.17.0+58
-Architecture: amd64
-Essential: no
-Maintainer: Tienisto <dev.tien.donam@gmail.com>
-Installed-Size: 30600
-Pre-Depends: libc6 (>= 2.31)
-Depends: libappindicator3-1 | libayatana-appindicator3-1, gir1.2-appindicator3-0.1 | gir1.2-ayatanaappindicator3-0.1, libayatana-ido3-0.4-0, xdg-user-dirs
-Filename: pool/noble/main/localsend.deb
-Size: 11709940
-MD5sum: 59e559f84fe892f067c232c5c2b9b075
-SHA1: eba64eb18930d0a832bea05b33f5263762e5647a
-SHA256: b0244b2c3eacb2a81d61b2662534d6036ab37ace10d6782da36b630c222fa04c
-Section: x11
-Priority: optional
-Homepage: https://localsend.org/
-Description: An open source cross-platform alternative to AirDrop
-Uploaders: TheGB0077 <gb.lima.dev@gmail.com>
-
-Package: localsend
 Version: 1.18.0+60
 Architecture: amd64
 Essential: no
@@ -623,6 +604,25 @@ Size: 24665458
 MD5sum: a410fa2d461a583b07dc7994e4207db5
 SHA1: a22fbc5c01e4f10215e0e15253e91c3769f888ba
 SHA256: cc42a4f3eacdcb25ec31f0016b1272acb003145ab30484db8965450e20c72cd2
+Section: x11
+Priority: optional
+Homepage: https://localsend.org/
+Description: An open source cross-platform alternative to AirDrop
+Uploaders: TheGB0077 <gb.lima.dev@gmail.com>
+
+Package: localsend
+Version: 1.19.0+65
+Architecture: amd64
+Essential: no
+Maintainer: Tienisto <dev.tien.donam@gmail.com>
+Installed-Size: 30600
+Pre-Depends: libc6 (>= 2.34)
+Depends: libayatana-appindicator3-1, libayatana-ido3-0.4-0, libegl1, libgles2, xdg-user-dirs
+Filename: pool/noble/main/localsend_1.19.0_noble_amd64.deb
+Size: 24632546
+MD5sum: fdbaf2d2211b513cc9ef1b9a08a3243f
+SHA1: d895611052049e0b5ac3d99e9b68cfc540002ac2
+SHA256: f2cc2d1f8a2542799576e4c1cc61ed1f35c6a7dba2f375870e8500eab6fbfe66
 Section: x11
 Priority: optional
 Homepage: https://localsend.org/
