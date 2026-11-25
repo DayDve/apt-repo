@@ -14,6 +14,12 @@ interface Env {
   APT_ORIGIN?: string;
   /** Fallback mirror on *.workers.dev; derived from AUTHOR when unset */
   APT_FALLBACK?: string;
+  /** Workers Analytics Engine dataset for usage events; counting is skipped when unbound */
+  EVENTS?: AnalyticsEngineDataset;
+}
+
+interface AnalyticsEngineDataset {
+  writeDataPoint(point: { indexes?: string[]; blobs?: string[]; doubles?: number[] }): void;
 }
 
 interface Package {
@@ -52,51 +58,129 @@ function escapeHtml(s: string): string {
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    const url = new URL(request.url);
-    const path = url.pathname;
-    const ua = (request.headers.get('User-Agent') || '').toLowerCase();
-    const isBrowser = /mozilla|chrome|safari|firefox|edge/.test(ua);
-
-    if (path === '/' || path === '') {
-      return isBrowser ? serveHome(ctx, env) : serveText(ctx, env);
-    }
-
-    if (path === '/packages' || path === '/packages/') {
-      return servePackageList(ctx, env);
-    }
-
-    if (path === '/about') {
-      return serveAbout(env);
-    }
-
-    const pkgMatch = path.match(/^\/packages\/([^/]+)$/);
-    if (pkgMatch) {
-      return servePackageDetail(pkgMatch[1], ctx, env);
-    }
-
-    if (path === '/apt-key.asc') {
-      return proxy(`${env.PAGES_ORIGIN}/apt-repo/apt-key.asc`);
-    }
-
-    if (path.startsWith('/dists/')) {
-      return proxy(`${env.PAGES_ORIGIN}/apt-repo${path}`);
-    }
-
-    if (path.startsWith('/pool/')) {
-      return redirectPool(path, ctx, env);
-    }
-
-    if (path.startsWith('/icons/')) {
-      return proxy(`${repoOrigin(env.REPO)}${path}`, { contentType: 'image/png', cache: true });
-    }
-
-    if (path.startsWith('/screenshots/')) {
-      return proxy(`${repoOrigin(env.REPO)}${path}`, { cache: true });
-    }
-
-    return isBrowser ? serveNotFound(env) : new Response('Not found', { status: 404 });
+    const resp = await route(request, env, ctx);
+    try {
+      track(request, resp, env);
+    } catch {} // counting must never break apt
+    return resp;
   },
 };
+
+// ── Usage events (Workers Analytics Engine) ──
+//
+// One data point per counted request:
+//   index1 = kind: page | setup | key | update | deb
+//   blob1  = what: page path | client tool | distro | package name
+//   blob2  = country, blob3 = client IP, blob4 = network owner (AS organization), blob5 = User-Agent,
+//   blob6  = host (custom domain or the workers.dev fallback),
+//   blob7+ = per kind: page → referer, status; deb → version, distro, file name
+//   double1 = 1
+// Hosting networks and "bot" User-Agents tell crawlers from people; the dashboard filters on them.
+function track(request: Request, resp: Response, env: Env): void {
+  if (!env.EVENTS || request.method !== 'GET') return;
+  const url = new URL(request.url);
+  const path = url.pathname;
+  const type = resp.headers.get('content-type') || '';
+  const count = (kind: string, what: string, extra: string[] = []) => {
+    const cf = (request as any).cf || {};
+    env.EVENTS!.writeDataPoint({
+      indexes: [kind],
+      blobs: [
+        what,
+        cf.country || '',
+        request.headers.get('CF-Connecting-IP') || '',
+        cf.asOrganization || '',
+        request.headers.get('User-Agent') || '',
+        url.host,
+        ...extra,
+      ],
+      doubles: [1],
+    });
+  };
+
+  if ((path === '/' || path === '') && type.startsWith('text/plain')) {
+    // `curl -fsSL <repo> | sudo bash`: someone is adding the repo
+    const tool = (request.headers.get('User-Agent') || '').split('/')[0] || 'unknown';
+    return count('setup', tool.toLowerCase());
+  }
+  if (type.startsWith('text/html')) {
+    return count('page', path, [request.headers.get('Referer') || '', String(resp.status)]);
+  }
+  if (path === '/apt-key.asc' && resp.ok) {
+    return count('key', 'apt-key.asc');
+  }
+  // apt fetches InRelease once per `apt update`: roughly one point per update run per system
+  const rel = path.match(/^\/dists\/([^/]+)\/InRelease$/);
+  if (rel && resp.ok) {
+    return count('update', rel[1]);
+  }
+  if (path.startsWith('/pool/') && resp.status === 302) {
+    let file = path.split('/').pop() || '';
+    try { file = decodeURIComponent(file); } catch {}
+    const [pkg = '', version = '', distro = ''] = file.replace(/\.deb$/, '').split('_');
+    return count('deb', pkg, [version, distro, file]);
+  }
+}
+
+async function route(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  const url = new URL(request.url);
+  const path = url.pathname;
+  const ua = (request.headers.get('User-Agent') || '').toLowerCase();
+  // Only CLI fetchers (`curl ... | sudo bash`) get the plain-text banner. Everyone else gets HTML,
+  // including search and link-preview bots (TelegramBot, Twitterbot, Slackbot...) that send no "Mozilla".
+  const isBrowser = !(ua === '' || /^(curl|wget|httpie|xh|aria2|libfetch|fetch)\b/.test(ua));
+
+  if (path === '/' || path === '') {
+    return isBrowser ? serveHome(ctx, env) : serveText(ctx, env);
+  }
+
+  if (path === '/robots.txt') {
+    return serveRobots(env);
+  }
+
+  if (path === '/sitemap.xml') {
+    return serveSitemap(ctx, env);
+  }
+
+  if (path === '/packages') {
+    return servePackageList(ctx, env);
+  }
+
+  if (path === '/packages/') {
+    return Response.redirect(`${url.origin}/packages`, 301);
+  }
+
+  if (path === '/about') {
+    return serveAbout(env);
+  }
+
+  const pkgMatch = path.match(/^\/packages\/([^/]+)$/);
+  if (pkgMatch) {
+    return servePackageDetail(pkgMatch[1], ctx, env);
+  }
+
+  if (path === '/apt-key.asc') {
+    return proxy(`${env.PAGES_ORIGIN}/apt-repo/apt-key.asc`);
+  }
+
+  if (path.startsWith('/dists/')) {
+    return proxy(`${env.PAGES_ORIGIN}/apt-repo${path}`);
+  }
+
+  if (path.startsWith('/pool/')) {
+    return redirectPool(path, ctx, env);
+  }
+
+  if (path.startsWith('/icons/')) {
+    return proxy(`${repoOrigin(env.REPO)}${path}`, { contentType: 'image/png', cache: true });
+  }
+
+  if (path.startsWith('/screenshots/')) {
+    return proxy(`${repoOrigin(env.REPO)}${path}`, { cache: true });
+  }
+
+  return isBrowser ? serveNotFound(env) : new Response('Not found', { status: 404 });
+}
 
 async function proxy(url: string, opts: { contentType?: string; cache?: boolean } = {}): Promise<Response> {
   const cf: Record<string, unknown> = opts.cache
@@ -168,6 +252,40 @@ function getOrigins(env: Env): { aptOrigin: string; fallbackOrigin: string } {
   return { aptOrigin, fallbackOrigin };
 }
 
+const siteName = (env: Env): string => env.SITE_NAME || 'apt-repo';
+
+// ── Crawler endpoints ──
+
+// Cloudflare's managed robots.txt (AI crawler rules) is prepended to this on the custom domain.
+function serveRobots(env: Env): Response {
+  const { aptOrigin } = getOrigins(env);
+  const text = [
+    'User-agent: *',
+    'Disallow: /dists/',
+    'Disallow: /pool/',
+    '',
+    ...(aptOrigin ? [`Sitemap: ${aptOrigin}/sitemap.xml`, ''] : []),
+  ].join('\n');
+  return new Response(text, {
+    headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=3600' },
+  });
+}
+
+async function serveSitemap(ctx: ExecutionContext, env: Env): Promise<Response> {
+  const pkgs = await loadPackages(env, ctx);
+  if (!pkgs) return new Response('Package data unavailable', { status: 502 });
+  const { aptOrigin } = getOrigins(env);
+  const paths = ['/', '/packages', '/about', ...pkgs.map(p => `/packages/${encodeURIComponent(p.name)}`)];
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${paths.map(p => `  <url><loc>${escapeHtml(aptOrigin + p)}</loc></url>`).join('\n')}
+</urlset>
+`;
+  return new Response(xml, {
+    headers: { 'content-type': 'application/xml; charset=utf-8', 'cache-control': 'public, max-age=3600' },
+  });
+}
+
 // ── Plain-text banner helpers ──
 
 const BANNER_W = 66;
@@ -209,20 +327,72 @@ function icon(name: keyof typeof ICON_PATHS, size = 16, sw = 2, cls = ''): strin
   return `<svg${c} width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${ICON_PATHS[name]}</svg>`;
 }
 
-function sharedHead(title: string, desc: string, extraCss: string = '', ogImage?: string): string {
-  const ogImageTags = ogImage
-    ? `<meta property="og:image" content="${escapeHtml(ogImage)}">
-<meta name="twitter:card" content="summary_large_image">`
+interface HeadOpts {
+  /** raw (unescaped) title and description */
+  title: string;
+  desc: string;
+  /** canonical path on APT_ORIGIN; omit for pages that must not be indexed */
+  path?: string;
+  extraCss?: string;
+  ogImage?: string;
+  /** large preview card (screenshots) vs. small square (icons) */
+  ogLarge?: boolean;
+  ogType?: string;
+  jsonLd?: object[];
+  noindex?: boolean;
+}
+
+// freedesktop categories → schema.org applicationCategory (first match wins)
+const APP_CATEGORY: [string, string][] = [
+  ['Development', 'DeveloperApplication'],
+  ['Security', 'SecurityApplication'],
+  ['Education', 'EducationalApplication'],
+  ['InstantMessaging', 'CommunicationApplication'],
+  ['Office', 'BusinessApplication'],
+];
+
+function appCategory(cats: string[]): string {
+  for (const [fd, schema] of APP_CATEGORY) if (cats.includes(fd)) return schema;
+  return 'UtilitiesApplication';
+}
+
+// JSON-LD inside <script>: escape "<" so no value can close the tag
+const ldScript = (o: object): string =>
+  `<script type="application/ld+json">${JSON.stringify(o).replace(/</g, '\\u003c')}</script>`;
+
+function breadcrumbLd(env: Env, items: [string, string][]): object {
+  const { aptOrigin } = getOrigins(env);
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map(([name, path], i) => ({
+      '@type': 'ListItem', position: i + 1, name, item: aptOrigin + path,
+    })),
+  };
+}
+
+function sharedHead(env: Env, o: HeadOpts): string {
+  const { aptOrigin } = getOrigins(env);
+  const title = escapeHtml(o.title);
+  const desc = escapeHtml(o.desc);
+  const url = o.path !== undefined && aptOrigin ? escapeHtml(aptOrigin + o.path) : '';
+  const ogImageTags = o.ogImage
+    ? `<meta property="og:image" content="${escapeHtml(o.ogImage)}">
+<meta name="twitter:card" content="${o.ogLarge ? 'summary_large_image' : 'summary'}">`
     : '<meta name="twitter:card" content="summary">';
+  const extraCss = o.extraCss || '';
   return `<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${title}</title>
 <meta name="description" content="${desc}">
-<link rel="icon" href="${FAVICON}">
+${o.noindex ? '<meta name="robots" content="noindex">\n' : ''}${url ? `<link rel="canonical" href="${url}">\n` : ''}<link rel="icon" href="${FAVICON}">
+<meta property="og:type" content="${escapeHtml(o.ogType || 'website')}">
+<meta property="og:site_name" content="${escapeHtml(siteName(env))}">
 <meta property="og:title" content="${title}">
 <meta property="og:description" content="${desc}">
-${ogImageTags}
+${url ? `<meta property="og:url" content="${url}">\n` : ''}${ogImageTags}
 <meta name="theme-color" content="#0d1117">
+${(o.jsonLd || []).map(ldScript).join('\n')}
 <style>
 :root {
   --bg-body: #0d1117;
@@ -348,11 +518,11 @@ ${telegram ? `<a href="${escapeHtml(telegram)}" target="_blank" rel="noopener" c
 </header>`;
 }
 
-function sharedFooter(repo: string, telegram?: string): string {
+function sharedFooter(env: Env): string {
   return `<footer class="site-footer">
 <div>
-<a href="https://github.com/${escapeHtml(repo)}" target="_blank" rel="noopener">GitHub</a>
-${telegram ? `· <a href="${escapeHtml(telegram)}" target="_blank" rel="noopener">Telegram</a>` : ''}
+<a href="https://github.com/${escapeHtml(env.REPO)}" target="_blank" rel="noopener">GitHub</a>
+${env.TELEGRAM ? `· <a href="${escapeHtml(env.TELEGRAM)}" target="_blank" rel="noopener">Telegram</a>` : ''}
 </div>
 <div class="footer-note">Built for personal use</div>
 </footer>`;
@@ -445,7 +615,7 @@ async function serveText(ctx: ExecutionContext, env: Env): Promise<Response> {
     'sudo apt update', '',
   ].join('\n');
 
-  return new Response(text, { headers: { 'content-type': 'text/plain; charset=utf-8' } });
+  return new Response(text, { headers: { 'content-type': 'text/plain; charset=utf-8', 'vary': 'User-Agent' } });
 }
 
 // ── Homepage ──
@@ -484,10 +654,32 @@ sudo apt update`;
 </a>`;
   }).join('');
 
+  // Name real apps in the description: that is what people search for.
+  // Full GUI apps (with screenshots, group heads only) first, the most screenshots first.
+  const featured = (pkgs || [])
+    .filter(p => (p.screenshots || []).length && (!p.group || p.group === p.name))
+    .sort((a, b) => (b.screenshots || []).length - (a.screenshots || []).length)
+    .slice(0, 6).map(displayOf);
+  const homeDesc = pkgCount
+    ? `Signed APT repository with ${pkgCount} auto-updated .deb packages for Ubuntu: ${featured.join(', ')} and more. Add it once and get updates through apt.`
+    : 'Signed APT repository with auto-updated .deb packages for Ubuntu. Add it once and get updates through apt.';
+  const site = siteName(env);
+
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-${sharedHead(env.SITE_NAME || 'apt-repo', `${env.SITE_NAME || 'apt-repo'} for Ubuntu — ${pkgCount} packages`, `
+${sharedHead(env, {
+  title: `${site} — up-to-date .deb packages for Ubuntu`,
+  desc: homeDesc,
+  path: '/',
+  jsonLd: [{
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: site,
+    url: `${aptOrigin}/`,
+    description: homeDesc,
+  }],
+  extraCss: `
 .store-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));gap:0.65rem}
 .store-card{display:flex;align-items:center;gap:0.75rem;padding:0.65rem 0.8rem;background:var(--bg-surface);border:1px solid var(--border-muted);border-radius:var(--radius-md);text-decoration:none;color:var(--text-primary);transition:all var(--transition)}
 .store-card:hover{border-color:var(--accent);background:var(--bg-surface-hover);text-decoration:none}
@@ -501,7 +693,8 @@ ${sharedHead(env.SITE_NAME || 'apt-repo', `${env.SITE_NAME || 'apt-repo'} for Ub
 .tab-p.active{display:block}
 .browse-btn{display:inline-flex;align-items:center;gap:0.4rem;margin-top:0.85rem;color:var(--accent);font-size:0.88rem}
 .browse-btn:hover{text-decoration:underline}
-`)}
+`,
+})}
 </head>
 <body>
 ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'home', env.TELEGRAM)}
@@ -577,7 +770,7 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'home', env.TELEGRAM)}
   </section>
 </main>
 
-${sharedFooter(env.REPO, env.TELEGRAM)}
+${sharedFooter(env)}
 <script>
 ${sharedScript()}
 document.addEventListener('click',e=>{
@@ -589,7 +782,7 @@ document.addEventListener('click',e=>{
 </body>
 </html>`;
 
-  return new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8' } });
+  return new Response(html, { headers: { 'content-type': 'text/html; charset=utf-8', 'vary': 'User-Agent' } });
 }
 
 // ── Package list ──
@@ -633,7 +826,12 @@ async function servePackageList(ctx: ExecutionContext, env: Env): Promise<Respon
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-${sharedHead(`${env.SITE_NAME || 'apt-repo'} — Packages`, `Browse ${pkgCount} packages available in the repository`, `
+${sharedHead(env, {
+  title: `All packages — ${siteName(env)}`,
+  desc: `Browse ${pkgCount} .deb packages for Ubuntu that install and update through apt: ${(pkgs || []).map(displayOf).join(', ')}.`,
+  path: '/packages',
+  jsonLd: [breadcrumbLd(env, [['Home', '/'], ['Packages', '/packages']])],
+  extraCss: `
 .prow{display:flex;align-items:center;gap:0.7rem;padding:0.45rem 0.75rem;border:1px solid transparent;border-radius:var(--radius-md);text-decoration:none;color:var(--text-primary);transition:border-color var(--transition)}
 .prow:hover{border-color:var(--border);background:var(--bg-surface);text-decoration:none}
 .prow.hidden{display:none}
@@ -656,7 +854,8 @@ ${sharedHead(`${env.SITE_NAME || 'apt-repo'} — Packages`, `Browse ${pkgCount} 
 .count{color:var(--text-secondary);font-size:0.8rem;margin-left:auto}
 .empty-state{text-align:center;padding:2rem;color:var(--text-secondary);font-size:0.9rem}
 @media(max-width:600px){.prow-tags{display:none}}
-`)}
+`,
+})}
 </head>
 <body>
 ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'packages', env.TELEGRAM)}
@@ -675,7 +874,7 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'packages', env.TELEGRAM)}
   <div class="empty-state" id="empty" style="display:${pkgs === null ? 'block' : 'none'}">${pkgs === null ? 'Package list is temporarily unavailable.' : 'No packages match.'}</div>
 </main>
 
-${sharedFooter(env.REPO, env.TELEGRAM)}
+${sharedFooter(env)}
 <script>
 ${sharedScript()}
 let activeCat = 'all';
@@ -713,7 +912,7 @@ async function servePackageDetail(name: string, ctx: ExecutionContext, env: Env)
   if (!pkgs) return new Response('Package data unavailable', { status: 502 });
 
   const pkg = pkgs.find(p => p.name === name);
-  if (!pkg) return new Response('Not found', { status: 404, headers: { 'content-type': 'text/html; charset=utf-8' } });
+  if (!pkg) return serveNotFound(env);
 
   const { aptOrigin } = getOrigins(env);
   const safeTitle = escapeHtml(displayOf(pkg));
@@ -740,7 +939,24 @@ async function servePackageDetail(name: string, ctx: ExecutionContext, env: Env)
   }
 
   const screenshots = pkg.screenshots || [];
-  const ogImage = screenshots.length ? `${aptOrigin}${screenshots[0]}` : '';
+  const ogImage = screenshots.length ? `${aptOrigin}${screenshots[0]}` : (pkg.icon ? `${aptOrigin}${pkg.icon}` : '');
+  const display = displayOf(pkg);
+  const pagePath = `/packages/${encodeURIComponent(pkg.name)}`;
+  const metaDesc = `${pkg.description.replace(/\.$/, '')}. Install ${display}${pkg.version ? ` ${pkg.version}` : ''} on Ubuntu with "sudo apt install ${installOf(pkg)}" and get updates automatically.`;
+  const appLd: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: display,
+    description: pkg.longDescription || pkg.description,
+    url: aptOrigin + pagePath,
+    operatingSystem: 'Ubuntu',
+    applicationCategory: appCategory(pkg.categories || []),
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  };
+  if (pkg.version) appLd.softwareVersion = pkg.version;
+  if (pkg.icon) appLd.image = aptOrigin + pkg.icon;
+  if (screenshots.length) appLd.screenshot = screenshots.map(s => aptOrigin + s);
+  if (pkg.source) appLd.sameAs = pkg.source;
   const ssHtml = screenshots.length > 1 ? `
 <div class="sec">
   <div class="gallery">
@@ -761,7 +977,14 @@ async function servePackageDetail(name: string, ctx: ExecutionContext, env: Env)
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-${sharedHead(`${safeTitle} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
+${sharedHead(env, {
+  title: `${display} for Ubuntu (.deb via apt) — ${siteName(env)}`,
+  desc: metaDesc,
+  path: pagePath,
+  ogImage,
+  ogLarge: screenshots.length > 0,
+  jsonLd: [appLd, breadcrumbLd(env, [['Home', '/'], ['Packages', '/packages'], [display, pagePath]])],
+  extraCss: `
 .back-link{display:inline-block;margin-bottom:1rem;color:var(--text-secondary);font-size:0.85rem}
 .back-link:hover{color:var(--accent);text-decoration:underline}
 .dtop{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.2rem}
@@ -802,7 +1025,8 @@ ${sharedHead(`${safeTitle} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
   .dtop{flex-direction:column;align-items:center;text-align:center}
   .dlinks{justify-content:center}
 }
-`, ogImage)}
+`,
+})}
 </head>
 <body>
 <a href="/packages" class="back-link">&larr; All packages</a>
@@ -846,7 +1070,7 @@ ${sharedHead(`${safeTitle} — ${env.SITE_NAME || 'apt-repo'}`, safeDesc, `
   </div>
 </main>
 
-${sharedFooter(env.REPO, env.TELEGRAM)}
+${sharedFooter(env)}
 
 <div class="lb" id="lb">
   <button class="lb-btn lb-close" data-action="lb-close" aria-label="Close">${icon('close', 20, 2.5)}</button>
@@ -921,7 +1145,12 @@ function serveAbout(env: Env): Response {
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-${sharedHead('About — ' + (env.SITE_NAME || 'apt-repo'), 'How this APT repository came to be, what it offers, and how you can help.')}
+${sharedHead(env, {
+  title: `About — ${siteName(env)}`,
+  desc: 'Why this APT repository exists, how it builds and updates .deb packages for Ubuntu automatically, and how you can contribute.',
+  path: '/about',
+  jsonLd: [breadcrumbLd(env, [['Home', '/'], ['About', '/about']])],
+})}
 <style>
   .about h2{font-size:1.25rem;margin:1.8rem 0 .6rem;color:var(--text-primary)}
   .about p{color:var(--text-secondary);font-size:1.05rem;line-height:1.75;text-align:justify;text-indent:1.5rem;overflow-wrap:break-word}
@@ -956,7 +1185,7 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, 'about', env.TELEGRAM)}
   <p>There isn't much software yet, but what's there is unique. And the project has made my life significantly easier. I just add a new APT repository to my system, and everything else happens automatically.</p>
   <p>The project is open source. Contributions are welcome. I'd be glad if you wanted to add some software. Everything you need is in the <a href="https://github.com/${escapeHtml(env.REPO || '')}" target="_blank" rel="noopener">GitHub repository</a> - a template with instructions, and even an AI agent skill to help with building. And if you don't trust my APT repository - you can run your own by forking the project. I don't mind.</p>
 </main>
-${sharedFooter(env.REPO, env.TELEGRAM)}
+${sharedFooter(env)}
 </body>
 </html>`;
 
@@ -967,7 +1196,7 @@ function serveNotFound(env: Env): Response {
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-${sharedHead('404 — ' + (env.SITE_NAME || 'apt-repo'), 'Page not found.')}
+${sharedHead(env, { title: `404 — ${siteName(env)}`, desc: 'Page not found.', noindex: true })}
 <style>
   .notfound{text-align:center;padding:4rem 1rem 3rem}
   .notfound h1{font-size:3.5rem;font-weight:800;color:var(--accent);margin:0 0 .5rem}
@@ -982,7 +1211,7 @@ ${sharedHeader(env.SITE_NAME || 'apt-repo', env.REPO, undefined, env.TELEGRAM)}
   <p>Page not found.</p>
   <p><a href="/">Home</a> &middot; <a href="/packages">Packages</a></p>
 </main>
-${sharedFooter(env.REPO, env.TELEGRAM)}
+${sharedFooter(env)}
 </body>
 </html>`;
 

@@ -19,3 +19,8 @@ AUTHOR = "please_set_AUTHOR_via_CI"
 TELEGRAM = "please_set_TELEGRAM_via_CI"
 APT_ORIGIN = "https://apt.example.com"
 APT_FALLBACK = ""
+
+# Usage events (page views, repo setups, apt update runs, .deb downloads) for the Grafana dashboard
+[[analytics_engine_datasets]]
+binding = "EVENTS"
+dataset = "apt_repo_events"
