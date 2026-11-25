@@ -66,7 +66,7 @@
   "name": "bitwarden-cli",
   "description": "Open source password manager (command-line client)",
   "source": "https://github.com/bitwarden/clients",
-  "version": "2026.11.0",
+  "version": "2026.11.1",
   "group": "bitwarden",
   "categories": [
     "Utility",

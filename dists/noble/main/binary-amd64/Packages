@@ -192,6 +192,23 @@ Description: Bitwarden password manager command-line client
  The Bitwarden CLI (bw) provides full access to a Bitwarden vault
  from the terminal. Open source (OSS) build.
 
+Package: bitwarden-cli
+Version: 2026.11.1
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Depends: libc6, libstdc++6, libgcc-s1
+Filename: pool/noble/main/bitwarden-cli_2026.11.1_noble_amd64.deb
+Size: 34807506
+MD5sum: 7a5e4d9d423d56dad0261dc0f1bc8b51
+SHA1: 8e76c8381c3c4c4453845bdc15fdc957cbe3c40c
+SHA256: f7145f3aa7ab1d5178a4f81d8fb95d5cd24250a9e0f0bdbe382846f9403e7a5c
+Section: utils
+Priority: optional
+Homepage: https://bitwarden.com
+Description: Bitwarden password manager command-line client
+ The Bitwarden CLI (bw) provides full access to a Bitwarden vault
+ from the terminal. Open source (OSS) build.
+
 Package: btrfs-assistant
 Version: 2.2
 Architecture: amd64
