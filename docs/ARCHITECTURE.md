@@ -90,7 +90,13 @@ flowchart LR
   W -- "/pool/*" --> GH
 ```
 
-Configurable via env vars: `REPO`, `PAGES_ORIGIN`, `CACHE_BUST`, `SITE_NAME`, `AUTHOR`, `TELEGRAM`
+Configurable via env vars: `REPO`, `PAGES_ORIGIN`, `CACHE_BUST`, `SITE_NAME`, `AUTHOR`, `TELEGRAM`, `APT_ORIGIN`, `APT_FALLBACK`
+
+Usage analytics: the worker writes one Workers Analytics Engine point (binding `EVENTS`, dataset `apt_repo_events`) per page view (`page`), `curl | bash` setup (`setup`), key download (`key`), `apt update` (`update`, counted on `dists/*/InRelease`) and `.deb` download (`deb`, counted on the `/pool/` redirect). The field layout is documented above `track()` in `workers/apt-repo/src/index.ts`. Grafana Cloud reads the dataset through the Analytics Engine SQL API.
+
+`/` returns the plain-text setup banner only to CLI fetchers (`curl`, `wget`, empty User-Agent); browsers and crawlers, including link-preview bots, get HTML.
+
+SEO: every HTML page has a canonical URL on `APT_ORIGIN` (the `*.workers.dev` fallback serves the same pages), Open Graph tags and JSON-LD (`WebSite`, `BreadcrumbList`, `SoftwareApplication` on package pages). `/sitemap.xml` is generated from `packages.json`; `/robots.txt` disallows `/dists/` and `/pool/` and links the sitemap. Cloudflare's managed robots.txt (AI crawler rules) is prepended to it on the custom domain.
 
 ### gha-proxy
 
