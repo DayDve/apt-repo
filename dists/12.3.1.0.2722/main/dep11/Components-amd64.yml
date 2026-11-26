@@ -946,6 +946,7 @@ Screenshots:
 Type: desktop-application
 ID: io.github.daydve.apt.tmog
 Package: taskmanagerog
+ProjectLicense: MIT
 Name:
   C: TMOG
 Summary:
@@ -1128,7 +1129,7 @@ Provides:
 Type: addon
 ID: io.github.daydve.apt.wps-office-langpack-ru
 Package: wps-office-langpack-ru
-ProjectLicense: MIT
+ProjectLicense: LicenseRef-proprietary
 Name:
   C: wps-office-langpack-ru
 Summary:
