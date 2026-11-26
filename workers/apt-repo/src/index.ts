@@ -334,9 +334,8 @@ interface HeadOpts {
   /** canonical path on APT_ORIGIN; omit for pages that must not be indexed */
   path?: string;
   extraCss?: string;
+  /** absolute URL of the preview image; the site card (public/og.png) when omitted */
   ogImage?: string;
-  /** large preview card (screenshots) vs. small square (icons) */
-  ogLarge?: boolean;
   ogType?: string;
   jsonLd?: object[];
   noindex?: boolean;
@@ -355,6 +354,9 @@ function appCategory(cats: string[]): string {
   for (const [fd, schema] of APP_CATEGORY) if (cats.includes(fd)) return schema;
   return 'UtilitiesApplication';
 }
+
+// Site link preview card, rendered from og.html; bump ?v= after re-rendering so previews refresh
+const OG_CARD = '/og.png?v=1';
 
 // JSON-LD inside <script>: escape "<" so no value can close the tag
 const ldScript = (o: object): string =>
@@ -376,9 +378,14 @@ function sharedHead(env: Env, o: HeadOpts): string {
   const title = escapeHtml(o.title);
   const desc = escapeHtml(o.desc);
   const url = o.path !== undefined && aptOrigin ? escapeHtml(aptOrigin + o.path) : '';
-  const ogImageTags = o.ogImage
-    ? `<meta property="og:image" content="${escapeHtml(o.ogImage)}">
-<meta name="twitter:card" content="${o.ogLarge ? 'summary_large_image' : 'summary'}">`
+  // Every page gets a large preview: its own screenshot, else the site card (served from public/ as a static asset)
+  const ogImage = o.ogImage || (aptOrigin ? `${aptOrigin}${OG_CARD}` : '');
+  const ogImageTags = ogImage
+    ? `<meta property="og:image" content="${escapeHtml(ogImage)}">
+${o.ogImage ? '' : `<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${escapeHtml(siteName(env))}: fresh .deb packages for Ubuntu">
+`}<meta name="twitter:card" content="summary_large_image">`
     : '<meta name="twitter:card" content="summary">';
   const extraCss = o.extraCss || '';
   return `<meta charset="UTF-8">
@@ -939,7 +946,8 @@ async function servePackageDetail(name: string, ctx: ExecutionContext, env: Env)
   }
 
   const screenshots = pkg.screenshots || [];
-  const ogImage = screenshots.length ? `${aptOrigin}${screenshots[0]}` : (pkg.icon ? `${aptOrigin}${pkg.icon}` : '');
+  // 48px icons are too small for link previews: without a screenshot the site card is used
+  const ogImage = screenshots.length ? `${aptOrigin}${screenshots[0]}` : undefined;
   const display = displayOf(pkg);
   const pagePath = `/packages/${encodeURIComponent(pkg.name)}`;
   const metaDesc = `${pkg.description.replace(/\.$/, '')}. Install ${display}${pkg.version ? ` ${pkg.version}` : ''} on Ubuntu with "sudo apt install ${installOf(pkg)}" and get updates automatically.`;
@@ -982,7 +990,6 @@ ${sharedHead(env, {
   desc: metaDesc,
   path: pagePath,
   ogImage,
-  ogLarge: screenshots.length > 0,
   jsonLd: [appLd, breadcrumbLd(env, [['Home', '/'], ['Packages', '/packages'], [display, pagePath]])],
   extraCss: `
 .back-link{display:inline-block;margin-bottom:1rem;color:var(--text-secondary);font-size:0.85rem}

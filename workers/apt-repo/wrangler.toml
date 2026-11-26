@@ -7,6 +7,10 @@ routes = [
   { pattern = "apt.smbit.pro", custom_domain = true },
 ]
 
+# Static files (og.png link preview card) are served before the worker runs
+[assets]
+directory = "./public"
+
 
 # To deploy locally: fill in your values below, then run  wrangler deploy
 # CI overrides these via --var from GitHub Variables.
