@@ -225,21 +225,6 @@ Description: GUI management tool for Btrfs filesystem
  subvolumes, snapshots (Snapper/Timeshift), scrub, and balance operations.
 
 Package: btrfs-assistant
-Version: 2.3.1
-Architecture: amd64
-Maintainer: DayDve <DayDve@users.noreply.github.com>
-Installed-Size: 920
-Depends: libc6, libbtrfsutil1t64, btrfs-progs, libqt6core6t64, libqt6gui6t64, libqt6widgets6t64, libqt6dbus6t64, libgl1, libegl1, libqt6svg6
-Filename: pool/noble/main/btrfs-assistant_2.3.1_noble_amd64.deb
-Size: 236424
-MD5sum: 4c415cb95d660d1bbd90378353a443df
-SHA1: c19db79ed92669865f9334a8e3d8d03c64003cab
-SHA256: e986ad5e0ab9274ea45d9f4a0c3133371615aea2ae9cc8135b26f4234b96d715
-Description: GUI management tool for Btrfs filesystem
- A Qt6-based tool for managing Btrfs filesystems, including
- subvolumes, snapshots (Snapper/Timeshift), scrub, and balance operations.
-
-Package: btrfs-assistant
 Version: 2.3.2
 Architecture: amd64
 Maintainer: DayDve <DayDve@users.noreply.github.com>
@@ -265,6 +250,21 @@ Size: 553942
 MD5sum: 5836b16d27e44420bf793d5ae0158599
 SHA1: 8810c4ea593007df2a82de4c544819aa7b59bc22
 SHA256: d8541319840cf74b0e30d318a44f61eb9f43dc419f536b6663013dbdca6911c7
+Description: GUI management tool for Btrfs filesystem
+ A Qt6-based tool for managing Btrfs filesystems, including
+ subvolumes, snapshots (Snapper/Timeshift), scrub, and balance operations.
+
+Package: btrfs-assistant
+Version: 3.1.0
+Architecture: amd64
+Maintainer: DayDve <DayDve@users.noreply.github.com>
+Installed-Size: 2732
+Depends: libc6, libbtrfsutil1t64, btrfs-progs, libqt6core6t64, libqt6gui6t64, libqt6widgets6t64, libqt6dbus6t64, libgl1, libegl1, libqt6svg6
+Filename: pool/noble/main/btrfs-assistant_3.1.0_noble_amd64.deb
+Size: 577260
+MD5sum: 47ee7bd992fc5e877f53f36f493d62ff
+SHA1: 39c545cffa1ec9622c24254607f6ea0faf417c94
+SHA256: 12968e0a60081f1f2971b2a33c7978c5754ec67a62ddd2d9ffa6a79952be46e1
 Description: GUI management tool for Btrfs filesystem
  A Qt6-based tool for managing Btrfs filesystems, including
  subvolumes, snapshots (Snapper/Timeshift), scrub, and balance operations.
